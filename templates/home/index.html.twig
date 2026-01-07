@@ -5,9 +5,118 @@
 
 {% block body %}
 
-	{# {{ component('Atoms:Button') }} #}
-	<h1 class="text-2xl text-blue-500">
-		Tailwind fonctionne
-	</h1>
+	
 
-</ul></div>{% endblock %}
+	<twig:Atoms:Icon class="text-red-500" name="star" :decorative="false" arialabel="Note du produit"/>
+
+	<twig:Atoms:Link href="/panier" class="text-red-500 hover:underline">
+		Panier
+	</twig:Atoms:Link>
+	<twig:Atoms:Button>
+  Ajouter
+</twig:Atoms:Button>
+<twig:Atoms:Button aria-label="Ajouter au panier">
+  <twig:Atoms:Icon name="cart-shopping" :decorative="true" />
+  <span class="sr-only">Ajouter au panier</span>
+</twig:Atoms:Button>
+<twig:Atoms:Text>
+  Description du produit
+</twig:Atoms:Text>
+
+<twig:Atoms:Label for="email">Email</twig:Atoms:Label>
+<twig:Atoms:Input id="email" name="email" type="email" />
+<twig:Atoms:Checkbox name="newsletter" :checked="true" />	
+<twig:Atoms:Select name="sort">
+  <option value="popular">Populaire</option>
+  <option value="price_asc">Prix croissant</option>
+  <option value="price_desc">Prix décroissant</option>
+</twig:Atoms:Select>
+<twig:Atoms:Textarea name="message" rows="6"></twig:Atoms:Textarea>
+
+<twig:Atoms:Badge>Neuf</twig:Atoms:Badge>
+<twig:Atoms:Badge variant="success">En stock</twig:Atoms:Badge>
+<twig:Atoms:Badge variant="danger">Rupture</twig:Atoms:Badge>
+<twig:Molecules:FormField label="Email" :required="true" error="Email invalide" id="email">
+  <twig:block name="control">
+    <twig:Atoms:Input
+      :isBlock="true"
+      id="email"
+      name="email"
+      type="email"
+      aria-describedby="email-error"
+    />
+  </twig:block>
+</twig:Molecules:FormField>
+<twig:Molecules:CheckboxField
+    id="terms"
+    label="J’accepte les conditions"
+    :checked="true"
+    :required="true"
+/>
+
+<twig:Molecules:CheckboxField
+    id="newsletter"
+    label="Recevoir la newsletter"
+    :checked="false"
+    :required="false"
+    error="Tu dois cocher cette case pour continuer."
+/>
+<twig:Molecules:Alert type="info" message="Info : une mise à jour est disponible." />
+<twig:Molecules:Alert type="success" message="Succès : produit ajouté au panier." />
+<twig:Molecules:Alert type="warning" message="Attention : stock limité." />
+<twig:Molecules:Alert type="error" message="Erreur : paiement refusé." />
+<h2>Card</h2>
+
+<twig:Molecules:Card title="Carte simple">
+    {% block content %}
+        <p>Contenu à l’intérieur de la card.</p>
+    {% endblock %}
+</twig:Molecules:Card>
+<h2>ProductCard</h2>
+
+<twig:Molecules:ProductCard
+    title="Cookie chocolat"
+    :price="3.50"
+    image="https://via.placeholder.com/600x400"
+    :rating="4"
+    addToCartUrl="#"
+/>
+<form method="post" class="max-w-md space-y-4">
+  <twig:Molecules:InputField
+    name="email"
+    type="email"
+    label="Adresse email"
+    placeholder="ex: jean.dupont@email.com"
+    autocomplete="email"
+    :required="true"
+  />
+
+  <button
+    type="submit"
+    class="rounded-md bg-slate-900 px-4 py-2 text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/50"
+  >
+    Créer mon compte
+  </button>
+</form>
+<twig:Molecules:FormFieldGroup
+  id="register-fields"
+  legend="Créer un compte"
+  description="Tous les champs marqués requis doivent être complétés."
+  class="max-w-md"
+>
+  <twig:Molecules:InputField name="email" type="email" label="Adresse email" autocomplete="email" :required="true" />
+  <twig:Molecules:InputField name="password" type="password" label="Mot de passe" autocomplete="new-password" :required="true" />
+</twig:Molecules:FormFieldGroup>
+<twig:Molecules:SelectField
+  name="country"
+  label="Pays"
+  placeholder="Choisir un pays"
+  :required="true"
+  :options="[
+    { value: 'FR', label: 'France' },
+    { value: 'BE', label: 'Belgique' },
+    { value: 'CH', label: 'Suisse' }
+  ]"
+/>
+
+{% endblock %}

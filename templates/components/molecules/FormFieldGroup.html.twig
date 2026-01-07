@@ -1,0 +1,30 @@
+{% set id = this.computedId %}
+{% set describedBy = this.ariaDescribedBy %}
+{% set hasLegend = this.hasLegend %}
+{% set tag = hasLegend ? 'fieldset' : 'div' %}
+
+<{{ tag }}
+  id="{{ id }}"
+  {% if not hasLegend %}role="group"{% endif %}
+  {% if describedBy %}aria-describedby="{{ describedBy }}"{% endif %}
+  class="{{ this.class }}"
+>
+  {% if hasLegend %}
+    <legend id="{{ this.legendId }}" class="text-sm font-semibold text-slate-900">
+      {{ this.legend }}
+    </legend>
+  {% endif %}
+
+{% if this.description %}
+  <twig:Atoms:Text
+    id="{{ this.descriptionId }}"
+    text="{{ this.description }}"
+    class="{% if hasLegend %}mt-1{% endif %} text-sm text-slate-700"
+  />
+{% endif %}
+
+
+  <div class="{% if this.description or hasLegend %}mt-4{% endif %} {{ this.innerClass }}">
+    {% block content %}{% endblock %}
+  </div>
+</{{ tag }}>

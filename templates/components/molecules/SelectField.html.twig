@@ -1,0 +1,79 @@
+{% set id = this.computedId %}
+{% set describedBy = this.describedBy %}
+{% set isInvalid = this.effectiveInvalid %}
+{% set ariaLabel = this.effectiveAriaLabel %}
+
+<div class="w-full {{ this.class }}">
+  {% if this.label %}
+    <twig:Atoms:Label
+      forId="{{ id }}"
+      label="{{ this.label }}"
+      class="mb-1 block text-sm font-medium text-slate-900"
+    />
+  {% endif %}
+
+  <select
+    id="{{ id }}"
+    name="{{ this.name }}{% if this.multiple %}[]{% endif %}"
+    {% if this.required %}required{% endif %}
+    {% if this.disabled %}disabled{% endif %}
+    {% if this.multiple %}multiple{% endif %}
+    {% if describedBy %}aria-describedby="{{ describedBy }}"{% endif %}
+    aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
+    {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}
+    class="
+      block w-full rounded-md border px-3 py-2 text-sm text-slate-900
+      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60
+      disabled:cursor-not-allowed disabled:opacity-60
+      {{ isInvalid ? 'border-red-600 focus-visible:ring-red-600/40' : 'border-slate-300 focus-visible:ring-slate-900/40' }}
+      {{ this.selectClass }}
+    "
+  >
+    {% if this.placeholder and not this.multiple %}
+      <option value="" {% if this.isSelected('') %}selected{% endif %} {% if this.required %}disabled{% endif %}>
+        {{ this.placeholder }}
+      </option>
+    {% endif %}
+
+    {% for opt in this.options %}
+      {% if opt.options is defined %}
+        <optgroup label="{{ opt.label|default('') }}">
+          {% for sub in opt.options %}
+            <option
+              value="{{ sub.value|default('') }}"
+              {% if this.isSelected(sub.value|default('')) %}selected{% endif %}
+              {% if sub.disabled|default(false) %}disabled{% endif %}
+            >
+              {{ sub.label|default(sub.value|default('')) }}
+            </option>
+          {% endfor %}
+        </optgroup>
+      {% else %}
+        <option
+          value="{{ opt.value|default('') }}"
+          {% if this.isSelected(opt.value|default('')) %}selected{% endif %}
+          {% if opt.disabled|default(false) %}disabled{% endif %}
+        >
+          {{ opt.label|default(opt.value|default('')) }}
+        </option>
+      {% endif %}
+    {% endfor %}
+  </select>
+
+  {% if this.help %}
+    <twig:Atoms:Text
+      id="{{ this.helpId }}"
+      text="{{ this.help }}"
+      class="mt-1 text-sm text-slate-700"
+    />
+  {% endif %}
+
+  {% if this.error %}
+    <twig:Atoms:Text
+      id="{{ this.errorId }}"
+      text="{{ this.error }}"
+      role="alert"
+      class="mt-1 text-sm text-red-700"
+    />
+  {% endif %}
+</div>

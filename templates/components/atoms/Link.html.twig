@@ -1,0 +1,13 @@
+<a
+  href="{{ href }}"
+  {{ attributes.defaults({ class: 'inline-flex items-center underline' }) }}
+  {% if external %}
+    target="_blank"
+    rel="noopener noreferrer"
+  {% endif %}
+  {% if ariaLabel %}
+    aria-label="{{ ariaLabel }}"
+  {% endif %}
+>
+  {% block content %}{% endblock %}
+</a>

@@ -1,0 +1,14 @@
+{% set base =
+  "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm
+   focus:border-black focus:outline-none focus:ring-1 focus:ring-black
+   disabled:bg-gray-100 disabled:cursor-not-allowed"
+%}
+
+<input
+  type="{{ type }}"
+  {% if value is not null %}value="{{ value }}"{% endif %}
+  {% if disabled %}disabled{% endif %}
+  {{ attributes.defaults({
+    class: base
+  }) }}
+/>

@@ -1,0 +1,15 @@
+{% set fieldId = id ?? ('field-' ~ random()) %}
+
+<div class="space-y-1">
+  <twig:Atoms:Label for="{{ fieldId }}">
+    {{ label }}
+  </twig:Atoms:Label>
+
+  {% block control %}{% endblock %}
+
+  {% if error %}
+    <p class="text-sm text-red-600" id="{{ fieldId }}-error">
+      {{ error }}
+    </p>
+  {% endif %}
+</div>

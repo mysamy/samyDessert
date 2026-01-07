@@ -1,0 +1,45 @@
+{% set id = this.computedId %}
+{% set describedBy = this.describedBy %}
+{% set isInvalid = this.effectiveInvalid %}
+{% set ariaLabel = this.effectiveAriaLabel %}
+
+<div class="w-full">
+  {% if this.label %}
+<twig:Atoms:Label
+  forId="{{ id }}"
+  label="{{ this.label }}"
+  class="mb-1 block text-sm font-medium text-slate-900"
+/>
+  {% endif %}
+
+  <twig:Atoms:Input
+    id="{{ id }}"
+    name="{{ this.name }}"
+    type="{{ this.type }}"
+    :value="this.value"
+    :placeholder="this.placeholder"
+    :required="this.required"
+    :disabled="this.disabled"
+    :readonly="this.readonly"
+    :autocomplete="this.autocomplete"
+    :inputmode="this.inputmode"
+    :maxlength="this.maxlength"
+    :pattern="this.pattern"
+    aria-describedby="{{ describedBy }}"
+    aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
+    aria-label="{{ ariaLabel }}"
+    class="{{ this.class }}"
+  />
+
+  {% if this.help %}
+    <twig:Atoms:Text id="{{ this.helpId }}" class="mt-1 text-sm text-slate-700">
+      {{ this.help }}
+    </twig:Atoms:Text>
+  {% endif %}
+
+  {% if this.error %}
+    <twig:Atoms:Text id="{{ this.errorId }}" class="mt-1 text-sm text-red-700" role="alert">
+      {{ this.error }}
+    </twig:Atoms:Text>
+  {% endif %}
+</div>

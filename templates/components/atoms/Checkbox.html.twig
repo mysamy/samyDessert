@@ -1,0 +1,8 @@
+<input
+  type="checkbox"
+  {% if checked %}checked{% endif %}
+  {% if disabled %}disabled{% endif %}
+  {{ attributes.defaults({
+    class: "h-4 w-4 rounded border-gray-300 text-black focus:ring-black disabled:opacity-50"
+  }) }}
+/>

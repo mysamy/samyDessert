@@ -1,10 +1,8 @@
-
 {% set base =
-  "inline-flex items-center justify-center rounded-md font-medium transition
+  "inline-flex items-center gap-2 rounded-md font-medium transition
    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
    disabled:opacity-50 disabled:pointer-events-none"
 %}
-
 
 {% set sizes = {
   sm: "h-9 px-3 text-sm",
@@ -20,12 +18,10 @@
 
 <button
   type="{{ type }}"
-  {{ attributes
-      .defaults({
-        class: base ~ ' ' ~ (sizes[size] ?? sizes.md) ~ ' ' ~ (variants[variant] ?? variants.primary)
-      })
-  }}
   {% if disabled %}disabled{% endif %}
+  {{ attributes.defaults({
+    class: base ~ ' ' ~ (sizes[size] ?? sizes.md) ~ ' ' ~ (variants[variant] ?? variants.primary)
+  }) }}
 >
-  {{ label }}
+  {% block content %}{% endblock %}
 </button>

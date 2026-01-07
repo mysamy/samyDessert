@@ -1,0 +1,19 @@
+<div class="checkbox-field">
+    <label for="{{ id }}" class="checkbox-field__label">
+        <input
+            id="{{ id }}"
+            type="checkbox"
+            class="checkbox-field__input"
+            {% if checked %}checked{% endif %}
+            {% if required %}required{% endif %}
+            aria-invalid="{{ error ? 'true' : 'false' }}"
+        >
+        <span>{{ label }}</span>
+    </label>
+
+    {% if error %}
+        <p class="checkbox-field__error" role="alert">
+            {{ error }}
+        </p>
+    {% endif %}
+</div>

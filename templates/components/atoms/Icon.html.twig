@@ -1,0 +1,17 @@
+{% set styleClass = {
+  'solid': 'fa-solid',
+  'regular': 'fa-regular',
+  'brands': 'fa-brands'
+}[style] ?? 'fa-solid' %}
+
+{% set baseClasses = styleClass ~ ' fa-' ~ name ~ (size ? ' fa-' ~ size : '') %}
+
+<i
+  {{ attributes.defaults({ class: baseClasses }) }}
+  {% if decorative %}
+    aria-hidden="true"
+  {% else %}
+    role="img"
+    aria-label="{{ ariaLabel }}"
+  {% endif %}
+></i>
