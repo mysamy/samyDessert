@@ -1,10 +1,9 @@
 <select
-  {% if disabled %}disabled{% endif %}
+  {% if this.required %}required{% endif %}
+  {% if this.disabled %}disabled{% endif %}
+  {% if this.multiple %}multiple{% endif %}
   {{ attributes.defaults({
-    class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm
-            focus:border-black focus:outline-none focus:ring-1 focus:ring-black
-            disabled:bg-gray-100 disabled:cursor-not-allowed"
+    class: "block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60 disabled:cursor-not-allowed disabled:opacity-60"
   }) }}
 >
-  {% block content %}{% endblock %}
 </select>

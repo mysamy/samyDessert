@@ -118,5 +118,41 @@
     { value: 'CH', label: 'Suisse' }
   ]"
 />
+<twig:Molecules:TextareaField
+  name="message"
+  label="Message"
+  placeholder="Votre message…"
+  help="Maximum 500 caractères"
+  :maxlength="500"
+/>
+<twig:Molecules:RadioGroup
+  name="delivery"
+  legend="Mode de livraison"
+  :required="true"
+  :options="[
+    { value: 'standard', label: 'Standard (3–5 jours)' },
+    { value: 'express', label: 'Express (24–48h)' }
+  ]"
+/>
+<twig:Organisms:Form id="register-form" class="max-w-md space-y-6" ariaLabel="Créer un compte">
+  <twig:Molecules:FormFieldGroup legend="Créer un compte">
+    <twig:Molecules:InputField name="email" type="email" label="Adresse email" :required="true" autocomplete="email" />
+    <twig:Molecules:InputField name="password" type="password" label="Mot de passe" :required="true" autocomplete="new-password" />
+  </twig:Molecules:FormFieldGroup>
+
+  <twig:Molecules:FormActions>
+    <twig:Atoms:Button type="submit">Créer mon compte</twig:Atoms:Button>
+  </twig:Molecules:FormActions>
+</twig:Organisms:Form>
+<twig:Organisms:RegisterForm
+  action="/register"
+  submitLabel="Créer mon compte"
+  csrfToken="{{ csrf_token('register') }}"
+/>
+<twig:Organisms:LoginForm
+  action="/login"
+  submitLabel="Se connecter"
+  csrfToken="{{ csrf_token('authenticate') }}"
+/>
 
 {% endblock %}

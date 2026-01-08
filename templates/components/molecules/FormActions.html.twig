@@ -1,0 +1,10 @@
+<div
+  class="
+    mt-6 flex items-center gap-3
+    {{ this.alignmentClass }}
+    {{ this.class }}
+  "
+  {% if this.disabled %}aria-disabled="true"{% endif %}
+>
+  {% block content %}{% endblock %}
+</div>

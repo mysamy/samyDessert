@@ -1,0 +1,47 @@
+{% set id = this.computedId %}
+{% set ariaLabel = this.effectiveAriaLabel %}
+
+<div class="w-full {{ this.class }}">
+  {% if this.label %}
+    <twig:Atoms:Label
+      forId="{{ id }}"
+      label="{{ this.label }}"
+      class="mb-1 block text-sm font-medium text-slate-900"
+    />
+  {% endif %}
+
+  <twig:Atoms:Textarea
+    :rows="this.rows"
+    :disabled="this.disabled"
+    :required="this.required"
+    :readonly="this.readonly"
+    id="{{ id }}"
+    name="{{ this.name }}"
+    placeholder="{{ this.placeholder|default('') }}"
+    maxlength="{{ this.maxlength ?? '' }}"
+    aria-describedby="{{ this.describedBy }}"
+    aria-invalid="{{ this.ariaInvalid }}"
+    aria-label="{{ ariaLabel }}"
+    class="
+      {{ this.textareaClass }}
+      {{ (this.ariaInvalid == 'true') ? 'border-red-600 focus:ring-red-600/40 focus:border-red-600' : '' }}
+    "
+  />
+
+  {% if this.help %}
+    <twig:Atoms:Text
+      id="{{ this.helpId }}"
+      text="{{ this.help }}"
+      class="mt-1 text-sm text-gray-700"
+    />
+  {% endif %}
+
+  {% if this.error %}
+    <twig:Atoms:Text
+      id="{{ this.errorId }}"
+      text="{{ this.error }}"
+      role="alert"
+      class="mt-1 text-sm text-red-700"
+    />
+  {% endif %}
+</div>

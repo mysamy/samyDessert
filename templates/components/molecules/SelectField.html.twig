@@ -12,20 +12,17 @@
     />
   {% endif %}
 
-  <select
+  <twig:Atoms:Select
+    :required="this.required"
+    :disabled="this.disabled"
+    :multiple="this.multiple"
     id="{{ id }}"
     name="{{ this.name }}{% if this.multiple %}[]{% endif %}"
-    {% if this.required %}required{% endif %}
-    {% if this.disabled %}disabled{% endif %}
-    {% if this.multiple %}multiple{% endif %}
-    {% if describedBy %}aria-describedby="{{ describedBy }}"{% endif %}
+    aria-describedby="{{ describedBy }}"
     aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
-    {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}
+    aria-label="{{ ariaLabel }}"
     class="
-      block w-full rounded-md border px-3 py-2 text-sm text-slate-900
-      focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60
-      disabled:cursor-not-allowed disabled:opacity-60
-      {{ isInvalid ? 'border-red-600 focus-visible:ring-red-600/40' : 'border-slate-300 focus-visible:ring-slate-900/40' }}
+      {{ isInvalid ? 'border-red-600 focus-visible:ring-red-600/40' : '' }}
       {{ this.selectClass }}
     "
   >
@@ -58,7 +55,7 @@
         </option>
       {% endif %}
     {% endfor %}
-  </select>
+  </twig:Atoms:Select>
 
   {% if this.help %}
     <twig:Atoms:Text

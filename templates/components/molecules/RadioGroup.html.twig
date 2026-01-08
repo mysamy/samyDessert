@@ -1,0 +1,76 @@
+{% set id = this.computedId %}
+{% set describedBy = this.describedBy %}
+{% set isInvalid = this.effectiveInvalid %}
+
+<fieldset
+  id="{{ id }}"
+  {% if describedBy %}aria-describedby="{{ describedBy }}"{% endif %}
+  class="{{ this.class }}"
+>
+  {% if this.legend %}
+    <legend id="{{ this.legendId }}" class="text-sm font-semibold text-slate-900">
+      {{ this.legend }}
+      {% if this.required %}
+        <span class="text-slate-700"> (obligatoire)</span>
+      {% endif %}
+    </legend>
+  {% endif %}
+
+  {% if this.description %}
+    <twig:Atoms:Text
+      id="{{ this.descriptionId }}"
+      text="{{ this.description }}"
+      class="mt-1 text-sm text-slate-700"
+    />
+  {% endif %}
+
+  <div class="mt-4 {{ this.innerClass }}">
+    {% for opt in this.options %}
+      {% set optValue = opt.value|default('') %}
+      {% set optId = this.optionId(optValue) %}
+      {% set optDisabled = (this.disabled or opt.disabled|default(false)) %}
+
+      <div class="flex items-start gap-2">
+        <input
+          id="{{ optId }}"
+          type="radio"
+          name="{{ this.name }}"
+          value="{{ optValue }}"
+          {% if this.isChecked(optValue) %}checked{% endif %}
+          {% if this.required %}required{% endif %}
+          {% if optDisabled %}disabled{% endif %}
+          aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
+          class="
+            mt-0.5 h-4 w-4
+            accent-slate-900
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60
+            disabled:cursor-not-allowed disabled:opacity-60
+          "
+        />
+
+        <div class="{% if optDisabled %}opacity-60{% endif %}">
+          <twig:Atoms:Label
+            forId="{{ optId }}"
+            label="{{ opt.label|default(optValue) }}"
+            class="text-sm font-medium text-slate-900"
+          />
+          {% if opt.description is defined and opt.description %}
+            <twig:Atoms:Text
+              text="{{ opt.description }}"
+              class="mt-0.5 text-sm text-slate-700"
+            />
+          {% endif %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+
+  {% if this.error %}
+    <twig:Atoms:Text
+      id="{{ this.errorId }}"
+      text="{{ this.error }}"
+      role="alert"
+      class="mt-2 text-sm text-red-700"
+    />
+  {% endif %}
+</fieldset>

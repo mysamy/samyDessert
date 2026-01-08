@@ -4,9 +4,11 @@ namespace App\Twig\Components\Atoms;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('Atoms:Textarea')]
+#[AsTwigComponent]
 final class Textarea
 {
-    public bool $disabled = false;
     public int $rows = 4;
+    public bool $disabled = false;
+    public bool $required = false;
+    public bool $readonly = false;
 }
