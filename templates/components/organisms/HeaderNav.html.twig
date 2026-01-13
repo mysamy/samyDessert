@@ -1,0 +1,52 @@
+{% set id = this.id %}
+{% set class = this.class %}
+
+{% set brandLabel = this.brandLabel %}
+{% set brandUrl = this.brandUrl %}
+
+{% set links = this.links %}
+{% set accountUrl = this.accountUrl %}
+{% set cartUrl = this.cartUrl %}
+
+{% set attrDefaults = {} %}
+{% if id %}{% set attrDefaults = attrDefaults|merge({ id: id }) %}{% endif %}
+
+{% set baseClass = 'border-b border-slate-200 bg-white' %}
+{% set rootAttrs = attributes.defaults(attrDefaults) %}
+{% set rootAttrs = class ? rootAttrs.addClass(class) : rootAttrs %}
+
+<header {{ rootAttrs }}>
+  <div class="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
+    <div class="flex items-center gap-6">
+      <twig:Atoms:Link :href="brandUrl" class="text-lg font-semibold text-slate-900">
+        {{ brandLabel }}
+      </twig:Atoms:Link>
+
+      <div class="md:block">
+        <twig:Molecules:Nav ariaLabel="Navigation principale" :items="links" />
+      </div>
+    </div>
+
+    <div class="flex items-center gap-2">
+      {% if accountUrl %}
+        <twig:Atoms:Link
+          :href="accountUrl"
+          aria-label="Accéder au compte"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
+        >
+          <twig:Atoms:Icon name="user" :decorative="true" class="h-5 w-5 text-slate-700"/>
+        </twig:Atoms:Link>
+      {% endif %}
+
+      {% if cartUrl %}
+        <twig:Atoms:Link
+          :href="cartUrl"
+          aria-label="Voir le panier"
+          class="inline-flex h-9 w-9 items-center justify-center rounded-md hover:bg-slate-100 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900 focus-visible:ring-offset-2"
+        >
+          <twig:Atoms:Icon name="shopping-cart" :decorative="true" class="h-5 w-5 text-slate-700"/>
+        </twig:Atoms:Link>
+      {% endif %}
+    </div>
+  </div>
+</header>

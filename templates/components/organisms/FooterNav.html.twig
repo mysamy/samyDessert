@@ -1,0 +1,34 @@
+{% set id = this.id %}
+{% set class = this.class %}
+{% set brandLabel = this.brandLabel %}
+{% set links = this.links %}
+{% set legalText = this.legalText %}
+
+{% set attrDefaults = {} %}
+{% if id %}{% set attrDefaults = attrDefaults|merge({ id: id }) %}{% endif %}
+
+{% set baseClass = 'border-t border-slate-200 bg-slate-50' %}
+{% set rootAttrs = attributes.defaults(attrDefaults) %}
+{% set rootAttrs = class ? rootAttrs.addClass(class) : rootAttrs %}
+
+<footer {{ rootAttrs }}>
+  <div class="mx-auto max-w-7xl space-y-4 px-4 py-6">
+    {% if brandLabel %}
+      <div class="text-sm font-semibold text-slate-900">
+        {{ brandLabel }}
+      </div>
+    {% endif %}
+
+    <twig:Molecules:Nav
+      ariaLabel="Navigation pied de page"
+      :items="links"
+      class="flex-wrap text-sm"
+    />
+
+    {% if legalText %}
+      <div class="text-xs text-slate-600">
+        {{ legalText }}
+      </div>
+    {% endif %}
+  </div>
+</footer>

@@ -12,10 +12,10 @@
 	<twig:Atoms:Link href="/panier" class="text-red-500 hover:underline">
 		Panier
 	</twig:Atoms:Link>
-	<twig:Atoms:Button>
+	<twig:Atoms:Button variant="secondary">
   Ajouter
 </twig:Atoms:Button>
-<twig:Atoms:Button aria-label="Ajouter au panier">
+<twig:Atoms:Button variant="ghost" aria-label="Ajouter au panier">
   <twig:Atoms:Icon name="cart-shopping" :decorative="true" />
   <span class="sr-only">Ajouter au panier</span>
 </twig:Atoms:Button>
@@ -67,11 +67,11 @@
 <twig:Molecules:Alert type="error" message="Erreur : paiement refusé." />
 <h2>Card</h2>
 
-<twig:Molecules:Card title="Carte simple">
+<twig:Atoms:Card title="Carte simple">
     {% block content %}
         <p>Contenu à l’intérieur de la card.</p>
     {% endblock %}
-</twig:Molecules:Card>
+</twig:Atoms:Card>
 <h2>ProductCard</h2>
 
 <twig:Molecules:ProductCard
@@ -153,6 +153,77 @@
   action="/login"
   submitLabel="Se connecter"
   csrfToken="{{ csrf_token('authenticate') }}"
+/>
+<twig:Organisms:AddressForm
+  action="/address"
+  submitLabel="Enregistrer l’adresse"
+  csrfToken="{{ csrf_token('address') }}"
+/>
+<twig:Organisms:CartSummary
+  :items="[
+    { name: 'Cake chocolat', quantity: 2, price: 12.5 },
+    { name: 'Tarte citron', quantity: 1, price: 18 }
+  ]"
+  :totalItems="3"
+  :totalPrice="43"
+  checkoutUrl="/checkout"
+/>
+<twig:Organisms:ProductCard
+  title="Cake chocolat"
+  url="/produit/cake-chocolat"
+  imageSrc="/images/products/cake-chocolat.jpg"
+  :price="12.5"
+  currency="€"
+  :rating="4.5"
+  :reviewCount="18"
+  addToCartUrl="/cart/add/123"
+  addToCartLabel="Ajouter"
+/>
+{% set products = [
+  {
+    id: 'p-1',
+    title: 'Cookie chocolat',
+    url: '#',
+    imageSrc: asset('images/products/cookie.jpg'),
+    imageAlt: 'Cookie chocolat',
+    rating: 4,
+    ratingAriaLabel: 'Note 4 sur 5',
+    ratingText: '4/5',
+    formattedPrice: '3,90 €',
+    addToCartUrl: '#',
+    addToCartLabel: 'Ajouter',
+    addToCartDisabled: false
+  }
+] %}
+
+<twig:Organisms:ProductCardGrid
+  id="home-products"
+  title="Nouveautés"
+  :items="products"
+/>
+{% set navLinks = [
+  { label: 'Produits', url: '#' },
+  { label: 'Nouveautés', url: '#' },
+  { label: 'Contact', url: '#' },
+] %}
+
+<twig:Organisms:HeaderNav
+  brandLabel="Samy Dessert"
+  brandUrl="#"
+  :links="navLinks"
+  accountUrl="#"
+  cartUrl="#"
+/>
+{% set footerLinks = [
+  { label: 'Mentions légales', url: '#' },
+  { label: 'CGV', url: '#' },
+  { label: 'Contact', url: '#' },
+] %}
+
+<twig:Organisms:FooterNav
+  brandLabel="© Samy Dessert"
+  :links="footerLinks"
+  legalText="Tous droits réservés"
 />
 
 {% endblock %}
