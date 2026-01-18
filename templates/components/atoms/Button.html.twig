@@ -23,5 +23,5 @@
     class: base ~ ' ' ~ (sizes[size] ?? sizes.md) ~ ' ' ~ (variants[variant] ?? variants.primary)
   }) }}
 >
-  {% block content %}{% endblock %}
+   {{ content|default('') }}
 </button>
