@@ -1,0 +1,68 @@
+{% set id = this.id %}
+{% set class = this.class %}
+{% set title = this.title %}
+{% set items = this.items %}
+
+{% set hasTitle = title is not empty %}
+{% set hasItems = items|length > 0 %}
+
+{% set titleId = id ? (id ~ '-title') : 'product-card-grid-title' %}
+
+{% set attrDefaults = {} %}
+{% if id %}{% set attrDefaults = attrDefaults|merge({ id: id }) %}{% endif %}
+{% if hasTitle %}{% set attrDefaults = attrDefaults|merge({ 'aria-labelledby': titleId }) %}{% endif %}
+
+{% set baseClass = 'space-y-4' %}
+{% set rootAttrs = attributes.defaults(attrDefaults) %}
+{% set rootAttrs = class ? rootAttrs.addClass(class) : rootAttrs %}
+
+<section {{ rootAttrs }}>
+  {% if hasTitle %}
+    <h2 id="{{ titleId }}" class="text-lg font-semibold text-slate-900">
+      {{ title }}
+    </h2>
+  {% endif %}
+
+  {% if hasItems %}
+    <ul role="list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+  {% for item in items %}
+    {% set itemTitle = item.title ?? '' %}
+    {% set itemUrl = item.url ?? null %}
+    {% set itemImageSrc = item.imageSrc ?? null %}
+    {% set itemImageAlt = item.imageAlt ?? null %}
+    {% set itemRating = item.rating ?? null %}
+    {% set itemRatingAriaLabel = item.ratingAriaLabel ?? null %}
+    {% set itemRatingText = item.ratingText ?? null %}
+    {% set itemFormattedPrice = item.formattedPrice ?? '' %}
+    {% set itemAddToCartUrl = item.addToCartUrl ?? null %}
+    {% set itemAddToCartLabel = item.addToCartLabel ?? 'Ajouter au panier' %}
+    {% set itemAddToCartDisabled = item.addToCartDisabled ?? false %}
+    {% set itemId = item.id ?? null %}
+    {% set itemClass = item.class ?? '' %}
+
+    <li>
+      <twig:Organisms:ProductCard
+        :id="itemId"
+        :class="itemClass"
+        :title="itemTitle"
+        :url="itemUrl"
+        :imageSrc="itemImageSrc"
+        :imageAlt="itemImageAlt"
+        :rating="itemRating"
+        :ratingAriaLabel="itemRatingAriaLabel"
+        :ratingText="itemRatingText"
+        :formattedPrice="itemFormattedPrice"
+        :addToCartUrl="itemAddToCartUrl"
+        :addToCartLabel="itemAddToCartLabel"
+        :addToCartDisabled="itemAddToCartDisabled"
+      />
+    </li>
+  {% endfor %}
+</ul>
+
+  {% else %}
+    <div class="rounded-lg border border-slate-200 bg-white p-6 text-slate-700">
+      <twig:Atoms:Text text="Aucun produit à afficher." />
+    </div>
+  {% endif %}
+</section>

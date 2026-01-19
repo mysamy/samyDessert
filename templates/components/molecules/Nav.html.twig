@@ -1,0 +1,30 @@
+{% set id = this.id %}
+{% set class = this.class %}
+{% set ariaLabel = this.ariaLabel %}
+{% set items = this.items %}
+
+{% set baseClass = 'flex items-center gap-4' %}
+{% set finalClass = class ? (baseClass ~ ' ' ~ class) : baseClass %}
+
+{% set attrDefaults = { class: finalClass } %}
+{% if id %}{% set attrDefaults = attrDefaults|merge({ id: id }) %}{% endif %}
+
+{% set navAttrs = attributes.defaults(attrDefaults) %}
+
+
+<nav {{ navAttrs }} aria-label="{{ ariaLabel }}">
+  <ul role="list" class="flex items-center gap-4">
+    {% for item in items %}
+      {% set label = item.label ?? '' %}
+      {% set url = item.url ?? '#' %}
+      <li>
+        <twig:Atoms:Link
+          href="{{ url }}"
+          class="text-sm font-medium text-slate-700 hover:text-slate-900"
+        >
+          {{ label }}
+        </twig:Atoms:Link>
+      </li>
+    {% endfor %}
+  </ul>
+</nav>

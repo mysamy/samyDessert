@@ -1,0 +1,19 @@
+{% set title = this.title %}
+{% set titleId = this.titleId %}
+{% set tag = this.safeTitleTag %}
+
+<article
+  {% if this.id %}id="{{ this.id }}"{% endif %}
+  {% if title %}aria-labelledby="{{ titleId }}"{% endif %}
+  class="rounded-lg border border-slate-200 bg-white shadow-sm {{ this.class }}"
+>
+  {% if title %}
+    <{{ tag }} id="{{ titleId }}" class="px-4 pt-4 text-base font-semibold text-slate-900">
+      {{ title }}
+    </{{ tag }}>
+  {% endif %}
+
+  <div class="p-4 {% if title %}pt-2{% endif %}">
+    {% block content %}{% endblock %}
+  </div>
+</article>
