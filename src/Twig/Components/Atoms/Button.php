@@ -13,5 +13,4 @@ final class Button
     public string $size = 'md';
     public string $variant = 'primary';
 
-    public ?string $href = null;
 }

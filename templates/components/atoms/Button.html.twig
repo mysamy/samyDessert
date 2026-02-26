@@ -17,11 +17,11 @@
 } %}
 
 <button
-  type="{{ type }}"
+  type="{{ type|default('button') }}"
   {% if disabled %}disabled{% endif %}
   {{ attributes.defaults({
     class: base ~ ' ' ~ (sizes[size] ?? sizes.md) ~ ' ' ~ (variants[variant] ?? variants.primary)
   }) }}
 >
-   {{ content|default('') }}
+   {% block content %}{% endblock %}
 </button>

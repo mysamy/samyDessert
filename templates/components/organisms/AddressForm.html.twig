@@ -44,9 +44,9 @@
       tabindex="-1"
     >
       <twig:Atoms:Text
-        text="{{ formError ?: 'Le formulaire contient des erreurs. Vérifie les champs.' }}"
-        class="text-sm font-medium text-red-800"
-      />
+  text="{{ (formError is not empty) ? formError : 'La connexion a échoué. Vérifie les informations saisies.' }}"
+  class="text-sm font-medium text-red-800"
+/>
     </div>
   {% endif %}
 

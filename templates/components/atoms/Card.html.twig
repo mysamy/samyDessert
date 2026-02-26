@@ -1,19 +1,23 @@
+{% set id = this.id %}
+{% set class = this.class %}
 {% set title = this.title %}
 {% set titleId = this.titleId %}
 {% set tag = this.safeTitleTag %}
 
 <article
-  {% if this.id %}id="{{ this.id }}"{% endif %}
-  {% if title %}aria-labelledby="{{ titleId }}"{% endif %}
-  class="rounded-lg border border-slate-200 bg-white shadow-sm {{ this.class }}"
+  {% if id is not empty %}id="{{ id }}"{% endif %}
+  {% if title is not empty %}aria-labelledby="{{ titleId }}"{% endif %}
+  {{ attributes.defaults({
+    class: "rounded-lg border border-slate-200 bg-white shadow-sm " ~ (class ?? '')
+  }) }}
 >
-  {% if title %}
+  {% if title is not empty %}
     <{{ tag }} id="{{ titleId }}" class="px-4 pt-4 text-base font-semibold text-slate-900">
       {{ title }}
     </{{ tag }}>
   {% endif %}
 
-  <div class="p-4 {% if title %}pt-2{% endif %}">
-    {% block content %}{% endblock %}
+  <div class="p-4 {% if title is not empty %}pt-2{% endif %}">
+    {{ content|default('') }}
   </div>
 </article>

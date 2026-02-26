@@ -7,14 +7,13 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent]
 final class HeaderNav
 {
-    public ?string $id = null;
-    public ?string $class = null;
+    public string $brandLabel = '';
+    public string $brandHref = '/';
 
-    public string $brandLabel = 'Accueil';
-    public string $brandUrl = '#';
+    public string $logoSrc = '';
+    public string $logoAlt = '';
 
     public array $links = [];
 
-    public ?string $accountUrl = null;
-    public ?string $cartUrl = null;
+    public string $class = '';
 }

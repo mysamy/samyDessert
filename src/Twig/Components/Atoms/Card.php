@@ -21,6 +21,6 @@ final class Card
 
     public function getSafeTitleTag(): string
     {
-        return in_array($this->titleTag, ['h2', 'h3', 'h4'], true) ? $this->titleTag : 'h3';
+        return in_array($this->titleTag, ['h2', 'h3', 'h4','h5'], true) ? $this->titleTag : 'h3';
     }
 }

@@ -1,13 +1,15 @@
+{% set href = this.href %}
+{% set external = this.external %}
+{% set ariaLabel = this.ariaLabel %}
+
 <a
   href="{{ href }}"
-  {{ attributes.defaults({ class: 'inline-flex items-center underline' }) }}
-  {% if external %}
-    target="_blank"
-    rel="noopener noreferrer"
-  {% endif %}
-  {% if ariaLabel %}
-    aria-label="{{ ariaLabel }}"
-  {% endif %}
+  target="{{ external ? '_blank' : null }}"
+  rel="{{ external ? 'noopener noreferrer' : null }}"
+  {# rel décrit la relation entre ta page et la page liée. #}
+  
+  aria-label="{{ ariaLabel is not empty ? ariaLabel : null }}"
+  {{ attributes.defaults({ class: 'inline-flex items-center' }) }}
 >
   {% block content %}{% endblock %}
 </a>

@@ -11,23 +11,23 @@ final class InputField
     public string $id = '';
     public string $name = '';
     public string $label = '';
-    public ?string $placeholder = null;
-    public ?string $value = null;
+    public string $placeholder = '';
+    public string $value = '';
 
     public bool $required = false;
     public bool $disabled = false;
     public bool $readonly = false;
 
     public bool $invalid = false;
-    public ?string $error = null;
-    public ?string $help = null;
+    public string $error = '';
+    public string $help = '';
 
-    public ?string $ariaLabel = null;
+    public string $ariaLabel = '';
 
-    public ?string $autocomplete = null;
-    public ?string $inputmode = null;
+    public string $autocomplete = '';
+    public string $inputmode = '';
     public ?int $maxlength = null;
-    public ?string $pattern = null;
+    public string $pattern = '';
 
     public string $class = '';
 
@@ -55,30 +55,30 @@ final class InputField
         return $this->getComputedId().'__error';
     }
 
-    public function getDescribedBy(): ?string
+    public function getDescribedBy(): string
     {
         $ids = [];
 
-        if ($this->help) {
+        if ($this->help !== '') {
             $ids[] = $this->getHelpId();
         }
 
-        if ($this->error) {
+        if ($this->error !== '') {
             $ids[] = $this->getErrorId();
         }
 
-        return $ids ? implode(' ', $ids) : null;
+        return $ids ? implode(' ', $ids) : '';
     }
 
     public function getEffectiveInvalid(): bool
     {
-        return $this->invalid || (bool) $this->error;
+        return $this->invalid || ($this->error !== '');
     }
 
-    public function getEffectiveAriaLabel(): ?string
+    public function getEffectiveAriaLabel(): string
     {
         if ($this->label !== '') {
-            return null;
+            return '';
         }
 
         return $this->ariaLabel;

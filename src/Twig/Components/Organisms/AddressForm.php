@@ -15,30 +15,29 @@ final class AddressForm
     public string $legend = 'Adresse';
     public string $submitLabel = 'Enregistrer';
 
-    public ?string $formError = null;
+    public string $formError = '';
+    public string $csrfToken = '';
 
-    public ?string $csrfToken = null;
+    public string $firstNameValue = '';
+    public string $lastNameValue = '';
+    public string $companyValue = '';
 
-    public ?string $firstNameValue = null;
-    public ?string $lastNameValue = null;
-    public ?string $companyValue = null;
+    public string $address1Value = '';
+    public string $address2Value = '';
+    public string $postalCodeValue = '';
+    public string $cityValue = '';
+    public string $countryValue = 'FR';
+    public string $phoneValue = '';
 
-    public ?string $address1Value = null;
-    public ?string $address2Value = null;
-    public ?string $postalCodeValue = null;
-    public ?string $cityValue = null;
-    public ?string $countryValue = 'FR';
-    public ?string $phoneValue = null;
+    public string $notesValue = '';
 
-    public ?string $notesValue = null;
-
-    public ?string $firstNameError = null;
-    public ?string $lastNameError = null;
-    public ?string $address1Error = null;
-    public ?string $postalCodeError = null;
-    public ?string $cityError = null;
-    public ?string $countryError = null;
-    public ?string $phoneError = null;
+    public string $firstNameError = '';
+    public string $lastNameError = '';
+    public string $address1Error = '';
+    public string $postalCodeError = '';
+    public string $cityError = '';
+    public string $countryError = '';
+    public string $phoneError = '';
 
     public array $countries = [
         ['value' => 'FR', 'label' => 'France'],
@@ -49,16 +48,14 @@ final class AddressForm
 
     public function getHasAnyError(): bool
     {
-        return (bool) (
-            $this->formError ||
-            $this->firstNameError ||
-            $this->lastNameError ||
-            $this->address1Error ||
-            $this->postalCodeError ||
-            $this->cityError ||
-            $this->countryError ||
-            $this->phoneError
-        );
+        return $this->formError !== ''
+            || $this->firstNameError !== ''
+            || $this->lastNameError !== ''
+            || $this->address1Error !== ''
+            || $this->postalCodeError !== ''
+            || $this->cityError !== ''
+            || $this->countryError !== ''
+            || $this->phoneError !== '';
     }
 
     public function getErrorSummaryId(): string

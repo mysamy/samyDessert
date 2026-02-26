@@ -9,77 +9,32 @@
 {% set rememberMe = this.rememberMe %}
 {% set formId = this.id %}
 
-<twig:Organisms:Form
-  id="{{ formId }}"
-  method="{{ this.method }}"
-  action="{{ this.action }}"
-  class="{{ this.class }}"
-  ariaLabel="Formulaire de connexion"
-  ariaDescribedby="{{ hasError ? errorSummaryId : '' }}"
->
-  {% if hasError %}
-    <div
-      id="{{ errorSummaryId }}"
-      class="rounded-md border border-red-200 bg-red-50 p-4"
-      role="alert"
-      aria-live="polite"
-      tabindex="-1"
-    >
-      <twig:Atoms:Text
-        text="{{ formError ?: 'La connexion a échoué. Vérifie les informations saisies.' }}"
-        class="text-sm font-medium text-red-800"
-      />
-    </div>
-  {% endif %}
+<twig:Organisms:Form id="{{ formId }}" method="{{ this.method }}" action="{{ this.action }}" class="{{ this.class }}" arialabel="Formulaire de connexion" ariadescribedby="{{ hasError ? errorSummaryId : '' }}">
+	{% if hasError %}
+		<div id="{{ errorSummaryId }}" class="rounded-md border border-red-200 bg-red-50 p-4" role="alert" aria-live="polite" tabindex="-1">
+			<twig:Atoms:Text text="{{ (formError is not empty) ? formError : 'La connexion a échoué. Vérifie les informations saisies.' }}" class="text-sm font-medium text-red-800"/>
 
-  {% if csrfToken %}
-    <input type="hidden" name="_csrf_token" value="{{ csrfToken }}">
-  {% endif %}
+		</div>
+	{% endif %}
 
-  <twig:Molecules:FormFieldGroup
-    id="{{ formId }}__fields"
-    legend="Connexion"
-    description="Saisis ton adresse email et ton mot de passe."
-    innerClass="space-y-4"
-  >
-    <twig:Molecules:InputField
-      name="email"
-      type="email"
-      label="Adresse email"
-      autocomplete="email"
-      :required="true"
-      value="{{ emailValue }}"
-      error="{{ emailError }}"
-    />
+	{% if csrfToken %}
+		<input type="hidden" name="_csrf_token" value="{{ csrfToken }}">
+	{% endif %}
 
-    <twig:Molecules:InputField
-      name="password"
-      type="password"
-      label="Mot de passe"
-      autocomplete="current-password"
-      :required="true"
-      error="{{ passwordError }}"
-    />
-  </twig:Molecules:FormFieldGroup>
+	<twig:Molecules:FormFieldGroup id="{{ formId }}__fields" legend="Connexion" description="Saisis ton adresse email et ton mot de passe." innerclass="space-y-4">
+		<twig:Molecules:InputField name="email" type="email" label="Adresse email" autocomplete="email" :required="true" value="{{ emailValue }}" error="{{ emailError }}"/>
 
-  <div class="flex items-start gap-2">
-    <input
-      id="{{ formId }}__remember"
-      type="checkbox"
-      name="_remember_me"
-      {% if rememberMe %}checked{% endif %}
-      class="mt-0.5 h-4 w-4 accent-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60"
-    />
-    <twig:Atoms:Label
-      forId="{{ formId }}__remember"
-      label="Se souvenir de moi"
-      class="text-sm font-medium text-slate-900"
-    />
-  </div>
+		<twig:Molecules:InputField name="password" type="password" label="Mot de passe" autocomplete="current-password" :required="true" error="{{ passwordError }}"/>
+	</twig:Molecules:FormFieldGroup>
 
-  <twig:Molecules:FormActions align="end">
-    <twig:Atoms:Button type="submit">
-      {{ submitLabel }}
-    </twig:Atoms:Button>
-  </twig:Molecules:FormActions>
+	<div class="flex items-start gap-2">
+		<input id="{{ formId }}__remember" type="checkbox" name="_remember_me" {% if rememberMe %} checked {% endif %} class="mt-0.5 h-4 w-4 accent-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60"/>
+		<twig:Atoms:Label forid="{{ formId }}__remember" label="Se souvenir de moi" class="text-sm font-medium text-slate-900"/>
+	</div>
+
+	<twig:Molecules:FormActions align="end">
+		<twig:Atoms:Button type="submit">
+			{{ submitLabel }}
+		</twig:Atoms:Button>
+	</twig:Molecules:FormActions>
 </twig:Organisms:Form>

@@ -14,19 +14,22 @@ final class RegisterForm
 
     public string $submitLabel = 'Créer mon compte';
 
-    public ?string $emailValue = null;
-    public ?string $emailError = null;
+    public string $emailValue = '';
+    public string $emailError = '';
 
-    public ?string $passwordError = null;
-    public ?string $confirmPasswordError = null;
+    public string $passwordError = '';
+    public string $confirmPasswordError = '';
 
-    public ?string $formError = null;
+    public string $formError = '';
 
-    public ?string $csrfToken = null;
+    public string $csrfToken = '';
 
     public function getHasAnyError(): bool
     {
-        return (bool) ($this->formError || $this->emailError || $this->passwordError || $this->confirmPasswordError);
+        return $this->formError !== ''
+            || $this->emailError !== ''
+            || $this->passwordError !== ''
+            || $this->confirmPasswordError !== '';
     }
 
     public function getErrorSummaryId(): string

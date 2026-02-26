@@ -14,19 +14,21 @@ final class LoginForm
 
     public string $submitLabel = 'Se connecter';
 
-    public ?string $emailValue = null;
+    public string $emailValue = '';
 
-    public ?string $emailError = null;
-    public ?string $passwordError = null;
-    public ?string $formError = null;
+    public string $emailError = '';
+    public string $passwordError = '';
+    public string $formError = '';
 
     public bool $rememberMe = false;
 
-    public ?string $csrfToken = null;
+    public string $csrfToken = '';
 
     public function getHasAnyError(): bool
     {
-        return (bool) ($this->formError || $this->emailError || $this->passwordError);
+        return $this->formError !== ''
+            || $this->emailError !== ''
+            || $this->passwordError !== '';
     }
 
     public function getErrorSummaryId(): string
