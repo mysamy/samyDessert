@@ -2,20 +2,23 @@
 {% set brandLabel = this.brandLabel %}
 {% set links = this.links %}
 {% set legalText = this.legalText %}
-{% set baseClass = 'border-t border-slate-200 bg-slate-50' %}
-{% set rootAttrs = attributes.defaults({ class: baseClass }) %}
-{% if this.class %}{% set rootAttrs = rootAttrs.addClass(this.class) %}{% endif %}
+{% set rootAttrs = attributes.defaults({
+  class: 'border-t border-slate-200 bg-slate-50'
+}) %}
+{% if this.class %}
+  {% set rootAttrs = rootAttrs.addClass(this.class) %}
+{% endif %}
 
 <footer {{ rootAttrs }}>
   <div class="mx-auto max-w-7xl space-y-4 px-4 py-6">
-    <div class="text-sm font-semibold text-slate-900">{{ this.brandLabel }}</div>
+    <div class="text-sm font-semibold text-slate-900">{{ brandLabel }}</div>
 
     <twig:Molecules:Nav
       ariaLabel="Navigation pied de page"
-      :items="this.links"
+      :items="links"
       class="flex-wrap text-sm"
     />
 
-    <div class="text-xs text-slate-600">{{ this.legalText }}</div>
+    <div class="text-xs text-slate-600">{{ legalText }}</div>
   </div>
 </footer>
