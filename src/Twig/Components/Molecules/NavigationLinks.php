@@ -5,9 +5,11 @@ namespace App\Twig\Components\Molecules;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-#[AsTwigComponent]final class NavigationLinks
+#[AsTwigComponent]
+final class NavigationLinks
 {
     public array $links = [];
+    public string $class = '';
 
     public function __construct(
         private readonly RequestStack $requestStack,

@@ -8,4 +8,5 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Spinner
 {
     public string $size = 'md';
+    public string $ariaLabel = 'Chargement';
 }

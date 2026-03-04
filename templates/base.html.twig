@@ -1,39 +1,46 @@
 <!DOCTYPE html>
-<html>
-	<head>
-		<meta charset="UTF-8">
-		<title>
-			{% block title %}Welcome!
-			{% endblock %}
-		</title>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Samy Dessert{% endblock %}</title>
 
-		{% block stylesheets %}
-		  <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+    {% block stylesheets %}
+      <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
+      <link rel="stylesheet" href="{{ asset('@fortawesome/fontawesome-free/css/all.css') }}">
+    {% endblock %}
 
-		{% endblock %}
+    {% block javascripts %}
+      {% block importmap %}{{ importmap('app') }}{% endblock %}
+    {% endblock %}
+  </head>
+  <body class="text-base">
 
-		{% block javascripts %}
-			{% block importmap %}
-				{{ importmap('app') }}
-			{% endblock %}
-		{% endblock %}
-	</head>
-	<body class="text-base">
-	{% set currentPath = app.request.pathinfo %}
+    <twig:Organisms:Header
+      brandLabel="Samy Dessert"
+      brandHref="/"
+      logoSrc="/logotest.svg"
+      logoAlt="Samy Dessert"
+    >
+      <twig:block name="actions">
+        <twig:Atoms:Link href="/panier">Panier</twig:Atoms:Link>
+        <twig:Atoms:Link href="/connexion">Se connecter</twig:Atoms:Link>
+      </twig:block>
+    </twig:Organisms:Header>
 
-<twig:Organisms:HeaderNav
-  brandLabel="Samy Dessert"
-  brandHref="/"
-  logoSrc="/logotest.svg"
-  logoAlt="Samy Dessert"
->
-  <twig:block name="actions">
-    <twig:Atoms:Link href="/panier">Panier</twig:Atoms:Link>
-    <twig:Atoms:Link href="/connexion">Se connecter</twig:Atoms:Link>
-  </twig:block>
-</twig:Organisms:HeaderNav>
+    <main>
+      {% block body %}{% endblock %}
+    </main>
 
-		
-		{% block body %}{% endblock %}
-	</body>
+    <twig:Organisms:Footer
+      brandLabel="Samy Dessert"
+      legalText="© {{ 'now'|date('Y') }} Samy Dessert. Tous droits réservés."
+      :links="[
+        { label: 'Accueil', href: '/' },
+        { label: 'Desserts et prix', href: '/produits' },
+        { label: 'Recettes', href: '/recettes' },
+        { label: 'Contactez-moi', href: '/contact' }
+      ]"
+    />
+
+  </body>
 </html>

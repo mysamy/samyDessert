@@ -1,20 +1,17 @@
-{% set links = this.links %}
-{% set ariaLabel = this.ariaLabel|default('Navigation') %}
+<nav class="flex" aria-label="{{ ariaLabel }}">
+  <ul {{ attributes.defaults({ class: 'flex items-center gap-6' }) }}>
+    {% for item in links %}
+      {% set label = item.label|default('') %}
+      {% set href = item.href|default('') %}
+      {% set isCurrent = item.current|default(false) %}
 
-<nav  class="hidden md:flex"  aria-label="{{ ariaLabel }}">
-	<ul {{ attributes.defaults({ class: 'flex items-center gap-6' } ) }}>
-		{% for item in links %}
-			{% set label = item.label|default('') %}
-			{% set href = item.href|default('') %}
-			{% set isCurrent = item.current|default(false) %}
-
-			{% if label is not empty and href is not empty %}
-				<li>
-					<twig:Atoms:Link href="{{ href }}" aria-current="{{ isCurrent ? 'page' : null }}">
-						{{ label }}
-					</twig:Atoms:Link>
-				</li>
-			{% endif %}
-		{% endfor %}
-	</ul>
+      {% if label is not empty and href is not empty %}
+        <li>
+          <twig:Atoms:Link href="{{ href }}" aria-current="{{ isCurrent ? 'page' : null }}">
+            {{ label }}
+          </twig:Atoms:Link>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
 </nav>

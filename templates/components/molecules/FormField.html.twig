@@ -1,14 +1,12 @@
-{% set fieldId = id ?? ('field-' ~ random()) %}
+{% set fieldId = this.computedId %}
 
 <div class="space-y-1">
-  <twig:Atoms:Label for="{{ fieldId }}">
-    {{ label }}
-  </twig:Atoms:Label>
+  <twig:Atoms:Label forId="{{ fieldId }}" label="{{ label }}" />
 
   {% block control %}{% endblock %}
 
   {% if error %}
-    <p class="text-sm text-red-600" id="{{ fieldId }}-error">
+    <p class="text-sm text-red-600" id="{{ this.errorId }}" role="alert">
       {{ error }}
     </p>
   {% endif %}

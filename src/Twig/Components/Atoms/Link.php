@@ -10,5 +10,4 @@ final class Link
     public string $href = '';
     public bool $external = false;
     public string $ariaLabel = '';
-  
 }

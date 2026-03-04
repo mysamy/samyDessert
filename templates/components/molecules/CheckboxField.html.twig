@@ -1,19 +1,21 @@
-<div class="checkbox-field">
-    <label for="{{ id }}" class="checkbox-field__label">
-        <input
-            id="{{ id }}"
-            type="checkbox"
-            class="checkbox-field__input"
-            {% if checked %}checked{% endif %}
-            {% if required %}required{% endif %}
-            aria-invalid="{{ error ? 'true' : 'false' }}"
-        >
-        <span>{{ label }}</span>
-    </label>
+<div class="flex items-start gap-2">
+  <twig:Atoms:Checkbox
+    id="{{ id }}"
+    :checked="checked"
+    :required="required"
+    :disabled="disabled"
+    aria-invalid="{{ error ? 'true' : 'false' }}"
+    {% if error %}aria-describedby="{{ this.errorId }}"{% endif %}
+    class="mt-0.5"
+  />
+
+  <div>
+    <twig:Atoms:Label forId="{{ id }}" label="{{ label }}" class="text-sm font-medium text-slate-900" />
 
     {% if error %}
-        <p class="checkbox-field__error" role="alert">
-            {{ error }}
-        </p>
+      <p id="{{ this.errorId }}" class="mt-0.5 text-sm text-red-700" role="alert">
+        {{ error }}
+      </p>
     {% endif %}
+  </div>
 </div>

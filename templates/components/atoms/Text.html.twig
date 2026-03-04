@@ -1,7 +1,7 @@
-<{{ this.as }}
-  {% if this.id %}id="{{ this.id }}"{% endif %}
-  {% if this.role %}role="{{ this.role }}"{% endif %}
-  class="{{ this.class }}"
+<{{ as }}
+  {{ attributes.defaults({ class: class }) }}
+  {% if id %}id="{{ id }}"{% endif %}
+  {% if role %}role="{{ role }}"{% endif %}
 >
-  {{ this.text }}
-</{{ this.as }}>
+  {{ text }}
+</{{ as }}>

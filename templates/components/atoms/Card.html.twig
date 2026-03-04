@@ -18,6 +18,6 @@
   {% endif %}
 
   <div class="p-4 {% if title is not empty %}pt-2{% endif %}">
-    {{ content|default('') }}
+    {% block content %}{% endblock %}
   </div>
 </article>

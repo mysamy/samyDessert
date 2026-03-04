@@ -1,10 +1,6 @@
-{% set src = this.src %}
-{% set alt = this.alt %}
-{% set loading = this.loading ?: 'lazy' %}
-
 <img
   src="{{ src }}"
-  alt="{{ alt is not null ? alt : '' }}"
+  alt="{{ alt }}"
   loading="{{ loading }}"
-  {{ attributes }}
+  {{ attributes.defaults({ class: class }) }}
 >

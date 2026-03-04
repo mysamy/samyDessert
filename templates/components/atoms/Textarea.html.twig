@@ -1,8 +1,8 @@
 <textarea
-  rows="{{ this.rows }}"
-  {% if this.disabled %}disabled{% endif %}
-  {% if this.required %}required{% endif %}
-  {% if this.readonly %}readonly{% endif %}
+  rows="{{ rows }}"
+  {% if disabled %}disabled{% endif %}
+  {% if required %}required{% endif %}
+  {% if readonly %}readonly{% endif %}
   {{ attributes.defaults({
     class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black disabled:bg-gray-100 disabled:cursor-not-allowed"
   }) }}

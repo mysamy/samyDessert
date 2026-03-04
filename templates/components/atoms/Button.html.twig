@@ -17,7 +17,7 @@
 } %}
 
 <button
-  type="{{ type|default('button') }}"
+  type="{{ type }}"
   {% if disabled %}disabled{% endif %}
   {{ attributes.defaults({
     class: base ~ ' ' ~ (sizes[size] ?? sizes.md) ~ ' ' ~ (variants[variant] ?? variants.primary)

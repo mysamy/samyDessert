@@ -9,4 +9,5 @@ final class Checkbox
 {
     public bool $checked = false;
     public bool $disabled = false;
+    public bool $required = false;
 }

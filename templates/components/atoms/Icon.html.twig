@@ -1,3 +1,4 @@
+
 {% set styleClass = {
   'solid': 'fa-solid',
   'regular': 'fa-regular',
@@ -5,6 +6,10 @@
 }[style] ?? 'fa-solid' %}
 
 {% set baseClasses = styleClass ~ ' fa-' ~ name ~ (size ? ' fa-' ~ size : '') %}
+
+{% if not decorative and not ariaLabel %}
+  {% set ariaLabel = name %}
+{% endif %}
 
 <i
   {{ attributes.defaults({ class: baseClasses }) }}

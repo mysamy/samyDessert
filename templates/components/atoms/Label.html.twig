@@ -1,3 +1,6 @@
-<label {% if this.forId %}for="{{ this.forId }}"{% endif %} class="{{ this.class }}">
-  {{ this.label }}
+<label
+  {% if forId %}for="{{ forId }}"{% endif %}
+  {{ attributes.defaults({ class: class }) }}
+>
+  {{ label }}
 </label>

@@ -8,5 +8,5 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Alert
 {
     public string $type = 'info'; // info | success | warning | error
-    public string $message;
+    public string $message = '';
 }

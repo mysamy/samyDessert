@@ -5,7 +5,7 @@ namespace App\Twig\Components\Organisms;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
-final class FooterNav
+final class Footer
 {
     public ?string $id = null;
     public ?string $class = null;

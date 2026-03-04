@@ -8,6 +8,7 @@
   type="{{ type }}"
   {% if value is not null %}value="{{ value }}"{% endif %}
   {% if disabled %}disabled{% endif %}
+  {% if required %}required{% endif %}
   {{ attributes.defaults({
     class: base
   }) }}

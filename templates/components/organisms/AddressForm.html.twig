@@ -1,52 +1,17 @@
-{% set hasError = this.hasAnyError %}
-{% set errorSummaryId = this.errorSummaryId %}
-{% set formError = this.formError %}
-{% set csrfToken = this.csrfToken %}
-{% set submitLabel = this.submitLabel %}
-{% set legend = this.legend %}
-{% set formId = this.id %}
-
-{% set firstNameValue = this.firstNameValue %}
-{% set lastNameValue = this.lastNameValue %}
-{% set companyValue = this.companyValue %}
-{% set address1Value = this.address1Value %}
-{% set address2Value = this.address2Value %}
-{% set postalCodeValue = this.postalCodeValue %}
-{% set cityValue = this.cityValue %}
-{% set countryValue = this.countryValue %}
-{% set phoneValue = this.phoneValue %}
-{% set notesValue = this.notesValue %}
-
-{% set firstNameError = this.firstNameError %}
-{% set lastNameError = this.lastNameError %}
-{% set address1Error = this.address1Error %}
-{% set postalCodeError = this.postalCodeError %}
-{% set cityError = this.cityError %}
-{% set countryError = this.countryError %}
-{% set phoneError = this.phoneError %}
-
-{% set countries = this.countries %}
-
 <twig:Organisms:Form
-  id="{{ formId }}"
-  method="{{ this.method }}"
-  action="{{ this.action }}"
-  class="{{ this.class }}"
-  ariaLabel="Formulaire d’adresse"
-  ariaDescribedby="{{ hasError ? errorSummaryId : '' }}"
+  id="{{ id }}"
+  method="{{ method }}"
+  action="{{ action }}"
+  class="{{ class }}"
+  ariaLabel="Formulaire d'adresse"
+  ariaDescribedby="{{ this.hasAnyError ? this.errorSummaryId : '' }}"
 >
-  {% if hasError %}
-    <div
-      id="{{ errorSummaryId }}"
-      class="rounded-md border border-red-200 bg-red-50 p-4"
-      role="alert"
-      aria-live="polite"
-      tabindex="-1"
-    >
+  {% if this.hasAnyError %}
+    <div id="{{ this.errorSummaryId }}" class="rounded-md border border-red-200 bg-red-50 p-4" role="alert" aria-live="polite" tabindex="-1">
       <twig:Atoms:Text
-  text="{{ (formError is not empty) ? formError : 'La connexion a échoué. Vérifie les informations saisies.' }}"
-  class="text-sm font-medium text-red-800"
-/>
+        text="{{ formError is not empty ? formError : 'Le formulaire contient des erreurs. Vérifie les informations saisies.' }}"
+        class="text-sm font-medium text-red-800"
+      />
     </div>
   {% endif %}
 
@@ -55,113 +20,34 @@
   {% endif %}
 
   <twig:Molecules:FormFieldGroup
-    id="{{ formId }}__fields"
+    id="{{ id }}__fields"
     legend="{{ legend }}"
-    description="Renseigne l’adresse de livraison. Les champs obligatoires doivent être complétés."
+    description="Renseigne l'adresse de livraison. Les champs obligatoires doivent être complétés."
     innerClass="space-y-4"
   >
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
-      <twig:Molecules:InputField
-        name="firstName"
-        type="text"
-        label="Prénom"
-        autocomplete="given-name"
-        :required="true"
-        value="{{ firstNameValue }}"
-        error="{{ firstNameError }}"
-      />
-
-      <twig:Molecules:InputField
-        name="lastName"
-        type="text"
-        label="Nom"
-        autocomplete="family-name"
-        :required="true"
-        value="{{ lastNameValue }}"
-        error="{{ lastNameError }}"
-      />
+      <twig:Molecules:InputField name="firstName" type="text" label="Prénom" autocomplete="given-name" :required="true" value="{{ firstNameValue }}" error="{{ firstNameError }}"/>
+      <twig:Molecules:InputField name="lastName" type="text" label="Nom" autocomplete="family-name" :required="true" value="{{ lastNameValue }}" error="{{ lastNameError }}"/>
     </div>
 
-    <twig:Molecules:InputField
-      name="company"
-      type="text"
-      label="Société"
-      autocomplete="organization"
-      value="{{ companyValue }}"
-    />
+    <twig:Molecules:InputField name="company" type="text" label="Société" autocomplete="organization" value="{{ companyValue }}"/>
 
-    <twig:Molecules:InputField
-      name="address1"
-      type="text"
-      label="Adresse"
-      autocomplete="address-line1"
-      :required="true"
-      value="{{ address1Value }}"
-      error="{{ address1Error }}"
-    />
+    <twig:Molecules:InputField name="address1" type="text" label="Adresse" autocomplete="address-line1" :required="true" value="{{ address1Value }}" error="{{ address1Error }}"/>
 
-    <twig:Molecules:InputField
-      name="address2"
-      type="text"
-      label="Complément d’adresse"
-      autocomplete="address-line2"
-      value="{{ address2Value }}"
-    />
+    <twig:Molecules:InputField name="address2" type="text" label="Complément d'adresse" autocomplete="address-line2" value="{{ address2Value }}"/>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <twig:Molecules:InputField
-        name="postalCode"
-        type="text"
-        label="Code postal"
-        autocomplete="postal-code"
-        inputmode="numeric"
-        :required="true"
-        value="{{ postalCodeValue }}"
-        error="{{ postalCodeError }}"
-      />
-
-      <twig:Molecules:InputField
-        name="city"
-        type="text"
-        label="Ville"
-        autocomplete="address-level2"
-        :required="true"
-        value="{{ cityValue }}"
-        error="{{ cityError }}"
-      />
-
-      <twig:Molecules:SelectField
-        name="country"
-        label="Pays"
-        :required="true"
-        value="{{ countryValue }}"
-        :options="countries"
-        error="{{ countryError }}"
-      />
+      <twig:Molecules:InputField name="postalCode" type="text" label="Code postal" autocomplete="postal-code" inputmode="numeric" :required="true" value="{{ postalCodeValue }}" error="{{ postalCodeError }}"/>
+      <twig:Molecules:InputField name="city" type="text" label="Ville" autocomplete="address-level2" :required="true" value="{{ cityValue }}" error="{{ cityError }}"/>
+      <twig:Molecules:SelectField name="country" label="Pays" :required="true" value="{{ countryValue }}" :options="countries" error="{{ countryError }}"/>
     </div>
 
-    <twig:Molecules:InputField
-      name="phone"
-      type="tel"
-      label="Téléphone"
-      autocomplete="tel"
-      inputmode="tel"
-      value="{{ phoneValue }}"
-      error="{{ phoneError }}"
-    />
+    <twig:Molecules:InputField name="phone" type="tel" label="Téléphone" autocomplete="tel" inputmode="tel" value="{{ phoneValue }}" error="{{ phoneError }}"/>
 
-    <twig:Molecules:TextareaField
-      name="notes"
-      label="Notes de livraison"
-      placeholder="Ex: Digicode, étage, instructions…"
-      value="{{ notesValue }}"
-      help="Optionnel."
-    />
+    <twig:Molecules:TextareaField name="notes" label="Notes de livraison" placeholder="Ex: Digicode, étage, instructions…" value="{{ notesValue }}" help="Optionnel."/>
   </twig:Molecules:FormFieldGroup>
 
   <twig:Molecules:FormActions align="end">
-    <twig:Atoms:Button type="submit">
-      {{ submitLabel }}
-    </twig:Atoms:Button>
+    <twig:Atoms:Button type="submit">{{ submitLabel }}</twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>
