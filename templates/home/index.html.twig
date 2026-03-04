@@ -4,25 +4,6 @@
 {% endblock %}
 
 {% block body %}
-{% set navLinks = [
-  { label: 'Produits', href: '/', current: app.request.attributes.get('_route') starts with 'app_products' },
-  { label: 'Nouveautés', href: '/', current: app.request.attributes.get('_route') == 'app_new' },
-  { label: 'Contact', href: '/', current: app.request.attributes.get('_route') == 'app_contact' },
-] %}
-
-<twig:Organisms:HeaderNav
-  brandLabel="Samy Dessert"
-  brandHref="/"
-  logoSrc="/logotest.svg"
-  logoAlt="Samy Dessert"
-  :links="navLinks"
->  
-{# : = “prends la valeur, pas le texte” #}
- 
-</twig:Organisms:HeaderNav>
-<twig:Organisms:FooterNav
-
-
 
 
 {% endblock %}

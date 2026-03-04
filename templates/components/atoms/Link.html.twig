@@ -4,11 +4,13 @@
 
 <a
   href="{{ href }}"
-  target="{{ external ? '_blank' : null }}"
-  rel="{{ external ? 'noopener noreferrer' : null }}"
-  {# rel décrit la relation entre ta page et la page liée. #}
-  
-  aria-label="{{ ariaLabel is not empty ? ariaLabel : null }}"
+  {% if external %}
+    target="_blank"
+    rel="noopener noreferrer"
+  {% endif %}
+  {% if ariaLabel %}
+    aria-label="{{ ariaLabel }}"
+  {% endif %}
   {{ attributes.defaults({ class: 'inline-flex items-center' }) }}
 >
   {% block content %}{% endblock %}
