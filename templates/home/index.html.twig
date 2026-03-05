@@ -1,9 +1,89 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello HomeController!
-{% endblock %}
+{% block title %}Samy Dessert — Pâtisserie artisanale{% endblock %}
 
 {% block body %}
 
+<section class="bg-amber-50 py-16">
+  <div class="mx-auto max-w-7xl px-4">
+
+    <div class="text-center mb-12">
+      <h1 class="text-5xl font-bold text-amber-900 mb-4">Samy Dessert</h1>
+      <p class="text-xl text-amber-700 mb-8">Des desserts artisanaux préparés avec passion</p>
+      <twig:Atoms:Link
+        href="/produits"
+        class="inline-flex items-center gap-2 bg-amber-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-amber-700 transition"
+      >
+        Voir nos desserts
+        <twig:Atoms:Icon name="arrow-right" :decorative="true"/>
+      </twig:Atoms:Link>
+    </div>
+
+    <div data-controller="carousel" class="how__carousel" role="region" aria-roledescription="carrousel" aria-label="Nos spécialités">
+
+      <twig:Molecules:CarouselCard :number="1"
+        class="flex-col gap-2.5 justify-center"
+        imgSrc="/assets/image/étape1img.png"
+        imgAlt="Tarte aux fraises"
+        description="Pâte sablée maison, crème pâtissière et fraises fraîches de saison."
+      />
+
+      <twig:Molecules:CarouselCard :number="2"
+        imgSrc="/assets/image/étape2img.png"
+        imgAlt="Éclair au chocolat"
+        description="Pâte à choux légère, crème pâtissière et glaçage ganache fondant."
+      />
+
+      <twig:Molecules:CarouselCard :number="3" class="px-1">
+        {% block content %}
+          <div class="text-amber-900 text-center flex flex-col">
+            <p>Découvrez nos spécialités :</p>
+            <ul class="list-disc pl-5 text-start flex flex-col">
+              <li>Macarons — 12 parfums au choix</li>
+              <li>Mille-feuille à la crème diplomate</li>
+            </ul>
+          </div>
+          <div class="h-auto">
+            <img src="/assets/image/étape3img.png" alt="Macarons" class="w-full h-full rounded-[10px] block object-cover">
+          </div>
+        {% endblock %}
+      </twig:Molecules:CarouselCard>
+
+      <twig:Molecules:CarouselCard :number="4"
+        class="flex-col"
+        imgSrc="/assets/image/étape4img.png"
+        imgAlt="Crème brûlée"
+        description="Caramel craquant, texture soyeuse à la vanille de Madagascar."
+      />
+
+      <twig:Molecules:CarouselCard :number="5" class="flex-col">
+        {% block content %}
+          <p class="text-amber-900 text-center px-10 max-[1100px]:w-4/5 max-[769px]:px-2.5">
+            Sur commande pour vos anniversaires, mariages et événements.
+          </p>
+          <div class="h-4/5 max-[1100px]:h-3/5 max-[769px]:h-[30%]">
+            <img src="/assets/image/étape5img.png" alt="Gâteau personnalisé" class="w-full h-full rounded-[10px] block object-cover">
+          </div>
+        {% endblock %}
+      </twig:Molecules:CarouselCard>
+
+      <twig:Molecules:CarouselCard :number="6">
+        {% block content %}
+          <div class="h-auto">
+            <img src="/assets/image/étape6img.png" alt="Contactez-nous" class="w-full h-full rounded-[10px] block object-cover">
+          </div>
+          <div class="flex flex-col w-1/2 text-center items-center gap-7 mt-[60px] max-[1100px]:mt-0">
+            <p class="text-amber-900">Une question ? Contactez notre équipe !</p>
+            <button class="bg-amber-600 text-white rounded-full px-6 py-2 font-semibold hover:bg-amber-700 transition cursor-pointer max-[769px]:w-4/5 max-[769px]:min-w-[165px]">
+              Contactez
+            </button>
+          </div>
+        {% endblock %}
+      </twig:Molecules:CarouselCard>
+
+    </div>
+
+  </div>
+</section>
 
 {% endblock %}

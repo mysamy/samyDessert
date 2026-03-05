@@ -1,3 +1,138 @@
 @import "tailwindcss";
 
 @source "../../templates/**/*.twig";
+@source "../../assets/**/*.js";
+
+/* ── Thème Tailwind v4 ───────────────────────────────────────────────────── */
+/*
+ * @theme génère automatiquement les CSS variables ET les classes Tailwind :
+ *   --color-primary → bg-primary / text-primary / border-primary / etc.
+ *   --font-size-h1  → text-h1
+ *   --spacing-side  → p-side / m-side / etc.
+ */
+@theme {
+  /* Couleurs */
+  --color-primary:          #92400e;  /* bg-primary   | text-primary   */
+  --color-secondary:        #fffbeb;  /* bg-secondary | text-secondary  */
+  --color-text:             #78350f;  /* text                    
+   */
+  --color-text-light:       #b45309;  /* text-light                
+  */
+  --color-focus:            #f59e0b;  /* outline-focus                  */
+  --color-white:            #ffffff;
+  --color-black:            #000000;
+
+  /* Typographie */
+  --font-size-h1:  3.0625rem; /* text-h1  */
+  --font-size-h2:  2.4375rem; /* text-h2  */
+  --font-size-h3:  1.9375rem; /* text-h3  */
+  --font-size-h4:  1.5625rem; /* text-h4  */
+  --font-size-body: 1.25rem;  /* text-body */
+
+  /* Espacements réutilisables */
+  --spacing-side:  clamp(1rem, 15vw, 50rem);
+  --spacing-side2: clamp(1rem, 5vw, 50rem);
+  --spacing-top:   clamp(1rem, 5vh, 5rem);
+}
+
+/* ── Carousel ────────────────────────────────────────────────────────────── */
+/*
+ * Ces classes sont créées dynamiquement par le JS (createDivWithClass).
+ * On garde les noms BEM mais on utilise @apply pour les styles.
+ */
+.carousel {
+  @apply h-[600px] w-[70%] flex flex-col justify-center;
+}
+
+.carousel__wrapper {
+  @apply flex items-center z-[1];
+  transition: transform 0.3s ease-in-out;
+}
+
+.carousel__item {
+  @apply flex h-[90%] flex-col justify-center items-center p-0;
+  transition: transform 0.3s ease, opacity 0.5s ease;
+}
+
+.carousel__item--zoom {
+  transform: scale(1.3);
+  z-index: 2;
+}
+
+.carousel__next,
+.carousel__prev {
+  @apply z-10 absolute w-10 h-[60px] bg-cover bg-center bg-no-repeat cursor-pointer top-1/2 -mt-[25px];
+  transition: opacity 0.3s;
+}
+
+.carousel__prev {
+  @apply left-[5px];
+  background-image: url("../image/chevron-left-solid.svg");
+}
+
+.carousel__next {
+  @apply right-[5px];
+  background-image: url("../image/chevron-right-solid.svg");
+}
+
+.carousel__next--hidden,
+.carousel__prev--hidden {
+  @apply opacity-0;
+}
+
+.carousel__pagination {
+  @apply absolute bottom-0 left-0 right-0 text-center;
+}
+
+.carousel__pagination__button {
+  @apply bg-primary w-2.5 h-2.5 rounded-full inline-block;
+  transition: transform 0.3s;
+}
+
+.carousel__pagination__button--active,
+.carousel__pagination__button:hover {
+  @apply scale-[1.4];
+}
+
+.carousel__item--zoom.no-transition {
+  @apply transition-none;
+}
+
+.carousel__next:focus-visible,
+.carousel__prev:focus-visible {
+  @apply z-10;
+  outline: 5px solid var(--color-focus);
+}
+
+.carousel__item:focus-visible .item {
+  @apply relative z-10;
+  outline: 10px solid var(--color-focus);
+}
+
+@media (max-width: 875px) {
+  .carousel__prev { @apply left-5; }
+  .carousel__next { @apply right-5; }
+}
+
+@media (max-width: 769px) {
+  .carousel { @apply p-5; }
+}
+
+@media (max-width: 425px) {
+  .carousel__prev { @apply left-0; }
+  .carousel__next { @apply right-0; }
+}
+
+/* ── How section ─────────────────────────────────────────────────────────── */
+.how__carousel {
+  @apply w-full flex h-full justify-center relative overflow-hidden;
+}
+
+.how {
+  @apply flex flex-col items-center gap-5;
+}
+
+.how__item {
+  @apply list-disc;
+}
+
