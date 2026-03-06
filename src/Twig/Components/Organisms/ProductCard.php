@@ -7,7 +7,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 #[AsTwigComponent]
 final class ProductCard
 {
-    public string $id = '';
+    public ?string $id = null;
     public string $class = '';
 
     public string $title = '';
@@ -28,7 +28,7 @@ final class ProductCard
 
     public function getComputedId(): string
     {
-        if ($this->id !== '') {
+        if ($this->id !== null && $this->id !== '') {
             return $this->id;
         }
 

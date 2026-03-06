@@ -1,0 +1,126 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contactez-nous — Samy Dessert{% endblock %}
+
+{% block body %}
+
+<section class="bg-secondary py-12">
+  <div class="mx-auto max-w-7xl px-4">
+    <h1 class="text-4xl font-bold text-text mb-2">Contactez-nous</h1>
+    <p class="text-text-light text-lg">Une question, une commande sur mesure ? Écrivez-nous.</p>
+  </div>
+</section>
+
+<section class="py-16 bg-white">
+  <div class="mx-auto max-w-2xl px-4">
+
+    {# Message de succès #}
+    {% for message in app.flashes('success') %}
+      <div class="mb-8 rounded-xl bg-green-50 border border-green-200 p-5 text-green-800 text-sm font-medium">
+        <i class="fa-solid fa-circle-check mr-2 text-green-600" aria-hidden="true"></i>
+        {{ message }}
+      </div>
+    {% endfor %}
+
+    <twig:Organisms:Form
+      action="/contact"
+      ariaLabel="Formulaire de contact"
+      class="flex flex-col gap-6"
+    >
+      <twig:block name="content">
+
+        {# Nom + Email côte à côte sur grand écran #}
+        <div class="grid gap-4 sm:grid-cols-2">
+          <twig:Molecules:InputField
+            name="nom"
+            label="Nom"
+            placeholder="Votre nom"
+            :required="true"
+            autocomplete="name"
+          />
+          <twig:Molecules:InputField
+            name="email"
+            type="email"
+            label="Email"
+            placeholder="votre@email.fr"
+            :required="true"
+            autocomplete="email"
+          />
+        </div>
+
+        {# Sujet #}
+        <twig:Molecules:SelectField
+          name="sujet"
+          label="Sujet"
+          placeholder="Choisissez un sujet"
+          :required="true"
+          :options="[
+            { value: 'commande', label: 'Commande sur mesure' },
+            { value: 'info',     label: 'Renseignement produit' },
+            { value: 'livraison',label: 'Livraison' },
+            { value: 'autre',    label: 'Autre' }
+          ]"
+        />
+
+        {# Message #}
+        <twig:Molecules:TextareaField
+          name="message"
+          label="Message"
+          placeholder="Décrivez votre demande..."
+          :required="true"
+          :rows="6"
+        />
+
+        {# Submit #}
+        <div class="flex justify-end">
+          <twig:Atoms:Button
+            type="submit"
+            class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-primary transition"
+          >
+            Envoyer le message
+            <twig:Atoms:Icon name="paper-plane" :decorative="true"/>
+          </twig:Atoms:Button>
+        </div>
+
+      </twig:block>
+    </twig:Organisms:Form>
+
+  </div>
+</section>
+
+{# Infos pratiques #}
+<section class="py-12 bg-secondary">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="grid gap-8 sm:grid-cols-3 text-center">
+
+      <div class="flex flex-col items-center gap-3">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-surface text-accent text-xl">
+          <twig:Atoms:Icon name="location-dot" :decorative="true"/>
+        </div>
+        <h3 class="font-semibold text-text">Adresse</h3>
+        <p class="text-text-light text-sm">12 rue de la Pâtisserie<br>75001 Paris</p>
+      </div>
+
+      <div class="flex flex-col items-center gap-3">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-surface text-accent text-xl">
+          <twig:Atoms:Icon name="phone" :decorative="true"/>
+        </div>
+        <h3 class="font-semibold text-text">Téléphone</h3>
+        <twig:Atoms:Link href="tel:+33123456789" class="text-accent text-sm hover:underline">
+          01 23 45 67 89
+        </twig:Atoms:Link>
+      </div>
+
+      <div class="flex flex-col items-center gap-3">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-surface text-accent text-xl">
+          <twig:Atoms:Icon name="clock" :decorative="true"/>
+        </div>
+        <h3 class="font-semibold text-text">Horaires</h3>
+        <p class="text-text-light text-sm">Lun – Sam : 9h – 19h<br>Dimanche : fermé</p>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

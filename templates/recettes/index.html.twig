@@ -1,0 +1,161 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Recettes — Samy Dessert{% endblock %}
+
+{% block body %}
+
+{# ── Hero ── #}
+<section class="bg-secondary py-12">
+  <div class="mx-auto max-w-7xl px-4">
+    <h1 class="text-4xl font-bold text-text mb-2">Nos recettes</h1>
+    <p class="text-text-light text-lg">Retrouvez toutes nos recettes de pâtisserie, des plus simples aux plus élaborées.</p>
+  </div>
+</section>
+
+{# ── Barre de recherche ── #}
+<twig:Molecules:SearchBar
+  action="/recettes"
+  value="{{ recherche }}"
+  placeholder="Rechercher une recette..."
+>
+  <twig:block name="extra_inputs">
+    {% if categorieActive %}
+      <input type="hidden" name="categorie" value="{{ categorieActive }}">
+    {% endif %}
+  </twig:block>
+</twig:Molecules:SearchBar>
+
+{# ── Contenu principal : sidebar + grille ── #}
+<section class="py-12 bg-white">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="flex flex-col lg:flex-row gap-10">
+
+      {# ── Sidebar catégories ── #}
+      <aside class="lg:w-56 shrink-0">
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-4">Catégories</h2>
+        <ul class="flex flex-row flex-wrap gap-2 lg:flex-col lg:gap-1">
+
+          <li>
+            <a
+              href="/recettes{% if recherche %}?q={{ recherche|url_encode }}{% endif %}"
+              class="block w-full rounded-lg px-4 py-2 text-sm font-medium transition
+                {{ categorieActive == '' ? 'bg-accent text-white' : 'text-text hover:bg-secondary' }}"
+            >
+              Toutes les recettes
+            </a>
+          </li>
+
+          {% for slug, label in categories %}
+            <li>
+              <a
+                href="/recettes?categorie={{ slug }}{% if recherche %}&q={{ recherche|url_encode }}{% endif %}"
+                class="block w-full rounded-lg px-4 py-2 text-sm font-medium transition
+                  {{ categorieActive == slug ? 'bg-accent text-white' : 'text-text hover:bg-secondary' }}"
+              >
+                {{ label }}
+              </a>
+            </li>
+          {% endfor %}
+
+        </ul>
+      </aside>
+
+      {# ── Grille de recettes ── #}
+      <div class="flex-1">
+
+        {# Info résultats #}
+        <p class="text-sm text-slate-500 mb-6">
+          {% if recherche %}
+            {{ recettes|length }} résultat{% if recettes|length > 1 %}s{% endif %} pour « {{ recherche }} »
+          {% else %}
+            {{ recettes|length }} recette{% if recettes|length > 1 %}s{% endif %}
+            {% if categorieActive %} dans « {{ categories[categorieActive] }} »{% endif %}
+          {% endif %}
+        </p>
+
+        {% if recettes is empty %}
+          <div class="text-center py-16 text-slate-400">
+            <i class="fa-solid fa-cake-candles text-4xl mb-4 block" aria-hidden="true"></i>
+            <p class="text-lg font-medium">Aucune recette trouvée.</p>
+            <p class="text-sm mt-1">Essayez un autre mot-clé ou parcourez toutes les catégories.</p>
+          </div>
+        {% else %}
+          <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
+            {% for recette in recettes %}
+              <article class="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition bg-white">
+
+                {# Image #}
+                <div class="relative overflow-hidden h-48 bg-secondary">
+                  <img
+                    src="{{ recette.image }}"
+                    alt="{{ recette.titre }}"
+                    class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+                    loading="lazy"
+                  >
+                  {# Badge difficulté #}
+                  {% set diffClass = recette.difficulte == 'Facile' ? 'bg-green-100 text-green-700'
+                    : (recette.difficulte == 'Moyen' ? 'bg-amber-100 text-amber-700'
+                    : 'bg-red-100 text-red-700') %}
+                  <span class="absolute top-3 left-3 rounded-full px-3 py-1 text-xs font-semibold {{ diffClass }}">
+                    {{ recette.difficulte }}
+                  </span>
+                </div>
+
+                {# Contenu #}
+                <div class="flex flex-col flex-1 p-5">
+                  <h3 class="text-base font-bold text-text mb-1 group-hover:text-accent transition">
+                    {{ recette.titre }}
+                  </h3>
+                  <p class="text-sm text-text-light mb-4 flex-1">{{ recette.description }}</p>
+
+                  {# Méta : temps + portions #}
+                  <div class="flex items-center gap-4 text-xs text-slate-500 mb-4">
+                    <span class="flex items-center gap-1">
+                      <i class="fa-regular fa-clock" aria-hidden="true"></i>
+                      {{ recette.temps }}
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <i class="fa-solid fa-users" aria-hidden="true"></i>
+                      {{ recette.portions }} pers.
+                    </span>
+                    <span class="flex items-center gap-1">
+                      <i class="fa-solid fa-tag" aria-hidden="true"></i>
+                      {{ categories[recette.categorie] }}
+                    </span>
+                  </div>
+
+                  <a
+                    href="/recettes/{{ recette.id }}"
+                    class="inline-flex items-center justify-center gap-2 rounded-full bg-secondary text-text px-4 py-2 text-sm font-semibold hover:bg-accent hover:text-white transition"
+                  >
+                    Voir la recette
+                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+                  </a>
+                </div>
+
+              </article>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── CTA ── #}
+<section class="py-16 bg-accent">
+  <div class="mx-auto max-w-7xl px-4 text-center">
+    <h2 class="text-2xl font-bold text-white mb-3">Envie de déguster sans cuisiner ?</h2>
+    <p class="text-surface mb-6">Commandez nos créations fraîches, préparées chaque jour par nos artisans.</p>
+    <twig:Atoms:Link
+      href="/produits"
+      class="inline-flex items-center gap-2 bg-white text-accent px-8 py-3 rounded-full font-semibold hover:bg-secondary transition"
+    >
+      Voir nos desserts
+      <twig:Atoms:Icon name="cake-candles" :decorative="true"/>
+    </twig:Atoms:Link>
+  </div>
+</section>
+
+{% endblock %}

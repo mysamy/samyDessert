@@ -1,0 +1,121 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Desserts & Prix — Samy Dessert{% endblock %}
+
+{% block body %}
+
+{# ── Hero ── #}
+<section class="bg-secondary py-12">
+  <div class="mx-auto max-w-7xl px-4">
+    <h1 class="text-4xl font-bold text-text mb-2">Nos desserts</h1>
+    <p class="text-text-light text-lg">Pâtisseries artisanales préparées chaque jour avec des ingrédients frais.</p>
+  </div>
+</section>
+
+{# ── Barre de recherche ── #}
+<twig:Molecules:SearchBar
+  action="/produits"
+  value="{{ recherche }}"
+  placeholder="Rechercher un dessert..."
+>
+  <twig:block name="extra_inputs">
+    {% if categorieActive %}
+      <input type="hidden" name="categorie" value="{{ categorieActive }}">
+    {% endif %}
+  </twig:block>
+</twig:Molecules:SearchBar>
+
+{# ── Contenu principal : sidebar + grille ── #}
+<section class="py-12 bg-white">
+  <div class="mx-auto max-w-7xl px-4">
+    <div class="flex flex-col lg:flex-row gap-10">
+
+      {# ── Sidebar catégories ── #}
+      <aside class="lg:w-56 shrink-0">
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-4">Catégories</h2>
+        <ul class="flex flex-row flex-wrap gap-2 lg:flex-col lg:gap-1">
+
+          <li>
+            <a
+              href="/produits{% if recherche %}?q={{ recherche|url_encode }}{% endif %}"
+              class="block w-full rounded-lg px-4 py-2 text-sm font-medium transition
+                {{ categorieActive == '' ? 'bg-accent text-white' : 'text-text hover:bg-secondary' }}"
+            >
+              Tous les desserts
+            </a>
+          </li>
+
+          {% for slug, label in categories %}
+            <li>
+              <a
+                href="/produits?categorie={{ slug }}{% if recherche %}&q={{ recherche|url_encode }}{% endif %}"
+                class="block w-full rounded-lg px-4 py-2 text-sm font-medium transition
+                  {{ categorieActive == slug ? 'bg-accent text-white' : 'text-text hover:bg-secondary' }}"
+              >
+                {{ label }}
+              </a>
+            </li>
+          {% endfor %}
+
+        </ul>
+      </aside>
+
+      {# ── Grille de produits ── #}
+      <div class="flex-1">
+
+        {# Info résultats #}
+        <p class="text-sm text-slate-500 mb-6">
+          {% if recherche %}
+            {{ produits|length }} résultat{% if produits|length > 1 %}s{% endif %} pour « {{ recherche }} »
+          {% else %}
+            {{ produits|length }} dessert{% if produits|length > 1 %}s{% endif %}
+            {% if categorieActive %} dans « {{ categories[categorieActive] }} »{% endif %}
+          {% endif %}
+        </p>
+
+        {% if produits is empty %}
+          <div class="text-center py-16 text-slate-400">
+            <i class="fa-solid fa-face-sad-tear text-4xl mb-4 block" aria-hidden="true"></i>
+            <p class="text-lg font-medium">Aucun dessert trouvé.</p>
+            <a href="/produits" class="mt-4 inline-block text-sm text-accent hover:underline">Voir tous les desserts</a>
+          </div>
+        {% else %}
+          {% set items = [] %}
+          {% for item in produits %}
+            {% set formattedPrice = (item.price)|number_format(2, ',', ' ') ~ ' €' %}
+            {% set items = items|merge([{
+              title: item.title,
+              imageSrc: item.imageSrc,
+              imageAlt: item.title,
+              formattedPrice: formattedPrice,
+              rating: item.rating,
+              ratingText: item.rating ~ '/5',
+              ratingAriaLabel: 'Note : ' ~ item.rating ~ ' sur 5',
+              addToCartLabel: 'Ajouter au panier'
+            }]) %}
+          {% endfor %}
+
+          <twig:Organisms:ProductCardGrid :items="items" />
+        {% endif %}
+
+      </div>
+    </div>
+  </div>
+</section>
+
+{# ── CTA commande ── #}
+<section class="py-16 bg-accent">
+  <div class="mx-auto max-w-7xl px-4 text-center">
+    <h2 class="text-2xl font-bold text-white mb-3">Vous ne trouvez pas ce que vous cherchez ?</h2>
+    <p class="text-surface mb-6">Contactez-nous pour une commande sur mesure.</p>
+    <twig:Atoms:Link
+      href="/contact"
+      class="inline-flex items-center gap-2 bg-white text-text-light px-8 py-3 rounded-full font-semibold hover:bg-secondary transition"
+    >
+      Nous contacter
+      <twig:Atoms:Icon name="envelope" :decorative="true"/>
+    </twig:Atoms:Link>
+  </div>
+</section>
+
+{% endblock %}

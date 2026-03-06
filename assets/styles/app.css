@@ -12,13 +12,14 @@
  */
 @theme {
   /* Couleurs */
-  --color-primary:          #92400e;  /* bg-primary   | text-primary   */
-  --color-secondary:        #fffbeb;  /* bg-secondary | text-secondary  */
-  --color-text:             #78350f;  /* text                    
-   */
-  --color-text-light:       #b45309;  /* text-light                
-  */
-  --color-focus:            #f59e0b;  /* outline-focus                  */
+  --color-primary:          #92400e;  /* bg-primary   | text-primary   (amber-800) */
+  --color-secondary:        #fffbeb;  /* bg-secondary | text-secondary (amber-50)  */
+  --color-accent:           #d97706;  /* bg-accent    | text-accent    (amber-600) */
+  --color-surface:          #fef3c7;  /* bg-surface   | text-surface   (amber-100) */
+  --color-star:             #fbbf24;  /* text-star                     (amber-400) */
+  --color-text:             #78350f;  /* text-text                     (amber-900) */
+  --color-text-light:       #b45309;  /* text-text-light               (amber-700) */
+  --color-focus:            #f59e0b;  /* outline-focus                 (amber-500) */
   --color-white:            #ffffff;
   --color-black:            #000000;
 
