@@ -15,17 +15,29 @@ class Produit
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    private string $nom = '';
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
+
+    #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
+    private string $prix = '0.00';
+
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $imageSrc = null;
+
+    #[ORM\Column]
+    private bool $disponible = true;
+
+    #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
+    private ?Categorie $categorie = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getNom(): ?string
+    public function getNom(): string
     {
         return $this->nom;
     }
@@ -33,7 +45,6 @@ class Produit
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -42,10 +53,53 @@ class Produit
         return $this->description;
     }
 
-    public function setDescription(string $description): static
+    public function setDescription(?string $description): static
     {
         $this->description = $description;
+        return $this;
+    }
 
+    public function getPrix(): string
+    {
+        return $this->prix;
+    }
+
+    public function setPrix(string $prix): static
+    {
+        $this->prix = $prix;
+        return $this;
+    }
+
+    public function getImageSrc(): ?string
+    {
+        return $this->imageSrc;
+    }
+
+    public function setImageSrc(?string $imageSrc): static
+    {
+        $this->imageSrc = $imageSrc;
+        return $this;
+    }
+
+    public function isDisponible(): bool
+    {
+        return $this->disponible;
+    }
+
+    public function setDisponible(bool $disponible): static
+    {
+        $this->disponible = $disponible;
+        return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): static
+    {
+        $this->categorie = $categorie;
         return $this;
     }
 }

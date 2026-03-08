@@ -473,6 +473,284 @@ public function getComputedId(): string { ... }
 
 ---
 
+## Doctrine ORM — Concepts avancés
+
+### ORM (Object-Relational Mapping)
+
+Un ORM est une couche qui fait le **pont entre les objets PHP et les tables SQL**. Au lieu d'écrire des requêtes SQL manuellement, on manipule des objets PHP et Doctrine traduit ça en SQL.
+
+```php
+// Sans ORM (SQL brut)
+$pdo->query("INSERT INTO produit (nom, prix) VALUES ('Macaron', 3.50)");
+
+// Avec ORM Doctrine
+$produit = new Produit();
+$produit->setNom('Macaron')->setPrix('3.50');
+$em->persist($produit);
+$em->flush();
+```
+
+> **Phrase clé** : Un ORM traduit les opérations sur des objets PHP en requêtes SQL automatiquement.
+
+---
+
+### Repository
+
+Un Repository est une classe qui centralise les **requêtes de lecture** vers une entité. Il est injecté dans les contrôleurs pour récupérer des données.
+
+```php
+// Méthodes disponibles par défaut
+$produitRepository->find(5);                    // SELECT * WHERE id = 5
+$produitRepository->findAll();                  // SELECT * FROM produit
+$produitRepository->findBy(['disponible' => true]);   // SELECT * WHERE disponible = 1
+$produitRepository->findOneBy(['nom' => 'Macaron']);  // LIMIT 1
+```
+
+On peut aussi écrire des méthodes personnalisées avec DQL ou QueryBuilder :
+
+```php
+public function findDisponiblesByCategorie(int $categorieId): array
+{
+    return $this->createQueryBuilder('p')
+        ->where('p.disponible = true')
+        ->andWhere('p.categorie = :cat')
+        ->setParameter('cat', $categorieId)
+        ->getQuery()
+        ->getResult();
+}
+```
+
+> **Phrase clé** : Le Repository centralise les requêtes de lecture pour une entité.
+
+---
+
+### Relations Doctrine
+
+| Relation | Sens | Exemple |
+|---|---|---|
+| `ManyToOne` | Plusieurs → un | Plusieurs `Produit` → une `Categorie` |
+| `OneToMany` | Un → plusieurs | Une `Categorie` → plusieurs `Produit` |
+| `ManyToMany` | Plusieurs ↔ plusieurs | `Utilisateur` ↔ `Produit` (favoris) |
+| `OneToOne` | Un ↔ un | `Utilisateur` ↔ `Profil` |
+
+**ManyToOne** (côté "plusieurs") :
+```php
+#[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
+private ?Categorie $categorie = null;
+```
+
+**OneToMany** (côté "un") :
+```php
+#[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'categorie')]
+private Collection $produits;
+```
+
+**ManyToMany** (génère une table pivot) :
+```php
+#[ORM\ManyToMany(targetEntity: Produit::class)]
+#[ORM\JoinTable(name: 'utilisateur_produit_favori')]
+private Collection $produitsFavoris;
+```
+
+> **Phrase clé** : Les relations Doctrine traduisent les clés étrangères SQL en associations d'objets PHP.
+
+---
+
+### Migrations
+
+Une migration est un **fichier PHP versionné** qui décrit une modification du schéma de base de données. Elle permet à tous les développeurs d'avoir la même structure de BDD.
+
+```bash
+php bin/console make:migration              # génère un fichier de migration depuis les entités
+php bin/console doctrine:migrations:migrate # applique les migrations en attente
+php bin/console doctrine:schema:validate    # vérifie que la BDD est en sync avec les entités
+```
+
+Chaque migration génère deux méthodes :
+```php
+public function up(): void   // applique le changement
+public function down(): void // annule le changement
+```
+
+> **Règle** : ne jamais modifier manuellement une migration déjà appliquée. Créer une nouvelle migration à la place.
+
+---
+
+### `persist()` et `flush()`
+
+```php
+$em->persist($produit);  // dit à Doctrine de "surveiller" cet objet
+$em->flush();            // envoie TOUTES les opérations en attente à la BDD (1 transaction)
+```
+
+- `persist()` seul → rien en base
+- `flush()` seul → rien si pas de `persist()`
+- `persist()` + `flush()` → INSERT ou UPDATE selon si l'objet est nouveau ou existant
+
+---
+
+## Enum PHP
+
+### Définition
+
+Un Enum (énumération) est un type PHP qui **restreint une valeur à une liste fixe de choix**. Apparu en PHP 8.1.
+
+```php
+enum Difficulte: string
+{
+    case Facile    = 'facile';
+    case Moyen     = 'moyen';
+    case Difficile = 'difficile';
+}
+```
+
+- `string` après `:` = backed enum → chaque case a une valeur PHP stockable
+- `case` = chaque valeur possible
+
+### Utilisation
+
+```php
+// Assigner
+$recette->setDifficulte(Difficulte::Facile);
+
+// Comparer
+if ($recette->getDifficulte() === Difficulte::Difficile) { ... }
+
+// Récupérer la valeur string (pour affichage)
+echo $recette->getDifficulte()->value; // "facile"
+
+// Obtenir tous les cas
+Difficulte::cases(); // [Difficulte::Facile, Difficulte::Moyen, Difficulte::Difficile]
+```
+
+### Dans Twig
+```twig
+{{ recette.difficulte.value }}   {# affiche "facile" #}
+```
+
+### Avec Doctrine
+
+Doctrine stocke la valeur `string` en base (`'facile'`, `'moyen'`...) et reconvertit automatiquement en Enum à la lecture :
+
+```php
+#[ORM\Column(type: 'string', enumType: Difficulte::class)]
+private ?Difficulte $difficulte = null;
+```
+
+> **Phrase clé** : Un Enum garantit qu'une valeur ne peut être que parmi un ensemble défini — PHP refuse toute autre valeur à la compilation.
+
+---
+
+## Symfony Security
+
+### `UserInterface`
+
+Interface PHP que doit implémenter l'entité utilisateur pour que Symfony Security puisse l'utiliser.
+
+Méthodes obligatoires :
+```php
+getUserIdentifier(): string  // identifiant unique (email ou username)
+getRoles(): array            // rôles de l'utilisateur
+eraseCredentials(): void     // supprime données sensibles temporaires
+```
+
+### Rôles
+
+Les rôles sont des chaînes de caractères préfixées `ROLE_`. Symfony en reconnaît quelques-uns par défaut :
+
+| Rôle | Signification |
+|---|---|
+| `ROLE_USER` | Utilisateur connecté (ajouté automatiquement) |
+| `ROLE_ADMIN` | Administrateur |
+
+La hiérarchie peut être configurée dans `security.yaml` :
+```yaml
+role_hierarchy:
+    ROLE_ADMIN: ROLE_USER  # un admin a automatiquement ROLE_USER
+```
+
+Pour donner un rôle admin à un utilisateur :
+```php
+$user->setRoles(['ROLE_ADMIN']);
+```
+
+### `PasswordAuthenticatedUserInterface`
+
+Indique que l'entité a un mot de passe hashé. Permet à Symfony de gérer le hachage automatiquement.
+
+```php
+// Dans security.yaml
+password_hashers:
+    App\Entity\Utilisateur:
+        algorithm: auto   # bcrypt par défaut
+```
+
+> **Règle** : ne jamais stocker un mot de passe en clair. Toujours utiliser `$passwordHasher->hashPassword($user, $plainPassword)`.
+
+---
+
+## Stimulus JS
+
+### Qu'est-ce que Stimulus ?
+
+Stimulus est un **framework JS léger** conçu pour enrichir du HTML existant avec des comportements JavaScript. Contrairement à React/Vue, il ne gère pas le rendu HTML — il ajoute du comportement à du HTML déjà présent dans la page.
+
+### Contrôleur
+
+Un contrôleur Stimulus est une classe JS liée à un élément HTML via `data-controller` :
+
+```html
+<div data-controller="carousel">...</div>
+```
+
+```js
+// assets/controllers/carousel_controller.js
+import { Controller } from '@hotwired/stimulus';
+
+export default class extends Controller {
+    connect() {
+        // appelé quand l'élément entre dans le DOM
+    }
+    disconnect() {
+        // appelé quand l'élément quitte le DOM
+    }
+}
+```
+
+### Cycle de vie
+
+| Méthode | Déclenchement |
+|---|---|
+| `initialize()` | Une seule fois à la création |
+| `connect()` | Chaque fois que l'élément entre dans le DOM |
+| `disconnect()` | Chaque fois que l'élément quitte le DOM |
+
+### Targets et Values
+
+**Targets** — référencent des éléments enfants :
+```html
+<div data-controller="nav">
+    <ul data-nav-target="menu">...</ul>
+</div>
+```
+```js
+static targets = ['menu'];
+// this.menuTarget → l'élément <ul>
+```
+
+**Values** — données passées depuis le HTML :
+```html
+<div data-controller="carousel" data-carousel-slides-value="3">
+```
+```js
+static values = { slides: Number };
+// this.slidesValue → 3
+```
+
+> **Phrase clé** : Stimulus connecte le HTML au JS via des conventions de nommage (`data-controller`, `data-*-target`).
+
+---
+
 ## Architecture des fichiers (résumé)
 
 ```
