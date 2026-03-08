@@ -682,7 +682,7 @@ Indique que l'entité a un mot de passe hashé. Permet à Symfony de gérer le h
 // Dans security.yaml
 password_hashers:
     App\Entity\Utilisateur:
-        algorithm: auto   # bcrypt par défaut
+        algorithm: auto   # bcrypt  par défaut
 ```
 
 > **Règle** : ne jamais stocker un mot de passe en clair. Toujours utiliser `$passwordHasher->hashPassword($user, $plainPassword)`.
