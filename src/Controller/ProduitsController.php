@@ -2,46 +2,57 @@
 
 namespace App\Controller;
 
+use App\Repository\CategorieRepository;
+use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+// Contrôleur de la page produits (route "/produits")
 final class ProduitsController extends AbstractController
 {
+    // Affiche la liste des produits avec filtre par catégorie et recherche par nom
     #[Route('/produits', name: 'app_produits')]
-    public function index(Request $request): Response
+    public function index(Request $request, ProduitRepository $produitRepo): Response
     {
         $recherche       = trim($request->query->get('q', ''));
         $categorieActive = $request->query->get('categorie', '');
 
-        $allItems = [
-            ['title' => 'Tarte aux fraises',        'imageSrc' => '/assets/image/étape1img.png', 'price' => 6.50, 'rating' => 5, 'categorie' => 'tartes'],
-            ['title' => 'Tarte au citron meringuée', 'imageSrc' => '/assets/image/étape2img.png', 'price' => 7.00, 'rating' => 5, 'categorie' => 'tartes'],
-            ['title' => 'Tarte aux framboises',      'imageSrc' => '/assets/image/étape3img.png', 'price' => 6.50, 'rating' => 4, 'categorie' => 'tartes'],
-            ['title' => 'Éclair au chocolat',        'imageSrc' => '/assets/image/étape2img.png', 'price' => 4.00, 'rating' => 4, 'categorie' => 'choux'],
-            ['title' => 'Paris-Brest',               'imageSrc' => '/assets/image/étape4img.png', 'price' => 5.50, 'rating' => 5, 'categorie' => 'choux'],
-            ['title' => 'Religieuse café',           'imageSrc' => '/assets/image/étape5img.png', 'price' => 4.50, 'rating' => 4, 'categorie' => 'choux'],
-            ['title' => 'Macarons (x6)',             'imageSrc' => '/assets/image/étape3img.png', 'price' => 9.00, 'rating' => 5, 'categorie' => 'petits-fours'],
-            ['title' => 'Crème brûlée',              'imageSrc' => '/assets/image/étape4img.png', 'price' => 5.50, 'rating' => 4, 'categorie' => 'petits-fours'],
-            ['title' => 'Mille-feuille',             'imageSrc' => '/assets/image/étape1img.png', 'price' => 6.00, 'rating' => 5, 'categorie' => 'petits-fours'],
-        ];
-
+        // Map slug URL → nom en base (correspond aux fixtures)
         $categories = [
-            'tartes'      => 'Tartes',
-            'choux'       => 'Choux & Éclairs',
-            'petits-fours'=> 'Petits fours',
+            'tartes'       => 'Tartes',
+            'choux'        => 'Choux & Éclairs',
+            'petits-fours' => 'Petits fours',
+            'entremets'    => 'Entremets',
         ];
 
-        $produits = array_values(array_filter($allItems, function ($item) use ($categorieActive, $recherche) {
-            if ($categorieActive && $item['categorie'] !== $categorieActive) {
-                return false;
-            }
-            if ($recherche && stripos($item['title'], $recherche) === false) {
-                return false;
-            }
-            return true;
-        }));
+        // Construit la requête Doctrine avec les filtres actifs
+        $qb = $produitRepo->createQueryBuilder('p')
+            ->leftJoin('p.categorie', 'c')
+            ->where('p.disponible = true');
+
+        // Filtre par catégorie si un slug est sélectionné
+        if ($categorieActive && isset($categories[$categorieActive])) {
+            $qb->andWhere('c.nom = :nomCategorie')
+               ->setParameter('nomCategorie', $categories[$categorieActive]);
+        }
+
+        // Filtre par nom si une recherche est saisie
+        if ($recherche) {
+            $qb->andWhere('p.nom LIKE :recherche')
+               ->setParameter('recherche', '%' . $recherche . '%');
+        }
+
+        $produitsEntites = $qb->getQuery()->getResult();
+
+        // Convertit les entités Produit au format attendu par le template
+        $produits = array_map(fn($p) => [
+            'title'    => $p->getNom(),
+            'imageSrc' => $p->getImageSrc() ?? '/assets/image/étape1img.png',
+            'price'    => (float) $p->getPrix(),
+            'rating'   => 5, // TODO: calculer depuis les avis en base
+        ], $produitsEntites);
 
         return $this->render('produits/index.html.twig', [
             'produits'        => $produits,

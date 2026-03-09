@@ -9,6 +9,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+// Entité Commande : représente une commande passée par un utilisateur
 #[ORM\Entity(repositoryClass: CommandeRepository::class)]
 class Commande
 {
@@ -17,16 +18,20 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
+    // L'utilisateur qui a passé la commande
     #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
+    // Date automatiquement définie à la création
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $dateCommande = null;
 
+    // Statut de la commande (en attente, confirmée, livrée...) — voir App\Enum\StatutCommande
     #[ORM\Column(type: 'string', enumType: StatutCommande::class)]
     private StatutCommande $statut = StatutCommande::EnAttente;
 
+    // Montant total de la commande en euros
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
     private string $total = '0.00';
 
@@ -39,6 +44,7 @@ class Commande
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $codePostal = null;
 
+    // Liste des produits inclus dans cette commande (supprimés si la commande est supprimée)
     #[ORM\OneToMany(targetEntity: CommandeProduit::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
     private Collection $commandeProduits;
 

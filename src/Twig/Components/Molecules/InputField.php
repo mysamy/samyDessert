@@ -27,7 +27,7 @@ final class InputField
     public string $autocomplete = '';
     public string $inputmode = '';
     public ?int $maxlength = null;
-    public string $pattern = '';
+    public ?string $pattern = null;
 
     public string $class = '';
 

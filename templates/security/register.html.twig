@@ -66,6 +66,12 @@
             autocomplete="new-password"
           />
 
+          {% if error %}
+            <twig:Molecules:Alert type="error" message="{{ error }}"/>
+          {% endif %}
+
+          <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
+
           <twig:Atoms:Button
             type="submit"
             class="w-full justify-center bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-primary transition"

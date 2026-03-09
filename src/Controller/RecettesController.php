@@ -7,11 +7,14 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+// Contrôleur de la page recettes (route "/recettes")
 final class RecettesController extends AbstractController
 {
+    // Affiche la liste des recettes avec filtre par catégorie et recherche par mot-clé
     #[Route('/recettes', name: 'app_recettes')]
     public function index(Request $request): Response
     {
+        // Données statiques — à remplacer par une vraie requête Doctrine plus tard
         $recettes = [
             [
                 'id'         => 1,

@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
+// Entité Categorie : regroupe les produits par type (ex: Tartes, Choux, Petits fours)
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
 class Categorie
 {
@@ -18,6 +19,7 @@ class Categorie
     #[ORM\Column(length: 100)]
     private string $nom = '';
 
+    // Liste des produits appartenant à cette catégorie
     #[ORM\OneToMany(targetEntity: Produit::class, mappedBy: 'categorie')]
     private Collection $produits;
 

@@ -6,6 +6,8 @@ use App\Repository\AvisRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+// Entité Avis : représente un avis laissé par un utilisateur sur un produit
+// Un utilisateur ne peut laisser qu'un seul avis par produit (contrainte unique)
 #[ORM\Entity(repositoryClass: AvisRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_AVIS_USER_PRODUIT', fields: ['utilisateur', 'produit'])]
 class Avis
@@ -15,20 +17,24 @@ class Avis
     #[ORM\Column]
     private ?int $id = null;
 
+    // L'utilisateur qui a posté l'avis
     #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Utilisateur $utilisateur = null;
 
+    // Le produit concerné par l'avis
     #[ORM\ManyToOne(targetEntity: Produit::class)]
     #[ORM\JoinColumn(nullable: false)]
     private ?Produit $produit = null;
 
+    // Note de 1 à 5, 5 par défaut
     #[ORM\Column]
     private int $note = 5;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentaire = null;
 
+    // Date de création automatiquement définie à maintenant
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 

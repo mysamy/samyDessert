@@ -82,58 +82,16 @@
         {% else %}
           <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {% for recette in recettes %}
-              <article class="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition bg-white">
-
-                {# Image #}
-                <div class="relative overflow-hidden h-48 bg-secondary">
-                  <img
-                    src="{{ recette.image }}"
-                    alt="{{ recette.titre }}"
-                    class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-                    loading="lazy"
-                  >
-                  {# Badge difficulté #}
-                  {% set diffClass = recette.difficulte == 'Facile' ? 'bg-green-100 text-green-700'
-                    : (recette.difficulte == 'Moyen' ? 'bg-amber-100 text-amber-700'
-                    : 'bg-red-100 text-red-700') %}
-                  <span class="absolute top-3 left-3 rounded-full px-3 py-1 text-xs font-semibold {{ diffClass }}">
-                    {{ recette.difficulte }}
-                  </span>
-                </div>
-
-                {# Contenu #}
-                <div class="flex flex-col flex-1 p-5">
-                  <h3 class="text-base font-bold text-text mb-1 group-hover:text-accent transition">
-                    {{ recette.titre }}
-                  </h3>
-                  <p class="text-sm text-text-light mb-4 flex-1">{{ recette.description }}</p>
-
-                  {# Méta : temps + portions #}
-                  <div class="flex items-center gap-4 text-xs text-slate-500 mb-4">
-                    <span class="flex items-center gap-1">
-                      <i class="fa-regular fa-clock" aria-hidden="true"></i>
-                      {{ recette.temps }}
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <i class="fa-solid fa-users" aria-hidden="true"></i>
-                      {{ recette.portions }} pers.
-                    </span>
-                    <span class="flex items-center gap-1">
-                      <i class="fa-solid fa-tag" aria-hidden="true"></i>
-                      {{ categories[recette.categorie] }}
-                    </span>
-                  </div>
-
-                  <a
-                    href="/recettes/{{ recette.id }}"
-                    class="inline-flex items-center justify-center gap-2 rounded-full bg-secondary text-text px-4 py-2 text-sm font-semibold hover:bg-accent hover:text-white transition"
-                  >
-                    Voir la recette
-                    <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-                  </a>
-                </div>
-
-              </article>
+              <twig:Molecules:DessertCard
+                titre="{{ recette.titre }}"
+                description="{{ recette.description }}"
+                imageSrc="{{ recette.image }}"
+                difficulte="{{ recette.difficulte }}"
+                temps="{{ recette.temps }}"
+                :portions="recette.portions"
+                categorieLabel="{{ categories[recette.categorie] }}"
+                url="/recettes/{{ recette.id }}"
+              />
             {% endfor %}
           </div>
         {% endif %}

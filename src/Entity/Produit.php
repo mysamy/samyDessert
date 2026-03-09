@@ -6,6 +6,7 @@ use App\Repository\ProduitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+// Entité Produit : représente un produit de pâtisserie vendu sur le site
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
 class Produit
 {
@@ -20,15 +21,19 @@ class Produit
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    // Prix en euros (stocké en DECIMAL pour éviter les erreurs d'arrondi)
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
     private string $prix = '0.00';
 
+    // Chemin ou URL de l'image du produit
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageSrc = null;
 
+    // Indique si le produit est visible et achetable sur le site
     #[ORM\Column]
     private bool $disponible = true;
 
+    // Catégorie du produit (ex: Tartes, Choux...)
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
     private ?Categorie $categorie = null;
 

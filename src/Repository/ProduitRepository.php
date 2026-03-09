@@ -9,6 +9,7 @@ use Doctrine\Persistence\ManagerRegistry;
 /**
  * @extends ServiceEntityRepository<Produit>
  */
+// Repository Produit : permet d'effectuer des requêtes sur la table des produits
 class ProduitRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

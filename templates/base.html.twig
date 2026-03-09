@@ -23,7 +23,11 @@
     >
       <twig:block name="actions">
         <twig:Atoms:Link href="/panier">Panier</twig:Atoms:Link>
-        <twig:Atoms:Link href="/connexion">Se connecter</twig:Atoms:Link>
+        {% if app.user %}
+          <twig:Atoms:Link href="/deconnexion">Se déconnecter</twig:Atoms:Link>
+        {% else %}
+          <twig:Atoms:Link href="/connexion">Se connecter</twig:Atoms:Link>
+        {% endif %}
       </twig:block>
     </twig:Organisms:Header>
 

@@ -7,6 +7,7 @@ use App\Repository\RecetteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+// Entité Recette : représente une recette de pâtisserie publiée sur le site
 #[ORM\Entity(repositoryClass: RecetteRepository::class)]
 class Recette
 {
@@ -18,25 +19,31 @@ class Recette
     #[ORM\Column(length: 255)]
     private string $titre = '';
 
+    // Courte description affichée dans les listes et les cartes
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    // Contenu complet de la recette (étapes, ingrédients...)
     #[ORM\Column(type: Types::TEXT)]
     private string $contenu = '';
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $imageSrc = null;
 
+    // Durée en minutes
     #[ORM\Column(nullable: true)]
     private ?int $duree = null;
 
+    // Niveau de difficulté — voir App\Enum\Difficulte
     #[ORM\Column(type: 'string', enumType: Difficulte::class, nullable: true)]
     private ?Difficulte $difficulte = null;
 
+    // Produit associé à la recette (optionnel)
     #[ORM\ManyToOne(targetEntity: Produit::class)]
     #[ORM\JoinColumn(nullable: true)]
     private ?Produit $produit = null;
 
+    // Date de publication automatiquement définie à la création
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 

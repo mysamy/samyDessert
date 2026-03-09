@@ -9,6 +9,8 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
+// Entité Utilisateur : représente un compte client sur le site
+// Implémente UserInterface et PasswordAuthenticatedUserInterface pour Symfony Security
 #[ORM\Entity(repositoryClass: UtilisateurRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_EMAIL', fields: ['email'])]
 class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
@@ -18,14 +20,16 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?int $id = null;
 
+    // L'email sert aussi d'identifiant de connexion (voir getUserIdentifier)
     #[ORM\Column(length: 180)]
     private string $email = '';
 
+    // Rôles Symfony (ex: ROLE_USER, ROLE_ADMIN) — ROLE_USER est toujours ajouté automatiquement
     #[ORM\Column(type: 'json')]
     private array $roles = [];
 
     #[ORM\Column]
-    private string $motDePasse = '';
+    private string $password = '';
 
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $nom = null;
@@ -33,10 +37,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 100, nullable: true)]
     private ?string $prenom = null;
 
+    // Produits mis en favoris par l'utilisateur
     #[ORM\ManyToMany(targetEntity: Produit::class)]
     #[ORM\JoinTable(name: 'utilisateur_produit_favori')]
     private Collection $produitsFavoris;
 
+    // Recettes mises en favoris par l'utilisateur
     #[ORM\ManyToMany(targetEntity: Recette::class)]
     #[ORM\JoinTable(name: 'utilisateur_recette_favori')]
     private Collection $recettesFavoris;
@@ -83,12 +89,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function getPassword(): string
     {
-        return $this->motDePasse;
+        return $this->password;
     }
 
-    public function setMotDePasse(string $motDePasse): static
+    public function setPassword(string $password): static
     {
-        $this->motDePasse = $motDePasse;
+        $this->password = $password;
         return $this;
     }
 

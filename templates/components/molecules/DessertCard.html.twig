@@ -1,0 +1,62 @@
+<article class="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition bg-white">
+
+  {# Image + badge difficulté #}
+  <div class="relative overflow-hidden h-48 bg-secondary">
+    {% if imageSrc %}
+      <img
+        src="{{ imageSrc }}"
+        alt="{{ titre }}"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+        loading="lazy"
+      >
+    {% endif %}
+    {% if difficulte %}
+      <span class="absolute top-3 left-3 rounded-full px-3 py-1 text-xs font-semibold {{ this.difficulteClass }}">
+        {{ difficulte }}
+      </span>
+    {% endif %}
+  </div>
+
+  {# Contenu #}
+  <div class="flex flex-col flex-1 p-5">
+    <h3 class="text-base font-bold text-text mb-1 group-hover:text-accent transition">
+      {{ titre }}
+    </h3>
+    {% if description %}
+      <p class="text-sm text-text-light mb-4 flex-1">{{ description }}</p>
+    {% endif %}
+
+    {# Méta : temps + portions + catégorie #}
+    <div class="flex items-center gap-4 text-xs text-slate-500 mb-4">
+      {% if temps %}
+        <span class="flex items-center gap-1">
+          <i class="fa-regular fa-clock" aria-hidden="true"></i>
+          {{ temps }}
+        </span>
+      {% endif %}
+      {% if portions %}
+        <span class="flex items-center gap-1">
+          <i class="fa-solid fa-users" aria-hidden="true"></i>
+          {{ portions }} pers.
+        </span>
+      {% endif %}
+      {% if categorieLabel %}
+        <span class="flex items-center gap-1">
+          <i class="fa-solid fa-tag" aria-hidden="true"></i>
+          {{ categorieLabel }}
+        </span>
+      {% endif %}
+    </div>
+
+    {% if url %}
+      <a
+        href="{{ url }}"
+        class="inline-flex items-center justify-center gap-2 rounded-full bg-secondary text-text px-4 py-2 text-sm font-semibold hover:bg-accent hover:text-white transition"
+      >
+        Voir la recette
+        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+      </a>
+    {% endif %}
+  </div>
+
+</article>

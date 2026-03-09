@@ -1,80 +1,65 @@
-{% set id = this.computedId %}
 {% set title = this.title %}
-{% set productUrl = this.url %}
 {% set imageSrc = this.imageSrc %}
 {% set imageAlt = this.computedImageAlt %}
 {% set rating = this.rating %}
 {% set ratingAria = this.ratingAriaLabel %}
-{% set ratingText = this.ratingText %}
 {% set formattedPrice = this.formattedPrice %}
 {% set addToCartUrl = this.addToCartUrl %}
 {% set addToCartLabel = this.addToCartLabel %}
 {% set addToCartDisabled = this.addToCartDisabled %}
 
-<twig:Atoms:Card :id="id" :title="title" class="{{ this.class }}">
-  {% set imageBlock %}
-    <div class="aspect-[4/3] w-full overflow-hidden rounded-t-lg bg-slate-100">
-      {% if imageSrc %}
-        <img src="{{ imageSrc }}" alt="{{ imageAlt }}" loading="lazy" class="h-full w-full object-cover"/>
-      {% else %}
-        <div class="flex h-full w-full items-center justify-center">
-          <twig:Atoms:Text text="Image indisponible" class="text-sm text-slate-700"/>
-        </div>
-      {% endif %}
-    </div>
-  {% endset %}
+<article class="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition bg-white">
 
-  {% if productUrl %}
-    <twig:Atoms:Link href="{{ productUrl }}" aria-label="Voir le produit {{ title }}" class="block rounded-lg">
-      {{ imageBlock }}
-    </twig:Atoms:Link>
-  {% else %}
-    {{ imageBlock }}
-  {% endif %}
+  {# Image #}
+  <div class="relative overflow-hidden h-48 bg-secondary">
+    {% if imageSrc %}
+      <img
+        src="{{ imageSrc }}"
+        alt="{{ imageAlt }}"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+        loading="lazy"
+      >
+    {% endif %}
+  </div>
 
-  <div class="space-y-2">
+  {# Contenu #}
+  <div class="flex flex-col flex-1 p-5">
+    <h3 class="text-base font-bold text-text mb-1 group-hover:text-accent transition">
+      {{ title }}
+    </h3>
+
+    {# Étoiles #}
     {% if rating is not null %}
-      <div class="flex items-center gap-2" aria-label="{{ ratingAria }}">
-        <div class="flex items-center gap-0.5" aria-hidden="true">
-          {% for i in 1..5 %}
-            <twig:Atoms:Icon name="star" :decorative="true" class="{{ rating >= i ? 'h-4 w-4 text-slate-900' : 'h-4 w-4 text-slate-300' }}"/>
-          {% endfor %}
-        </div>
-        {% if ratingText %}
-          <twig:Atoms:Text :text="ratingText" class="text-sm text-slate-700"/>
-        {% endif %}
+      <div class="flex items-center gap-1 mb-3" aria-label="{{ ratingAria }}">
+        {% for i in 1..5 %}
+          <i class="fa-solid fa-star text-xs {{ rating >= i ? 'text-star' : 'text-slate-200' }}" aria-hidden="true"></i>
+        {% endfor %}
       </div>
     {% endif %}
 
-    {% if productUrl %}
-      <twig:Atoms:Link href="{{ productUrl }}" class="block">
-        <twig:Atoms:Text :text="title" class="text-base font-semibold text-slate-900"/>
-      </twig:Atoms:Link>
-    {% else %}
-      <twig:Atoms:Text :text="title" class="text-base font-semibold text-slate-900"/>
-    {% endif %}
-
-    <div class="flex items-center justify-between gap-3">
-      <twig:Atoms:Text :text="formattedPrice" class="text-base font-semibold text-slate-900"/>
+    {# Prix + bouton #}
+    <div class="flex items-center justify-between gap-3 mt-auto pt-3">
+      <span class="text-base font-bold text-text">{{ formattedPrice }}</span>
 
       {% if addToCartUrl %}
-        <twig:Atoms:Link
+        <a
           href="{{ addToCartUrl }}"
           aria-label="Ajouter {{ title }} au panier"
-          class="inline-flex items-center gap-2 rounded-md bg-black px-3 py-1.5 text-sm font-medium text-white transition hover:opacity-90"
+          class="inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 text-sm font-semibold hover:bg-primary transition"
         >
           {{ addToCartLabel }}
-        </twig:Atoms:Link>
+        </a>
       {% else %}
-        <twig:Atoms:Button
+        <button
           type="button"
-          :disabled="addToCartDisabled"
-          size="sm"
+          {% if addToCartDisabled %}disabled{% endif %}
           aria-label="Ajouter {{ title }} au panier"
+          class="inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 text-sm font-semibold hover:bg-primary transition disabled:opacity-50 disabled:cursor-not-allowed"
         >
           {{ addToCartLabel }}
-        </twig:Atoms:Button>
+        </button>
       {% endif %}
     </div>
   </div>
-</twig:Atoms:Card>
+
+</article>

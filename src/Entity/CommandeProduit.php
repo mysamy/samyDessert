@@ -6,9 +6,12 @@ use App\Repository\CommandeProduitRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+// Entité CommandeProduit : table de jointure entre Commande et Produit
+// Stocke la quantité et le prix au moment de la commande (snapshot du prix)
 #[ORM\Entity(repositoryClass: CommandeProduitRepository::class)]
 class CommandeProduit
 {
+    // Clé composite : une commande + un produit forment la clé primaire
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeProduits')]
     #[ORM\JoinColumn(nullable: false)]
@@ -22,6 +25,7 @@ class CommandeProduit
     #[ORM\Column]
     private int $quantite = 1;
 
+    // Prix enregistré au moment de la commande (peut différer du prix actuel du produit)
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
     private string $prixUnitaire = '0.00';
 
