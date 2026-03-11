@@ -1,0 +1,49 @@
+services:
+
+  # Serveur web Nginx — reçoit les requêtes HTTP et les passe à PHP
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "8080:80"          # ton site sera sur http://localhost:8080
+    volumes:
+      - .:/var/www/html    # ton projet Symfony
+      - ./docker/nginx/default.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+
+  # PHP-FPM — exécute le code Symfony
+  php:
+    build: ./docker/php
+    volumes:
+      - .:/var/www/html
+    depends_on:
+      - mysql
+    environment:
+      DATABASE_URL: "mysql://symfony:symfony@mysql:3306/samyDessert?serverVersion=8.0"
+
+  # Assets — recompile le CSS Tailwind en boucle (watch inotify non supporté sur Windows)
+  assets:
+    build: ./docker/php
+    volumes:
+      - .:/var/www/html
+    working_dir: /var/www/html
+    command: sh -c "while true; do php bin/console tailwind:build; sleep 3; done"
+    restart: unless-stopped
+    depends_on:
+      - php
+
+  # Base de données MySQL
+  mysql:
+    image: mysql:8.0
+    ports:
+      - "3307:3306"        # port 3307 pour ne pas conflictuer avec Laragon
+    environment:
+      MYSQL_DATABASE: samyDessert
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony
+      MYSQL_ROOT_PASSWORD: root
+    volumes:
+      - mysql_data:/var/lib/mysql   # les données persistent entre les redémarrages
+
+volumes:
+  mysql_data:
