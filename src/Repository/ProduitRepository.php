@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\CommandeProduit;
 use App\Entity\Produit;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -17,28 +18,33 @@ class ProduitRepository extends ServiceEntityRepository
         parent::__construct($registry, Produit::class);
     }
 
-//    /**
-//     * @return Produit[] Returns an array of Produit objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('p.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * Retourne les produits les plus vendus (par quantité totale commandée).
+     * Si aucune commande n'existe encore, retourne les produits disponibles les plus récents.
+     *
+     * @return Produit[]
+     */
+    public function findMeilleursVendus(int $limit = 4): array
+    {
+        $results = $this->createQueryBuilder('p')
+            ->leftJoin(CommandeProduit::class, 'cp', 'WITH', 'cp.produit = p')
+            ->andWhere('p.disponible = true')
+            ->groupBy('p.id')
+            ->orderBy('SUM(cp.quantite)', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
 
-//    public function findOneBySomeField($value): ?Produit
-//    {
-//        return $this->createQueryBuilder('p')
-//            ->andWhere('p.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+        // Si pas encore de commandes, fallback sur les produits les plus récents
+        if (empty($results)) {
+            return $this->createQueryBuilder('p')
+                ->andWhere('p.disponible = true')
+                ->orderBy('p.createdAt', 'DESC')
+                ->setMaxResults($limit)
+                ->getQuery()
+                ->getResult();
+        }
+
+        return $results;
+    }
 }

@@ -49,6 +49,14 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $codePostal = null;
 
+    // Indique si l'utilisateur a confirmé son adresse email
+    #[ORM\Column]
+    private bool $isVerified = false;
+
+    // Token secret envoyé par email pour vérifier le compte (null une fois vérifié)
+    #[ORM\Column(length: 64, nullable: true)]
+    private ?string $verificationToken = null;
+
     // Produits mis en favoris par l'utilisateur
     #[ORM\ManyToMany(targetEntity: Produit::class)]
     #[ORM\JoinTable(name: 'utilisateur_produit_favori')]
@@ -213,6 +221,28 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeRecetteFavori(Recette $recette): static
     {
         $this->recettesFavoris->removeElement($recette);
+        return $this;
+    }
+
+    public function isVerified(): bool
+    {
+        return $this->isVerified;
+    }
+
+    public function setIsVerified(bool $isVerified): static
+    {
+        $this->isVerified = $isVerified;
+        return $this;
+    }
+
+    public function getVerificationToken(): ?string
+    {
+        return $this->verificationToken;
+    }
+
+    public function setVerificationToken(?string $verificationToken): static
+    {
+        $this->verificationToken = $verificationToken;
         return $this;
     }
 }

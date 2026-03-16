@@ -20,19 +20,42 @@ php bin/console asset-map:compile        # compile les assets JS/CSS vers public
 docker compose up --build    # premier lancement (construit les images)
 docker compose up            # lancement normal
 docker compose down          # arrêter les conteneurs
+docker compose ps            # liste l'état de tous les conteneurs
 docker compose logs php      # voir les logs du conteneur PHP
 docker compose exec php bash # entrer dans le conteneur PHP (terminal Linux)
 ```
 
-## Symfony / Doctrine
+### `docker compose` vs `docker`
+
+- `docker` gère **un seul conteneur** à la fois, manuellement
+- `docker compose` gère **tous les conteneurs** définis dans `docker-compose.yml` ensemble
+
+| Commande | Ce que ça fait |
+|---|---|
+| `docker compose up` | Démarre tous les services du projet |
+| `docker compose down` | Arrête et supprime tous les conteneurs |
+| `docker compose ps` | Liste l'état de chaque conteneur |
+| `docker compose exec php ...` | Entre dans le service `php` et exécute une commande |
+
+### Pourquoi `docker compose exec php` pour les commandes Symfony ?
+
+PHP et MySQL tournent dans des **conteneurs Linux isolés**, pas sur Windows.
+Taper `php bin/console` directement dans le terminal Windows échoue car PHP n'est pas installé localement.
+
+`docker compose exec php` dit à Docker : *"entre dans le conteneur `php` et exécute cette commande à l'intérieur"*, là où PHP et la connexion MySQL existent.
+
+## Symfony / Doctrine (avec Docker)
+
+> Toutes les commandes `php bin/console` doivent passer par `docker compose exec php` quand on utilise Docker.
 
 ```bash
-php bin/console make:controller          # crée un contrôleur
-php bin/console make:entity              # crée ou modifie une entité
-php bin/console make:migration           # génère une migration depuis les entités
-php bin/console doctrine:migrations:migrate  # applique les migrations
-php bin/console doctrine:schema:validate     # vérifie que la BDD est en sync
-php bin/console doctrine:fixtures:load       # charge les fixtures (données de test)
+docker compose exec php php bin/console make:controller
+docker compose exec php php bin/console make:entity
+docker compose exec php php bin/console make:migration
+docker compose exec php php bin/console doctrine:migrations:migrate
+docker compose exec php php bin/console doctrine:schema:validate
+docker compose exec php php bin/console doctrine:fixtures:load
+docker compose exec php php bin/console cache:clear
 ```
 
 ## Assets
@@ -1353,3 +1376,675 @@ git commit -m "chore: configuration Docker dev (nginx, php, mysql, assets Tailwi
 git commit -m "feat: page produits avec liste des macarons"
 git commit -m "fix: correction du menu mobile sur mobile"
 ```
+
+---
+
+## Symfony Mailer + Mailpit
+
+### Pourquoi des emails transactionnels ?
+
+Un **email transactionnel** est un email déclenché automatiquement par une action de l'utilisateur :
+
+| Action | Email envoyé |
+|--------|-------------|
+| Inscription | Bienvenue + vérification email |
+| Commande passée | Confirmation avec récapitulatif |
+| Mot de passe oublié | Lien de réinitialisation |
+
+Dans notre projet : `MailerService::envoyerConfirmationCommande()` envoie le récapitulatif de commande.
+
+---
+
+### Symfony Mailer
+
+**Symfony Mailer** est le composant officiel pour envoyer des emails en Symfony.
+
+```bash
+composer require symfony/mailer
+```
+
+On configure l'adresse SMTP via `MAILER_DSN` dans `.env` :
+
+```env
+# Développement (Docker) — intercepte les emails sans les envoyer
+MAILER_DSN=smtp://mailpit:1025
+MAILER_FROM=noreply@samydessert.fr
+
+# Production — vrai serveur SMTP (ex : Brevo/Sendinblue)
+# MAILER_DSN=smtp://user:password@smtp.brevo.com:587
+```
+
+Envoyer un email :
+
+```php
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
+
+$email = (new Email())
+    ->from('noreply@samydessert.fr')
+    ->to($utilisateur->getEmail())
+    ->subject('Confirmation de commande')
+    ->html($html);
+
+$mailer->send($email);
+```
+
+---
+
+### Mailpit — intercepteur d'emails en dev
+
+**Mailpit** est un faux serveur SMTP qui **intercepte tous les emails** envoyés en développement. Les emails n'arrivent jamais dans de vraies boîtes mail — ils sont stockés localement et consultables via une interface web.
+
+```
+http://localhost:8025    → interface web pour lire les emails
+port 1025                → SMTP utilisé par Symfony Mailer
+```
+
+**Pourquoi c'est mieux que Mailtrap ?**
+
+| | Mailpit | Mailtrap |
+|--|---------|----------|
+| Internet requis | ❌ Non | ✅ Oui |
+| Compte à créer | ❌ Non | ✅ Oui |
+| Gratuit | ✅ Toujours | Limité en gratuit |
+| Tourne dans Docker | ✅ Oui | ❌ Non |
+
+Mailpit fonctionne **complètement hors-ligne** — pratique en démo ou sans connexion.
+
+Configuration dans `docker-compose.yml` :
+
+```yaml
+mailpit:
+  image: axllent/mailpit
+  ports:
+    - "8025:8025"   # interface web
+    - "1025:1025"   # SMTP
+
+php:
+  depends_on:
+    - mailpit
+  environment:
+    MAILER_DSN: "smtp://mailpit:1025"
+```
+
+---
+
+### CSS inline pour les emails
+
+Les clients email (Gmail, Outlook…) **ignorent les balises `<style>` et les classes CSS**. Il faut du CSS **inline** dans chaque balise HTML :
+
+```html
+<!-- ❌ Ignoré par Gmail -->
+<p class="text-amber-700">Bonjour</p>
+
+<!-- ✅ Compatible email -->
+<p style="color: #b45309;">Bonjour</p>
+```
+
+**Solution : `twig/cssinliner-extra`**
+
+Ce package Twig transforme automatiquement les classes CSS en styles inline :
+
+```bash
+docker compose exec php composer require twig/cssinliner-extra
+```
+
+On crée un fichier CSS dédié `assets/styles/email.css` avec des **valeurs hex** (les variables CSS Tailwind `--color-*` ne fonctionnent pas dans les emails) :
+
+```css
+.email-header {
+    background-color: #d97706;  /* amber-600 en hex */
+    color: #ffffff;
+    padding: 24px;
+    text-align: center;
+}
+```
+
+Dans le template Twig, on applique l'inliner avec `{% apply inline_css(...) %}` :
+
+```twig
+{% apply inline_css(source('@styles/email.css')) %}
+<!DOCTYPE html>
+<html>
+  <body>
+    <div class="email-header">
+      Bonjour {{ commande.utilisateur.prenom }} !
+    </div>
+  </body>
+</html>
+{% endapply %}
+```
+
+Le namespace `@styles` est configuré dans `config/packages/twig.yaml` :
+
+```yaml
+twig:
+    paths:
+        '%kernel.project_dir%/assets/styles': 'styles'
+```
+
+Au rendu, Twig remplace toutes les classes par leurs équivalents `style="..."` avant d'envoyer l'email.
+
+---
+
+### Architecture du service Mailer
+
+On centralise tout dans `src/Service/MailerService.php` pour ne pas écrire du code email dans les controllers :
+
+```php
+class MailerService
+{
+    public function __construct(
+        private MailerInterface $mailer,
+        private Environment $twig,
+        private string $mailerFrom,
+    ) {}
+
+    public function envoyerConfirmationCommande(Commande $commande): void
+    {
+        $email = (new Email())
+            ->from($this->mailerFrom)
+            ->to($commande->getUtilisateur()->getEmail())
+            ->subject('Confirmation de votre commande — Samy Dessert')
+            ->html($this->twig->render('emails/confirmation_commande.html.twig', [
+                'commande' => $commande,
+            ]));
+
+        $this->mailer->send($email);
+    }
+}
+```
+
+`$mailerFrom` est injecté depuis la variable d'environnement via `config/services.yaml` :
+
+```yaml
+App\Service\MailerService:
+    arguments:
+        $mailerFrom: '%env(MAILER_FROM)%'
+```
+
+Dans le controller, on appelle simplement :
+
+```php
+$this->mailerService->envoyerConfirmationCommande($commande);
+```
+
+
+---
+
+# Vérification d'email à l'inscription
+
+## Pourquoi vérifier l'email ?
+
+Sans vérification, n'importe qui peut créer un compte avec une adresse email qui ne lui appartient pas. La vérification garantit que l'utilisateur contrôle bien l'adresse qu'il a saisie.
+
+## Flux complet
+
+```
+1. Utilisateur remplit le formulaire d'inscription
+2. Compte créé en base avec isVerified = false
+3. Token aléatoire généré (64 caractères hex)
+4. Email envoyé avec un lien : /confirmer-email/{token}
+5. Utilisateur clique le lien
+6. Symfony trouve le compte par le token
+7. isVerified = true, token effacé
+8. Email de bienvenue envoyé
+9. Redirection vers /connexion
+```
+
+## Entité Utilisateur — champs ajoutés
+
+```php
+// Indique si l'utilisateur a confirmé son adresse email
+#[ORM\Column]
+private bool $isVerified = false;
+
+// Token secret envoyé par email (null une fois vérifié)
+#[ORM\Column(length: 64, nullable: true)]
+private ?string $verificationToken = null;
+```
+
+## Génération du token
+
+```php
+// bin2hex(random_bytes(32)) = 64 caractères hexadécimaux aléatoires
+$token = bin2hex(random_bytes(32));
+// Exemple : "1f0d68d58bd71d4e5570dd87a1c055ee757c13150b65f51c3603532773e7a9b0"
+```
+
+`random_bytes(32)` génère 32 octets cryptographiquement sûrs. `bin2hex` les convertit en chaîne hexadécimale. Ce token est **impossible à deviner** (2²⁵⁶ combinaisons possibles).
+
+## Génération de l'URL absolue
+
+```php
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+
+$confirmationUrl = $this->generateUrl(
+    'app_confirm_email',
+    ['token' => $token],
+    UrlGeneratorInterface::ABSOLUTE_URL, // http://localhost:8080/confirmer-email/abc123...
+);
+```
+
+Sans `ABSOLUTE_URL`, `generateUrl` retourne un chemin relatif (`/confirmer-email/...`). Dans un email, le lien doit être absolu pour être cliquable depuis n'importe quel client email.
+
+L'URL de base est configurée dans `.env.local` :
+```
+DEFAULT_URI=http://localhost:8080
+```
+
+## Route de confirmation
+
+```php
+#[Route('/confirmer-email/{token}', name: 'app_confirm_email')]
+public function confirmerEmail(string $token, EntityManagerInterface $em): Response
+{
+    $user = $em->getRepository(Utilisateur::class)->findOneBy(['verificationToken' => $token]);
+
+    if (!$user) {
+        return $this->render('security/confirm_invalid.html.twig');
+    }
+
+    $user->setIsVerified(true);
+    $user->setVerificationToken(null); // effacé = ne peut plus resservir
+    $em->flush();
+
+    $this->addFlash('success', 'Compte activé. Vous pouvez vous connecter.');
+    return $this->redirectToRoute('app_login');
+}
+```
+
+## UserChecker — bloquer la connexion si non vérifié
+
+Symfony Security permet d'intercepter la connexion via un `UserChecker` :
+
+```php
+// src/Security/UserChecker.php
+class UserChecker implements UserCheckerInterface
+{
+    public function checkPreAuth(UserInterface $user): void
+    {
+        if (!$user instanceof Utilisateur) return;
+
+        if (!$user->isVerified()) {
+            throw new CustomUserMessageAccountStatusException(
+                "Votre compte n'est pas encore activé. Vérifiez votre email."
+            );
+        }
+    }
+
+    public function checkPostAuth(UserInterface $user): void {}
+}
+```
+
+`checkPreAuth` est appelé **avant** la vérification du mot de passe. Si on lève une exception ici, Symfony affiche le message à l'utilisateur sur la page de connexion.
+
+Enregistrement dans `security.yaml` :
+
+```yaml
+firewalls:
+    main:
+        user_checker: App\Security\UserChecker
+```
+
+---
+
+# Symfony Messenger — file de messages
+
+## Définition
+
+Symfony Messenger est un composant qui permet d'**envoyer des messages** (tâches) dans une file d'attente, traitée de façon asynchrone par un **worker**.
+
+## Synchrone vs Asynchrone
+
+| Mode | Comportement | Quand l'utiliser |
+|------|-------------|-----------------|
+| `sync` | Traité immédiatement pendant la requête HTTP | Développement |
+| `async` | Mis en file, traité par un worker en arrière-plan | Production |
+
+## Pourquoi async en production ?
+
+Envoyer un email prend du temps (connexion SMTP). En mode async :
+1. La requête HTTP se termine immédiatement (l'utilisateur n'attend pas)
+2. L'email est stocké dans la table `messenger_messages`
+3. Un worker PHP tourne en arrière-plan et envoie l'email
+
+En mode sync, l'utilisateur attend que l'email soit envoyé avant de voir la réponse.
+
+## Configuration (`config/packages/messenger.yaml`)
+
+```yaml
+routing:
+    Symfony\Component\Mailer\Messenger\SendEmailMessage: sync   # dev
+    # Symfony\Component\Mailer\Messenger\SendEmailMessage: async  # prod
+```
+
+## Lancer le worker (production)
+
+```bash
+docker compose exec php php bin/console messenger:consume async
+```
+
+---
+
+# Fichiers .env — ordre de priorité
+
+Symfony charge les fichiers `.env` dans cet ordre, chaque fichier **écrasant** le précédent :
+
+| Fichier | Commité git | Rôle |
+|---------|-------------|------|
+| `.env` | ✅ Oui | Valeurs par défaut pour tout le monde. Jamais de secrets. |
+| `.env.local` | ❌ Non | Tes overrides locaux (mots de passe, DSN). Ignoré par git. |
+| `.env.dev` | ✅ Oui | Valeurs spécifiques à l'env `dev` uniquement. |
+| `.env.dev.local` | ❌ Non | Overrides locaux pour `dev` uniquement. |
+| `.env.prod` | ✅ Oui | Valeurs pour la production. |
+| `.env.prod.local` | ❌ Non | Overrides locaux pour la production. |
+
+**Règle :** tout ce qui est secret ou spécifique à ta machine → `.env.local`. Le `.env` ne contient que des exemples ou des valeurs neutres.
+
+**Attention Docker :** les variables définies dans `docker-compose.yml` sous `environment:` écrasent les fichiers `.env` et `.env.local`. Elles ont la priorité la plus haute.
+
+---
+
+# Erreur 502 Bad Gateway
+
+## Définition
+
+Une **502 Bad Gateway** signifie que le serveur intermédiaire (ici nginx) n'a pas pu joindre le serveur en amont (ici PHP-FPM).
+
+```
+Navigateur → nginx (port 8080) → PHP-FPM (port 9000)
+                                      ↑
+                               Si PHP ne répond pas → 502
+```
+
+## Cause fréquente en Docker
+
+Nginx résout le hostname `php` en IP **une seule fois au démarrage**. Si le conteneur PHP redémarre, il obtient une nouvelle IP, mais nginx garde l'ancienne en cache → 502.
+
+## Fix permanent dans `docker/nginx/default.conf`
+
+```nginx
+# Force nginx à re-résoudre le DNS Docker toutes les 30s
+resolver 127.0.0.11 valid=30s ipv6=off;
+
+location ~ ^/index\.php(/|$) {
+    set $php_backend php:9000;  # variable = force la re-résolution
+    fastcgi_pass $php_backend;
+}
+```
+
+`127.0.0.11` est le serveur DNS interne de Docker. Utiliser une **variable** pour `fastcgi_pass` force nginx à passer par le resolver à chaque requête au lieu de mettre l'IP en cache.
+
+## Fix immédiat
+
+```bash
+docker compose restart nginx
+```
+
+---
+
+# Panier (session)
+
+## Principe
+
+Le panier est stocké en **session PHP** — pas en base de données. C'est la méthode classique pour un panier e-commerce simple :
+
+```
+Session : $_SESSION['panier'] = [
+    42 => 2,   // produit id=42 → quantité 2
+    17 => 1,   // produit id=17 → quantité 1
+]
+```
+
+Avantages : pas de SQL, fonctionne sans connexion, disparaît à la fermeture de session.
+
+## Service `PanierService`
+
+Toute la logique du panier est dans un seul service injecté partout où on en a besoin :
+
+```php
+class PanierService
+{
+    public function ajouter(int $produitId): void { ... }
+    public function retirer(int $produitId): void { ... }   // retire 1
+    public function supprimer(int $produitId): void { ... } // supprime la ligne
+    public function vider(): void { ... }
+    public function getLignes(): array { ... }  // [['produit' => Produit, 'quantite' => int]]
+    public function getTotal(): float { ... }
+    public function getQuantitePourProduit(int $id): int { ... } // lecture session, 0 SQL
+}
+```
+
+`getQuantitePourProduit()` lit uniquement la session (pas de SQL) — utile pour les composants qui s'affichent en masse sur une page produits.
+
+## Controller `PanierController`
+
+```php
+#[Route('/panier', name: 'app_panier_')]
+class PanierController
+{
+    #[Route('', name: 'index')]                              // GET  → affiche le panier
+    #[Route('/ajouter/{id}',  name: 'ajouter',  methods: ['POST'])]
+    #[Route('/retirer/{id}',  name: 'retirer',  methods: ['POST'])]
+    #[Route('/supprimer/{id}', name: 'supprimer', methods: ['POST'])]
+    #[Route('/vider',         name: 'vider',    methods: ['POST'])]
+}
+```
+
+> **Pourquoi POST ?** Toutes les modifications d'état doivent utiliser POST, pas GET. Avec GET, un simple lien ou un robot peut déclencher l'action par erreur.
+
+---
+
+# Symfony UX Live Components
+
+## Composant statique vs live
+
+| | Statique `#[AsTwigComponent]` | Live `#[AsLiveComponent]` |
+|---|---|---|
+| Rendu | Une seule fois côté serveur | Re-rendu via AJAX à chaque action |
+| Actions | Aucune | `#[LiveAction]` déclenchées par Stimulus |
+| Props | `public $prop` | `#[LiveProp]` (synchronisées client/serveur) |
+| Rechargement page | Oui (formulaire POST) | Non |
+| Usage typique | Affichage, mise en page | Compteur panier, formulaires dynamiques |
+
+## Structure d'un live component
+
+### PHP
+
+```php
+#[AsLiveComponent]
+final class BoutonPanier
+{
+    use DefaultActionTrait;  // obligatoire
+
+    #[LiveProp]
+    public int $produitId = 0;   // prop synchronisée avec le client
+
+    #[LiveProp]
+    public int $quantite = 0;
+
+    // Services injectés par le constructeur (pas dans les actions)
+    public function __construct(private PanierService $panier) {}
+
+    // mount() = appelé uniquement au premier rendu (pas sur les re-rendus AJAX)
+    public function mount(): void
+    {
+        $this->quantite = $this->panier->getQuantitePourProduit($this->produitId);
+    }
+
+    // LiveAction = méthode déclenchée depuis le template via AJAX
+    #[LiveAction]
+    public function ajouter(): void
+    {
+        $this->panier->ajouter($this->produitId);
+        $this->quantite = $this->panier->getQuantitePourProduit($this->produitId);
+    }
+}
+```
+
+### Template Twig
+
+```twig
+{# OBLIGATOIRE : un seul élément racine fixe (toujours présent) #}
+<div {{ attributes }}>
+  {% if quantite == 0 %}
+    <button
+      data-action="live#action"
+      data-live-action-param="ajouter"
+    >
+      Ajouter au panier
+    </button>
+  {% else %}
+    <span>{{ quantite }}</span>
+  {% endif %}
+</div>
+```
+
+### Appel depuis un autre template
+
+```twig
+<twig:BoutonPanier :produitId="produit.id" :produitNom="produit.nom" />
+```
+
+## Règles importantes
+
+- **Un seul élément racine** dans le template — le live component met à jour cet élément en AJAX (morphing). S'il y a deux éléments racines possibles, le morphing échoue silencieusement.
+- **`mount()` ≠ constructeur** — `mount()` initialise le composant avec les props du template. Appelé uniquement au premier rendu.
+- **`#[LiveProp]`** — la valeur est sérialisée dans le HTML et renvoyée au serveur à chaque requête AJAX.
+- **Services** → injecter dans le constructeur, jamais dans les `#[LiveAction]`.
+
+## Passer des arguments à une action (`#[LiveArg]`)
+
+```php
+#[LiveAction]
+public function supprimer(#[LiveArg] int $id): void { ... }
+```
+
+```twig
+<button
+  data-action="live#action"
+  data-live-action-param="supprimer"
+  data-live-id-param="{{ produit.id }}"
+>
+```
+
+## Installation
+
+```bash
+composer require symfony/ux-live-component
+php bin/console importmap:require @symfony/ux-live-component
+```
+
+Enregistrer dans `assets/stimulus_bootstrap.js` :
+
+```js
+// Import par défaut (PAS import { LiveController })
+import LiveController from '@symfony/ux-live-component';
+const app = Application.start();
+app.register('live', LiveController);
+```
+
+> **Piège fréquent** : `import { LiveController }` est incorrect. Le package exporte le controller en `default`, pas en export nommé.
+
+## Déboguer un live component
+
+- **F12 → Console** : erreurs JS
+- **F12 → Network** : cherche les requêtes POST vers `/_components/...` — si elles partent, le JS fonctionne ; si elles retournent une erreur, c'est côté PHP
+- `php bin/console cache:clear` après toute modification PHP
+
+---
+
+# OPcache PHP
+
+## Définition
+
+**OPcache** est une extension PHP qui met en cache le **bytecode compilé** des fichiers PHP. Sans OPcache, PHP relit, parse et recompile chaque fichier à chaque requête.
+
+```
+Sans OPcache :  requête → lire fichier → parser → compiler → exécuter
+Avec OPcache :  requête → (bytecode déjà en mémoire) → exécuter
+```
+
+Symfony charge des centaines de fichiers PHP par requête. Sans OPcache : 500ms–2s. Avec OPcache : 100–300ms.
+
+## Activer dans le Dockerfile
+
+```dockerfile
+RUN docker-php-ext-install opcache
+
+RUN echo "opcache.enable=1\nopcache.memory_consumption=256\nopcache.max_accelerated_files=20000\nopcache.revalidate_freq=0\nopcache.validate_timestamps=1" \
+    > /usr/local/etc/php/conf.d/opcache.ini
+```
+
+`validate_timestamps=1` + `revalidate_freq=0` = vérifie les modifications à chaque requête (dev). En production : `revalidate_freq=60`.
+
+Après modification du Dockerfile, rebuild obligatoire :
+
+```bash
+docker-compose down
+docker-compose build php
+docker-compose up -d
+```
+
+---
+
+# Bundles vs code manuel
+
+## Principe
+
+Un **bundle** Symfony est un package qui encapsule une fonctionnalité complète. On peut souvent remplacer un bundle par du code manuel pour mieux comprendre les mécanismes.
+
+## Comparatif
+
+| Bundle | Ce qu'il fait | Code manuel équivalent |
+|--------|--------------|----------------------|
+| `symfonycasts/verify-email-bundle` | URLs signées HMAC pour vérification email | Token `bin2hex(random_bytes(32))` en base |
+| `symfony/mailer` | Abstraction SMTP + intégration Twig | `PHPMailer` directement |
+| `symfony/form` | FormBuilder, validation, CSRF | HTML pur + validation `if` |
+| `symfony/validator` | `#[Assert\NotBlank]` etc. | Conditions `if` dans le controller |
+| `symfony/security-bundle` | Firewall, hash password | Sessions PHP + `password_hash()` |
+| `doctrine/orm` | Mapping PHP ↔ SQL | PDO pur avec requêtes SQL |
+
+## `symfonycasts/verify-email-bundle` — ce qui serait remplacé
+
+| Notre code manuel | Ce que le bundle fait |
+|---|---|
+| `bin2hex(random_bytes(32))` | URL signée HMAC |
+| Champ `verificationToken` en base | Aucun stockage DB (token dans la signature) |
+| `findOneBy(['verificationToken' => $token])` | `$helper->validateEmailConfirmationFromRequest()` |
+| Pas d'expiration | Expiration configurable (1h par défaut) |
+
+Ce qui resterait identique : `UserChecker`, `MailerService`, templates email.
+
+---
+
+# Performances Symfony en dev
+
+## Pourquoi c'est lent
+
+- **OPcache désactivé** : PHP recompile chaque fichier à chaque requête
+- **Mode debug** : profiler, vérification des fichiers modifiés, cache container recompilé
+- **Container `assets`** : rebuild Tailwind en boucle (toutes les 3s)
+
+## Optimisations
+
+1. Activer OPcache dans le Dockerfile
+2. Éteindre le container `assets` quand pas nécessaire
+3. Désactiver la toolbar dans `config/packages/web_profiler.yaml` :
+   ```yaml
+   web_profiler:
+       toolbar: false
+   ```
+
+## Commandes cache
+
+```bash
+# Vider le cache (depuis Docker, pas Windows — fichiers verrouillés)
+docker-compose exec php php bin/console cache:clear
+
+# Relancer init (vide cache + migrations)
+docker-compose restart init
+```
+
+> **Important** : Ne jamais supprimer `var/cache/` depuis Windows. Toujours passer par `docker-compose exec php`.

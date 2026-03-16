@@ -28,6 +28,7 @@
               placeholder="Votre prénom"
               :required="true"
               autocomplete="given-name"
+              value="{{ values.prenom ?? '' }}"
             />
             <twig:Molecules:InputField
               name="nom"
@@ -35,6 +36,7 @@
               placeholder="Votre nom"
               :required="true"
               autocomplete="family-name"
+              value="{{ values.nom ?? '' }}"
             />
           </div>
 
@@ -45,6 +47,7 @@
             placeholder="votre@email.fr"
             :required="true"
             autocomplete="email"
+            value="{{ values.email ?? '' }}"
           />
 
           <twig:Molecules:InputField

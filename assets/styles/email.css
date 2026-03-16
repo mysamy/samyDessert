@@ -1,0 +1,113 @@
+/* Styles pour les emails — utilise des valeurs hex directes (les variables CSS ne fonctionnent pas dans les clients email) */
+
+body {
+  font-family: Arial, sans-serif;
+  color: #78350f;
+  margin: 0;
+  padding: 0;
+  background: #fffbeb;
+}
+
+.email {
+  max-width: 600px;
+  margin: 40px auto;
+  background: #ffffff;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.email__header {
+  background: #d97706;
+  padding: 32px 40px;
+  text-align: center;
+}
+
+.email__header h1 {
+  color: #ffffff;
+  margin: 0;
+  font-size: 24px;
+  letter-spacing: -0.5px;
+}
+
+.email__body {
+  padding: 32px 40px;
+}
+
+.email__body p {
+  line-height: 1.6;
+}
+
+.email__reference {
+  background: #fffbeb;
+  border: 1px solid #fef3c7;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  margin-bottom: 24px;
+}
+
+.email__reference strong {
+  font-size: 20px;
+  color: #d97706;
+  display: block;
+  margin-top: 4px;
+}
+
+.email__table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 16px;
+}
+
+.email__table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: #fffbeb;
+  font-size: 13px;
+  color: #b45309;
+  border-bottom: 1px solid #fef3c7;
+}
+
+.email__table td {
+  padding: 10px 12px;
+  border-bottom: 1px solid #fef3c7;
+}
+
+.email__total {
+  text-align: right;
+  font-weight: bold;
+  font-size: 16px;
+  padding: 12px 12px 0;
+  border-top: 2px solid #d97706;
+  color: #78350f;
+}
+
+.email__adresse {
+  background: #fffbeb;
+  border-radius: 8px;
+  padding: 16px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.email__btn {
+  display: inline-block;
+  background: #d97706;
+  color: #ffffff;
+  padding: 12px 28px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 15px;
+  margin-top: 8px;
+}
+
+.email__footer {
+  padding: 24px 40px;
+  text-align: center;
+  font-size: 13px;
+  color: #b45309;
+  border-top: 1px solid #fef3c7;
+  background: #fffbeb;
+}

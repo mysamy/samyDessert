@@ -19,5 +19,10 @@ services:
     App\:
         resource: '../src/'
 
+    # Injection de MAILER_FROM dans MailerService
+    App\Service\MailerService:
+        arguments:
+            $mailerFrom: '%env(MAILER_FROM)%'
+
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones

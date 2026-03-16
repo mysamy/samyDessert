@@ -26,35 +26,27 @@
   {% if hasItems %}
     <ul role="list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
   {% for item in items %}
-    {% set itemTitle = item.title ?? '' %}
+    {% set itemTitre = item.nom ?? item.title ?? item.titre ?? '' %}
     {% set itemUrl = item.url ?? null %}
     {% set itemImageSrc = item.imageSrc ?? null %}
-    {% set itemImageAlt = item.imageAlt ?? null %}
     {% set itemRating = item.rating ?? null %}
-    {% set itemRatingAriaLabel = item.ratingAriaLabel ?? null %}
-    {% set itemRatingText = item.ratingText ?? null %}
-    {% set itemFormattedPrice = item.formattedPrice ?? '' %}
-    {% set itemAddToCartUrl = item.addToCartUrl ?? null %}
+    {% set itemPrix = item.formattedPrice ?? (item.prix ? (item.prix|number_format(2, ',', ' ') ~ ' €') : null) %}
+    {% set itemDescription = item.description ?? null %}
+    {% set itemCategorieLabel = item.categorieLabel ?? item.categorie.nom ?? null %}
+    {% set itemProduitId = item.id ?? null %}
     {% set itemAddToCartLabel = item.addToCartLabel ?? 'Ajouter au panier' %}
-    {% set itemAddToCartDisabled = item.addToCartDisabled ?? false %}
-    {% set itemId = item.id ?? null %}
-    {% set itemClass = item.class ?? '' %}
 
     <li>
-      <twig:Organisms:ProductCard
-        :id="itemId"
-        :class="itemClass"
-        :title="itemTitle"
+      <twig:Molecules:DessertCard
+        :titre="itemTitre"
         :url="itemUrl"
         :imageSrc="itemImageSrc"
-        :imageAlt="itemImageAlt"
         :rating="itemRating"
-        :ratingAriaLabel="itemRatingAriaLabel"
-        :ratingText="itemRatingText"
-        :formattedPrice="itemFormattedPrice"
-        :addToCartUrl="itemAddToCartUrl"
+        :prix="itemPrix"
+        :description="itemDescription"
+        :categorieLabel="itemCategorieLabel"
+        :produitId="itemProduitId"
         :addToCartLabel="itemAddToCartLabel"
-        :addToCartDisabled="itemAddToCartDisabled"
       />
     </li>
   {% endfor %}

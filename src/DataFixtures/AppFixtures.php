@@ -32,6 +32,7 @@ class AppFixtures extends Fixture
         ] as $slug => $nom) {
             $cat = new Categorie();
             $cat->setNom($nom);
+            $cat->setSlug($slug);
             $manager->persist($cat);
             $categories[$slug] = $cat;
         }

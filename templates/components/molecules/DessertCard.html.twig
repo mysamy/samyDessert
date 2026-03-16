@@ -26,37 +26,61 @@
       <p class="text-sm text-text-light mb-4 flex-1">{{ description }}</p>
     {% endif %}
 
-    {# Méta : temps + portions + catégorie #}
-    <div class="flex items-center gap-4 text-xs text-slate-500 mb-4">
-      {% if temps %}
-        <span class="flex items-center gap-1">
-          <i class="fa-regular fa-clock" aria-hidden="true"></i>
-          {{ temps }}
-        </span>
-      {% endif %}
-      {% if portions %}
-        <span class="flex items-center gap-1">
-          <i class="fa-solid fa-users" aria-hidden="true"></i>
-          {{ portions }} pers.
-        </span>
-      {% endif %}
-      {% if categorieLabel %}
-        <span class="flex items-center gap-1">
-          <i class="fa-solid fa-tag" aria-hidden="true"></i>
-          {{ categorieLabel }}
-        </span>
+    {# Méta recette : temps + portions + catégorie #}
+    {% if temps or portions or categorieLabel %}
+      <div class="flex items-center gap-4 text-xs text-slate-500 mb-4">
+        {% if temps %}
+          <span class="flex items-center gap-1">
+            <i class="fa-regular fa-clock" aria-hidden="true"></i>
+            {{ temps }}
+          </span>
+        {% endif %}
+        {% if portions %}
+          <span class="flex items-center gap-1">
+            <i class="fa-solid fa-users" aria-hidden="true"></i>
+            {{ portions }} pers.
+          </span>
+        {% endif %}
+        {% if categorieLabel %}
+          <span class="flex items-center gap-1">
+            <i class="fa-solid fa-tag" aria-hidden="true"></i>
+            {{ categorieLabel }}
+          </span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Étoiles (produit) #}
+    {% if rating is not null %}
+      <div class="flex items-center gap-1 mb-3">
+        {% for i in 1..5 %}
+          <i class="fa-solid fa-star text-xs {{ rating >= i ? 'text-star' : 'text-slate-200' }}" aria-hidden="true"></i>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# Bouton bas de carte #}
+    <div class="flex items-center justify-between gap-3 mt-auto pt-3">
+      {% if prix is not null %}
+        {# Produit : prix + bouton live "Ajouter au panier" #}
+        <span class="text-base font-bold text-text">{{ prix }}</span>
+        {% if produitId is not null %}
+          <twig:BoutonPanier
+            :produitId="produitId"
+            :produitNom="titre"
+          />
+        {% endif %}
+      {% elseif url %}
+        {# Recette : voir la recette #}
+        <a
+          href="{{ url }}"
+          class="inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 text-sm font-semibold hover:bg-primary transition ml-auto"
+        >
+          Voir la recette
+          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
+        </a>
       {% endif %}
     </div>
-
-    {% if url %}
-      <a
-        href="{{ url }}"
-        class="inline-flex items-center justify-center gap-2 rounded-full bg-secondary text-text px-4 py-2 text-sm font-semibold hover:bg-accent hover:text-white transition"
-      >
-        Voir la recette
-        <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-      </a>
-    {% endif %}
   </div>
 
 </article>

@@ -1,0 +1,35 @@
+{% apply inline_css(source('@styles/email.css')) %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmez votre adresse email</title>
+</head>
+<body>
+  <div class="email">
+
+    <div class="email__header">
+      <h1>Confirmez votre adresse email</h1>
+    </div>
+
+    <div class="email__body">
+      <p>Bonjour {% if utilisateur.prenom %}{{ utilisateur.prenom }}{% else %}{{ utilisateur.email }}{% endif %},</p>
+      <p>Merci de vous être inscrit sur Samy Dessert. Cliquez sur le bouton ci-dessous pour confirmer votre adresse email et activer votre compte.</p>
+
+      <p style="text-align: center; margin: 32px 0;">
+        <a href="{{ confirmationUrl }}" class="email__btn">Confirmer mon adresse email</a>
+      </p>
+
+      <p style="font-size: 13px; color: #b45309;">
+        Si vous n'avez pas créé de compte, ignorez simplement cet email.
+      </p>
+    </div>
+
+    <div class="email__footer">
+      Samy Dessert · Pâtisseries artisanales
+    </div>
+
+  </div>
+</body>
+</html>
+{% endapply %}

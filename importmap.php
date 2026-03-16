@@ -29,4 +29,7 @@ return [
         'version' => '7.1.0',
         'type' => 'css',
     ],
+    '@symfony/ux-live-component' => [
+        'version' => '2.32.0',
+    ],
 ];

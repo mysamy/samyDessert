@@ -1,0 +1,116 @@
+{% set lignes = this.lignes %}
+{% set total = this.total %}
+
+{% if lignes is empty %}
+
+  {# Panier vide #}
+  <div class="text-center py-24 text-slate-400">
+    <i class="fa-solid fa-cart-shopping text-5xl mb-6 block" aria-hidden="true"></i>
+    <p class="text-xl font-medium mb-2">Votre panier est vide.</p>
+    <p class="text-sm mb-8">Découvrez nos desserts artisanaux et ajoutez-en à votre panier.</p>
+    <a href="{{ path('app_produits') }}"
+       class="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-accent/90 transition">
+      Voir nos desserts
+    </a>
+  </div>
+
+{% else %}
+
+  {# Lignes du panier #}
+  <div class="divide-y divide-slate-100 mb-8">
+    {% for ligne in lignes %}
+      {% set produit = ligne.produit %}
+      {% set quantite = ligne.quantite %}
+      {% set sousTotal = (produit.prix * quantite)|number_format(2, ',', ' ') %}
+
+      <div class="flex items-center gap-4 py-5">
+
+        {# Image #}
+        <div class="w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-secondary">
+          {% if produit.imageSrc %}
+            <img src="{{ produit.imageSrc }}" alt="{{ produit.nom }}" class="w-full h-full object-cover">
+          {% else %}
+            <div class="w-full h-full flex items-center justify-center text-slate-300">
+              <i class="fa-solid fa-image text-2xl" aria-hidden="true"></i>
+            </div>
+          {% endif %}
+        </div>
+
+        {# Nom + catégorie #}
+        <div class="flex-1 min-w-0">
+          <p class="font-semibold text-text truncate">{{ produit.nom }}</p>
+          {% if produit.categorie %}
+            <p class="text-xs text-slate-400 mt-0.5">{{ produit.categorie.nom }}</p>
+          {% endif %}
+          <p class="text-sm text-slate-500 mt-1">{{ produit.prix|number_format(2, ',', ' ') }} € / unité</p>
+        </div>
+
+        {# Contrôles quantité (live) #}
+        <div class="flex items-center gap-2 shrink-0">
+          <button
+            data-action="live#action"
+            data-live-action-param="retirer"
+            data-live-id-param="{{ produit.id }}"
+            aria-label="Retirer une unité"
+            class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-secondary transition"
+          >
+            <i class="fa-solid fa-minus text-xs" aria-hidden="true"></i>
+          </button>
+
+          <span class="w-8 text-center font-semibold text-text">{{ quantite }}</span>
+
+          <button
+            data-action="live#action"
+            data-live-action-param="ajouter"
+            data-live-id-param="{{ produit.id }}"
+            aria-label="Ajouter une unité"
+            class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-secondary transition"
+          >
+            <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i>
+          </button>
+        </div>
+
+        {# Sous-total #}
+        <p class="w-24 text-right font-semibold text-text shrink-0">{{ sousTotal }} €</p>
+
+        {# Supprimer la ligne #}
+        <button
+          data-action="live#action"
+          data-live-action-param="supprimer"
+          data-live-id-param="{{ produit.id }}"
+          aria-label="Supprimer {{ produit.nom }} du panier"
+          class="shrink-0 text-slate-300 hover:text-red-400 transition"
+        >
+          <i class="fa-solid fa-trash text-sm" aria-hidden="true"></i>
+        </button>
+
+      </div>
+    {% endfor %}
+  </div>
+
+  {# Récapitulatif + actions #}
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-slate-200 pt-6">
+
+    {# Vider le panier #}
+    <button
+      data-action="live#action"
+      data-live-action-param="vider"
+      class="text-sm text-slate-400 hover:text-red-400 underline transition"
+    >
+      Vider le panier
+    </button>
+
+    {# Total + CTA #}
+    <div class="text-right">
+      <p class="text-sm text-slate-500 mb-1">Total</p>
+      <p class="text-3xl font-bold text-text mb-4">{{ total|number_format(2, ',', ' ') }} €</p>
+      <a href="#"
+         class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-accent/90 transition">
+        Passer commande
+        <i class="fa-solid fa-arrow-right text-sm" aria-hidden="true"></i>
+      </a>
+    </div>
+
+  </div>
+
+{% endif %}

@@ -2,7 +2,6 @@
 
 namespace App\Controller;
 
-use App\Repository\CategorieRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -44,15 +43,7 @@ final class ProduitsController extends AbstractController
                ->setParameter('recherche', '%' . $recherche . '%');
         }
 
-        $produitsEntites = $qb->getQuery()->getResult();
-
-        // Convertit les entités Produit au format attendu par le template
-        $produits = array_map(fn($p) => [
-            'title'    => $p->getNom(),
-            'imageSrc' => $p->getImageSrc() ?? '/assets/image/étape1img.png',
-            'price'    => (float) $p->getPrix(),
-            'rating'   => 5, // TODO: calculer depuis les avis en base
-        ], $produitsEntites);
+        $produits = $qb->getQuery()->getResult();
 
         return $this->render('produits/index.html.twig', [
             'produits'        => $produits,

@@ -80,22 +80,7 @@
             <a href="/produits" class="mt-4 inline-block text-sm text-accent hover:underline">Voir tous les desserts</a>
           </div>
         {% else %}
-          {% set items = [] %}
-          {% for item in produits %}
-            {% set formattedPrice = (item.price)|number_format(2, ',', ' ') ~ ' €' %}
-            {% set items = items|merge([{
-              title: item.title,
-              imageSrc: item.imageSrc,
-              imageAlt: item.title,
-              formattedPrice: formattedPrice,
-              rating: item.rating,
-              ratingText: item.rating ~ '/5',
-              ratingAriaLabel: 'Note : ' ~ item.rating ~ ' sur 5',
-              addToCartLabel: 'Ajouter au panier'
-            }]) %}
-          {% endfor %}
-
-          <twig:Organisms:ProductCardGrid :items="items" />
+          <twig:Organisms:ProductCardGrid :items="produits" />
         {% endif %}
 
       </div>

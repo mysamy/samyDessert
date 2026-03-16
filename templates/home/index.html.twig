@@ -4,6 +4,7 @@
 
 {% block body %}
 
+{# carousel #}
 <section class="bg-secondary py-16">
   <div class="mx-auto max-w-7xl px-4">
 
@@ -87,53 +88,10 @@
 </section>
 
 {# ── Produits phares ── #}
-{% set featuredProducts = [
-  {
-    title: 'Tarte aux fraises',
-    imageSrc: '/assets/image/étape1img.png',
-    imageAlt: 'Tarte aux fraises',
-    formattedPrice: '6,50 €',
-    rating: 5,
-    ratingText: '5/5',
-    ratingAriaLabel: 'Note : 5 sur 5',
-    addToCartLabel: 'Ajouter au panier'
-  },
-  {
-    title: 'Éclair au chocolat',
-    imageSrc: '/assets/image/étape2img.png',
-    imageAlt: 'Éclair au chocolat',
-    formattedPrice: '4,00 €',
-    rating: 4,
-    ratingText: '4/5',
-    ratingAriaLabel: 'Note : 4 sur 5',
-    addToCartLabel: 'Ajouter au panier'
-  },
-  {
-    title: 'Macarons (x6)',
-    imageSrc: '/assets/image/étape3img.png',
-    imageAlt: 'Macarons',
-    formattedPrice: '9,00 €',
-    rating: 5,
-    ratingText: '5/5',
-    ratingAriaLabel: 'Note : 5 sur 5',
-    addToCartLabel: 'Ajouter au panier'
-  },
-  {
-    title: 'Crème brûlée',
-    imageSrc: '/assets/image/étape4img.png',
-    imageAlt: 'Crème brûlée',
-    formattedPrice: '5,50 €',
-    rating: 4,
-    ratingText: '4/5',
-    ratingAriaLabel: 'Note : 4 sur 5',
-    addToCartLabel: 'Ajouter au panier'
-  }
-] %}
-
 <section class="py-16 bg-white">
   <div class="mx-auto max-w-7xl px-4">
     <h2 class="text-3xl font-bold text-text text-center mb-10">Nos créations</h2>
-    <twig:Organisms:ProductCardGrid :items="featuredProducts" />
+    <twig:Organisms:ProductCardGrid :items="meilleursVendus" />
     <div class="text-center mt-10">
       <twig:Atoms:Link
         href="/produits"

@@ -1,0 +1,42 @@
+{# Root unique obligatoire pour les live components #}
+<div {{ attributes }}>
+  {% if quantite == 0 %}
+
+    {# Bouton initial : ajouter au panier #}
+    <button
+      data-action="live#action"
+      data-live-action-param="ajouter"
+      aria-label="Ajouter {{ produitNom }} au panier"
+      class="inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 text-sm font-semibold hover:bg-primary transition"
+    >
+      <i class="fa-solid fa-cart-plus text-xs" aria-hidden="true"></i>
+      Ajouter au panier
+    </button>
+
+  {% else %}
+
+    {# Contrôles quantité une fois dans le panier #}
+    <div class="flex items-center gap-2">
+      <button
+        data-action="live#action"
+        data-live-action-param="retirer"
+        aria-label="Retirer une unité de {{ produitNom }}"
+        class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-secondary transition"
+      >
+        <i class="fa-solid fa-minus text-xs" aria-hidden="true"></i>
+      </button>
+
+      <span class="w-6 text-center font-semibold text-text text-sm">{{ quantite }}</span>
+
+      <button
+        data-action="live#action"
+        data-live-action-param="ajouter"
+        aria-label="Ajouter une unité de {{ produitNom }}"
+        class="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center hover:bg-primary transition"
+      >
+        <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i>
+      </button>
+    </div>
+
+  {% endif %}
+</div>

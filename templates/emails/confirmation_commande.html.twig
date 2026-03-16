@@ -1,0 +1,69 @@
+{% apply inline_css(source('@styles/email.css')) %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Confirmation de commande</title>
+</head>
+<body>
+  <div class="email">
+
+    <div class="email__header">
+      <h1>Merci pour votre commande !</h1>
+    </div>
+
+    <div class="email__body">
+      <p>Bonjour {% if commande.utilisateur.prenom %}{{ commande.utilisateur.prenom }}{% else %}{{ commande.utilisateur.email }}{% endif %},</p>
+      <p>Votre commande a bien été reçue et est en cours de préparation.</p>
+
+      {% if commande.reference %}
+        <div class="email__reference">
+          Référence de commande
+          <strong>{{ commande.reference }}</strong>
+        </div>
+      {% endif %}
+
+      <table class="email__table">
+        <thead>
+          <tr>
+            <th>Produit</th>
+            <th>Qté</th>
+            <th>Prix unitaire</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ligne in commande.commandeProduits %}
+            <tr>
+              <td>{{ ligne.produit.nom }}</td>
+              <td>{{ ligne.quantite }}</td>
+              <td>{{ ligne.prixUnitaire|number_format(2, ',', ' ') }} €</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <p class="email__total">Total : {{ commande.total|number_format(2, ',', ' ') }} €</p>
+
+      {% if commande.adresseLivraison %}
+        <div class="email__adresse">
+          <strong>Adresse de livraison :</strong><br>
+          {{ commande.adresseLivraison }}<br>
+          {{ commande.codePostal }} {{ commande.ville }}
+        </div>
+      {% endif %}
+
+      {% if commande.notes %}
+        <p><em>Notes : {{ commande.notes }}</em></p>
+      {% endif %}
+
+      <p>À bientôt chez Samy Dessert !</p>
+    </div>
+
+    <div class="email__footer">
+      Samy Dessert · Pâtisseries artisanales
+    </div>
+
+  </div>
+</body>
+</html>
+{% endapply %}

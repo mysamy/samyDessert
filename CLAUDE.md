@@ -71,13 +71,14 @@ public float $totalPrice = 0.0;
 ## TODO
 
 ### Développement
-- [ ] Pages à créer : `/produits`, `/recettes`, `/contact`, `/panier`, `/connexion`
-- [ ] Entités Doctrine : Produit, Commande, Utilisateur
-- [ ] Authentification Symfony Security
-- [ ] Composant `ProductCard` branché sur de vraies données
-- [ ] Composant `CartSummary` branché sur la session/panier
+- [x] Pages à créer : `/produits`, `/recettes`, `/contact`, `/panier`, `/connexion`
+- [x] Entités Doctrine : Produit, Commande, Utilisateur
+- [x] Authentification Symfony Security
+- [x] Composant `ProductCard` branché sur de vraies données
+- [x] Composant `CartSummary` branché sur la session/panier (live component `PanierLive`)
 - [ ] Formulaire de contact fonctionnel
 - [ ] Emails transactionnels (confirmation commande)
+- [ ] Déplacer `docker/` et `docker-compose.yml` en dehors du dossier projet
 
 ### Documentation & Soutenance
 - [ ] Ajouter des commentaires dans le code (PHP + Twig + JS)

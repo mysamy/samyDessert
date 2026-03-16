@@ -44,6 +44,14 @@ class Commande
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $codePostal = null;
 
+    // Numéro de commande lisible affiché dans les emails (ex: CMD-2026-00042)
+    #[ORM\Column(length: 50, nullable: true)]
+    private ?string $reference = null;
+
+    // Instructions spéciales du client (ex: "sans gluten svp")
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $notes = null;
+
     // Liste des produits inclus dans cette commande (supprimés si la commande est supprimée)
     #[ORM\OneToMany(targetEntity: CommandeProduit::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
     private Collection $commandeProduits;
@@ -133,6 +141,28 @@ class Commande
     public function setCodePostal(?string $codePostal): static
     {
         $this->codePostal = $codePostal;
+        return $this;
+    }
+
+    public function getReference(): ?string
+    {
+        return $this->reference;
+    }
+
+    public function setReference(?string $reference): static
+    {
+        $this->reference = $reference;
+        return $this;
+    }
+
+    public function getNotes(): ?string
+    {
+        return $this->notes;
+    }
+
+    public function setNotes(?string $notes): static
+    {
+        $this->notes = $notes;
         return $this;
     }
 

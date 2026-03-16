@@ -34,6 +34,10 @@ class Avis
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentaire = null;
 
+    // Indique si l'avis a été validé par un admin avant publication
+    #[ORM\Column]
+    private bool $isValide = false;
+
     // Date de création automatiquement définie à maintenant
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -89,6 +93,17 @@ class Avis
     public function setCommentaire(?string $commentaire): static
     {
         $this->commentaire = $commentaire;
+        return $this;
+    }
+
+    public function isValide(): bool
+    {
+        return $this->isValide;
+    }
+
+    public function setIsValide(bool $isValide): static
+    {
+        $this->isValide = $isValide;
         return $this;
     }
 

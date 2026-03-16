@@ -1,0 +1,29 @@
+{% apply inline_css(source('@styles/email.css')) %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Bienvenue chez Samy Dessert</title>
+</head>
+<body>
+  <div class="email">
+
+    <div class="email__header">
+      <h1>Bienvenue chez Samy Dessert !</h1>
+    </div>
+
+    <div class="email__body">
+      <p>Bonjour {% if utilisateur.prenom %}{{ utilisateur.prenom }}{% else %}{{ utilisateur.email }}{% endif %},</p>
+      <p>Votre compte a bien été créé. Vous pouvez dès maintenant parcourir nos recettes et commander nos pâtisseries artisanales.</p>
+
+      <p>À très bientôt chez Samy Dessert !</p>
+    </div>
+
+    <div class="email__footer">
+      Samy Dessert · Pâtisseries artisanales
+    </div>
+
+  </div>
+</body>
+</html>
+{% endapply %}

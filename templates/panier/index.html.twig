@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon panier — Samy Dessert{% endblock %}
+
+{% block body %}
+
+{# ── Hero ── #}
+<section class="bg-secondary py-12">
+  <div class="mx-auto max-w-7xl px-4">
+    <h1 class="text-4xl font-bold text-text mb-2">Mon panier</h1>
+    <p class="text-text-light text-lg">Vérifiez votre sélection avant de passer commande.</p>
+  </div>
+</section>
+
+<section class="py-12 bg-white">
+  <div class="mx-auto max-w-4xl px-4">
+    <twig:PanierLive />
+  </div>
+</section>
+
+{% endblock %}
