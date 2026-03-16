@@ -280,6 +280,90 @@ docker compose exec php bash # entrer dans le conteneur PHP (terminal Linux)
 
 ---
 
+### Récupérer le projet sur un nouveau PC
+
+```bash
+# 1. Cloner le code source depuis GitHub
+git clone https://github.com/mysamy/samyDessert.git
+cd samyDessert
+
+# 2. Construire les images et démarrer les conteneurs
+docker compose up -d --build
+```
+
+C'est tout — le conteneur `init` s'occupe automatiquement du reste (voir ci-dessous).
+
+---
+
+### Ordre d'exécution des conteneurs
+
+L'ordre est défini par `depends_on` dans `docker-compose.yml` :
+
+```
+mysql          ← démarre en premier (aucune dépendance)
+   ↓
+php            ← attend que mysql soit démarré
+nginx          ← attend que php soit démarré
+adminer        ← attend que mysql soit démarré
+init           ← attend que mysql soit démarré, s'exécute une fois puis s'arrête
+assets         ← attend que php soit démarré, tourne en boucle
+```
+
+**Important** : `depends_on` garantit que le conteneur est **démarré**, pas qu'il est **prêt à accepter des connexions**. C'est pourquoi `init` fait un `sleep 5` — pour laisser le temps à MySQL d'être vraiment opérationnel avant de lancer les migrations.
+
+| Conteneur | Rôle | Se relance ? |
+|-----------|------|-------------|
+| `mysql` | Base de données | Oui (unless-stopped) |
+| `php` | Exécute Symfony | Oui |
+| `nginx` | Serveur web | Oui |
+| `adminer` | Interface visuelle DB | Oui |
+| `init` | Setup automatique (1 fois) | **Non** (`restart: "no"`) |
+| `assets` | Recompile Tailwind en boucle | Oui |
+
+---
+
+### Conteneur `init` — initialisation automatique
+
+Le service `init` dans `docker-compose.yml` est un conteneur temporaire qui s'exécute **une seule fois** au démarrage pour préparer le projet. Il s'arrête tout seul après (`restart: "no"`).
+
+```yaml
+command: >
+  sh -c "
+    sleep 5 &&
+    composer install --no-interaction &&
+    php bin/console doctrine:database:create --if-not-exists &&
+    php bin/console doctrine:migrations:migrate --no-interaction
+  "
+```
+
+| Étape | Commande | Pourquoi |
+|-------|----------|----------|
+| 1 | `sleep 5` | Attend que MySQL soit prêt à accepter des connexions |
+| 2 | `composer install` | Le dossier `vendor/` n'est pas sur Git — il faut le recréer |
+| 3 | `doctrine:database:create --if-not-exists` | Crée la base de données vide si elle n'existe pas encore |
+| 4 | `doctrine:migrations:migrate --no-interaction` | Crée les tables dans la DB sans demander confirmation |
+
+**Sans ce conteneur**, il faudrait lancer ces 3 commandes manuellement :
+```bash
+docker compose exec php composer install
+docker compose exec php php bin/console doctrine:database:create
+docker compose exec php php bin/console doctrine:migrations:migrate
+```
+
+**`docker compose exec php <commande>`** = exécute une commande à l'intérieur du conteneur `php` qui tourne. C'est l'équivalent de se connecter en SSH à un serveur Linux et d'y taper la commande.
+
+---
+
+### Pourquoi `vendor/` n'est pas sur Git ?
+
+Le dossier `vendor/` contient toutes les bibliothèques PHP installées par Composer. Il est listé dans `.gitignore` pour deux raisons :
+- Il est très lourd (des centaines de fichiers)
+- Il se régénère en une commande (`composer install`) depuis `composer.lock`
+
+`composer.lock` lui est sur Git — il fige les versions exactes à installer, garantissant que tout le monde a les mêmes dépendances.
+
+---
+
 # PHP
 
 ## Attribut PHP `#[...]`
@@ -1048,6 +1132,205 @@ samyDessert/
     ├── home/index.html.twig      # page d'accueil
     └── produits/index.html.twig  # page produits
 ```
+
+---
+
+## SEO
+
+Le **SEO** (Search Engine Optimization) désigne l'ensemble des techniques pour améliorer la position d'un site web dans les résultats des moteurs de recherche (Google, Bing...).
+
+**Pourquoi c'est important ?**
+Un site bien référencé apparaît en haut des résultats Google → plus de visiteurs sans payer de publicité.
+
+**Les éléments SEO de base en HTML :**
+
+```html
+<!-- Titre de la page — affiché dans l'onglet et dans Google -->
+<title>Tarte au citron meringuée — Samy Dessert</title>
+
+<!-- Description — affiché sous le titre dans les résultats Google -->
+<meta name="description" content="Recette de tarte au citron avec meringue légère, préparée en 1h30.">
+
+<!-- URL propre avec slug -->
+https://samydessert.fr/recettes/tarte-au-citron-meringuee
+```
+
+**En Twig/Symfony :**
+```twig
+{% block title %}{{ recette.titre }} — Samy Dessert{% endblock %}
+```
+
+**Ce qui aide le SEO :**
+- URLs lisibles (slugs)
+- Balises `<h1>`, `<h2>` bien structurées
+- Images avec `alt` descriptif
+- Temps de chargement rapide
+- Site accessible sur mobile (responsive)
+
+> **Phrase clé** : Le SEO, c'est optimiser son site pour que Google le comprenne et le propose en premier aux utilisateurs.
+
+---
+
+## Slug
+
+Un **slug** est une version d'un texte transformée pour être utilisable dans une URL : tout en minuscules, sans accents, sans espaces (remplacés par des tirets), sans caractères spéciaux.
+
+```
+"Tarte au citron meringuée"  →  tarte-au-citron-meringuee
+"Paris-Brest"                →  paris-brest
+"Macarons à la framboise"    →  macarons-a-la-framboise
+```
+
+**Pourquoi utiliser un slug ?**
+
+| Sans slug | Avec slug |
+|-----------|-----------|
+| `/recettes/1` | `/recettes/tarte-au-citron-meringuee` |
+| URL non lisible | URL descriptive et mémorisable |
+| Mauvais pour le SEO | Bon pour le référencement Google |
+
+**En Symfony**, on stocke le slug en base de données et on l'utilise dans la route :
+```php
+#[Route('/recettes/{slug}', name: 'app_recette_show')]
+public function show(Recette $recette): Response { ... }
+```
+
+Doctrine peut résoudre automatiquement l'entité depuis le slug grâce au `ParamConverter`.
+
+**Génération du slug en PHP** :
+```php
+// Symfony fournit un composant String pour ça
+use Symfony\Component\String\Slugger\AsciiSlugger;
+
+$slugger = new AsciiSlugger('fr');
+$slug = strtolower($slugger->slug('Tarte au citron meringuée'));
+// → "tarte-au-citron-meringuee"
+```
+
+> **Phrase clé** : Un slug est la version URL-safe d'un texte — lisible, sans accents, sans espaces.
+
+---
+
+## Base de données relationnelle
+
+### C'est quoi une base de données relationnelle ?
+
+Une **base de données relationnelle** stocke les données dans des **tables** (comme des feuilles Excel) reliées entre elles par des **clés étrangères**. C'est le modèle utilisé par MySQL, PostgreSQL, SQLite.
+
+```
+Table produit          Table categorie
+-----------            -----------
+id  | nom    | cat_id  id  | nom
+1   | Macaron | 2      1   | Tartes
+2   | Éclair  | 1      2   | Choux
+```
+
+`cat_id` dans `produit` → pointe vers `id` dans `categorie` = **clé étrangère** (foreign key).
+
+> **Phrase clé** : Une base de données relationnelle organise les données en tables liées par des clés étrangères.
+
+---
+
+### Clé primaire (Primary Key)
+
+La **clé primaire** est l'identifiant unique d'une ligne dans une table. Elle ne peut pas être nulle ni en double.
+
+```sql
+id int [pk, increment]   -- auto-incrémentée par MySQL
+```
+
+Avec Doctrine :
+```php
+#[ORM\Id]
+#[ORM\GeneratedValue]
+#[ORM\Column]
+private ?int $id = null;
+```
+
+---
+
+### Clé étrangère (Foreign Key)
+
+Une **clé étrangère** est une colonne qui pointe vers la clé primaire d'une autre table. Elle crée le lien entre deux tables.
+
+```
+produit.categorie_id → categorie.id
+commande.utilisateur_id → utilisateur.id
+```
+
+Si tu essaies d'insérer un `categorie_id` qui n'existe pas dans `categorie` → MySQL refuse (intégrité référentielle).
+
+---
+
+### Contrainte UNIQUE
+
+Une contrainte `UNIQUE` empêche deux lignes d'avoir la même valeur dans une colonne.
+
+```sql
+slug varchar(255) [not null, unique]
+email varchar(180) [not null, unique]
+```
+
+Exemples dans notre projet :
+- `utilisateur.email` → deux comptes ne peuvent pas avoir le même email
+- `produit.slug` → deux produits ne peuvent pas avoir la même URL
+- `avis.(utilisateur_id, produit_id)` → un utilisateur ne peut laisser qu'un seul avis par produit (contrainte unique sur la paire)
+
+---
+
+### Snapshot de prix
+
+Un **snapshot** (instantané) est une **copie d'une valeur au moment d'une action**, pour la conserver même si la donnée source change plus tard.
+
+Dans notre projet, `commande_produit.prix_unitaire` est un snapshot du prix du produit :
+
+```
+Aujourd'hui :   produit.prix = 3.50 €
+                commande passée → prix_unitaire = 3.50 € (copié)
+
+6 mois plus tard : produit.prix = 4.00 € (le prix a augmenté)
+                   commande.prix_unitaire = 3.50 € (la commande garde le vieux prix ✅)
+```
+
+**Pourquoi c'est important ?**
+Si on ne faisait pas de snapshot et qu'on lisait juste `produit.prix`, la facture du client changerait rétroactivement à chaque modification de prix — ce qui est faux et illégal.
+
+> **Phrase clé** : Un snapshot est une copie d'une valeur au moment où elle est utilisée, pour la figer dans le temps.
+
+---
+
+### dbdiagram.io
+
+**dbdiagram.io** est un outil en ligne pour **visualiser et documenter le schéma d'une base de données** via un langage texte simple (DBML).
+
+```
+Table produit {
+  id int [pk, increment]
+  nom varchar(255) [not null]
+  prix decimal(8,2) [not null]
+  categorie_id int [ref: > categorie.id]
+}
+```
+
+- `[pk]` → clé primaire
+- `[not null]` → obligatoire
+- `[ref: > categorie.id]` → clé étrangère vers `categorie.id`
+- `[unique]` → contrainte d'unicité
+
+C'est le premier outil à mettre à jour quand on modifie le schéma, **avant de toucher aux entités PHP**.
+
+---
+
+### `decimal(8,2)` pour les prix
+
+Les prix sont stockés en `DECIMAL` et non en `FLOAT` pour éviter les erreurs d'arrondi flottant.
+
+```
+FLOAT : 3.50 peut devenir 3.4999999...
+DECIMAL(8,2) : stockage exact → toujours 3.50
+```
+
+`decimal(8,2)` = 8 chiffres au total, dont 2 après la virgule → max `999999.99`.
 
 ---
 

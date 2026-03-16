@@ -47,6 +47,25 @@ class Recette
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
 
+    #[ORM\ManyToOne(inversedBy: 'recettes')]
+    private ?Categorie $categorie = null;
+
+    // Nombre de portions que la recette produit
+    #[ORM\Column(nullable: true)]
+    private ?int $portions = null;
+
+    // Slug pour les URLs SEO-friendly (ex: tarte-au-citron-meringuee)
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $slug = null;
+
+    // Indique si la recette est visible sur le site
+    #[ORM\Column]
+    private bool $isPublished = false;
+
+    // Date de dernière modification
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
+
     public function __construct()
     {
         $this->createdAt = new \DateTime();
@@ -143,5 +162,71 @@ class Recette
     {
         $this->createdAt = $createdAt;
         return $this;
+    }
+
+    public function getCategorie(): ?Categorie
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categorie $categorie): static
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    public function getPortions(): ?int
+    {
+        return $this->portions;
+    }
+
+    public function setPortions(?int $portions): static
+    {
+        $this->portions = $portions;
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->isPublished;
+    }
+
+    public function setIsPublished(bool $isPublished): static
+    {
+        $this->isPublished = $isPublished;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+        return $this;
+    }
+
+    // Retourne la durée formatée (ex: "1h30" ou "45 min")
+    public function getTemps(): ?string
+    {
+        if ($this->duree === null) return null;
+        if ($this->duree < 60) return $this->duree . ' min';
+        $h = intdiv($this->duree, 60);
+        $m = $this->duree % 60;
+        return $m > 0 ? $h . 'h' . str_pad($m, 2, '0', STR_PAD_LEFT) : $h . 'h';
     }
 }

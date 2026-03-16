@@ -37,6 +37,23 @@ class Produit
     #[ORM\ManyToOne(targetEntity: Categorie::class, inversedBy: 'produits')]
     private ?Categorie $categorie = null;
 
+    // Slug pour les URLs SEO-friendly (ex: macaron-framboise)
+    #[ORM\Column(length: 255, unique: true, nullable: true)]
+    private ?string $slug = null;
+
+    // Quantité disponible en stock
+    #[ORM\Column]
+    private int $stock = 0;
+
+    // Date d'ajout du produit au catalogue
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $createdAt = null;
+
+    public function __construct()
+    {
+        $this->createdAt = new \DateTime();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -105,6 +122,39 @@ class Produit
     public function setCategorie(?Categorie $categorie): static
     {
         $this->categorie = $categorie;
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(?string $slug): static
+    {
+        $this->slug = $slug;
+        return $this;
+    }
+
+    public function getStock(): int
+    {
+        return $this->stock;
+    }
+
+    public function setStock(int $stock): static
+    {
+        $this->stock = $stock;
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(\DateTimeInterface $createdAt): static
+    {
+        $this->createdAt = $createdAt;
         return $this;
     }
 }
