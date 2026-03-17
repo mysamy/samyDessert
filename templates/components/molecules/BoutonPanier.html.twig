@@ -1,6 +1,6 @@
 {# Root unique obligatoire pour les live components #}
 <div {{ attributes }}>
-  {% if quantite == 0 %}
+  {% if this.quantite == 0 %}
 
     {# Bouton initial : ajouter au panier #}
     <button
@@ -26,7 +26,7 @@
         <i class="fa-solid fa-minus text-xs" aria-hidden="true"></i>
       </button>
 
-      <span class="w-6 text-center font-semibold text-text text-sm">{{ quantite }}</span>
+      <span class="w-6 text-center font-semibold text-text text-sm">{{ this.quantite }}</span>
 
       <button
         data-action="live#action"

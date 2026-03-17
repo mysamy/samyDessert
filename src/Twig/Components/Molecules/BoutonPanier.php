@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Twig\Components;
+namespace App\Twig\Components\Molecules;
 
 use App\Service\PanierService;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveProp;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 // Live component : bouton "Ajouter au panier" sur une carte produit.
@@ -14,38 +15,33 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 final class BoutonPanier
 {
     use DefaultActionTrait;
+    use ComponentToolsTrait;
 
-    // ID du produit à ajouter (passé depuis le template appelant)
     #[LiveProp]
     public int $produitId = 0;
 
-    // Nom du produit (pour l'aria-label)
     #[LiveProp]
     public string $produitNom = '';
 
-    // Quantité actuelle de ce produit dans le panier
-    #[LiveProp]
-    public int $quantite = 0;
-
     public function __construct(private PanierService $panier) {}
 
-    // Initialise la quantité depuis la session au premier rendu (lecture session, pas de SQL)
-    public function mount(): void
+    // Toujours lu depuis la session — fiable sur page reload et live re-render
+    public function getQuantite(): int
     {
-        $this->quantite = $this->panier->getQuantitePourProduit($this->produitId);
+        return $this->panier->getQuantitePourProduit($this->produitId);
     }
 
     #[LiveAction]
     public function ajouter(): void
     {
         $this->panier->ajouter($this->produitId);
-        $this->quantite = $this->panier->getQuantitePourProduit($this->produitId);
+        $this->emit('panierUpdated');
     }
 
     #[LiveAction]
     public function retirer(): void
     {
         $this->panier->retirer($this->produitId);
-        $this->quantite = $this->panier->getQuantitePourProduit($this->produitId);
+        $this->emit('panierUpdated');
     }
 }

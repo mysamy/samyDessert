@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Twig\Components;
+namespace App\Twig\Components\Organisms;
 
 use App\Service\PanierService;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 // Live component : affichage complet du panier avec mise à jour en temps réel.
@@ -14,6 +15,7 @@ use Symfony\UX\LiveComponent\DefaultActionTrait;
 final class PanierLive
 {
     use DefaultActionTrait;
+    use ComponentToolsTrait;
 
     public function __construct(private PanierService $panier) {}
 
@@ -37,23 +39,27 @@ final class PanierLive
     public function ajouter(#[LiveArg] int $id): void
     {
         $this->panier->ajouter($id);
+        $this->emit('panierUpdated');
     }
 
     #[LiveAction]
     public function retirer(#[LiveArg] int $id): void
     {
         $this->panier->retirer($id);
+        $this->emit('panierUpdated');
     }
 
     #[LiveAction]
     public function supprimer(#[LiveArg] int $id): void
     {
         $this->panier->supprimer($id);
+        $this->emit('panierUpdated');
     }
 
     #[LiveAction]
     public function vider(): void
     {
         $this->panier->vider();
+        $this->emit('panierUpdated');
     }
 }

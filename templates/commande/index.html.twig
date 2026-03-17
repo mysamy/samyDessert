@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Passer commande — Samy Dessert{% endblock %}
+
+{% block body %}
+
+<section class="bg-secondary py-12">
+  <div class="mx-auto max-w-7xl px-4">
+    <h1 class="text-4xl font-bold text-text mb-2">Passer commande</h1>
+    <p class="text-text-light text-lg">Vérifiez votre commande avant de procéder au paiement.</p>
+  </div>
+</section>
+
+<section class="py-12 bg-white">
+  <div class="mx-auto max-w-4xl px-4">
+
+    {# Récapitulatif du panier #}
+    <div class="mb-10">
+      <h2 class="text-xl font-bold text-text mb-4">Récapitulatif</h2>
+      <div class="divide-y divide-slate-100 border border-slate-100 rounded-xl overflow-hidden">
+        {% for ligne in lignes %}
+          <div class="flex items-center justify-between px-5 py-4">
+            <div>
+              <p class="font-semibold text-text">{{ ligne.produit.nom }}</p>
+              <p class="text-sm text-slate-400">{{ ligne.produit.prix|number_format(2, ',', ' ') }} € × {{ ligne.quantite }}</p>
+            </div>
+            <p class="font-bold text-text">{{ (ligne.produit.prix * ligne.quantite)|number_format(2, ',', ' ') }} €</p>
+          </div>
+        {% endfor %}
+        <div class="flex items-center justify-between px-5 py-4 bg-secondary">
+          <p class="font-bold text-text">Total</p>
+          <p class="text-2xl font-bold text-accent">{{ total|number_format(2, ',', ' ') }} €</p>
+        </div>
+      </div>
+    </div>
+
+    {# Bouton paiement Stripe #}
+    <form action="{{ path('app_commande_paiement') }}" method="POST">
+      <input type="hidden" name="_token" value="{{ csrf_token('commande') }}">
+      <button type="submit"
+        class="w-full flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary transition">
+        <i class="fa-solid fa-lock text-sm" aria-hidden="true"></i>
+        Payer {{ total|number_format(2, ',', ' ') }} € en toute sécurité
+      </button>
+    </form>
+
+    <p class="text-center text-xs text-slate-400 mt-4">
+      <i class="fa-brands fa-stripe fa-lg" aria-hidden="true"></i>
+      Paiement sécurisé par Stripe
+    </p>
+
+  </div>
+</section>
+
+{% endblock %}

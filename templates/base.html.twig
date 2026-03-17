@@ -22,7 +22,10 @@
       logoAlt="Samy Dessert"
     >
       <twig:block name="actions">
-        <twig:Atoms:Link href="/panier">Panier</twig:Atoms:Link>
+        <twig:Atoms:Link href="/panier" class="flex items-center gap-1.5">
+          Panier
+          <twig:Atoms:PanierBadge />
+        </twig:Atoms:Link>
         {% if app.user %}
           <twig:Atoms:Link href="/deconnexion">Se déconnecter</twig:Atoms:Link>
         {% else %}

@@ -65,7 +65,7 @@
         {# Produit : prix + bouton live "Ajouter au panier" #}
         <span class="text-base font-bold text-text">{{ prix }}</span>
         {% if produitId is not null %}
-          <twig:BoutonPanier
+          <twig:Molecules:BoutonPanier
             :produitId="produitId"
             :produitNom="titre"
           />
