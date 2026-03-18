@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mon compte — Samy Dessert{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+
+  <h1 class="text-3xl font-bold text-primary mb-2">Mon compte</h1>
+  <p class="text-text-light mb-10">
+    Bonjour {% if utilisateur.prenom %}{{ utilisateur.prenom }}{% else %}{{ utilisateur.email }}{% endif %} !
+  </p>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+    {# Infos personnelles #}
+    <div class="bg-white border border-surface rounded-xl p-6 shadow-sm">
+      <h2 class="text-lg font-semibold text-primary mb-4">
+        <i class="fa-solid fa-user mr-2"></i> Mes informations
+      </h2>
+      <ul class="space-y-2 text-sm text-text">
+        <li><span class="text-text-light">Email :</span> {{ utilisateur.email }}</li>
+        {% if utilisateur.nom or utilisateur.prenom %}
+          <li><span class="text-text-light">Nom :</span> {{ utilisateur.prenom }} {{ utilisateur.nom }}</li>
+        {% endif %}
+        {% if utilisateur.telephone %}
+          <li><span class="text-text-light">Téléphone :</span> {{ utilisateur.telephone }}</li>
+        {% endif %}
+        {% if utilisateur.adresse %}
+          <li><span class="text-text-light">Adresse :</span> {{ utilisateur.adresse }}, {{ utilisateur.codePostal }} {{ utilisateur.ville }}</li>
+        {% endif %}
+      </ul>
+    </div>
+
+    {# Mes commandes #}
+    <twig:Atoms:Link href="{{ path('app_compte_commandes') }}"
+      class="bg-white border border-surface rounded-xl p-6 shadow-sm hover:border-accent transition block">
+      <h2 class="text-lg font-semibold text-primary mb-2">
+        <i class="fa-solid fa-bag-shopping mr-2"></i> Mes commandes
+      </h2>
+      <p class="text-sm text-text-light">Consulter et gérer vos commandes passées.</p>
+    </twig:Atoms:Link>
+
+  </div>
+
+  {# Déconnexion #}
+  <div class="mt-10">
+    <twig:Atoms:Link href="{{ path('_logout_main') }}" class="text-sm text-text-light hover:text-accent transition">
+      <i class="fa-solid fa-right-from-bracket mr-1"></i> Se déconnecter
+    </twig:Atoms:Link>
+  </div>
+
+</div>
+{% endblock %}

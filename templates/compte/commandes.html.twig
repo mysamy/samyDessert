@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes — Samy Dessert{% endblock %}
+
+{% block body %}
+<div class="max-w-4xl mx-auto px-4 py-12">
+
+  <h1 class="text-3xl font-bold text-primary mb-8">Mes commandes</h1>
+
+  {% for message in app.flashes('success') %}
+    <div class="mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg">{{ message }}</div>
+  {% endfor %}
+  {% for message in app.flashes('error') %}
+    <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg">{{ message }}</div>
+  {% endfor %}
+
+  {% if commandes is empty %}
+    <p class="text-text-light">Vous n'avez pas encore de commande.</p>
+    <twig:Atoms:Link href="{{ path('app_produits') }}" class="mt-4 inline-block">Voir nos produits</twig:Atoms:Link>
+  {% else %}
+    <div class="space-y-6">
+      {% for commande in commandes %}
+        <div class="bg-white border border-surface rounded-xl p-6 shadow-sm">
+
+          <div class="flex items-center justify-between mb-4">
+            <div>
+              <span class="font-semibold text-primary">{{ commande.reference ?? '#' ~ commande.id }}</span>
+              <span class="text-text-light text-sm ml-3">{{ commande.dateCommande|date('d/m/Y à H:i') }}</span>
+            </div>
+            <span class="px-3 py-1 rounded-full text-sm font-medium
+              {% if commande.statut.value == 'confirmee' %}bg-green-100 text-green-800
+              {% elseif commande.statut.value == 'annulee' %}bg-red-100 text-red-800
+              {% elseif commande.statut.value == 'livree' %}bg-blue-100 text-blue-800
+              {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+              {{ commande.statut.value|replace({'_': ' '})|capitalize }}
+            </span>
+          </div>
+
+          <table class="w-full text-sm mb-4">
+            <thead>
+              <tr class="text-text-light border-b border-surface">
+                <th class="text-left pb-2">Produit</th>
+                <th class="text-center pb-2">Qté</th>
+                <th class="text-right pb-2">Prix unitaire</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for ligne in commande.commandeProduits %}
+                <tr class="border-b border-surface last:border-0">
+                  <td class="py-2">{{ ligne.produit.nom }}</td>
+                  <td class="py-2 text-center">{{ ligne.quantite }}</td>
+                  <td class="py-2 text-right">{{ ligne.prixUnitaire|number_format(2, ',', ' ') }} €</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+
+          <div class="flex items-center justify-between">
+            <span class="font-bold text-primary">Total : {{ commande.total|number_format(2, ',', ' ') }} €</span>
+
+            {% if commande.statut.value == 'confirmee' %}
+              <form method="POST" action="{{ path('app_compte_annuler_commande', {id: commande.id}) }}"
+                    onsubmit="return confirm('Confirmer l\'annulation de cette commande ?')">
+                <input type="hidden" name="_token" value="{{ csrf_token('annuler_commande_' ~ commande.id) }}">
+                <button type="submit"
+                        class="text-sm px-4 py-2 rounded-lg border border-red-300 text-red-600 hover:bg-red-50 transition">
+                  Annuler la commande
+                </button>
+              </form>
+            {% endif %}
+          </div>
+
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</div>
+{% endblock %}

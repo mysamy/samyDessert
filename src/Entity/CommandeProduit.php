@@ -14,7 +14,7 @@ class CommandeProduit
     // Clé composite : une commande + un produit forment la clé primaire
     #[ORM\Id]
     #[ORM\ManyToOne(targetEntity: Commande::class, inversedBy: 'commandeProduits')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Commande $commande = null;
 
     #[ORM\Id]

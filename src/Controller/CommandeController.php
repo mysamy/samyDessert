@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Commande;
 use App\Entity\CommandeProduit;
 use App\Enum\StatutCommande;
+use App\Service\MailerService;
 use App\Service\PanierService;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
@@ -21,6 +22,7 @@ class CommandeController extends AbstractController
     public function __construct(
         private PanierService $panier,
         private EntityManagerInterface $em,
+        private MailerService $mailer,
     ) {}
 
     // Page récap + formulaire adresse avant paiement
@@ -99,10 +101,14 @@ class CommandeController extends AbstractController
                 $this->em->persist($cp);
             }
 
+            // Génère une référence lisible ex: CMD-2026-00001
+            $commande->setReference('CMD-' . date('Y') . '-' . str_pad((string) random_int(1, 99999), 5, '0', STR_PAD_LEFT));
+
             $this->em->persist($commande);
             $this->em->flush();
 
             $this->panier->vider();
+            $this->mailer->envoyerConfirmationCommande($commande);
         }
 
         return $this->render('commande/succes.html.twig');

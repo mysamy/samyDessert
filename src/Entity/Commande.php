@@ -18,9 +18,9 @@ class Commande
     #[ORM\Column]
     private ?int $id = null;
 
-    // L'utilisateur qui a passé la commande
+    // L'utilisateur qui a passé la commande (supprimé en cascade si l'utilisateur est supprimé)
     #[ORM\ManyToOne(targetEntity: Utilisateur::class)]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Utilisateur $utilisateur = null;
 
     // Date automatiquement définie à la création

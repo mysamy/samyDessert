@@ -76,7 +76,8 @@ public float $totalPrice = 0.0;
 - [x] Authentification Symfony Security
 - [x] Composant `ProductCard` branché sur de vraies données
 - [x] Composant `CartSummary` branché sur la session/panier (live component `PanierLive`)
-- [ ] Formulaire de contact fonctionnel
+- [x] Formulaire de contact fonctionnel
+- [ ] Afficher/masquer le mot de passe sur les formulaires connexion/inscription
 - [ ] Emails transactionnels (confirmation commande)
 - [ ] Déplacer `docker/` et `docker-compose.yml` en dehors du dossier projet
 
