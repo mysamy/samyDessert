@@ -4,8 +4,8 @@
 
 {% block body %}
 
-<section class="bg-secondary py-12">
-  <div class="mx-auto max-w-7xl px-4">
+<section class="section-alt">
+  <div class="container-main">
     <h1 class="text-4xl font-bold text-text mb-2">Contactez-nous</h1>
     <p class="text-text-light text-lg">Une question, une commande sur mesure ? Écrivez-nous.</p>
   </div>
@@ -16,8 +16,8 @@
 
     {# Message de succès #}
     {% for message in app.flashes('success') %}
-      <div class="mb-8 rounded-xl bg-green-50 border border-green-200 p-5 text-green-800 text-sm font-medium">
-        <i class="fa-solid fa-circle-check mr-2 text-green-600" aria-hidden="true"></i>
+      <div class="mb-8 rounded-xl bg-success-light border border-success p-5 text-success text-sm font-medium">
+        <i class="fa-solid fa-circle-check mr-2 text-success" aria-hidden="true"></i>
         {{ message }}
       </div>
     {% endfor %}
@@ -75,7 +75,7 @@
         <div class="flex justify-end">
           <twig:Atoms:Button
             type="submit"
-            class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-primary transition"
+            class="btn-cta"
           >
             Envoyer le message
             <twig:Atoms:Icon name="paper-plane" :decorative="true"/>
@@ -89,8 +89,8 @@
 </section>
 
 {# Infos pratiques #}
-<section class="py-12 bg-secondary">
-  <div class="mx-auto max-w-7xl px-4">
+<section class="py-12 bg-surface">
+  <div class="container-main">
     <div class="grid gap-8 sm:grid-cols-3 text-center">
 
       <div class="flex flex-col items-center gap-3">

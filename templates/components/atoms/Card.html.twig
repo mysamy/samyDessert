@@ -1,6 +1,3 @@
-{% set id = this.id %}
-{% set class = this.class %}
-{% set title = this.title %}
 {% set titleId = this.titleId %}
 {% set tag = this.safeTitleTag %}
 
@@ -8,7 +5,7 @@
   {% if id is not empty %}id="{{ id }}"{% endif %}
   {% if title is not empty %}aria-labelledby="{{ titleId }}"{% endif %}
   {{ attributes.defaults({
-    class: "rounded-lg border border-slate-200 bg-white shadow-sm " ~ (class ?? '')
+    class: "card"
   }) }}
 >
   {% if title is not empty %}

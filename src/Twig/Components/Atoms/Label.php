@@ -9,5 +9,4 @@ final class Label
 {
     public string $label = '';
     public ?string $forId = null;
-    public string $class = '';
 }

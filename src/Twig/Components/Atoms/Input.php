@@ -4,7 +4,7 @@ namespace App\Twig\Components\Atoms;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('Atoms:Input')]
+#[AsTwigComponent]
 final class Input
 {
     public string $type = 'text';

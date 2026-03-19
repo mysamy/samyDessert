@@ -8,7 +8,7 @@
   <h1 class="text-3xl font-bold text-primary mb-8">Mes commandes</h1>
 
   {% for message in app.flashes('success') %}
-    <div class="mb-4 p-4 bg-green-100 border border-green-300 text-green-800 rounded-lg">{{ message }}</div>
+    <div class="mb-4 p-4 bg-success-light border border-success text-success rounded-lg">{{ message }}</div>
   {% endfor %}
   {% for message in app.flashes('error') %}
     <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg">{{ message }}</div>
@@ -27,13 +27,12 @@
               <span class="font-semibold text-primary">{{ commande.reference ?? '#' ~ commande.id }}</span>
               <span class="text-text-light text-sm ml-3">{{ commande.dateCommande|date('d/m/Y à H:i') }}</span>
             </div>
-            <span class="px-3 py-1 rounded-full text-sm font-medium
-              {% if commande.statut.value == 'confirmee' %}bg-green-100 text-green-800
-              {% elseif commande.statut.value == 'annulee' %}bg-red-100 text-red-800
-              {% elseif commande.statut.value == 'livree' %}bg-blue-100 text-blue-800
-              {% else %}bg-yellow-100 text-yellow-800{% endif %}">
+            {% set statutVariant = commande.statut.value == 'confirmee' ? 'success' :
+              (commande.statut.value == 'annulee' ? 'danger' :
+              (commande.statut.value == 'livree' ? 'primary' : 'warning')) %}
+            <twig:Atoms:Badge variant="{{ statutVariant }}">
               {{ commande.statut.value|replace({'_': ' '})|capitalize }}
-            </span>
+            </twig:Atoms:Badge>
           </div>
 
           <table class="w-full text-sm mb-4">

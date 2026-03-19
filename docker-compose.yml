@@ -48,7 +48,7 @@ services:
     volumes:
       - .:/var/www/html
     working_dir: /var/www/html
-    command: sh -c "while true; do php bin/console tailwind:build && php bin/console asset-map:compile; sleep 10; done"
+    command: sh -c "while true; do php bin/console tailwind:build && php bin/console asset-map:compile && php bin/console cache:pool:clear cache.global_clearer 2>/dev/null; sleep 10; done"
     restart: unless-stopped
     depends_on:
       - php

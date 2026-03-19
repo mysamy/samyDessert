@@ -5,35 +5,70 @@
 
 /* ── Thème Tailwind v4 ───────────────────────────────────────────────────── */
 /*
- * @theme génère automatiquement les CSS variables ET les classes Tailwind :
- *   --color-primary → bg-primary / text-primary / border-primary / etc.
- *   --font-size-h1  → text-h1
- *   --spacing-side  → p-side / m-side / etc.
+ * @theme génère automatiquement les CSS variables ET les classes Tailwind.
+ * Règle : --[catégorie]-[nom] → classe-[nom]
+ *
+ * Catégories disponibles :
+ *   --color-*      → bg-* / text-* / border-* / ring-* / from-* / to-*
+ *   --font-size-*  → text-*
+ *   --font-*       → font-*
+ *   --spacing-*    → p-* / m-* / gap-* / w-* / h-* / top-* / etc.
+ *   --radius-*     → rounded-*
+ *   --shadow-*     → shadow-*
+ *   --animate-*    → animate-*
+ *   --breakpoint-* → sm: / md: / lg: (responsive)
+ *   --z-index-*    → z-*
  */
 @theme {
-  /* Couleurs */
-  --color-primary:          #92400e;  /* bg-primary   | text-primary   (amber-800) */
-  --color-secondary:        #fffbeb;  /* bg-secondary | text-secondary (amber-50)  */
-  --color-accent:           #d97706;  /* bg-accent    | text-accent    (amber-600) */
-  --color-surface:          #fef3c7;  /* bg-surface   | text-surface   (amber-100) */
-  --color-star:             #fbbf24;  /* text-star                     (amber-400) */
-  --color-text:             #78350f;  /* text-text                     (amber-900) */
-  --color-text-light:       #b45309;  /* text-text-light               (amber-700) */
-  --color-focus:            #f59e0b;  /* outline-focus                 (amber-500) */
-  --color-white:            #ffffff;
-  --color-black:            #000000;
+  /* ── Chocolat (couleur principale) ── */
+  --color-primary:          #3B1A08;  /* bg-primary      | text-primary      chocolat foncé  */
+  --color-primary-light:    #FEF0E6;  /* bg-primary-light                    crème vanille   */
 
-  /* Typographie */
-  --font-size-h1:  3.0625rem; /* text-h1  */
-  --font-size-h2:  2.4375rem; /* text-h2  */
-  --font-size-h3:  1.9375rem; /* text-h3  */
-  --font-size-h4:  1.5625rem; /* text-h4  */
-  --font-size-body: 1.25rem;  /* text-body */
+  /* ── Framboise (accent, CTA, prix) ── */
+  --color-accent:           #9D174D;  /* bg-accent       | text-accent       framboise foncé */
+  --color-accent-light:     #FCE7F3;  /* bg-accent-light                     rose pâle       */
 
-  /* Espacements réutilisables */
-  --spacing-side:  clamp(1rem, 15vw, 50rem);
-  --spacing-side2: clamp(1rem, 5vw, 50rem);
-  --spacing-top:   clamp(1rem, 5vh, 5rem);
+  /* ── Pistache (succès, disponible, confirmé) ── */
+  --color-success:          #3F6212;  /* bg-success      | text-success      pistache foncé  */
+  --color-success-light:    #ECFCCB;  /* bg-success-light                    pistache pâle   */
+
+  /* ── Danger (erreurs, annulations, rupture) ── */
+  --color-danger:           #DC2626;  /* bg-danger       | text-danger       rouge vif       */
+  --color-danger-light:     #FEE2E2;  /* bg-danger-light                     rouge pâle      */
+  --color-danger-dark:      #991B1B;  /* bg-danger-dark  | text-danger-dark  rouge foncé     */
+
+  /* ── Neutres (fonds, bordures, textes secondaires) ── */
+  --color-bg:               #FDF8F3;  /* bg-bg                               crème très clair */
+  --color-surface:          #F5EDE4;  /* bg-surface                          crème doux       */
+  --color-border:           #E8D5C4;  /* border-border                       beige-brun       */
+  --color-text:             #1C0A03;  /* text-text                           quasi noir choco */
+  --color-text-light:       #6B3A2A;  /* text-text-light                     brun moyen       */
+
+  /* ── Spéciaux ── */
+  --color-star:             #F59E0B;  /* text-star       étoiles d'avis (amber universel)   */
+  --color-focus:            #9D174D;  /* outline-focus   framboise (cohérent avec l'accent)  */
+
+  /* ── Typographie ── */
+  --font-size-h1:   3.0625rem / 1.2; /* text-h1   */
+  --font-size-h2:   2.4375rem / 1.25; /* text-h2   */
+  --font-size-h3:   1.9375rem / 1.3; /* text-h3   */
+  --font-size-h4:   1.5625rem / 1.35; /* text-h4   */
+  --font-size-body: 1.25rem / 1.6;   /* text-body */
+  --font-size-small: 1rem / 1.5;      /* text-small — labels, badges, légendes */
+
+  /* ── Espacement ── */
+  --spacing-side:  clamp(1rem, 15vw, 50rem); /* px-side / mx-side / w-side */
+  --spacing-side2: clamp(1rem, 5vw, 50rem);  /* px-side2 etc.              */
+  --spacing-top:   clamp(1rem, 5vh, 5rem);   /* pt-top / mt-top etc.       */
+
+  /* ── Bordures arrondies ── */
+  /* --radius-card: 1rem; */  /* rounded-card — exemple désactivé */
+
+  /* ── Ombres ── */
+  /* --shadow-card: 0 4px 24px 0 rgb(0 0 0 / 0.08); */  /* shadow-card — exemple désactivé */
+
+  /* ── Z-index ── */
+  /* --z-index-modal: 100; */  /* z-modal — exemple désactivé */
 }
 
 /* ── Carousel ────────────────────────────────────────────────────────────── */
@@ -135,5 +170,73 @@
 
 .how__item {
   @apply list-disc;
+}
+
+/* ── Classes utilitaires personnalisées ──────────────────────────────────── */
+/*
+ * Ces classes regroupent des combinaisons Tailwind qui se répètent souvent.
+ * Utilisation : class="container-main" au lieu de class="mx-auto max-w-7xl px-4"
+ */
+@layer components {
+
+  /* Conteneur centré de page — mx-auto max-w-7xl px-4 */
+  .container-main {
+    @apply mx-auto max-w-7xl px-4;
+  }
+
+  /* Section claire (fond blanc) */
+  .section {
+    @apply py-12 bg-white;
+  }
+
+  /* Section colorée (fond crème) */
+  .section-alt {
+    @apply py-12 bg-bg;
+  }
+
+  /* Bouton CTA principal — framboise, grand (px-8 py-3) */
+  .btn-cta {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-8 py-3 font-semibold hover:bg-primary transition;
+  }
+
+  /* Bouton CTA compact — framboise, petit (px-4 py-2) */
+  .btn-cta-sm {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 font-semibold hover:bg-primary transition;
+    font-size: var(--font-size-small);
+  }
+
+  /* Bouton CTA secondaire — contour */
+  .btn-cta-outline {
+    @apply inline-flex items-center gap-2 rounded-full border-2 border-accent text-accent px-8 py-3 font-semibold hover:bg-accent hover:text-white transition;
+  }
+
+  /* Titre principal de page (h1) */
+  .page-title {
+    @apply font-bold text-text;
+    font-size: var(--font-size-h1);
+  }
+
+  /* Titre de section (h2) */
+  .section-title {
+    @apply font-bold text-text;
+    font-size: var(--font-size-h2);
+  }
+
+  /* Carte générique */
+  .card {
+    @apply rounded-2xl border border-border bg-white shadow-sm;
+  }
+
+  /* Lien de filtre (catégories produits/recettes) */
+  .filter-btn {
+    @apply block w-full rounded-lg px-4 py-2 font-medium transition text-left;
+    font-size: var(--font-size-small);
+  }
+
+  /* Séparateur horizontal */
+  .divider {
+    @apply border-t border-border;
+  }
+
 }
 

@@ -26,14 +26,4 @@ final class DessertCard
     public ?string $addToCartUrl = null; // conservé pour rétrocompatibilité (ignoré si produitId est défini)
     public string $addToCartLabel = 'Ajouter au panier';
     public bool $addToCartDisabled = false;
-
-    // Classe CSS du badge difficulté selon le niveau
-    public function getDifficulteClass(): string
-    {
-        return match ($this->difficulte) {
-            'Facile' => 'bg-green-100 text-green-700',
-            'Moyen'  => 'bg-amber-100 text-amber-700',
-            default  => 'bg-red-100 text-red-700',
-        };
-    }
 }

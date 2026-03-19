@@ -16,7 +16,7 @@
       {% endfor %}
     </ul>
 
-    <div class="flex items-center justify-between border-t border-slate-200 pt-4">
+    <div class="flex items-center justify-between divider pt-4">
       <twig:Atoms:Text text="Total ({{ this.totalItems }} articles)" class="text-sm font-medium text-slate-900"/>
       <twig:Atoms:Text text="{{ this.totalPrice|number_format(2, ',', ' ') ~ currency }}" class="text-base font-semibold text-slate-900"/>
     </div>

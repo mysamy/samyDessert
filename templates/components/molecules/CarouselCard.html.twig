@@ -1,9 +1,9 @@
-<div {{ attributes.defaults({ class: 'flex p-5 h-[400px] w-[700px] max-[1500px]:w-[500px] max-[1500px]:h-[450px] max-[1100px]:w-[120%] max-[1100px]:p-[10px] max-[425px]:h-[400px] max-[425px]:w-[140%] bg-amber-50 border-2 border-white rounded-2xl relative justify-center items-center overflow-hidden' }) }}>
+<div {{ attributes.defaults({ class: 'flex p-5 h-[400px] w-[700px] max-[1500px]:w-[500px] max-[1500px]:h-[450px] max-[1100px]:w-[120%] max-[1100px]:p-[10px] max-[425px]:h-[400px] max-[425px]:w-[140%] bg-bg border-2 border-white rounded-2xl relative justify-center items-center overflow-hidden' }) }}>
 
     {# Number badge #}
     <div class="absolute top-2.5 left-2.5 size-[45px] rounded-full flex items-center justify-center bg-[conic-gradient(#92400e_0deg_60deg,white_140deg_220deg,#92400e_300deg_360deg)]">
-        <div class="size-[80%] bg-amber-50 rounded-full flex items-center justify-center">
-            <span class="text-amber-900 font-bold text-2xl">{{ number }}</span>
+        <div class="size-[80%] bg-primary-light rounded-full flex items-center justify-center">
+            <span class="text-text font-bold text-2xl">{{ number }}</span>
         </div>
     </div>
 
@@ -14,7 +14,7 @@
             </div>
         {% endif %}
         {% if description %}
-            <p class="text-amber-900 text-center">{{ description }}</p>
+            <p class="text-text text-center">{{ description }}</p>
         {% endif %}
     {% endblock %}
 

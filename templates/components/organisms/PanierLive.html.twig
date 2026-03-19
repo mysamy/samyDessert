@@ -27,7 +27,7 @@
       <div class="flex items-center gap-4 py-5">
 
         {# Image #}
-        <div class="w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-secondary">
+        <div class="w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-surface">
           {% if produit.imageSrc %}
             <img src="{{ produit.imageSrc }}" alt="{{ produit.nom }}" class="w-full h-full object-cover">
           {% else %}
@@ -53,7 +53,7 @@
             data-live-action-param="retirer"
             data-live-id-param="{{ produit.id }}"
             aria-label="Retirer une unité"
-            class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-secondary transition"
+            class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-surface transition"
           >
             <i class="fa-solid fa-minus text-xs" aria-hidden="true"></i>
           </button>
@@ -65,7 +65,7 @@
             data-live-action-param="ajouter"
             data-live-id-param="{{ produit.id }}"
             aria-label="Ajouter une unité"
-            class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-secondary transition"
+            class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-surface transition"
           >
             <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i>
           </button>
@@ -90,7 +90,7 @@
   </div>
 
   {# Récapitulatif + actions #}
-  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-t border-slate-200 pt-6">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 divider pt-6">
 
     {# Vider le panier #}
     <button

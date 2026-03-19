@@ -130,7 +130,15 @@ class AppFixtures extends Fixture
         $user = new Utilisateur();
         $user->setEmail('test@test.com');
         $user->setPassword($this->hasher->hashPassword($user, 'password123'));
+        $user->setIsVerified(true);
         $manager->persist($user);
+
+        $admin = new Utilisateur();
+        $admin->setEmail('samy@admin.com');
+        $admin->setPassword($this->hasher->hashPassword($admin, 'password123'));
+        $admin->setRoles(['ROLE_ADMIN']);
+        $admin->setIsVerified(true);
+        $manager->persist($admin);
 
         // Envoie toutes les données en base en une seule fois
         $manager->flush();

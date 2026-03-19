@@ -6,12 +6,12 @@
 
 <section class="py-24 bg-white text-center">
   <div class="mx-auto max-w-lg px-4">
-    <div class="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-6">
-      <i class="fa-solid fa-check text-3xl text-green-500" aria-hidden="true"></i>
+    <div class="w-20 h-20 bg-success-light rounded-full flex items-center justify-center mx-auto mb-6">
+      <i class="fa-solid fa-check text-3xl text-success" aria-hidden="true"></i>
     </div>
     <h1 class="text-3xl font-bold text-text mb-3">Commande confirmée !</h1>
     <p class="text-text-light mb-8">Merci pour votre commande. Vous recevrez bientôt vos délicieux desserts artisanaux.</p>
-    <twig:Atoms:Link href="{{ path('app_produits') }}" class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-primary transition">
+    <twig:Atoms:Link href="{{ path('app_produits') }}" class="btn-cta">
       Continuer mes achats
     </twig:Atoms:Link>
   </div>

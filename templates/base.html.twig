@@ -37,12 +37,12 @@
             <div data-dropdown-target="menu"
                  class="hidden absolute right-0 mt-2 w-44 bg-white border border-surface rounded-xl shadow-lg z-50 overflow-hidden text-sm">
               <twig:Atoms:Link href="{{ path('app_compte_index') }}"
-                class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-secondary transition">
+                class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-surface transition">
                 <twig:Atoms:Icon name="user" size="sm" :decorative="true" /> Mon compte
               </twig:Atoms:Link>
               {% if is_granted('ROLE_ADMIN') %}
                 <twig:Atoms:Link href="{{ path('admin') }}"
-                  class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-secondary transition border-t border-surface">
+                  class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-surface transition border-t border-surface">
                   <twig:Atoms:Icon name="screwdriver-wrench" size="sm" :decorative="true" /> Administration
                 </twig:Atoms:Link>
               {% endif %}

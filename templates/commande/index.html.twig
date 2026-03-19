@@ -4,14 +4,14 @@
 
 {% block body %}
 
-<section class="bg-secondary py-12">
-  <div class="mx-auto max-w-7xl px-4">
+<section class="section-alt">
+  <div class="container-main">
     <h1 class="text-4xl font-bold text-text mb-2">Passer commande</h1>
     <p class="text-text-light text-lg">Vérifiez votre commande avant de procéder au paiement.</p>
   </div>
 </section>
 
-<section class="py-12 bg-white">
+<section class="section">
   <div class="mx-auto max-w-4xl px-4">
 
     {# Récapitulatif du panier #}
@@ -27,7 +27,7 @@
             <p class="font-bold text-text">{{ (ligne.produit.prix * ligne.quantite)|number_format(2, ',', ' ') }} €</p>
           </div>
         {% endfor %}
-        <div class="flex items-center justify-between px-5 py-4 bg-secondary">
+        <div class="flex items-center justify-between px-5 py-4 bg-surface">
           <p class="font-bold text-text">Total</p>
           <p class="text-2xl font-bold text-accent">{{ total|number_format(2, ',', ' ') }} €</p>
         </div>

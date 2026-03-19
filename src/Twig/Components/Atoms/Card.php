@@ -8,8 +8,6 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Card
 {
     public string $id = '';
-    public string $class = '';
-
     public ?string $title = null;
     public string $titleTag = 'h3';
 
