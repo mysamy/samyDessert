@@ -1,19 +1,19 @@
 {% set base =
-  "inline-flex items-center gap-2 rounded-md font-medium transition
+  "inline-flex items-center gap-2 rounded-md font-normal transition
    focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
    disabled:opacity-50 disabled:pointer-events-none"
 %}
 
 {% set sizes = {
-  sm: "h-9 px-3 text-sm",
-  md: "h-10 px-4 text-sm",
-  lg: "h-11 px-6 text-base"
+  sm: "h-9 px-3 text-small",
+  md: "h-10 px-4 text-body",
+  lg: "h-11 px-6 text-body"
 } %}
 
 {% set variants = {
-  primary: "bg-black text-white hover:opacity-90 focus-visible:ring-black",
-  secondary: "bg-gray-200 text-black hover:bg-gray-300 focus-visible:ring-gray-400",
-  ghost: "bg-transparent text-black hover:bg-gray-100 focus-visible:ring-gray-400"
+  primary: "bg-accent text-white hover:bg-primary focus-visible:ring-accent",
+  secondary: "bg-surface text-text hover:bg-border focus-visible:ring-border",
+  ghost: "bg-transparent text-text hover:bg-surface focus-visible:ring-border"
 } %}
 
 <button
@@ -25,3 +25,17 @@
 >
    {% block content %}{% endblock %}
 </button>
+
+{#
+  Props (* = obligatoire) :
+  - type        string  — type du bouton : button | submit | reset (button)
+  - variant     string  — style visuel : primary | secondary | ghost (primary)
+  - size        string  — taille : sm | md | lg (md)
+  - disabled    bool    — désactivé (false)
+
+  Utilisation :
+  <twig:Atoms:Button>Commander</twig:Atoms:Button>
+  <twig:Atoms:Button variant="secondary" size="sm">Annuler</twig:Atoms:Button>
+  <twig:Atoms:Button variant="ghost" size="lg">En savoir plus</twig:Atoms:Button>
+  <twig:Atoms:Button type="submit" :disabled="true">Valider</twig:Atoms:Button>
+#}

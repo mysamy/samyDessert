@@ -1,1 +1,11 @@
 <twig:Molecules:Nav :links="links" class="{{ class }}" />
+
+{#
+  Props (* = obligatoire) :
+  — aucune prop obligatoire. Les liens sont auto-générés depuis mount() selon la route courante.
+  - class       string  — classes CSS transmises à Nav ('')
+
+  Utilisation (liens auto-générés depuis le mount()) :
+  <twig:Molecules:NavigationLinks />
+  <twig:Molecules:NavigationLinks class="flex-col gap-2" />
+#}

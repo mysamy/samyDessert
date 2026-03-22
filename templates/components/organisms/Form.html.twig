@@ -12,3 +12,23 @@
     {% block content %}{% endblock %}
   </fieldset>
 </form>
+
+{#
+  Props (* = obligatoire) :
+  - action         string|null — URL de soumission (null = action courante)
+  - method         string      — méthode HTTP : get | post (post)
+  - id             string      — identifiant HTML ('')
+  - novalidate     bool        — désactive la validation native du navigateur (false)
+  - disabled       bool        — désactive tout le formulaire (false)
+  - ariaLabel      string|null — aria-label du formulaire (null)
+  - ariaDescribedby string|null — aria-describedby (null)
+
+  Utilisation :
+  <twig:Organisms:Form action="{{ path('app_contact') }}" ariaLabel="Formulaire de contact">
+    {# champs du formulaire #}
+  </twig:Organisms:Form>
+
+  <twig:Organisms:Form action="{{ path('app_inscription') }}" :novalidate="true" :disabled="isSubmitting">
+    {# champs #}
+  </twig:Organisms:Form>
+#}

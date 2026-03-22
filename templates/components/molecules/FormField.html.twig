@@ -11,3 +11,18 @@
     </p>
   {% endif %}
 </div>
+
+{#
+  Props (* = obligatoire) :
+  - label*      string      — texte du label
+  - id          string|null — id HTML (génère un id aléatoire si absent)
+  - required    bool        — affiche l'indicateur obligatoire (false)
+  - error       string|null — message d'erreur sous le champ (null)
+
+  Utilisation (avec block control pour injecter n'importe quel champ) :
+  <twig:Molecules:FormField label="Téléphone" id="tel">
+    {% block control %}
+      <twig:Atoms:Input name="tel" type="tel" />
+    {% endblock %}
+  </twig:Molecules:FormField>
+#}

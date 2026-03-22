@@ -2,5 +2,16 @@
   src="{{ src }}"
   alt="{{ alt }}"
   loading="{{ loading }}"
-  {{ attributes }}
+  {{ attributes.defaults({ class: 'block max-w-full' }) }}
 >
+
+{#
+  Props (* = obligatoire) :
+  - src*        string  — URL de l'image
+  - alt*        string  — texte alternatif (obligatoire pour l'accessibilité)
+  - loading     string  — stratégie de chargement : lazy | eager (lazy)
+
+  Utilisation :
+  <twig:Atoms:Image src="/images/gateau.jpg" alt="Gâteau au chocolat" />
+  <twig:Atoms:Image src="{{ produit.imageSrc }}" alt="{{ produit.nom }}" loading="eager" class="w-full object-cover" />
+#}

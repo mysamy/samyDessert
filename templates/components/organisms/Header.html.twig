@@ -40,3 +40,15 @@
     <twig:Molecules:NavigationLinks class="flex-col px-4 py-3 gap-1" />
   </div>
 </header>
+
+{#
+  Props (* = obligatoire) :
+  - brandLabel  string      — nom de la marque affiché à côté du logo ('')
+  - brandHref   string      — lien du logo/marque (/)
+  - logoSrc     string|null — URL du logo SVG/image (null)
+  - logoAlt     string|null — texte alt du logo (brandLabel par défaut)
+
+  Utilisation :
+  <twig:Organisms:Header brandLabel="Samy Dessert" brandHref="/" />
+  <twig:Organisms:Header brandLabel="Samy Dessert" logoSrc="/logotest.svg" logoAlt="Logo Samy Dessert" brandHref="/" />
+#}

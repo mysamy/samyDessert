@@ -19,3 +19,18 @@
     {% endif %}
   </div>
 </div>
+
+{#
+  Props (* = obligatoire) :
+  - id*         string      — identifiant HTML du champ
+  - label*      string      — texte du label
+  - checked     bool        — coché par défaut (false)
+  - required    bool        — obligatoire (false)
+  - disabled    bool        — désactivé (false)
+  - error       string|null — message d'erreur (null)
+
+  Utilisation :
+  <twig:Molecules:CheckboxField id="cgv" label="J'accepte les conditions générales" :required="true" />
+  <twig:Molecules:CheckboxField id="newsletter" label="Recevoir les offres" :checked="true" />
+  <twig:Molecules:CheckboxField id="cgv" label="CGV" error="{{ errors.cgv }}" />
+#}

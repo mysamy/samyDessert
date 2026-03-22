@@ -5,3 +5,16 @@
 >
   {{ text }}
 </{{ as }}>
+
+{#
+  Props (* = obligatoire) :
+  - text*       string      — contenu textuel
+  - as          string      — balise HTML rendue (p)
+  - id          string|null — id HTML (null)
+  - role        string|null — role ARIA (null)
+
+  Utilisation :
+  <twig:Atoms:Text text="Bienvenue sur Samy Dessert" />
+  <twig:Atoms:Text as="span" text="Livraison offerte" class="text-success" />
+  <twig:Atoms:Text as="h2" text="Nos produits" id="titre-produits" />
+#}

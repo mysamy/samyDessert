@@ -116,3 +116,24 @@
 
 {% endif %}
 </div>
+
+{#
+  Props (* = obligatoire) :
+  — aucune prop. Live Component auto-alimenté depuis PanierService.
+
+  Getters :
+  - lignes          array   — lignes du panier [{ produit: Produit, quantite: int }]
+  - total           float   — montant total
+  - nombreArticles  int     — nombre total d'articles
+
+  LiveActions disponibles (via data-live-action-param) :
+  - ajouter(id)   — ajoute 1 unité du produit
+  - retirer(id)   — retire 1 unité du produit
+  - supprimer(id) — supprime le produit du panier
+  - vider         — vide tout le panier
+
+  Émet 'panierUpdated' → capté par PanierBadge.
+
+  Utilisation (Live Component — mise à jour en temps réel) :
+  <twig:Organisms:PanierLive />
+#}

@@ -40,3 +40,15 @@
 
   {% endif %}
 </div>
+
+{#
+  Props LiveProp (* = obligatoire) :
+  - produitId*  int     — identifiant du produit
+  - produitNom  string  — nom affiché dans les aria-label ('')
+
+  Getter :
+  - quantite    int     — quantité actuelle dans le panier (depuis la session)
+
+  Utilisation (Live Component — se met à jour automatiquement) :
+  <twig:Molecules:BoutonPanier :produitId="produit.id" produitNom="{{ produit.nom }}" />
+#}

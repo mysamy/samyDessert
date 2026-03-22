@@ -74,3 +74,27 @@
     />
   {% endif %}
 </fieldset>
+
+{#
+  Props (* = obligatoire) :
+  - name*       string      — attribut name des radio buttons
+  - legend*     string      — titre du groupe (affiché dans le <legend>)
+  - options*    array       — options { value, label, description?, disabled? }
+  - value       string|null — valeur sélectionnée par défaut (null)
+  - description string|null — description sous le legend (null)
+  - required    bool        — obligatoire (false)
+  - disabled    bool        — désactive tout le groupe (false)
+  - error       string|null — message d'erreur (null)
+  - innerClass  string      — classes CSS du conteneur d'options ('space-y-2')
+
+  Utilisation :
+  <twig:Molecules:RadioGroup
+    name="livraison"
+    legend="Mode de livraison"
+    value="standard"
+    :options="[
+      { value: 'standard', label: 'Standard (3-5 jours)' },
+      { value: 'express', label: 'Express (24h)' },
+    ]"
+  />
+#}

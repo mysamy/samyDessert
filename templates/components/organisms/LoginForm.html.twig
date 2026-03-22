@@ -44,3 +44,23 @@
     <twig:Atoms:Button type="submit">{{ submitLabel }}</twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>
+
+{#
+  Props (* = obligatoire) :
+  - action*       string  — URL de soumission du formulaire
+  - csrfToken*    string  — jeton CSRF Symfony
+  - emailValue    string  — valeur pré-remplie du champ email ('')
+  - rememberMe    bool    — case "Se souvenir de moi" cochée (false)
+  - submitLabel   string  — libellé du bouton ('Se connecter')
+  - emailError    string  — erreur sur le champ email ('')
+  - passwordError string  — erreur sur le champ mot de passe ('')
+  - formError     string  — erreur globale de connexion ('')
+
+  Utilisation :
+  <twig:Organisms:LoginForm
+    action="{{ path('app_connexion') }}"
+    csrfToken="{{ csrf_token('authenticate') }}"
+    emailValue="{{ last_username }}"
+    formError="{{ error ? error.messageKey|trans({}, 'security') : '' }}"
+  />
+#}

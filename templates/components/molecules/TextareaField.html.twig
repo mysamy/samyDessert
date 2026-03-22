@@ -45,3 +45,23 @@
     />
   {% endif %}
 </div>
+
+{#
+  Props (* = obligatoire) :
+  - name*       string      — attribut name du textarea
+  - label*      string      — libellé du champ
+  - value       string|null — valeur pré-remplie (null)
+  - placeholder string|null — placeholder (null)
+  - rows        int         — nombre de lignes visibles (4)
+  - required    bool        — obligatoire (false)
+  - disabled    bool        — désactivé (false)
+  - readonly    bool        — lecture seule (false)
+  - error       string|null — message d'erreur (null)
+  - help        string|null — texte d'aide (null)
+  - maxlength   int|null    — longueur maximale (null)
+
+  Utilisation :
+  <twig:Molecules:TextareaField name="message" label="Votre message" :required="true" />
+  <twig:Molecules:TextareaField name="description" label="Description" :rows="6" help="500 caractères max" :maxlength="500" />
+  <twig:Molecules:TextareaField name="notes" label="Notes" error="{{ errors.notes }}" />
+#}

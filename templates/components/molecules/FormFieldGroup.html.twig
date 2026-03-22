@@ -28,3 +28,18 @@
     {% block content %}{% endblock %}
   </div>
 </{{ tag }}>
+
+{#
+  Props (* = obligatoire) :
+  - legend      string      — titre du groupe, génère un <fieldset> si renseigné ('')
+  - description string|null — description affichée sous le legend (null)
+  - id          string      — identifiant du groupe ('')
+  - class       string      — classes CSS sur l'élément racine ('')
+  - innerClass  string      — classes CSS sur le conteneur interne ('space-y-4')
+
+  Utilisation :
+  <twig:Molecules:FormFieldGroup legend="Informations personnelles" description="Ces informations sont obligatoires.">
+    <twig:Molecules:InputField name="prenom" label="Prénom" />
+    <twig:Molecules:InputField name="nom" label="Nom" />
+  </twig:Molecules:FormFieldGroup>
+#}

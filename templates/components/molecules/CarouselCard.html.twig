@@ -1,3 +1,16 @@
+{#
+  Props (* = obligatoire) :
+  - number      int     — numéro d'étape affiché dans le badge (1)
+  - imgSrc      string  — URL de l'image ('')
+  - imgAlt      string  — texte alternatif de l'image ('')
+  - imgClass    string  — classes CSS supplémentaires sur le conteneur image ('')
+  - description string  — texte descriptif de l'étape ('')
+
+  Utilisation :
+  <twig:Molecules:CarouselCard :number="1" imgSrc="/images/etape1.jpg" imgAlt="Étape 1" description="Préparez la pâte." />
+  <twig:Molecules:CarouselCard :number="2" description="Laissez reposer 30 minutes." />
+#}
+
 <div {{ attributes.defaults({ class: 'flex p-5 h-[400px] w-[700px] max-[1500px]:w-[500px] max-[1500px]:h-[450px] max-[1100px]:w-[120%] max-[1100px]:p-[10px] max-[425px]:h-[400px] max-[425px]:w-[140%] bg-bg border-2 border-white rounded-2xl relative justify-center items-center overflow-hidden' }) }}>
 
     {# Number badge #}

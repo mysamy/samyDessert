@@ -20,3 +20,16 @@
     </form>
   </div>
 </section>
+
+{#
+  Props (* = obligatoire) :
+  - action*     string  — URL de soumission du formulaire
+  - value       string  — valeur pré-remplie du champ ('')
+  - name        string  — name du champ de recherche (q)
+  - placeholder string  — placeholder du champ ('Rechercher...')
+  - buttonLabel string  — libellé du bouton ('Rechercher')
+
+  Utilisation :
+  <twig:Molecules:SearchBar action="{{ path('app_produits') }}" value="{{ app.request.query.get('q') }}" />
+  <twig:Molecules:SearchBar action="{{ path('app_recettes') }}" placeholder="Chercher une recette..." buttonLabel="Trouver" />
+#}

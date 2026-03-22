@@ -31,3 +31,22 @@
     {% endif %}
   {% endif %}
 </div>
+
+{#
+  Props (* = obligatoire) :
+  - items*        array       — lignes du panier { name, quantity, price }
+  - checkoutUrl   string|null — URL du bouton de commande (null = bouton masqué)
+  - checkoutLabel string      — libellé du bouton de commande ('Commander')
+  - currency      string      — symbole monétaire ('€')
+  - id            string      — identifiant HTML ('cart-summary')
+
+  Getters calculés :
+  - isEmpty()     bool    — vrai si items est vide
+  - totalItems    int     — somme des quantités
+  - totalPrice    float   — somme des sous-totaux
+
+  Utilisation :
+  <twig:Organisms:CartSummary :items="panier" checkoutUrl="{{ path('app_commande_checkout') }}" />
+
+  Chaque item : { name: string, quantity: int, price: float }
+#}

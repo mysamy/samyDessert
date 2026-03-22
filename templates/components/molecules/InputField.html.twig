@@ -43,3 +43,26 @@
     </twig:Atoms:Text>
   {% endif %}
 </div>
+
+{#
+  Props (* = obligatoire) :
+  - name*       string      — identifiant du champ
+  - label*      string      — libellé du champ
+  - type        string      — type HTML : text | email | password | tel | number… (text)
+  - value       string      — valeur pré-remplie ('')
+  - placeholder string      — placeholder ('')
+  - required    bool        — obligatoire (false)
+  - disabled    bool        — désactivé (false)
+  - readonly    bool        — lecture seule (false)
+  - error       string      — message d'erreur ('')
+  - help        string      — texte d'aide sous le champ ('')
+  - autocomplete string     — attribut autocomplete HTML ('')
+  - inputmode   string      — attribut inputmode HTML ('')
+  - maxlength   int|null    — longueur maximale (null)
+  - pattern     string|null — motif de validation (null)
+
+  Utilisation :
+  <twig:Molecules:InputField name="email" label="Adresse email" type="email" :required="true" />
+  <twig:Molecules:InputField name="prenom" label="Prénom" value="{{ prenom }}" error="{{ errors.prenom }}" />
+  <twig:Molecules:InputField name="code" label="Code postal" type="text" pattern="[0-9]{5}" help="5 chiffres" />
+#}

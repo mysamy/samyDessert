@@ -51,3 +51,36 @@
     <twig:Atoms:Button type="submit">{{ submitLabel }}</twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>
+
+{#
+  Props (* = obligatoire) :
+  - action*          string  — URL de soumission du formulaire
+  - csrfToken*       string  — jeton CSRF
+  - legend           string  — titre du groupe de champs ('Adresse')
+  - submitLabel      string  — libellé du bouton de soumission ('Enregistrer')
+  - firstNameValue   string  — valeur prénom ('')
+  - lastNameValue    string  — valeur nom ('')
+  - companyValue     string  — valeur société ('')
+  - address1Value    string  — valeur adresse ligne 1 ('')
+  - address2Value    string  — valeur adresse ligne 2 ('')
+  - postalCodeValue  string  — valeur code postal ('')
+  - cityValue        string  — valeur ville ('')
+  - countryValue     string  — valeur pays (FR)
+  - phoneValue       string  — valeur téléphone ('')
+  - notesValue       string  — valeur notes ('')
+  - firstNameError   string  — erreur prénom ('')
+  - lastNameError    string  — erreur nom ('')
+  - address1Error    string  — erreur adresse ('')
+  - postalCodeError  string  — erreur code postal ('')
+  - cityError        string  — erreur ville ('')
+  - countryError     string  — erreur pays ('')
+  - phoneError       string  — erreur téléphone ('')
+  - formError        string  — erreur globale du formulaire ('')
+
+  Utilisation :
+  <twig:Organisms:AddressForm
+    action="{{ path('app_adresse') }}"
+    csrfToken="{{ csrf_token('address') }}"
+    firstNameValue="{{ adresse.prenom }}"
+  />
+#}

@@ -9,7 +9,7 @@
   }) }}
 >
   {% if title is not empty %}
-    <{{ tag }} id="{{ titleId }}" class="px-4 pt-4 text-base font-semibold text-slate-900">
+    <{{ tag }} id="{{ titleId }}" class="px-4 pt-4 text-body font-bold text-text">
       {{ title }}
     </{{ tag }}>
   {% endif %}
@@ -18,3 +18,15 @@
     {% block content %}{% endblock %}
   </div>
 </article>
+
+{#
+  Props (* = obligatoire) :
+  - id          string      — identifiant HTML ('')
+  - title       string|null — titre affiché en en-tête (null)
+  - titleTag    string      — balise du titre : h2 | h3 | h4 | h5 (h3)
+
+  Utilisation :
+  <twig:Atoms:Card>Contenu simple</twig:Atoms:Card>
+  <twig:Atoms:Card title="Mes commandes">...</twig:Atoms:Card>
+  <twig:Atoms:Card id="profil" title="Mon profil" titleTag="h2">...</twig:Atoms:Card>
+#}

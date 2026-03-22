@@ -87,3 +87,29 @@
     />
   {% endif %}
 </div>
+
+{#
+  Props (* = obligatoire) :
+  - name*       string      — attribut name du select
+  - label*      string      — libellé du champ
+  - options     array       — options { value, label, disabled? } ou groupes { label, options[] } ([])
+  - value       string|null — valeur sélectionnée (null)
+  - placeholder string|null — option vide initiale (null)
+  - required    bool        — obligatoire (false)
+  - disabled    bool        — désactivé (false)
+  - multiple    bool        — sélection multiple (false)
+  - error       string|null — message d'erreur (null)
+  - help        string|null — texte d'aide (null)
+
+  Utilisation :
+  <twig:Molecules:SelectField
+    name="pays"
+    label="Pays"
+    :required="true"
+    :options="[
+      { value: 'FR', label: 'France' },
+      { value: 'BE', label: 'Belgique' },
+    ]"
+    value="FR"
+  />
+#}

@@ -4,3 +4,16 @@
     <span class="inline-flex items-center justify-center w-5 h-5 text-xs font-bold text-white bg-accent rounded-full">{{ count }}</span>
   {% endif %}
 </span>
+
+{#
+  Props (* = obligatoire) :
+  — aucune prop. Live Component auto-alimenté depuis PanierService.
+
+  Getter :
+  - nombreArticles  int  — nombre total d'articles dans le panier
+
+  Écoute l'événement 'panierUpdated' pour se rafraîchir automatiquement.
+
+  Utilisation :
+  <twig:Atoms:PanierBadge {{ attributes }} />
+#}

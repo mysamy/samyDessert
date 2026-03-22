@@ -3,8 +3,23 @@
   {% if disabled %}disabled{% endif %}
   {% if multiple %}multiple{% endif %}
   {{ attributes.defaults({
-    class: "block w-full rounded-md border border-slate-300 bg-white px-3 py-2 text-sm text-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60 disabled:cursor-not-allowed disabled:opacity-60"
+    class: "block w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent disabled:cursor-not-allowed disabled:opacity-60"
   }) }}
 >
   {% block content %}{% endblock %}
 </select>
+
+{#
+  Props (* = obligatoire via attributes, pas de prop PHP requise) :
+  - name*       string  — identifiant du champ (via attributes)
+  - disabled    bool    — désactivé (false)
+  - multiple    bool    — sélection multiple (false)
+  - required    bool    — obligatoire (false)
+
+  Utilisation :
+  <twig:Atoms:Select name="statut">
+    <option value="en_attente">En attente</option>
+    <option value="confirmee">Confirmée</option>
+  </twig:Atoms:Select>
+  <twig:Atoms:Select name="pays" :required="true" :multiple="true">...</twig:Atoms:Select>
+#}

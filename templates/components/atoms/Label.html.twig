@@ -4,3 +4,13 @@
 >
   {{ label }}
 </label>
+
+{#
+  Props (* = obligatoire) :
+  - label*      string      — texte du label
+  - forId       string|null — id du champ associé, génère for="…" (null)
+
+  Utilisation :
+  <twig:Atoms:Label label="Adresse email" forId="email" />
+  <twig:Atoms:Label label="Mot de passe" forId="password" class="font-bold" />
+#}

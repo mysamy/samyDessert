@@ -1,7 +1,7 @@
 {% set base =
-  "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm
-   focus:border-black focus:outline-none focus:ring-1 focus:ring-black
-   disabled:bg-gray-100 disabled:cursor-not-allowed"
+  "block w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text
+   focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent
+   disabled:bg-border disabled:cursor-not-allowed"
 %}
 
 <input
@@ -13,3 +13,17 @@
     class: base
   }) }}
 />
+
+{#
+  Props (* = obligatoire via attributes, pas de prop PHP requise) :
+  - name*       string      — identifiant du champ (via attributes)
+  - type        string      — type HTML du champ (text)
+  - value       string|null — valeur pré-remplie (null)
+  - disabled    bool        — désactivé (false)
+  - required    bool        — obligatoire (false)
+
+  Utilisation :
+  <twig:Atoms:Input name="email" type="email" placeholder="votre@email.com" />
+  <twig:Atoms:Input name="prix" type="number" :required="true" value="9.90" />
+  <twig:Atoms:Input name="code" :disabled="true" value="CMD-2026-00001" />
+#}

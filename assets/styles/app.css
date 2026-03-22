@@ -3,6 +3,40 @@
 @source "../../templates/**/*.twig";
 @source "../../assets/**/*.js";
 
+/* ── Police Luciole (accessibilité) ─────────────────────────────────────── */
+@font-face {
+  font-family: 'Luciole';
+  src: url('../fonts/Luciole-Regular.woff2') format('woff2'),
+       url('../fonts/Luciole-Regular.woff')  format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Luciole';
+  src: url('../fonts/Luciole-Italic.woff2') format('woff2'),
+       url('../fonts/Luciole-Italic.woff')  format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Luciole';
+  src: url('../fonts/Luciole-Bold.woff2') format('woff2'),
+       url('../fonts/Luciole-Bold.woff')  format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Luciole';
+  src: url('../fonts/Luciole-BoldItalic.woff2') format('woff2'),
+       url('../fonts/Luciole-BoldItalic.woff')  format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
+
 /* ── Thème Tailwind v4 ───────────────────────────────────────────────────── */
 /*
  * @theme génère automatiquement les CSS variables ET les classes Tailwind.
@@ -48,13 +82,16 @@
   --color-star:             #F59E0B;  /* text-star       étoiles d'avis (amber universel)   */
   --color-focus:            #9D174D;  /* outline-focus   framboise (cohérent avec l'accent)  */
 
+  /* ── Police ── */
+  --font-sans: 'Luciole', system-ui, sans-serif;
+
   /* ── Typographie ── */
   --font-size-h1:   3.0625rem / 1.2; /* text-h1   */
   --font-size-h2:   2.4375rem / 1.25; /* text-h2   */
   --font-size-h3:   1.9375rem / 1.3; /* text-h3   */
   --font-size-h4:   1.5625rem / 1.35; /* text-h4   */
   --font-size-body: 1.25rem / 1.6;   /* text-body */
-  --font-size-small: 1rem / 1.5;      /* text-small — labels, badges, légendes */
+  --font-size-small: 1rem ;      /* text-small — labels, badges, légendes */
 
   /* ── Espacement ── */
   --spacing-side:  clamp(1rem, 15vw, 50rem); /* px-side / mx-side / w-side */
@@ -70,6 +107,7 @@
   /* ── Z-index ── */
   /* --z-index-modal: 100; */  /* z-modal — exemple désactivé */
 }
+
 
 /* ── Carousel ────────────────────────────────────────────────────────────── */
 /*
@@ -224,7 +262,7 @@
 
   /* Carte générique */
   .card {
-    @apply rounded-2xl border border-border bg-white shadow-sm;
+    @apply rounded-2xl border border-border bg-surface shadow-sm;
   }
 
   /* Lien de filtre (catégories produits/recettes) */

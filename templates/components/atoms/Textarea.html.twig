@@ -7,3 +7,17 @@
     class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black disabled:bg-gray-100 disabled:cursor-not-allowed"
   }) }}
 ></textarea>
+
+{#
+  Props (* = obligatoire via attributes, pas de prop PHP requise) :
+  - name*       string  — identifiant du champ (via attributes)
+  - rows        int     — nombre de lignes visibles (4)
+  - disabled    bool    — désactivé (false)
+  - required    bool    — obligatoire (false)
+  - readonly    bool    — lecture seule (false)
+
+  Utilisation :
+  <twig:Atoms:Textarea name="message" placeholder="Votre message..." />
+  <twig:Atoms:Textarea name="description" :rows="6" :required="true" />
+  <twig:Atoms:Textarea name="notes" :readonly="true" />
+#}

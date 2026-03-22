@@ -58,3 +58,16 @@
     </div>
   {% endif %}
 </section>
+
+{#
+  Props (* = obligatoire) :
+  - items*      array       — produits ou recettes à afficher
+  - title       string|null — titre de la section (null)
+  - id          string|null — identifiant HTML de la section (null)
+
+  Chaque item doit avoir : { nom, imageSrc, prix, id, difficulte?, description?, slug? }
+
+  Utilisation :
+  <twig:Organisms:ProductCardGrid :items="produits" title="Nos produits" />
+  <twig:Organisms:ProductCardGrid :items="recettes" title="Nos recettes" id="recettes" />
+#}

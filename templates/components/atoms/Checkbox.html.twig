@@ -4,6 +4,19 @@
   {% if disabled %}disabled{% endif %}
   {% if required %}required{% endif %}
   {{ attributes.defaults({
-    class: "h-4 w-4 rounded border-gray-300 text-black focus:ring-black disabled:opacity-50"
+    class: "h-4 w-4 rounded border-border text-accent focus:ring-accent disabled:opacity-50"
   }) }}
 />
+
+{#
+  Props (* = obligatoire via attributes, pas de prop PHP requise) :
+  - name*       string  — identifiant du champ
+  - checked     bool    — coché par défaut (false)
+  - disabled    bool    — désactivé (false)
+  - required    bool    — obligatoire (false)
+
+  Utilisation :
+  <twig:Atoms:Checkbox name="cgv" id="cgv" :required="true" />
+  <twig:Atoms:Checkbox name="newsletter" :checked="true" />
+  <twig:Atoms:Checkbox name="option" :disabled="true" />
+#}

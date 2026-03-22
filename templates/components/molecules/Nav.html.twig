@@ -15,3 +15,16 @@
     {% endfor %}
   </ul>
 </nav>
+
+{#
+  Props (* = obligatoire) :
+  - links*      array   — tableau de liens { label, href, current? }
+  - ariaLabel   string  — aria-label de la balise <nav> ('Navigation principale')
+
+  Utilisation :
+  <twig:Molecules:Nav :links="[
+    { label: 'Accueil', href: path('app_home') },
+    { label: 'Produits', href: path('app_produits'), current: true },
+    { label: 'Recettes', href: path('app_recettes') },
+  ]" />
+#}

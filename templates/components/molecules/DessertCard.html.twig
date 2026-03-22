@@ -1,3 +1,41 @@
+{#
+  Props (* = obligatoire) :
+  - titre*            string      — nom du produit ou de la recette
+  - description       string|null — description courte (null)
+  - imageSrc          string|null — URL de l'image (null)
+  - url               string|null — lien "Voir la recette" (null)
+
+  Props recette :
+  - difficulte        string      — Facile | Moyen | Difficile ('')
+  - temps             string|null — durée ex: "45 min" (null)
+  - portions          int|null    — nombre de portions (null)
+  - categorieLabel    string|null — nom de la catégorie (null)
+
+  Props produit :
+  - prix              string|null — prix formaté ex: "9,90 €" (null)
+  - rating            float|null  — note sur 5 (null)
+  - produitId         int|null    — id pour le live component BoutonPanier (null)
+  - addToCartLabel    string      — libellé du bouton panier ('Ajouter au panier')
+  - addToCartDisabled bool        — désactive le bouton panier (false)
+
+  Utilisation :
+  <twig:Molecules:DessertCard
+    titre="{{ produit.nom }}"
+    imageSrc="{{ produit.imageSrc }}"
+    prix="{{ produit.prix }}"
+    :produitId="produit.id"
+  />
+
+  <twig:Molecules:DessertCard
+    titre="{{ recette.titre }}"
+    description="{{ recette.description }}"
+    difficulte="{{ recette.difficulte }}"
+    temps="{{ recette.temps }}"
+    :portions="recette.portions"
+    url="{{ path('app_recette', { slug: recette.slug }) }}"
+  />
+#}
+
 <article class="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition bg-white">
 
   {# Image + badge difficulté #}

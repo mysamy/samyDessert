@@ -11,3 +11,15 @@
 >
   {% block content %}{% endblock %}
 </a>
+
+{#
+  Props (* = obligatoire) :
+  - href*       string  — URL de destination
+  - external    bool    — si true, ajoute target="_blank" rel="noopener noreferrer" (false)
+  - ariaLabel   string  — aria-label si le texte du lien n'est pas explicite ('')
+
+  Utilisation :
+  <twig:Atoms:Link href="{{ path('app_home') }}">Accueil</twig:Atoms:Link>
+  <twig:Atoms:Link href="https://stripe.com" :external="true">Payer</twig:Atoms:Link>
+  <twig:Atoms:Link href="{{ path('app_produits') }}" class="btn-cta">Voir les produits</twig:Atoms:Link>
+#}

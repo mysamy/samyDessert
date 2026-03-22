@@ -12,3 +12,15 @@
 >
   {{ message }}
 </div>
+
+{#
+  Props (* = obligatoire) :
+  - message*    string  — texte du message
+  - type        string  — niveau d'alerte : info | success | warning | error (info)
+
+  Utilisation :
+  <twig:Molecules:Alert message="Commande confirmée !" type="success" />
+  <twig:Molecules:Alert message="Email ou mot de passe incorrect." type="error" />
+  <twig:Molecules:Alert message="Votre panier a été mis à jour." type="info" />
+  <twig:Molecules:Alert message="Stock limité." type="warning" />
+#}

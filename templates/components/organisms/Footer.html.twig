@@ -25,3 +25,20 @@
 
   </div>
 </footer>
+
+{#
+  Props (* = obligatoire) :
+  - brandLabel  string      — nom de la marque affiché en haut du footer ('')
+  - links       array       — liens de navigation { label, href } ([])
+  - legalText   string|null — texte légal/copyright (null)
+
+  Utilisation :
+  <twig:Organisms:Footer
+    brandLabel="Samy Dessert"
+    legalText="© {{ 'now'|date('Y') }} Samy Dessert. Tous droits réservés."
+    :links="[
+      { label: 'Mentions légales', href: path('app_mentions') },
+      { label: 'Contact', href: path('app_contact') },
+    ]"
+  />
+#}
