@@ -1,0 +1,40 @@
+{% set sizes = {
+  sm: 'w-7 h-7 text-xs',
+  md: 'w-8 h-8 text-sm',
+  lg: 'w-10 h-10 text-base'
+} %}
+
+{% set variants = {
+  outline: 'border border-border text-text-light hover:bg-surface',
+  filled:  'bg-accent text-white hover:bg-primary'
+} %}
+
+{% set base = 'inline-flex items-center justify-center rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:pointer-events-none' %}
+
+<button
+  type="{{ type }}"
+  {% if disabled %}disabled{% endif %}
+  {{ attributes.defaults({
+    class: base ~ ' ' ~ (sizes[size] ?? sizes.md) ~ ' ' ~ (variants[variant] ?? variants.outline)
+  }) }}
+>
+  <twig:Atoms:Icon name="{{ name }}" :decorative="true" />
+</button>
+
+{#
+  Props (* = obligatoire) :
+  - name*     string  — nom Font Awesome de l'icône (ex: plus, minus, xmark)
+  - type      string  — type du bouton : button | submit | reset (button)
+  - variant   string  — style visuel : outline | filled (outline)
+  - size      string  — taille : sm | md | lg (md)
+  - disabled  bool    — désactivé (false)
+
+  Attributs HTML utiles (via attributes) :
+  - aria-label* — obligatoire pour l'accessibilité (le bouton n'a pas de texte visible)
+  - data-*      — pour Stimulus / Live Components
+
+  Utilisation :
+  <twig:Atoms:ButtonIcon name="plus" variant="filled" aria-label="Ajouter" />
+  <twig:Atoms:ButtonIcon name="minus" variant="outline" aria-label="Retirer" />
+  <twig:Atoms:ButtonIcon name="xmark" size="lg" aria-label="Fermer" />
+#}

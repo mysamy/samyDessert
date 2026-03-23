@@ -10,7 +10,7 @@
   />
 
   <div>
-    <twig:Atoms:Label forId="{{ id }}" label="{{ label }}" class="text-sm font-medium text-slate-900" />
+    <twig:Atoms:Label for="{{ id }}" label="{{ label }}" />
 
     {% if error %}
       <p id="{{ this.errorId }}" class="mt-0.5 text-sm text-red-700" role="alert">

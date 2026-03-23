@@ -8,10 +8,10 @@
   <h1 class="text-3xl font-bold text-primary mb-8">Mes commandes</h1>
 
   {% for message in app.flashes('success') %}
-    <div class="mb-4 p-4 bg-success-light border border-success text-success rounded-lg">{{ message }}</div>
+    <twig:Molecules:Alert type="success" message="{{ message }}" class="mb-4" />
   {% endfor %}
   {% for message in app.flashes('error') %}
-    <div class="mb-4 p-4 bg-red-100 border border-red-300 text-red-800 rounded-lg">{{ message }}</div>
+    <twig:Molecules:Alert type="error" message="{{ message }}" class="mb-4" />
   {% endfor %}
 
   {% if commandes is empty %}
@@ -24,7 +24,7 @@
 
           <div class="flex items-center justify-between mb-4">
             <div>
-              <span class="font-semibold text-primary">{{ commande.reference ?? '#' ~ commande.id }}</span>
+              <span class="font-bold text-primary">{{ commande.reference ?? '#' ~ commande.id }}</span>
               <span class="text-text-light text-sm ml-3">{{ commande.dateCommande|date('d/m/Y à H:i') }}</span>
             </div>
             {% set statutVariant = commande.statut.value == 'confirmee' ? 'success' :
@@ -58,14 +58,16 @@
             <span class="font-bold text-primary">Total : {{ commande.total|number_format(2, ',', ' ') }} €</span>
 
             {% if commande.statut.value == 'confirmee' %}
-              <form method="POST" action="{{ path('app_compte_annuler_commande', {id: commande.id}) }}"
-                    onsubmit="return confirm('Confirmer l\'annulation de cette commande ?')">
-                <input type="hidden" name="_token" value="{{ csrf_token('annuler_commande_' ~ commande.id) }}">
-                <button type="submit"
-                        class="text-sm px-4 py-2 rounded-lg border border-red-300 text-red-600 hover:bg-red-50 transition">
-                  Annuler la commande
-                </button>
-              </form>
+              <button
+                type="button"
+                class="text-small px-4 py-2 rounded-lg border border-danger text-danger hover:bg-danger-light transition cursor-pointer"
+                data-ref="{{ commande.reference ?? '#' ~ commande.id }}"
+                data-action="{{ path('app_compte_annuler_commande', {id: commande.id}) }}"
+                data-token="{{ csrf_token('annuler_commande_' ~ commande.id) }}"
+                onclick="ouvrirModalAnnulation(this)"
+              >
+                Annuler la commande
+              </button>
             {% endif %}
           </div>
 
@@ -75,4 +77,48 @@
   {% endif %}
 
 </div>
+
+{# ── Modal confirmation annulation ───────────────────────────────────────── #}
+<twig:Molecules:ConfirmDialog
+  id="modal-annulation"
+  title="Annuler la commande"
+  message="Confirmer l'annulation de la commande <strong id='modal-ref'></strong> ?"
+  confirmLabel="Oui, annuler"
+  cancelLabel="Non, garder"
+  confirmVariant="danger"
+/>
+
+<script>
+  const dialog   = document.getElementById('modal-annulation');
+  const modalRef = document.getElementById('modal-ref');
+  let actionUrl  = '';
+  let csrfToken  = '';
+
+  function ouvrirModalAnnulation(btn) {
+    modalRef.textContent = btn.dataset.ref;
+    actionUrl  = btn.dataset.action;
+    csrfToken  = btn.dataset.token;
+    dialog.showModal();
+  }
+
+  document.querySelector('[data-dialog-close="modal-annulation"]').addEventListener('click', () => dialog.close());
+
+  document.querySelector('[data-dialog-confirm="modal-annulation"]').addEventListener('click', () => {
+    const form    = document.createElement('form');
+    form.method   = 'POST';
+    form.action   = actionUrl;
+    const input   = document.createElement('input');
+    input.type    = 'hidden';
+    input.name    = '_token';
+    input.value   = csrfToken;
+    form.appendChild(input);
+    document.body.appendChild(form);
+    form.submit();
+  });
+
+  // Fermer en cliquant sur le backdrop
+  dialog.addEventListener('click', (e) => {
+    if (e.target === dialog) dialog.close();
+  });
+</script>
 {% endblock %}

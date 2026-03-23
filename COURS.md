@@ -905,6 +905,37 @@ Un **attribut** correspond à un attribut HTML rendu dans le DOM (`class`, `id`,
 
 > **Phrase clé** : `attributes.defaults()` définit des attributs par défaut sans empêcher leur surcharge.
 
+### Attributs booléens HTML (`disabled`, `required`, `checked`…)
+
+En HTML, certains attributs sont **booléens** : leur présence suffit à les activer, leur valeur ne compte pas.
+
+```html
+<input disabled>          <!-- désactivé ✅ -->
+<input disabled="false">  <!-- aussi désactivé ✅ (la valeur est ignorée) -->
+<input>                   <!-- pas désactivé ✅ -->
+```
+
+Dans un Twig Component, on ne peut donc pas écrire `disabled="{{ disabled }}"` — si `disabled` vaut `false`, le navigateur lirait `disabled="false"` et désactiverait quand même le champ.
+
+La bonne approche est d'écrire l'attribut **uniquement si la prop vaut `true`** :
+
+```twig
+{% if disabled %}disabled{% endif %}
+{% if required %}required{% endif %}
+```
+
+**Et pour les appeler depuis un composant parent :**
+
+```twig
+{# ✅ correct — le : indique une expression PHP (booléen true) #}
+<twig:Atoms:Input name="email" :required="true" />
+
+{# ❌ incorrect — sans :, c'est une string vide "" → falsy en PHP #}
+<twig:Atoms:Input name="email" required />
+```
+
+> **Règle** : pour les props booléennes dans Twig Components, toujours préfixer avec `:` pour passer une vraie valeur PHP.
+
 ### Slot / `content`
 
 `content` est un **slot** permettant d'injecter du contenu (texte, HTML, icônes, autres composants) dans un composant. C'est un terme technique neutre et universel.
@@ -1838,6 +1869,30 @@ class PanierController
 
 # Symfony UX Live Components
 
+## AJAX — qu'est-ce que c'est ?
+
+**AJAX** = **A**synchronous **J**avaScript **A**nd **X**ML.
+
+Technique qui permet au navigateur de faire une requête HTTP vers le serveur **en arrière-plan**, sans recharger la page entière.
+
+**Sans AJAX :**
+```
+clic → rechargement complet de la page → nouvelle réponse HTML
+```
+
+**Avec AJAX :**
+```
+clic → requête en fond → serveur répond → JS met à jour juste la partie concernée
+```
+
+Dans le contexte des Live Components, quand tu cliques "Ajouter au panier" :
+1. Symfony UX envoie une requête AJAX au serveur
+2. Le serveur re-rend uniquement le composant `BoutonPanier`
+3. Le HTML retourné remplace l'ancien HTML du composant dans la page
+4. La page ne se recharge pas
+
+> Le "XML" dans le nom est historique — aujourd'hui on échange du HTML ou du JSON, plus du XML.
+
 ## Composant statique vs live
 
 | | Statique `#[AsTwigComponent]` | Live `#[AsLiveComponent]` |
@@ -1913,6 +1968,115 @@ final class BoutonPanier
 - **`mount()` ≠ constructeur** — `mount()` initialise le composant avec les props du template. Appelé uniquement au premier rendu.
 - **`#[LiveProp]`** — la valeur est sérialisée dans le HTML et renvoyée au serveur à chaque requête AJAX.
 - **Services** → injecter dans le constructeur, jamais dans les `#[LiveAction]`.
+
+## Référence des attributs et traits Live Component
+
+### `DefaultActionTrait`
+Trait **obligatoire** sur tout Live Component. Il fournit l'action `__invoke` par défaut que le système AJAX utilise en interne pour déclencher un re-rendu.
+
+```php
+use Symfony\UX\LiveComponent\DefaultActionTrait;
+
+#[AsLiveComponent]
+final class MonComposant
+{
+    use DefaultActionTrait; // toujours présent
+}
+```
+
+---
+
+### `#[LiveProp]`
+Déclare une propriété **synchronisée entre le serveur et le client**. Sa valeur est sérialisée dans le HTML généré, puis renvoyée au serveur à chaque requête AJAX.
+
+```php
+#[LiveProp]
+public int $produitId = 0;
+
+// writable: true → le client peut modifier la valeur (ex: champ texte lié)
+#[LiveProp(writable: true)]
+public string $recherche = '';
+```
+
+| Option | Effet |
+|---|---|
+| `writable: true` | La valeur peut être modifiée depuis le front (input lié) |
+| `writable: false` (défaut) | Lecture seule — le serveur contrôle la valeur |
+
+> **Attention** : ne jamais mettre de données sensibles dans un `#[LiveProp]` — elles sont visibles dans le HTML.
+
+---
+
+### `#[LiveAction]`
+Déclare une méthode PHP déclenchable depuis le template via AJAX, sans rechargement de page.
+
+```php
+#[LiveAction]
+public function ajouter(): void
+{
+    $this->panier->ajouter($this->produitId);
+    // pas de return — le composant se re-rend automatiquement
+}
+```
+
+Dans le template :
+```twig
+<button
+  data-action="live#action"
+  data-live-action-param="ajouter"
+>
+  Ajouter
+</button>
+```
+
+---
+
+### `#[LiveListener]`
+Permet au composant d'écouter un **événement émis par un autre composant**. Quand l'événement est reçu, la méthode annotée est appelée et le composant se re-rend.
+
+```php
+#[LiveListener('panierUpdated')]
+public function onPanierUpdated(): void
+{
+    // rien à faire ici : le re-rendu suffit
+    // (getNombreArticles() sera rappelé automatiquement)
+}
+```
+
+---
+
+### `emit()` — émettre un événement
+Pour qu'un composant notifie les autres, on utilise `$this->emit()` depuis une `#[LiveAction]`.
+
+```php
+use Symfony\UX\LiveComponent\ComponentToolsTrait;
+
+#[AsLiveComponent]
+final class BoutonPanier
+{
+    use DefaultActionTrait;
+    use ComponentToolsTrait; // nécessaire pour emit()
+
+    #[LiveAction]
+    public function ajouter(): void
+    {
+        $this->panier->ajouter($this->produitId);
+        $this->emit('panierUpdated'); // PanierBadge l'écoute et se met à jour
+    }
+}
+```
+
+---
+
+### Résumé visuel
+
+```
+BoutonPanier                      PanierBadge
+─────────────────                 ───────────────────
+#[LiveAction] ajouter()           #[LiveListener('panierUpdated')]
+  → panier->ajouter()               → se re-rend (compteur mis à jour)
+  → emit('panierUpdated') ──────────►
+```
 
 ## Passer des arguments à une action (`#[LiveArg]`)
 

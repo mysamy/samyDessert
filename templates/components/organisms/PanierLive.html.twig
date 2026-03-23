@@ -48,27 +48,25 @@
 
         {# Contrôles quantité (live) #}
         <div class="flex items-center gap-2 shrink-0">
-          <button
+          <twig:Atoms:ButtonIcon
+            name="minus"
+            variant="outline"
+            aria-label="Retirer une unité"
             data-action="live#action"
             data-live-action-param="retirer"
             data-live-id-param="{{ produit.id }}"
-            aria-label="Retirer une unité"
-            class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-surface transition"
-          >
-            <i class="fa-solid fa-minus text-xs" aria-hidden="true"></i>
-          </button>
+          />
 
           <span class="w-8 text-center font-semibold text-text">{{ quantite }}</span>
 
-          <button
+          <twig:Atoms:ButtonIcon
+            name="plus"
+            variant="outline"
+            aria-label="Ajouter une unité"
             data-action="live#action"
             data-live-action-param="ajouter"
             data-live-id-param="{{ produit.id }}"
-            aria-label="Ajouter une unité"
-            class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-surface transition"
-          >
-            <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i>
-          </button>
+          />
         </div>
 
         {# Sous-total #}
@@ -82,7 +80,7 @@
           aria-label="Supprimer {{ produit.nom }} du panier"
           class="shrink-0 text-slate-300 hover:text-red-400 transition"
         >
-          <i class="fa-solid fa-trash text-sm" aria-hidden="true"></i>
+          <twig:Atoms:Icon name="trash" :decorative="true" class="text-sm" />
         </button>
 
       </div>

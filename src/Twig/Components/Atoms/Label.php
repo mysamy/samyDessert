@@ -8,5 +8,5 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Label
 {
     public string $label = '';
-    public ?string $forId = null;
+    public bool $required = false;
 }

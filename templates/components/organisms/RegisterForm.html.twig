@@ -7,12 +7,12 @@
   ariaDescribedby="{{ this.hasAnyError ? this.errorSummaryId : '' }}"
 >
   {% if this.hasAnyError %}
-    <div id="{{ this.errorSummaryId }}" class="rounded-md border border-red-200 bg-red-50 p-4" role="alert" aria-live="polite" tabindex="-1">
-      <twig:Atoms:Text
-        text="{{ formError is not empty ? formError : 'La création de compte a échoué. Vérifie les informations saisies.' }}"
-        class="text-sm font-medium text-red-800"
-      />
-    </div>
+    <twig:Molecules:Alert
+      type="error"
+      id="{{ this.errorSummaryId }}"
+      tabindex="-1"
+      message="{{ formError is not empty ? formError : 'La création de compte a échoué. Vérifie les informations saisies.' }}"
+    />
   {% endif %}
 
   {% if csrfToken %}
@@ -48,7 +48,7 @@
 
   Utilisation :
   <twig:Organisms:RegisterForm
-    action="{{ path('app_inscription') }}"
+    action="{{ path('app_register') }}"
     csrfToken="{{ csrf_token('register') }}"
     emailValue="{{ emailValue }}"
     emailError="{{ errors.email }}"

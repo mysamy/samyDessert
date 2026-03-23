@@ -4,7 +4,7 @@
   {% if disabled %}disabled{% endif %}
   {% if required %}required{% endif %}
   {{ attributes.defaults({
-    class: "h-4 w-4 rounded border-border text-accent focus:ring-accent disabled:opacity-50"
+    class: "h-4 w-4 rounded border-border text-accent focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50"
   }) }}
 />
 

@@ -14,13 +14,17 @@
 <section class="py-16 bg-white">
   <div class="mx-auto max-w-2xl px-4">
 
-    {# Message de succès #}
     {% for message in app.flashes('success') %}
-      <div class="mb-8 rounded-xl bg-success-light border border-success p-5 text-success text-sm font-medium">
-        <i class="fa-solid fa-circle-check mr-2 text-success" aria-hidden="true"></i>
-        {{ message }}
-      </div>
+      <twig:Molecules:Alert type="success" message="{{ message }}" class="mb-8" />
     {% endfor %}
+
+    {# TEST — à supprimer #}
+    <div class="space-y-4 mb-8">
+      <twig:Molecules:Alert type="info" message="Votre message a bien été envoyé." />
+      <twig:Molecules:Alert type="success" title="Commande confirmée" message="Vous recevrez un email de confirmation." />
+      <twig:Molecules:Alert type="warning" message="Stock limité, commandez vite." />
+      <twig:Molecules:Alert type="error" title="Paiement refusé" message="Vérifiez les informations de votre carte." />
+    </div>
 
     <twig:Organisms:Form
       action="/contact"

@@ -4,9 +4,9 @@
   {% if required %}required{% endif %}
   {% if readonly %}readonly{% endif %}
   {{ attributes.defaults({
-    class: "block w-full rounded-md border border-gray-300 bg-white px-3 py-2 text-sm focus:border-black focus:outline-none focus:ring-1 focus:ring-black disabled:bg-gray-100 disabled:cursor-not-allowed"
+    class: "block w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent aria-invalid:border-danger aria-invalid:ring-danger read-only:bg-surface/50 read-only:cursor-default disabled:bg-border disabled:cursor-not-allowed"
   }) }}
-></textarea>
+>{{ value }}</textarea>
 
 {#
   Props (* = obligatoire via attributes, pas de prop PHP requise) :

@@ -17,11 +17,7 @@
   {% endif %}
 
   {% if this.description %}
-    <twig:Atoms:Text
-      id="{{ this.descriptionId }}"
-      text="{{ this.description }}"
-      class="mt-1 text-sm text-slate-700"
-    />
+    <p id="{{ this.descriptionId }}" class="mt-1 text-sm text-slate-700">{{ this.description }}</p>
   {% endif %}
 
   <div class="mt-4 {{ this.innerClass }}">
@@ -50,15 +46,11 @@
 
         <div class="{% if optDisabled %}opacity-60{% endif %}">
           <twig:Atoms:Label
-            forId="{{ optId }}"
+            for="{{ optId }}"
             label="{{ opt.label|default(optValue) }}"
-            class="text-sm font-medium text-slate-900"
           />
           {% if opt.description is defined and opt.description %}
-            <twig:Atoms:Text
-              text="{{ opt.description }}"
-              class="mt-0.5 text-sm text-slate-700"
-            />
+            <p class="mt-0.5 text-sm text-slate-700">{{ opt.description }}</p>
           {% endif %}
         </div>
       </div>
@@ -66,12 +58,7 @@
   </div>
 
   {% if this.error %}
-    <twig:Atoms:Text
-      id="{{ this.errorId }}"
-      text="{{ this.error }}"
-      role="alert"
-      class="mt-2 text-sm text-red-700"
-    />
+    <p id="{{ this.errorId }}" class="mt-2 text-sm text-red-700" role="alert">{{ this.error }}</p>
   {% endif %}
 </fieldset>
 

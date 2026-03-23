@@ -6,7 +6,7 @@
 } %}
 
 <span {{ attributes.defaults({
-    class: "inline-block rounded-full px-3 pt-1.5 pb-0.5 text-small font-normal " ~ (variants[this.variant] ?? variants.default)
+    class: "inline-block rounded-full px-3 pt-1.5 pb-0.5 text-small font-normal " ~ (variants[variant] ?? variants.default)
 }) }}>
     {% block content %}{% endblock %}
 </span>

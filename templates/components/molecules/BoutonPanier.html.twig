@@ -1,15 +1,15 @@
 {# Root unique obligatoire pour les live components #}
-<div {{ attributes }}>
+<div {{ attributes.defaults({ class: 'relative' }) }}>
+  <twig:Atoms:Spinner size="sm" class="hidden absolute inset-0 m-auto" data-loading="show" />
   {% if this.quantite == 0 %}
 
     {# Bouton initial : ajouter au panier #}
     <button
       data-action="live#action"
       data-live-action-param="ajouter"
-      aria-label="Ajouter {{ produitNom }} au panier"
       class="btn-cta-sm"
     >
-      <i class="fa-solid fa-cart-plus text-xs" aria-hidden="true"></i>
+      <twig:Atoms:Icon name="cart-plus" :decorative="true" class="text-xs" />
       Ajouter au panier
     </button>
 
@@ -17,25 +17,23 @@
 
     {# Contrôles quantité une fois dans le panier #}
     <div class="flex items-center gap-2">
-      <button
+      <twig:Atoms:ButtonIcon
+        name="minus"
+        variant="outline"
+        aria-label="Retirer une unité de {{ produitNom }}"
         data-action="live#action"
         data-live-action-param="retirer"
-        aria-label="Retirer une unité de {{ produitNom }}"
-        class="w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center text-slate-500 hover:bg-surface transition"
-      >
-        <i class="fa-solid fa-minus text-xs" aria-hidden="true"></i>
-      </button>
+      />
 
       <span class="w-6 text-center font-semibold text-text text-sm">{{ this.quantite }}</span>
 
-      <button
+      <twig:Atoms:ButtonIcon
+        name="plus"
+        variant="filled"
+        aria-label="Ajouter une unité de {{ produitNom }}"
         data-action="live#action"
         data-live-action-param="ajouter"
-        aria-label="Ajouter une unité de {{ produitNom }}"
-        class="w-8 h-8 rounded-full bg-accent text-white flex items-center justify-center hover:bg-primary transition"
-      >
-        <i class="fa-solid fa-plus text-xs" aria-hidden="true"></i>
-      </button>
+      />
     </div>
 
   {% endif %}

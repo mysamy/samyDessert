@@ -22,65 +22,46 @@
 
     <div data-controller="carousel" class="how__carousel" role="region" aria-roledescription="carrousel" aria-label="Nos spécialités">
 
-      <twig:Molecules:CarouselCard :number="1"
+      <twig:Molecules:CarouselCard
         class="flex-col gap-2.5 justify-center"
-        imgSrc="/assets/image/étape1img.png"
+        imgSrc="{{ asset('image/tarteFraise.png') }}"
         imgAlt="Tarte aux fraises"
         description="Pâte sablée maison, crème pâtissière et fraises fraîches de saison."
       />
 
-      <twig:Molecules:CarouselCard :number="2"
-        imgSrc="/assets/image/étape2img.png"
-        imgAlt="Éclair au chocolat"
-        description="Pâte à choux légère, crème pâtissière et glaçage ganache fondant."
+      <twig:Molecules:CarouselCard
+        imgSrc="{{ asset('image/tiramisuChocolat.png') }}"
+        imgAlt="Tiramisu au chocolat"
+        description="Mascarpone onctueux, biscuits imbibés et cacao amer en finition."
       />
 
-      <twig:Molecules:CarouselCard :number="3" class="px-1">
-        {% block content %}
-          <div class="text-text text-center flex flex-col">
-            <p>Découvrez nos spécialités :</p>
-            <ul class="list-disc pl-5 text-start flex flex-col">
-              <li>Macarons — 12 parfums au choix</li>
-              <li>Mille-feuille à la crème diplomate</li>
-            </ul>
-          </div>
-          <div class="h-auto">
-            <img src="/assets/image/étape3img.png" alt="Macarons" class="w-full h-full rounded-[10px] block object-cover">
-          </div>
-        {% endblock %}
-      </twig:Molecules:CarouselCard>
+      <twig:Molecules:CarouselCard
+        class="flex-col gap-2.5 justify-center"
+        imgSrc="{{ asset('image/macarons.png') }}"
+        imgAlt="Macarons"
+        description="12 parfums au choix, coques croustillantes et ganaches maison."
+      />
 
-      <twig:Molecules:CarouselCard :number="4"
+      <twig:Molecules:CarouselCard
         class="flex-col"
-        imgSrc="/assets/image/étape4img.png"
-        imgAlt="Crème brûlée"
-        description="Caramel craquant, texture soyeuse à la vanille de Madagascar."
+        imgSrc="{{ asset('image/cheesecake.png') }}"
+        imgAlt="Cheesecake"
+        description="Base biscuitée croustillante, crème onctueuse et coulis de fruits rouges."
       />
 
-      <twig:Molecules:CarouselCard :number="5" class="flex-col">
-        {% block content %}
-          <p class="text-text text-center px-10 max-[1100px]:w-4/5 max-[769px]:px-2.5">
-            Sur commande pour vos anniversaires, mariages et événements.
-          </p>
-          <div class="h-4/5 max-[1100px]:h-3/5 max-[769px]:h-[30%]">
-            <img src="/assets/image/étape5img.png" alt="Gâteau personnalisé" class="w-full h-full rounded-[10px] block object-cover">
-          </div>
-        {% endblock %}
-      </twig:Molecules:CarouselCard>
+      <twig:Molecules:CarouselCard
+        class="flex-col gap-2.5 justify-center"
+        imgSrc="{{ asset('image/brownies.png') }}"
+        imgAlt="Brownies"
+        description="Sur commande pour vos anniversaires, mariages et événements."
+      />
 
-      <twig:Molecules:CarouselCard :number="6">
-        {% block content %}
-          <div class="h-auto">
-            <img src="/assets/image/étape6img.png" alt="Contactez-nous" class="w-full h-full rounded-[10px] block object-cover">
-          </div>
-          <div class="flex flex-col w-1/2 text-center items-center gap-7 mt-[60px] max-[1100px]:mt-0">
-            <p class="text-text">Une question ? Contactez notre équipe !</p>
-            <button class="bg-accent text-white rounded-full px-6 py-2 font-semibold hover:bg-primary transition cursor-pointer max-[769px]:w-4/5 max-[769px]:min-w-[165px]">
-              Contactez
-            </button>
-          </div>
-        {% endblock %}
-      </twig:Molecules:CarouselCard>
+      <twig:Molecules:CarouselCard
+        class="flex-col gap-2.5 justify-center"
+        imgSrc="{{ asset('image/cookie.png') }}"
+        imgAlt="Cookies"
+        description="Une question ? Contactez notre équipe !"
+      />
 
     </div>
 

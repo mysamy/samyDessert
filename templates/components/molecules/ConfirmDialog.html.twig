@@ -1,0 +1,50 @@
+<dialog
+  id="{{ id }}"
+  {{ attributes.defaults({ class: 'rounded-2xl p-8 shadow-xl w-full max-w-sm border border-border backdrop:bg-black/50' }) }}
+>
+  <h2 class="text-h4 font-bold text-text mb-3">{{ title }}</h2>
+  <p class="text-text-light mb-6">{{ message|raw }}</p>
+  <div class="flex gap-3 justify-end">
+    <button
+      type="button"
+      data-dialog-close="{{ id }}"
+      class="px-4 py-2 rounded-lg border border-border text-text hover:bg-surface transition cursor-pointer"
+    >
+      {{ cancelLabel }}
+    </button>
+    <button
+      type="button"
+      data-dialog-confirm="{{ id }}"
+      class="px-4 py-2 rounded-lg
+        {% if confirmVariant == 'danger' %}bg-danger text-white hover:bg-danger-dark
+        {% elseif confirmVariant == 'success' %}bg-success text-white hover:bg-success-light
+        {% else %}bg-accent text-white hover:bg-primary{% endif %}
+        transition cursor-pointer"
+    >
+      {{ confirmLabel }}
+    </button>
+  </div>
+</dialog>
+
+{#
+  Props :
+  - id              string   — identifiant du dialog, doit être unique ('confirm-dialog')
+  - title           string   — titre affiché en haut du dialog ('Confirmation')
+  - message         string   — texte de la question ('') — peut contenir du HTML
+  - confirmLabel    string   — texte du bouton de confirmation ('Confirmer')
+  - cancelLabel     string   — texte du bouton d'annulation ('Annuler')
+  - confirmVariant  string   — couleur du bouton confirm : danger | primary | success ('danger')
+
+  Utilisation :
+  <twig:Molecules:ConfirmDialog
+    id="modal-annulation"
+    title="Annuler la commande"
+    message="Confirmer l'annulation de la commande <strong>CMD-2025-00001</strong> ?"
+    confirmLabel="Oui, annuler"
+    cancelLabel="Non, garder"
+    confirmVariant="danger"
+  />
+
+  JS pour ouvrir le dialog :
+  document.getElementById('modal-annulation').showModal();
+#}

@@ -4,9 +4,10 @@
 <div class="w-full {{ this.class }}">
   {% if this.label %}
     <twig:Atoms:Label
-      forId="{{ id }}"
+      for="{{ id }}"
       label="{{ this.label }}"
-      class="mb-1 block text-sm font-medium text-slate-900"
+      :required="this.required"
+      class="mb-1 block"
     />
   {% endif %}
 
@@ -15,6 +16,7 @@
     :disabled="this.disabled"
     :required="this.required"
     :readonly="this.readonly"
+    value="{{ this.value ?? '' }}"
     id="{{ id }}"
     name="{{ this.name }}"
     placeholder="{{ this.placeholder|default('') }}"
@@ -29,20 +31,11 @@
   />
 
   {% if this.help %}
-    <twig:Atoms:Text
-      id="{{ this.helpId }}"
-      text="{{ this.help }}"
-      class="mt-1 text-sm text-gray-700"
-    />
+    <p id="{{ this.helpId }}" class="mt-1 text-sm text-gray-700">{{ this.help }}</p>
   {% endif %}
 
   {% if this.error %}
-    <twig:Atoms:Text
-      id="{{ this.errorId }}"
-      text="{{ this.error }}"
-      role="alert"
-      class="mt-1 text-sm text-red-700"
-    />
+    <p id="{{ this.errorId }}" class="mt-1 text-sm text-red-700" role="alert">{{ this.error }}</p>
   {% endif %}
 </div>
 

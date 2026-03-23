@@ -1,6 +1,6 @@
 {% set base =
   "inline-flex items-center gap-2 rounded-md font-normal transition
-   focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2
+   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
    disabled:opacity-50 disabled:pointer-events-none"
 %}
 
@@ -11,19 +11,23 @@
 } %}
 
 {% set variants = {
-  primary: "bg-accent text-white hover:bg-primary focus-visible:ring-accent",
-  secondary: "bg-surface text-text hover:bg-border focus-visible:ring-border",
-  ghost: "bg-transparent text-text hover:bg-surface focus-visible:ring-border"
+  primary: "bg-accent text-white hover:bg-primary",
+  secondary: "bg-surface text-text hover:bg-border",
+  ghost: "bg-transparent text-text hover:bg-surface"
 } %}
 
 <button
   type="{{ type }}"
-  {% if disabled %}disabled{% endif %}
+  {% if disabled or loading %}disabled{% endif %}
+  {% if loading %}aria-busy="true"{% endif %}
   {{ attributes.defaults({
     class: base ~ ' ' ~ (sizes[size] ?? sizes.md) ~ ' ' ~ (variants[variant] ?? variants.primary)
   }) }}
 >
-   {% block content %}{% endblock %}
+  {% if loading %}
+    <twig:Atoms:Spinner size="sm" ariaLabel="Chargement" aria-hidden="true" />
+  {% endif %}
+  {% block content %}{% endblock %}
 </button>
 
 {#
@@ -32,6 +36,7 @@
   - variant     string  — style visuel : primary | secondary | ghost (primary)
   - size        string  — taille : sm | md | lg (md)
   - disabled    bool    — désactivé (false)
+  - loading     bool    — affiche un spinner et désactive le bouton (false)
 
   Utilisation :
   <twig:Atoms:Button>Commander</twig:Atoms:Button>

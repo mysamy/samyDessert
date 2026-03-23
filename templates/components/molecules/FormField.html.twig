@@ -1,7 +1,7 @@
 {% set fieldId = this.computedId %}
 
 <div class="space-y-1">
-  <twig:Atoms:Label forId="{{ fieldId }}" label="{{ label }}" />
+  <twig:Atoms:Label for="{{ fieldId }}" label="{{ label }}" />
 
   {% block control %}{% endblock %}
 

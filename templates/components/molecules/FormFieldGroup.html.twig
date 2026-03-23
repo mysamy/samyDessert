@@ -16,11 +16,7 @@
   {% endif %}
 
 {% if this.description %}
-  <twig:Atoms:Text
-    id="{{ this.descriptionId }}"
-    text="{{ this.description }}"
-    class="{% if hasLegend %}mt-1{% endif %} text-sm text-slate-700"
-  />
+  <p id="{{ this.descriptionId }}" class="{% if hasLegend %}mt-1{% endif %} text-sm text-slate-700">{{ this.description }}</p>
 {% endif %}
 
 

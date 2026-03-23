@@ -1,6 +1,8 @@
 {% set base =
   "block w-full rounded-md border border-border bg-surface px-3 py-2 text-small text-text
-   focus:border-accent focus:outline-none focus:ring-1 focus:ring-accent
+   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
+   aria-invalid:border-danger aria-invalid:ring-danger
+   read-only:bg-surface/50 read-only:cursor-default
    disabled:bg-border disabled:cursor-not-allowed"
 %}
 
@@ -9,6 +11,7 @@
   {% if value is not null %}value="{{ value }}"{% endif %}
   {% if disabled %}disabled{% endif %}
   {% if required %}required{% endif %}
+  {% if readonly %}readonly{% endif %}
   {{ ((attributes.get('pattern') ?? '') != '' ? attributes : attributes.without('pattern')).defaults({
     class: base
   }) }}

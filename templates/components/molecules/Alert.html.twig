@@ -1,26 +1,38 @@
 {% set variants = {
-  info:    'bg-surface text-text border-border',
-  success: 'bg-success-light text-success border-success',
-  warning: 'bg-primary-light text-primary border-primary',
-  error:   'bg-danger-light text-danger-dark border-danger'
+  info:    { class: 'bg-surface text-text border-border',          icon: 'circle-info' },
+  success: { class: 'bg-success-light text-success border-success', icon: 'circle-check' },
+  warning: { class: 'bg-primary-light text-primary border-primary', icon: 'triangle-exclamation' },
+  error:   { class: 'bg-danger-light text-danger-dark border-danger', icon: 'circle-xmark' }
 } %}
 
+{% set current = variants[type] ?? variants.info %}
+
 <div
-  class="rounded-md border px-4 py-3 text-sm {{ variants[type] ?? variants.info }}"
   role="alert"
   aria-live="{{ type == 'error' ? 'assertive' : 'polite' }}"
+  {{ attributes.defaults({ class: 'rounded-md border px-4 py-3 text-sm ' ~ current.class }) }}
 >
-  {{ message }}
+  <div class="flex gap-3">
+    <twig:Atoms:Icon name="{{ current.icon }}" :decorative="true" class="mt-0.5 shrink-0" />
+    <div>
+      {% if title %}
+        <p class="font-bold mb-1">{{ title }}</p>
+      {% endif %}
+      {% block content %}{{ message }}{% endblock %}
+    </div>
+  </div>
 </div>
 
 {#
   Props (* = obligatoire) :
-  - message*    string  — texte du message
+  - message*    string  — texte du message (ou passer du contenu via le bloc)
   - type        string  — niveau d'alerte : info | success | warning | error (info)
+  - title       string  — titre optionnel affiché en gras au-dessus du message ('')
 
   Utilisation :
   <twig:Molecules:Alert message="Commande confirmée !" type="success" />
-  <twig:Molecules:Alert message="Email ou mot de passe incorrect." type="error" />
-  <twig:Molecules:Alert message="Votre panier a été mis à jour." type="info" />
-  <twig:Molecules:Alert message="Stock limité." type="warning" />
+  <twig:Molecules:Alert type="error" title="Erreur de paiement" message="Carte refusée." />
+  <twig:Molecules:Alert type="warning">
+    Stock limité — <strong>plus que 2 en stock</strong>.
+  </twig:Molecules:Alert>
 #}

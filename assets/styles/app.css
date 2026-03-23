@@ -98,11 +98,9 @@
   --spacing-side2: clamp(1rem, 5vw, 50rem);  /* px-side2 etc.              */
   --spacing-top:   clamp(1rem, 5vh, 5rem);   /* pt-top / mt-top etc.       */
 
-  /* ── Bordures arrondies ── */
-  /* --radius-card: 1rem; */  /* rounded-card — exemple désactivé */
 
   /* ── Ombres ── */
-  /* --shadow-card: 0 4px 24px 0 rgb(0 0 0 / 0.08); */  /* shadow-card — exemple désactivé */
+  --shadow-card: 0 4px 24px 0 rgb(0 0 0 / 0.08);  /* shadow-card */
 
   /* ── Z-index ── */
   /* --z-index-modal: 100; */  /* z-modal — exemple désactivé */
@@ -119,7 +117,7 @@
 }
 
 .carousel__wrapper {
-  @apply flex items-center z-[1];
+  @apply flex items-center z-1 h-full;
   transition: transform 0.3s ease-in-out;
 }
 

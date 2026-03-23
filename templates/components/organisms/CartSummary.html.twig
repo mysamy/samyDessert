@@ -1,24 +1,24 @@
 <div id="{{ id }}" class="rounded-lg border border-slate-200 p-4 {{ class }}">
-  <twig:Atoms:Text text="Récapitulatif du panier" class="text-base font-semibold text-slate-900"/>
+  <h2 class="text-base font-semibold text-slate-900">Récapitulatif du panier</h2>
 
   {% if this.isEmpty() %}
-    <twig:Atoms:Text text="Votre panier est vide." class="text-sm text-slate-700"/>
+    <p class="text-sm text-slate-700">Votre panier est vide.</p>
   {% else %}
     <ul class="divide-y divide-slate-200">
       {% for item in items %}
         <li class="flex items-start justify-between gap-4 py-3">
           <div class="min-w-0">
-            <twig:Atoms:Text text="{{ item.name }}" class="truncate text-sm font-medium text-slate-900"/>
-            <twig:Atoms:Text text="{{ item.quantity ~ ' × ' ~ item.price ~ currency }}" class="text-sm text-slate-700"/>
+            <p class="truncate text-sm font-medium text-slate-900">{{ item.name }}</p>
+            <p class="text-sm text-slate-700">{{ item.quantity ~ ' × ' ~ item.price ~ currency }}</p>
           </div>
-          <twig:Atoms:Text text="{{ (item.quantity * item.price)|number_format(2, ',', ' ') ~ currency }}" class="text-sm font-medium text-slate-900"/>
+          <p class="text-sm font-medium text-slate-900">{{ (item.quantity * item.price)|number_format(2, ',', ' ') ~ currency }}</p>
         </li>
       {% endfor %}
     </ul>
 
     <div class="flex items-center justify-between divider pt-4">
-      <twig:Atoms:Text text="Total ({{ this.totalItems }} articles)" class="text-sm font-medium text-slate-900"/>
-      <twig:Atoms:Text text="{{ this.totalPrice|number_format(2, ',', ' ') ~ currency }}" class="text-base font-semibold text-slate-900"/>
+      <p class="text-sm font-medium text-slate-900">Total ({{ this.totalItems }} articles)</p>
+      <p class="text-base font-semibold text-slate-900">{{ this.totalPrice|number_format(2, ',', ' ') ~ currency }}</p>
     </div>
 
     {% if checkoutUrl %}

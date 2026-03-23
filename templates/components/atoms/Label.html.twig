@@ -1,16 +1,17 @@
-<label
-  {% if forId %}for="{{ forId }}"{% endif %}
-  {{ attributes }}
->
+<label {{ attributes.defaults({ class: 'text-small font-bold text-text' }) }}>
   {{ label }}
+  {% if required %}<span class="text-danger ml-0.5" aria-hidden="true">*</span>{% endif %}
 </label>
 
 {#
   Props (* = obligatoire) :
-  - label*      string      — texte du label
-  - forId       string|null — id du champ associé, génère for="…" (null)
+  - label*   string — texte du label
+  - required bool   — affiche un * rouge (false)
+
+  Attributs HTML utiles (via attributes) :
+  - for — id du champ associé
 
   Utilisation :
-  <twig:Atoms:Label label="Adresse email" forId="email" />
-  <twig:Atoms:Label label="Mot de passe" forId="password" class="font-bold" />
+  <twig:Atoms:Label for="email" label="Adresse email" :required="true" />
+  <twig:Atoms:Label for="password" label="Mot de passe" class="mb-1 block" />
 #}

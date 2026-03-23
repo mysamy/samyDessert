@@ -20,9 +20,10 @@
 <div class="w-full {{ fieldClass }}">
   {% if label %}
     <twig:Atoms:Label
-      forId="{{ id }}"
+      for="{{ id }}"
       label="{{ label }}"
-      class="mb-1 block text-sm font-medium text-slate-900"
+      :required="required"
+      class="mb-1 block"
     />
   {% endif %}
 
@@ -71,20 +72,11 @@
   </twig:Atoms:Select>
 
   {% if help %}
-    <twig:Atoms:Text
-      id="{{ helpId }}"
-      text="{{ help }}"
-      class="mt-1 text-sm text-slate-700"
-    />
+    <p id="{{ helpId }}" class="mt-1 text-sm text-slate-700">{{ help }}</p>
   {% endif %}
 
   {% if error %}
-    <twig:Atoms:Text
-      id="{{ errorId }}"
-      text="{{ error }}"
-      role="alert"
-      class="mt-1 text-sm text-red-700"
-    />
+    <p id="{{ errorId }}" class="mt-1 text-sm text-red-700" role="alert">{{ error }}</p>
   {% endif %}
 </div>
 

@@ -11,4 +11,5 @@ final class Input
     public ?string $value = null;
     public bool $disabled = false;
     public bool $required = false;
+    public bool $readonly = false;
 }
