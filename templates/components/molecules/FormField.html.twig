@@ -1,12 +1,13 @@
 {% set fieldId = this.computedId %}
+{% set errorId = this.errorId %}
 
-<div class="space-y-1">
-  <twig:Atoms:Label for="{{ fieldId }}" label="{{ label }}" />
+<div {{ attributes.defaults({ class: 'space-y-1' }) }}>
+  <twig:Atoms:Label for="{{ fieldId }}" label="{{ label }}" :required="required" />
 
   {% block control %}{% endblock %}
 
   {% if error %}
-    <p class="text-sm text-red-600" id="{{ this.errorId }}" role="alert">
+    <p class="text-sm text-danger" id="{{ errorId }}" role="alert">
       {{ error }}
     </p>
   {% endif %}

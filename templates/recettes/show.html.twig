@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ recette.titre }} — Samy Dessert{% endblock %}
+
+{% block body %}
+
+{# ── Fil d'Ariane ── #}
+<nav class="bg-surface border-b border-border" aria-label="Fil d'Ariane">
+  <div class="container-main py-3 text-sm text-text-light">
+    <twig:Atoms:Link href="/recettes" class="hover:text-accent">Nos recettes</twig:Atoms:Link>
+    <span class="mx-2" aria-hidden="true">/</span>
+    <span class="text-text font-medium">{{ recette.titre }}</span>
+  </div>
+</nav>
+
+{# ── Hero recette ── #}
+<section class="section">
+  <div class="container-main">
+    <div class="flex flex-col lg:flex-row gap-10">
+
+      {# ── Image ── #}
+      <div class="lg:w-1/2">
+        {% if recette.imageSrc %}
+          <img
+            src="{{ recette.imageSrc }}"
+            alt="{{ recette.titre }}"
+            class="w-full rounded-2xl object-cover max-h-[500px]"
+          >
+        {% else %}
+          <div class="w-full h-80 rounded-2xl bg-surface flex items-center justify-center">
+            <twig:Atoms:Icon name="cake-candles" :decorative="true" class="text-6xl text-gray-light"/>
+          </div>
+        {% endif %}
+      </div>
+
+      {# ── Infos ── #}
+      <div class="lg:w-1/2 flex flex-col gap-4">
+        <h1 class="text-3xl font-bold text-text">{{ recette.titre }}</h1>
+
+        {# Badges : difficulté + catégorie #}
+        <div class="flex flex-wrap gap-2">
+          {% if recette.difficulte %}
+            {% set diffLabel = recette.difficulte.value|capitalize %}
+            <twig:Atoms:Badge variant="{{ diffLabel == 'Facile' ? 'success' : (diffLabel == 'Moyen' ? 'warning' : 'danger') }}">
+              {{ diffLabel }}
+            </twig:Atoms:Badge>
+          {% endif %}
+          {% if recette.categorie %}
+            <twig:Atoms:Badge variant="default">{{ recette.categorie.nom }}</twig:Atoms:Badge>
+          {% endif %}
+        </div>
+
+        {% if recette.description %}
+          <p class="text-text-light text-lg leading-relaxed">{{ recette.description }}</p>
+        {% endif %}
+
+        {# Méta : temps, portions #}
+        <div class="flex flex-wrap gap-6 text-sm text-text-light">
+          {% if recette.temps %}
+            <span class="flex items-center gap-2">
+              <twig:Atoms:Icon name="clock" style="regular" :decorative="true" class="text-accent"/>
+              {{ recette.temps }}
+            </span>
+          {% endif %}
+          {% if recette.portions %}
+            <span class="flex items-center gap-2">
+              <twig:Atoms:Icon name="users" :decorative="true" class="text-accent"/>
+              {{ recette.portions }} portions
+            </span>
+          {% endif %}
+        </div>
+
+        {# Produit associé #}
+        {% if recette.produit %}
+          <div class="mt-4 p-4 rounded-xl bg-surface border border-border">
+            <p class="text-sm text-text-light mb-2">Envie de le déguster sans cuisiner ?</p>
+            <twig:Atoms:Link
+              href="{{ path('app_produit_show', { slug: recette.produit.slug }) }}"
+              class="btn-cta-sm"
+            >
+              Commander « {{ recette.produit.nom }} » — {{ recette.produit.prix|number_format(2, ',', ' ') }} €
+            </twig:Atoms:Link>
+          </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{# ── Étapes de la recette ── #}
+{% set etapes = recette.contenu|split("\n") %}
+{% if etapes|length > 0 %}
+<section class="section-alt">
+  <div class="container-main max-w-3xl">
+    <h2 class="text-2xl font-bold text-text mb-8">
+      <twig:Atoms:Icon name="list-ol" :decorative="true" class="text-accent mr-2"/>
+      Préparation
+    </h2>
+
+    <ol class="space-y-6">
+      {% for etape in etapes %}
+        {% if etape|trim is not empty %}
+          <li class="flex gap-4">
+            <span class="shrink-0 w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center font-bold text-sm">
+              {{ loop.index }}
+            </span>
+            <div class="flex-1 pt-2">
+              <p class="text-text leading-relaxed">{{ etape|trim }}</p>
+            </div>
+          </li>
+        {% endif %}
+      {% endfor %}
+    </ol>
+  </div>
+</section>
+{% endif %}
+
+{# ── Lien retour ── #}
+<section class="section">
+  <div class="container-main">
+    <twig:Atoms:Link href="/recettes" class="text-sm text-text-light hover:text-accent">
+      <twig:Atoms:Icon name="arrow-left" :decorative="true" class="mr-1"/>
+      Retour aux recettes
+    </twig:Atoms:Link>
+  </div>
+</section>
+
+{% endblock %}

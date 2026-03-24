@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -45,6 +47,10 @@ class Produit
     #[ORM\Column]
     private int $stock = 0;
 
+    // Recettes liées à ce produit (côté inverse de Recette.produit)
+    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Recette::class)]
+    private Collection $recettes;
+
     // Date d'ajout du produit au catalogue
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $createdAt = null;
@@ -52,6 +58,7 @@ class Produit
     public function __construct()
     {
         $this->createdAt = new \DateTime();
+        $this->recettes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -145,6 +152,17 @@ class Produit
     {
         $this->stock = $stock;
         return $this;
+    }
+
+    // Retourne la recette associée (la première liée, ou null)
+    public function getRecette(): ?Recette
+    {
+        return $this->recettes->first() ?: null;
+    }
+
+    public function getRecettes(): Collection
+    {
+        return $this->recettes;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

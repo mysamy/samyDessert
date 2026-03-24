@@ -1,11 +1,26 @@
-<twig:Molecules:Nav :links="links" class="{{ class }}" />
+<nav class="flex" aria-label="Navigation principale">
+  <ul {{ attributes.defaults({ class: 'flex items-center gap-6' }) }}>
+    {% for item in links %}
+      {% set label = item.label|default('') %}
+      {% set href = item.href|default('') %}
+      {% set isCurrent = item.current|default(false) %}
+
+      {% if label is not empty and href is not empty %}
+        <li>
+          <twig:Atoms:Link href="{{ href }}" :current="isCurrent" class="text-text hover:text-accent">
+            {{ label }}
+          </twig:Atoms:Link>
+        </li>
+      {% endif %}
+    {% endfor %}
+  </ul>
+</nav>
 
 {#
-  Props (* = obligatoire) :
-  — aucune prop obligatoire. Les liens sont auto-générés depuis mount() selon la route courante.
-  - class       string  — classes CSS transmises à Nav ('')
+  Aucune prop obligatoire. Les liens sont auto-générés depuis mount() selon la route courante.
+  Les attributs (class...) surchargent les classes par défaut du <ul> via attributes.defaults().
 
-  Utilisation (liens auto-générés depuis le mount()) :
+  Utilisation :
   <twig:Molecules:NavigationLinks />
   <twig:Molecules:NavigationLinks class="flex-col gap-2" />
 #}

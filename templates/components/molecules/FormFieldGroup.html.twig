@@ -1,26 +1,27 @@
 {% set id = this.computedId %}
 {% set describedBy = this.ariaDescribedBy %}
 {% set hasLegend = this.hasLegend %}
+{% set legendId = this.legendId %}
+{% set descriptionId = this.descriptionId %}
 {% set tag = hasLegend ? 'fieldset' : 'div' %}
 
 <{{ tag }}
   id="{{ id }}"
   {% if not hasLegend %}role="group"{% endif %}
   {% if describedBy %}aria-describedby="{{ describedBy }}"{% endif %}
-  class="{{ this.class }}"
+  {{ attributes.defaults({ class: '' }) }}
 >
   {% if hasLegend %}
-    <legend id="{{ this.legendId }}" class="text-sm font-semibold text-slate-900">
-      {{ this.legend }}
+    <legend id="{{ legendId }}" class="text-sm font-semibold text-text">
+      {{ legend }}
     </legend>
   {% endif %}
 
-{% if this.description %}
-  <p id="{{ this.descriptionId }}" class="{% if hasLegend %}mt-1{% endif %} text-sm text-slate-700">{{ this.description }}</p>
-{% endif %}
+  {% if description %}
+    <p id="{{ descriptionId }}" class="{% if hasLegend %}mt-1{% endif %} text-sm text-text-light">{{ description }}</p>
+  {% endif %}
 
-
-  <div class="{% if this.description or hasLegend %}mt-4{% endif %} {{ this.innerClass }}">
+  <div class="{% if description or hasLegend %}mt-4{% endif %} {{ innerClass }}">
     {% block content %}{% endblock %}
   </div>
 </{{ tag }}>
@@ -30,11 +31,10 @@
   - legend      string      — titre du groupe, génère un <fieldset> si renseigné ('')
   - description string|null — description affichée sous le legend (null)
   - id          string      — identifiant du groupe ('')
-  - class       string      — classes CSS sur l'élément racine ('')
   - innerClass  string      — classes CSS sur le conteneur interne ('space-y-4')
 
   Utilisation :
-  <twig:Molecules:FormFieldGroup legend="Informations personnelles" description="Ces informations sont obligatoires.">
+  <twig:Molecules:FormFieldGroup legend="Informations personnelles">
     <twig:Molecules:InputField name="prenom" label="Prénom" />
     <twig:Molecules:InputField name="nom" label="Nom" />
   </twig:Molecules:FormFieldGroup>

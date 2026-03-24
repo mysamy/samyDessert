@@ -9,7 +9,6 @@ use Symfony\Component\HttpFoundation\RequestStack;
 final class NavigationLinks
 {
     public array $links = [];
-    public string $class = '';
 
     public function __construct(
         private readonly RequestStack $requestStack,

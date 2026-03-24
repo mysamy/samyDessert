@@ -13,6 +13,10 @@ final class DessertCard
     public ?string $imageSrc = null;
     public ?string $url = null;
 
+    // Favori
+    public bool $favori = false;          // déjà en favori ?
+    public ?string $favoriUrl = null;     // URL pour toggle (null = pas de bouton)
+
     // Props recette
     public string $difficulte = '';
     public ?string $temps = null;
@@ -23,7 +27,4 @@ final class DessertCard
     public ?string $prix = null;
     public ?float $rating = null;
     public ?int $produitId = null;     // ID pour le live component BoutonPanier
-    public ?string $addToCartUrl = null; // conservé pour rétrocompatibilité (ignoré si produitId est défini)
-    public string $addToCartLabel = 'Ajouter au panier';
-    public bool $addToCartDisabled = false;
 }

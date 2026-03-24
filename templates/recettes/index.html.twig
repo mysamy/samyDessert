@@ -32,7 +32,7 @@
 
       {# ── Sidebar catégories ── #}
       <aside class="lg:w-56 shrink-0">
-        <h2 class="text-sm font-semibold uppercase tracking-wider text-slate-500 mb-4">Catégories</h2>
+        <h2 class="text-sm font-semibold uppercase tracking-wider text-text-light mb-4">Catégories</h2>
         <ul class="flex flex-row flex-wrap gap-2 lg:flex-col lg:gap-1">
 
           <li>
@@ -64,7 +64,7 @@
       <div class="flex-1">
 
         {# Info résultats #}
-        <p class="text-sm text-slate-500 mb-6">
+        <p class="text-sm text-text-light mb-6">
           {% if recherche %}
             {{ recettes|length }} résultat{% if recettes|length > 1 %}s{% endif %} pour « {{ recherche }} »
           {% else %}
@@ -74,23 +74,26 @@
         </p>
 
         {% if recettes is empty %}
-          <div class="text-center py-16 text-slate-400">
-            <i class="fa-solid fa-cake-candles text-4xl mb-4 block" aria-hidden="true"></i>
+          <div class="text-center py-16 text-gray-light">
+            <twig:Atoms:Icon name="cake-candles" :decorative="true" class="text-4xl mb-4 block"/>
             <p class="text-lg font-medium">Aucune recette trouvée.</p>
             <p class="text-sm mt-1">Essayez un autre mot-clé ou parcourez toutes les catégories.</p>
           </div>
         {% else %}
           <div class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {% for recette in recettes %}
+              {% set isFavori = recette.id in recettesFavorisIds %}
               <twig:Molecules:DessertCard
                 titre="{{ recette.titre }}"
                 description="{{ recette.description }}"
-                imageSrc="{{ recette.image }}"
-                difficulte="{{ recette.difficulte }}"
+                imageSrc="{{ recette.imageSrc }}"
+                difficulte="{{ recette.difficulte ? recette.difficulte.value : '' }}"
                 temps="{{ recette.temps }}"
                 :portions="recette.portions"
-                categorieLabel="{{ categories[recette.categorie] }}"
-                url="/recettes/{{ recette.id }}"
+                categorieLabel="{{ recette.categorie ? recette.categorie.nom : '' }}"
+                url="{{ path('app_recette_show', { slug: recette.slug }) }}"
+                :favori="isFavori"
+                favoriUrl="{{ path('app_favori_toggle', { type: 'recette', id: recette.id }) }}"
               />
             {% endfor %}
           </div>

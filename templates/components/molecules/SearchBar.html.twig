@@ -1,4 +1,4 @@
-<section class="bg-white border-b border-slate-100 py-6">
+<section class="bg-white border-b border-border py-6">
   <div class="container-main">
     <form method="GET" action="{{ action }}" class="flex gap-3 max-w-xl">
       <input
@@ -6,7 +6,7 @@
         name="{{ name }}"
         value="{{ value }}"
         placeholder="{{ placeholder }}"
-        class="flex-1 rounded-full border border-slate-200 px-5 py-2.5 text-sm text-text placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-accent/40 focus:border-accent"
+        class="flex-1 rounded-full border border-border px-5 py-2.5 text-sm text-text placeholder:text-gray-mid focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:border-accent"
         aria-label="{{ placeholder }}"
       >
       {% block extra_inputs %}{% endblock %}
@@ -14,7 +14,7 @@
         type="submit"
         class="inline-flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-primary transition"
       >
-        <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
+        <twig:Atoms:Icon name="magnifying-glass" :decorative="true"/>
         {{ buttonLabel }}
       </button>
     </form>
@@ -31,5 +31,5 @@
 
   Utilisation :
   <twig:Molecules:SearchBar action="{{ path('app_produits') }}" value="{{ app.request.query.get('q') }}" />
-  <twig:Molecules:SearchBar action="{{ path('app_recettes') }}" placeholder="Chercher une recette..." buttonLabel="Trouver" />
+  <twig:Molecules:SearchBar action="{{ path('app_recettes') }}" placeholder="Chercher une recette..." />
 #}

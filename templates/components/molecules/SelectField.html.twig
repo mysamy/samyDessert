@@ -2,22 +2,11 @@
 {% set describedBy = this.describedBy %}
 {% set isInvalid = this.effectiveInvalid %}
 {% set ariaLabel = this.effectiveAriaLabel %}
-{% set label = this.label %}
-{% set fieldClass = this.class %}
-{% set selectClass = this.selectClass %}
-{% set name = this.name %}
-{% set required = this.required %}
-{% set disabled = this.disabled %}
-{% set multiple = this.multiple %}
-{% set placeholder = this.placeholder %}
-{% set options = this.options %}
 {% set isSelectedEmpty = this.isSelected('') %}
 {% set helpId = this.helpId %}
 {% set errorId = this.errorId %}
-{% set help = this.help %}
-{% set error = this.error %}
 
-<div class="w-full {{ fieldClass }}">
+<div {{ attributes.defaults({ class: 'w-full' }) }}>
   {% if label %}
     <twig:Atoms:Label
       for="{{ id }}"
@@ -36,10 +25,7 @@
     aria-describedby="{{ describedBy }}"
     aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
     aria-label="{{ ariaLabel }}"
-    class="
-      {{ isInvalid ? 'border-red-600 focus-visible:ring-red-600/40' : '' }}
-      {{ selectClass }}
-    "
+    class="{{ isInvalid ? 'border-danger focus-visible:ring-danger/40' : '' }}"
   >
     {% if placeholder and not multiple %}
       <option value="" {% if isSelectedEmpty %}selected{% endif %} {% if required %}disabled{% endif %}>
@@ -53,7 +39,7 @@
           {% for sub in opt.options %}
             <option
               value="{{ sub.value|default('') }}"
-              {% if sub.value|default('') == '' ? isSelectedEmpty : false %}selected{% endif %}
+              {% if this.isSelected(sub.value|default('')) %}selected{% endif %}
               {% if sub.disabled|default(false) %}disabled{% endif %}
             >
               {{ sub.label|default(sub.value|default('')) }}
@@ -63,6 +49,7 @@
       {% else %}
         <option
           value="{{ opt.value|default('') }}"
+          {% if this.isSelected(opt.value|default('')) %}selected{% endif %}
           {% if opt.disabled|default(false) %}disabled{% endif %}
         >
           {{ opt.label|default(opt.value|default('')) }}
@@ -72,11 +59,11 @@
   </twig:Atoms:Select>
 
   {% if help %}
-    <p id="{{ helpId }}" class="mt-1 text-sm text-slate-700">{{ help }}</p>
+    <p id="{{ helpId }}" class="mt-1 text-sm text-text-light">{{ help }}</p>
   {% endif %}
 
   {% if error %}
-    <p id="{{ errorId }}" class="mt-1 text-sm text-red-700" role="alert">{{ error }}</p>
+    <p id="{{ errorId }}" class="mt-1 text-sm text-danger" role="alert">{{ error }}</p>
   {% endif %}
 </div>
 
@@ -98,10 +85,7 @@
     name="pays"
     label="Pays"
     :required="true"
-    :options="[
-      { value: 'FR', label: 'France' },
-      { value: 'BE', label: 'Belgique' },
-    ]"
+    :options="[{ value: 'FR', label: 'France' }, { value: 'BE', label: 'Belgique' }]"
     value="FR"
   />
 #}

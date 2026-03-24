@@ -24,17 +24,18 @@
   {% endif %}
 
   {% if hasItems %}
-    <ul role="list" class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+    <ul role="list" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
   {% for item in items %}
     {% set itemTitre = item.nom ?? item.title ?? item.titre ?? '' %}
-    {% set itemUrl = item.url ?? null %}
+    {% set itemUrl = item.url ?? (item.slug ? path('app_produit_show', { slug: item.slug }) : null) %}
     {% set itemImageSrc = item.imageSrc ?? null %}
     {% set itemRating = item.rating ?? null %}
     {% set itemPrix = item.formattedPrice ?? (item.prix ? (item.prix|number_format(2, ',', ' ') ~ ' €') : null) %}
     {% set itemDescription = item.description ?? null %}
     {% set itemCategorieLabel = item.categorieLabel ?? item.categorie.nom ?? null %}
     {% set itemProduitId = item.id ?? null %}
-    {% set itemAddToCartLabel = item.addToCartLabel ?? 'Ajouter au panier' %}
+    {% set itemFavori = itemProduitId ? (itemProduitId in favorisIds) : false %}
+    {% set itemFavoriUrl = itemProduitId ? path('app_favori_toggle', { type: 'produit', id: itemProduitId }) : null %}
 
     <li>
       <twig:Molecules:DessertCard
@@ -46,7 +47,8 @@
         :description="itemDescription"
         :categorieLabel="itemCategorieLabel"
         :produitId="itemProduitId"
-        :addToCartLabel="itemAddToCartLabel"
+        :favori="itemFavori"
+        :favoriUrl="itemFavoriUrl"
       />
     </li>
   {% endfor %}

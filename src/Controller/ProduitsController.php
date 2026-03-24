@@ -2,13 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Produit;
+use App\Entity\Utilisateur;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-// Contrôleur de la page produits (route "/produits")
+// Contrôleur des pages produits : liste (/produits) et détail (/produits/{slug})
 final class ProduitsController extends AbstractController
 {
     // Affiche la liste des produits avec filtre par catégorie et recherche par nom
@@ -45,11 +47,33 @@ final class ProduitsController extends AbstractController
 
         $produits = $qb->getQuery()->getResult();
 
+        // Récupère les IDs des produits favoris de l'utilisateur connecté
+        $user = $this->getUser();
+        $produitsFavorisIds = [];
+        if ($user instanceof Utilisateur) {
+            $produitsFavorisIds = $user->getProduitsFavoris()->map(fn($p) => $p->getId())->toArray();
+        }
+
         return $this->render('produits/index.html.twig', [
-            'produits'        => $produits,
-            'categories'      => $categories,
-            'categorieActive' => $categorieActive,
-            'recherche'       => $recherche,
+            'produits'           => $produits,
+            'categories'         => $categories,
+            'categorieActive'    => $categorieActive,
+            'recherche'          => $recherche,
+            'produitsFavorisIds' => $produitsFavorisIds,
+        ]);
+    }
+
+    // Affiche la page de détail d'un produit
+    #[Route('/produits/{slug}', name: 'app_produit_show')]
+    public function show(string $slug, ProduitRepository $produitRepo): Response
+    {
+        $produit = $produitRepo->findOneBy(['slug' => $slug]);
+        if (!$produit) {
+            throw $this->createNotFoundException('Produit introuvable.');
+        }
+
+        return $this->render('produits/show.html.twig', [
+            'produit' => $produit,
         ]);
     }
 }

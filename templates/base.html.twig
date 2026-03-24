@@ -22,7 +22,7 @@
       logoAlt="Samy Dessert"
     >
       <twig:block name="actions">
-        <twig:Atoms:Link href="/panier" class="flex items-center gap-1.5">
+        <twig:Atoms:Link href="/panier" class="flex items-center gap-1.5 text-text hover:text-accent">
           Panier
           <twig:Atoms:PanierBadge />
         </twig:Atoms:Link>
@@ -53,7 +53,7 @@
             </div>
           </div>
         {% else %}
-          <twig:Atoms:Link href="/connexion">Se connecter</twig:Atoms:Link>
+          <twig:Atoms:Link href="/connexion" class="bg-accent text-white px-5 py-2 rounded-full font-semibold hover:bg-accent/90 transition">Se connecter</twig:Atoms:Link>
         {% endif %}
       </twig:block>
     </twig:Organisms:Header>
@@ -61,6 +61,8 @@
     <main>
       {% block body %}{% endblock %}
     </main>
+
+    <twig:Molecules:CookieBanner />
 
     <twig:Organisms:Footer
       brandLabel="Samy Dessert"

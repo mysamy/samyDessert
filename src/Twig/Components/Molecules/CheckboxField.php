@@ -8,6 +8,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class CheckboxField
 {
     public string $id = '';
+    public string $name = '';
     public string $label = '';
     public bool $checked = false;
     public bool $required = false;

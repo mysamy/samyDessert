@@ -1,41 +1,42 @@
 {% set id = this.computedId %}
+{% set describedBy = this.describedBy %}
+{% set isInvalid = this.effectiveInvalid %}
 {% set ariaLabel = this.effectiveAriaLabel %}
+{% set helpId = this.helpId %}
+{% set errorId = this.errorId %}
 
-<div class="w-full {{ this.class }}">
-  {% if this.label %}
+<div {{ attributes.defaults({ class: 'w-full' }) }}>
+  {% if label %}
     <twig:Atoms:Label
       for="{{ id }}"
-      label="{{ this.label }}"
-      :required="this.required"
+      label="{{ label }}"
+      :required="required"
       class="mb-1 block"
     />
   {% endif %}
 
   <twig:Atoms:Textarea
-    :rows="this.rows"
-    :disabled="this.disabled"
-    :required="this.required"
-    :readonly="this.readonly"
-    value="{{ this.value ?? '' }}"
+    :rows="rows"
+    :disabled="disabled"
+    :required="required"
+    :readonly="readonly"
+    value="{{ value ?? '' }}"
     id="{{ id }}"
-    name="{{ this.name }}"
-    placeholder="{{ this.placeholder|default('') }}"
-    maxlength="{{ this.maxlength ?? '' }}"
-    aria-describedby="{{ this.describedBy }}"
-    aria-invalid="{{ this.ariaInvalid }}"
+    name="{{ name }}"
+    placeholder="{{ placeholder ?? '' }}"
+    maxlength="{{ maxlength ?? '' }}"
+    aria-describedby="{{ describedBy }}"
+    aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
     aria-label="{{ ariaLabel }}"
-    class="
-      {{ this.textareaClass }}
-      {{ (this.ariaInvalid == 'true') ? 'border-red-600 focus:ring-red-600/40 focus:border-red-600' : '' }}
-    "
+    class="{{ isInvalid ? 'border-danger focus:ring-danger/40 focus:border-danger' : '' }}"
   />
 
-  {% if this.help %}
-    <p id="{{ this.helpId }}" class="mt-1 text-sm text-gray-700">{{ this.help }}</p>
+  {% if help %}
+    <p id="{{ helpId }}" class="mt-1 text-sm text-text-light">{{ help }}</p>
   {% endif %}
 
-  {% if this.error %}
-    <p id="{{ this.errorId }}" class="mt-1 text-sm text-red-700" role="alert">{{ this.error }}</p>
+  {% if error %}
+    <p id="{{ errorId }}" class="mt-1 text-sm text-danger" role="alert">{{ error }}</p>
   {% endif %}
 </div>
 

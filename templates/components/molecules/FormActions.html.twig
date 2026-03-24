@@ -1,10 +1,8 @@
+{% set alignmentClass = this.alignmentClass %}
+
 <div
-  class="
-    mt-6 flex items-center gap-3
-    {{ this.alignmentClass }}
-    {{ this.class }}
-  "
-  {% if this.disabled %}aria-disabled="true"{% endif %}
+  {{ attributes.defaults({ class: 'mt-6 flex items-center gap-3 ' ~ alignmentClass }) }}
+  {% if disabled %}aria-disabled="true"{% endif %}
 >
   {% block content %}{% endblock %}
 </div>
@@ -13,15 +11,14 @@
   Props (* = obligatoire) :
   - align       string  — alignement : start | center | end | between (end)
   - disabled    bool    — désactive le groupe d'actions (false)
-  - class       string  — classes CSS supplémentaires ('')
 
   Utilisation :
   <twig:Molecules:FormActions>
     <twig:Atoms:Button type="submit">Enregistrer</twig:Atoms:Button>
   </twig:Molecules:FormActions>
 
-  <twig:Molecules:FormActions align="start">
-    <twig:Atoms:Button type="submit">Envoyer</twig:Atoms:Button>
+  <twig:Molecules:FormActions align="between">
     <twig:Atoms:Button variant="ghost">Annuler</twig:Atoms:Button>
+    <twig:Atoms:Button type="submit">Envoyer</twig:Atoms:Button>
   </twig:Molecules:FormActions>
 #}

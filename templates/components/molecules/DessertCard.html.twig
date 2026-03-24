@@ -1,9 +1,130 @@
+<article {{ attributes.defaults({ class: 'group flex flex-col rounded-2xl border border-border shadow-sm hover:shadow-md transition bg-surface h-full' }) }}>
+
+  {# Image + badge difficulté — cliquable si url #}
+  {% if url %}
+    <a href="{{ url }}" class="relative overflow-hidden h-48 bg-surface block rounded-t-2xl" aria-hidden="true" tabindex="-1">
+  {% else %}
+    <div class="relative overflow-hidden h-48 bg-surface rounded-t-2xl">
+  {% endif %}
+    {% if imageSrc %}
+      <img
+        src="{{ imageSrc }}"
+        alt="{{ titre }}"
+        class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+        loading="lazy"
+      >
+    {% endif %}
+    {% if difficulte %}
+      <div class="absolute top-3 left-3">
+        <twig:Atoms:Badge variant="{{ difficulte == 'Facile' ? 'success' : (difficulte == 'Moyen' ? 'warning' : 'danger') }}">
+          {{ difficulte }}
+        </twig:Atoms:Badge>
+      </div>
+    {% endif %}
+  {% if url %}</a>{% else %}</div>{% endif %}
+
+  {# Contenu #}
+  <div class="flex flex-col flex-1 p-5">
+    <div class="flex items-start justify-between gap-2 mb-1">
+      <h3 class="text-base font-bold text-text group-hover:text-accent transition">
+        {% if url %}
+          <a href="{{ url }}" class="hover:underline">{{ titre }}</a>
+        {% else %}
+          {{ titre }}
+        {% endif %}
+      </h3>
+      {% if favoriUrl %}
+        <div
+          class="shrink-0"
+          data-controller="favori"
+          data-favori-url-value="{{ favoriUrl }}"
+          data-favori-active-value="{{ favori ? 'true' : 'false' }}"
+          data-favori-flash-tooltip-outlet="[data-controller='flash-tooltip']"
+        >
+          <twig:Molecules:FlashTooltip message="Connectez-vous pour ajouter aux favoris">
+            {% block content %}
+            <button
+              type="button"
+              class="text-lg transition {{ favori ? 'text-accent' : 'text-gray-light hover:text-accent' }}"
+              aria-label="{{ favori ? 'Retirer des favoris' : 'Ajouter aux favoris' }}"
+              data-action="favori#toggle"
+              data-favori-target="btn"
+            >
+              <twig:Atoms:Icon name="heart" style="{{ favori ? 'solid' : 'regular' }}" :decorative="true" data-favori-target="icon" />
+            </button>
+            {% endblock %}
+          </twig:Molecules:FlashTooltip>
+        </div>
+      {% endif %}
+    </div>
+    {% if description %}
+      <p class="text-sm text-text-light mb-4 flex-1 line-clamp-2">{{ description }}</p>
+    {% endif %}
+
+    {# Méta recette : temps + portions + catégorie #}
+    {% if temps or portions or categorieLabel %}
+      <div class="flex items-center gap-4 text-xs text-text-light mb-4">
+        {% if temps %}
+          <span class="flex items-center gap-1">
+            <twig:Atoms:Icon name="clock" style="regular" :decorative="true"/>
+            {{ temps }}
+          </span>
+        {% endif %}
+        {% if portions %}
+          <span class="flex items-center gap-1">
+            <twig:Atoms:Icon name="users" :decorative="true"/>
+            {{ portions }} pers.
+          </span>
+        {% endif %}
+        {% if categorieLabel %}
+          <span class="flex items-center gap-1">
+            <twig:Atoms:Icon name="tag" :decorative="true"/>
+            {{ categorieLabel }}
+          </span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Étoiles (produit) #}
+    {% if rating is not null %}
+      <div class="flex items-center gap-1 mb-3" role="img" aria-label="{{ rating }} sur 5 étoiles">
+        {% for i in 1..5 %}
+          <twig:Atoms:Icon name="star" :decorative="true" class="text-xs {{ rating >= i ? 'text-star' : 'text-gray-light' }}"/>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# Bouton bas de carte #}
+    <div class="flex items-center justify-between gap-3 mt-auto pt-3">
+      {% if prix is not null %}
+        {# Produit : prix + bouton panier #}
+        <span class="text-base font-bold text-text whitespace-nowrap">{{ prix }}</span>
+        {% if produitId is not null %}
+          <twig:Molecules:BoutonPanier
+            :produitId="produitId"
+            :produitNom="titre"
+          />
+        {% endif %}
+      {% elseif url %}
+        {# Recette : voir la recette #}
+        <twig:Atoms:Link href="{{ url }}" class="btn-cta-sm ml-auto">
+          Voir la recette
+          <twig:Atoms:Icon name="arrow-right" :decorative="true"/>
+        </twig:Atoms:Link>
+      {% endif %}
+    </div>
+  </div>
+
+</article>
+
 {#
   Props (* = obligatoire) :
   - titre*            string      — nom du produit ou de la recette
   - description       string|null — description courte (null)
   - imageSrc          string|null — URL de l'image (null)
-  - url               string|null — lien "Voir la recette" (null)
+  - url               string|null — lien vers la page de détail produit ou recette (null)
+  - favori            bool        — déjà en favori ? (false)
+  - favoriUrl         string|null — URL pour toggle favori, null = pas de bouton (null)
 
   Props recette :
   - difficulte        string      — Facile | Moyen | Difficile ('')
@@ -15,8 +136,6 @@
   - prix              string|null — prix formaté ex: "9,90 €" (null)
   - rating            float|null  — note sur 5 (null)
   - produitId         int|null    — id pour le live component BoutonPanier (null)
-  - addToCartLabel    string      — libellé du bouton panier ('Ajouter au panier')
-  - addToCartDisabled bool        — désactive le bouton panier (false)
 
   Utilisation :
   <twig:Molecules:DessertCard
@@ -35,92 +154,3 @@
     url="{{ path('app_recette', { slug: recette.slug }) }}"
   />
 #}
-
-<article class="group flex flex-col rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-md transition bg-white">
-
-  {# Image + badge difficulté #}
-  <div class="relative overflow-hidden h-48 bg-surface">
-    {% if imageSrc %}
-      <img
-        src="{{ imageSrc }}"
-        alt="{{ titre }}"
-        class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-        loading="lazy"
-      >
-    {% endif %}
-    {% if difficulte %}
-      <div class="absolute top-3 left-3">
-        <twig:Atoms:Badge variant="{{ difficulte == 'Facile' ? 'success' : (difficulte == 'Moyen' ? 'warning' : 'danger') }}">
-          {{ difficulte }}
-        </twig:Atoms:Badge>
-      </div>
-    {% endif %}
-  </div>
-
-  {# Contenu #}
-  <div class="flex flex-col flex-1 p-5">
-    <h3 class="text-base font-bold text-text mb-1 group-hover:text-accent transition">
-      {{ titre }}
-    </h3>
-    {% if description %}
-      <p class="text-sm text-text-light mb-4 flex-1">{{ description }}</p>
-    {% endif %}
-
-    {# Méta recette : temps + portions + catégorie #}
-    {% if temps or portions or categorieLabel %}
-      <div class="flex items-center gap-4 text-xs text-slate-500 mb-4">
-        {% if temps %}
-          <span class="flex items-center gap-1">
-            <i class="fa-regular fa-clock" aria-hidden="true"></i>
-            {{ temps }}
-          </span>
-        {% endif %}
-        {% if portions %}
-          <span class="flex items-center gap-1">
-            <i class="fa-solid fa-users" aria-hidden="true"></i>
-            {{ portions }} pers.
-          </span>
-        {% endif %}
-        {% if categorieLabel %}
-          <span class="flex items-center gap-1">
-            <i class="fa-solid fa-tag" aria-hidden="true"></i>
-            {{ categorieLabel }}
-          </span>
-        {% endif %}
-      </div>
-    {% endif %}
-
-    {# Étoiles (produit) #}
-    {% if rating is not null %}
-      <div class="flex items-center gap-1 mb-3">
-        {% for i in 1..5 %}
-          <i class="fa-solid fa-star text-xs {{ rating >= i ? 'text-star' : 'text-slate-200' }}" aria-hidden="true"></i>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    {# Bouton bas de carte #}
-    <div class="flex items-center justify-between gap-3 mt-auto pt-3">
-      {% if prix is not null %}
-        {# Produit : prix + bouton live "Ajouter au panier" #}
-        <span class="text-base font-bold text-text">{{ prix }}</span>
-        {% if produitId is not null %}
-          <twig:Molecules:BoutonPanier
-            :produitId="produitId"
-            :produitNom="titre"
-          />
-        {% endif %}
-      {% elseif url %}
-        {# Recette : voir la recette #}
-        <a
-          href="{{ url }}"
-          class="btn-cta-sm ml-auto"
-        >
-          Voir la recette
-          <i class="fa-solid fa-arrow-right" aria-hidden="true"></i>
-        </a>
-      {% endif %}
-    </div>
-  </div>
-
-</article>

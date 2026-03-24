@@ -1,6 +1,7 @@
 <a
   {% if external %}target="_blank" rel="noopener noreferrer"{% endif %}
-  {{ attributes.defaults({ class: 'inline-flex items-center text-accent hover:underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm' }) }}
+  {% if current %}aria-current="page"{% endif %}
+  {{ attributes.defaults({ class: 'inline-flex items-center hover:underline transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm' }) }}
 >
   {% block content %}{% endblock %}
 </a>
@@ -8,6 +9,7 @@
 {#
   Props (* = obligatoire) :
   - external  bool — ajoute target="_blank" rel="noopener noreferrer" (false)
+  - current   bool — ajoute aria-current="page" pour la nav (false)
 
   Attributs HTML utiles (via attributes) :
   - href*       — URL de destination
@@ -16,5 +18,5 @@
   Utilisation :
   <twig:Atoms:Link href="{{ path('app_home') }}">Accueil</twig:Atoms:Link>
   <twig:Atoms:Link href="https://stripe.com" :external="true">Payer</twig:Atoms:Link>
-  <twig:Atoms:Link href="{{ path('app_produits') }}" aria-label="Voir tous les produits">Produits</twig:Atoms:Link>
+  <twig:Atoms:Link href="{{ path('app_produits') }}" :current="true">Produits</twig:Atoms:Link>
 #}

@@ -12,9 +12,12 @@ final class FormField
     public ?string $id = null;
     public bool $required = false;
 
+    private ?string $cachedId = null;
+
     public function getComputedId(): string
     {
-        return $this->id ?? 'field-' . bin2hex(random_bytes(4));
+        // On met en cache le résultat pour que tous les appels retournent le même ID
+        return $this->cachedId ??= $this->id ?? 'field-' . bin2hex(random_bytes(4));
     }
 
     public function getErrorId(): string

@@ -75,12 +75,12 @@
 
         {% if produits is empty %}
           <div class="text-center py-16 text-slate-400">
-            <i class="fa-solid fa-face-sad-tear text-4xl mb-4 block" aria-hidden="true"></i>
+            <twig:Atoms:Icon name="face-sad-tear" :decorative="true" class="text-4xl mb-4 block"/>
             <p class="text-lg font-medium">Aucun dessert trouvé.</p>
             <a href="/produits" class="mt-4 inline-block text-sm text-accent hover:underline">Voir tous les desserts</a>
           </div>
         {% else %}
-          <twig:Organisms:ProductCardGrid :items="produits" />
+          <twig:Organisms:ProductCardGrid :items="produits" :favorisIds="produitsFavorisIds" />
         {% endif %}
 
       </div>

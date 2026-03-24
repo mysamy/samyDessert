@@ -39,7 +39,7 @@ class Recette
     private ?Difficulte $difficulte = null;
 
     // Produit associé à la recette (optionnel)
-    #[ORM\ManyToOne(targetEntity: Produit::class)]
+    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'recettes')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Produit $produit = null;
 

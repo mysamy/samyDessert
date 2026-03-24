@@ -27,21 +27,7 @@ final class TextareaField
     public int $rows = 4;
     public ?int $maxlength = null;
 
-    public string $class = '';
-    public string $textareaClass = '';
-
-    public string $ariaInvalid = 'false';
-    public string $describedBy = '';
-    public string $computedId = '';
-
-    public function mount(): void
-    {
-        $this->computedId = $this->computeId();
-        $this->describedBy = $this->computeDescribedBy();
-        $this->ariaInvalid = ($this->invalid || (bool) $this->error) ? 'true' : 'false';
-    }
-
-    private function computeId(): string
+    public function getComputedId(): string
     {
         if ($this->id !== '') {
             return $this->id;
@@ -55,29 +41,34 @@ final class TextareaField
         return 'textarea';
     }
 
-    private function computeDescribedBy(): string
+    public function getHelpId(): string
+    {
+        return $this->getComputedId() . '__help';
+    }
+
+    public function getErrorId(): string
+    {
+        return $this->getComputedId() . '__error';
+    }
+
+    public function getDescribedBy(): string
     {
         $ids = [];
 
         if ($this->help) {
-            $ids[] = $this->computedId.'__help';
+            $ids[] = $this->getHelpId();
         }
 
         if ($this->error) {
-            $ids[] = $this->computedId.'__error';
+            $ids[] = $this->getErrorId();
         }
 
         return implode(' ', $ids);
     }
 
-    public function getHelpId(): string
+    public function getEffectiveInvalid(): bool
     {
-        return $this->computedId.'__help';
-    }
-
-    public function getErrorId(): string
-    {
-        return $this->computedId.'__error';
+        return $this->invalid || (bool) $this->error;
     }
 
     public function getEffectiveAriaLabel(): string

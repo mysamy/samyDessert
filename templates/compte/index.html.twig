@@ -15,7 +15,7 @@
     {# Infos personnelles #}
     <div class="bg-white border border-surface rounded-xl p-6 shadow-sm">
       <h2 class="text-lg font-semibold text-primary mb-4">
-        <i class="fa-solid fa-user mr-2"></i> Mes informations
+        <twig:Atoms:Icon name="user" :decorative="true" class="mr-2"/> Mes informations
       </h2>
       <ul class="space-y-2 text-sm text-text">
         <li><span class="text-text-light">Email :</span> {{ utilisateur.email }}</li>
@@ -35,7 +35,7 @@
     <twig:Atoms:Link href="{{ path('app_compte_commandes') }}"
       class="bg-white border border-surface rounded-xl p-6 shadow-sm hover:border-accent transition block">
       <h2 class="text-lg font-semibold text-primary mb-2">
-        <i class="fa-solid fa-bag-shopping mr-2"></i> Mes commandes
+        <twig:Atoms:Icon name="bag-shopping" :decorative="true" class="mr-2"/> Mes commandes
       </h2>
       <p class="text-sm text-text-light">Consulter et gérer vos commandes passées.</p>
     </twig:Atoms:Link>
@@ -45,7 +45,7 @@
   {# Déconnexion #}
   <div class="mt-10">
     <twig:Atoms:Link href="{{ path('_logout_main') }}" class="text-sm text-text-light hover:text-accent transition">
-      <i class="fa-solid fa-right-from-bracket mr-1"></i> Se déconnecter
+      <twig:Atoms:Icon name="right-from-bracket" :decorative="true" class="mr-1"/> Se déconnecter
     </twig:Atoms:Link>
   </div>
 

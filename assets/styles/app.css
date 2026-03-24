@@ -127,7 +127,7 @@
 }
 
 .carousel__item--zoom {
-  transform: scale(1.3);
+  transform: scale(1.5);
   z-index: 2;
 }
 
@@ -197,7 +197,7 @@
 
 /* ── How section ─────────────────────────────────────────────────────────── */
 .how__carousel {
-  @apply w-full flex h-full justify-center relative overflow-hidden;
+  @apply w-full flex min-h-[650px] justify-center relative overflow-hidden items-center;
 }
 
 .how {

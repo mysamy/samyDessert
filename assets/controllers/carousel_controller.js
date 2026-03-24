@@ -218,6 +218,8 @@ class Carousel {
       this.container.style.transition = "none";
       this.items.forEach((item) => {
         item.style.transition = "none";
+        const desc = item.querySelector(".carousel-card-description");
+        if (desc) desc.style.transition = "none";
       });
     }
     let translateX = (index * -100) / this.items.length;
@@ -231,6 +233,8 @@ class Carousel {
     if (animation === false) {
       this.items.forEach((item) => {
         item.style.transition = "";
+        const desc = item.querySelector(".carousel-card-description");
+        if (desc) desc.style.transition = "";
       });
       this.container.style.transition = "";
     }
@@ -240,12 +244,24 @@ class Carousel {
    * Zoom lélement du milieu
    */
   zoom() {
-    this.items.forEach((item) => item.classList.remove("carousel__item--zoom"));
+    this.items.forEach((item) => {
+      item.classList.remove("carousel__item--zoom");
+      const desc = item.querySelector(".carousel-card-description");
+      if (desc) {
+        desc.classList.remove("transition-opacity", "duration-300");
+        desc.classList.add("opacity-0");
+      }
+    });
     if (this.slidesVisible >= 3) {
       this.middleIndex = this.currentItem + Math.floor(this.slidesVisible / 2);
       this.middleItem = this.items[this.middleIndex];
       if (this.middleItem) {
         this.middleItem.classList.add("carousel__item--zoom");
+        const desc = this.middleItem.querySelector(".carousel-card-description");
+        if (desc) {
+          desc.classList.add("transition-opacity", "duration-300");
+          desc.classList.remove("opacity-0");
+        }
       }
     } else {
       return;

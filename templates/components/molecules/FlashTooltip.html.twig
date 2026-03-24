@@ -1,0 +1,35 @@
+<div
+  data-controller="flash-tooltip"
+  data-flash-tooltip-duration-value="{{ duration }}"
+  {{ attributes.defaults({ class: 'relative' }) }}
+>
+  {% block content %}{% endblock %}
+
+  <div
+    data-flash-tooltip-target="message"
+    class="hidden absolute bottom-full left-1/2 -translate-x-1/2 mb-2 bg-text text-white text-xs px-3 py-1.5 rounded-lg whitespace-nowrap z-50"
+    role="alert"
+  >
+    {{ message }}
+  </div>
+</div>
+
+{#
+  Molécule FlashTooltip — message temporaire positionné au-dessus du contenu.
+  Utilise le controller Stimulus `flash-tooltip` pour afficher/cacher.
+
+  Props :
+  - message*    string  — texte à afficher dans la bulle
+  - duration    int     — durée d'affichage en ms (3000)
+
+  Le contenu (block content) est le déclencheur.
+  Pour déclencher depuis un autre controller, utiliser un outlet flash-tooltip.
+
+  Utilisation standalone :
+  <twig:Molecules:FlashTooltip message="Connectez-vous pour continuer">
+    <button data-action="flash-tooltip#show">Cliquer</button>
+  </twig:Molecules:FlashTooltip>
+
+  Utilisation via outlet (ex: depuis favori controller) :
+  <twig:Molecules:FlashTooltip message="Connectez-vous pour ajouter aux favoris"/>
+#}

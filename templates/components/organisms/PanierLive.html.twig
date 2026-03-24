@@ -6,7 +6,7 @@
 
   {# Panier vide #}
   <div class="text-center py-24 text-slate-400">
-    <i class="fa-solid fa-cart-shopping text-5xl mb-6 block" aria-hidden="true"></i>
+    <twig:Atoms:Icon name="cart-shopping" size="3x" :decorative="true" class="mb-6 block"/>
     <p class="text-xl font-medium mb-2">Votre panier est vide.</p>
     <p class="text-sm mb-8">Découvrez nos desserts artisanaux et ajoutez-en à votre panier.</p>
     <a href="{{ path('app_produits') }}"
@@ -32,7 +32,7 @@
             <img src="{{ produit.imageSrc }}" alt="{{ produit.nom }}" class="w-full h-full object-cover">
           {% else %}
             <div class="w-full h-full flex items-center justify-center text-slate-300">
-              <i class="fa-solid fa-image text-2xl" aria-hidden="true"></i>
+              <twig:Atoms:Icon name="image" :decorative="true" class="text-2xl"/>
             </div>
           {% endif %}
         </div>
@@ -106,7 +106,7 @@
       <a href="{{ path('app_commande') }}"
          class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-accent/90 transition">
         Passer commande
-        <i class="fa-solid fa-arrow-right text-sm" aria-hidden="true"></i>
+        <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-sm"/>
       </a>
     </div>
 

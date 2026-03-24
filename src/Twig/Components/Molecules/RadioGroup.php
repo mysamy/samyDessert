@@ -21,7 +21,6 @@ final class RadioGroup
     public bool $invalid = false;
     public ?string $error = null;
 
-    public string $class = '';
     public string $innerClass = 'space-y-2';
 
     public array $options = [];

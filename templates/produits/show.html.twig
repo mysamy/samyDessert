@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ produit.nom }} — Samy Dessert{% endblock %}
+
+{% block body %}
+
+{# ── Fil d'Ariane ── #}
+<nav class="bg-surface border-b border-border" aria-label="Fil d'Ariane">
+  <div class="container-main py-3 text-sm text-text-light">
+    <twig:Atoms:Link href="/produits" class="hover:text-accent">Nos desserts</twig:Atoms:Link>
+    <span class="mx-2" aria-hidden="true">/</span>
+    <span class="text-text font-medium">{{ produit.nom }}</span>
+  </div>
+</nav>
+
+{# ── Contenu principal ── #}
+<section class="section">
+  <div class="container-main">
+    <div class="flex flex-col lg:flex-row gap-10">
+
+      {# ── Image ── #}
+      <div class="lg:w-1/2">
+        {% if produit.imageSrc %}
+          <img
+            src="{{ produit.imageSrc }}"
+            alt="{{ produit.nom }}"
+            class="w-full rounded-2xl object-cover max-h-[500px]"
+          >
+        {% else %}
+          <div class="w-full h-80 rounded-2xl bg-surface flex items-center justify-center">
+            <twig:Atoms:Icon name="cake-candles" :decorative="true" class="text-6xl text-gray-light"/>
+          </div>
+        {% endif %}
+      </div>
+
+      {# ── Infos ── #}
+      <div class="lg:w-1/2 flex flex-col gap-4">
+        <h1 class="text-3xl font-bold text-text">{{ produit.nom }}</h1>
+
+        {% if produit.categorie %}
+          <twig:Atoms:Badge variant="default">{{ produit.categorie.nom }}</twig:Atoms:Badge>
+        {% endif %}
+
+        {% if produit.description %}
+          <p class="text-text-light text-lg leading-relaxed">{{ produit.description }}</p>
+        {% endif %}
+
+        {# Prix #}
+        <p class="text-2xl font-bold text-accent">
+          {{ produit.prix|number_format(2, ',', ' ') }} €
+        </p>
+
+        {# Disponibilité #}
+        {% if produit.disponible %}
+          <p class="text-sm text-success flex items-center gap-2">
+            <twig:Atoms:Icon name="circle-check" :decorative="true"/>
+            Disponible
+          </p>
+        {% else %}
+          <p class="text-sm text-danger flex items-center gap-2">
+            <twig:Atoms:Icon name="circle-xmark" :decorative="true"/>
+            Indisponible pour le moment
+          </p>
+        {% endif %}
+
+        {# Bouton panier #}
+        <div class="mt-4">
+          <twig:Molecules:BoutonPanier
+            :produitId="produit.id"
+            :produitNom="produit.nom"
+          />
+        </div>
+
+        {# Lien vers la recette associée #}
+        {% if produit.recette %}
+          <div class="p-4 rounded-xl bg-surface border border-border">
+            <p class="text-sm text-text-light mb-2">Envie de le préparer vous-même ?</p>
+            <twig:Atoms:Link
+              href="{{ path('app_recette_show', { slug: produit.recette.slug }) }}"
+              class="btn-cta-sm"
+            >
+              <twig:Atoms:Icon name="book-open" :decorative="true" class="mr-1"/>
+              Voir la recette
+            </twig:Atoms:Link>
+          </div>
+        {% endif %}
+
+        {# Lien retour #}
+        <div class="mt-auto pt-6">
+          <twig:Atoms:Link href="/produits" class="text-sm text-text-light hover:text-accent">
+            <twig:Atoms:Icon name="arrow-left" :decorative="true" class="mr-1"/>
+            Retour aux desserts
+          </twig:Atoms:Link>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+{% endblock %}

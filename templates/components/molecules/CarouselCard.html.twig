@@ -1,13 +1,13 @@
-<div {{ attributes.defaults({ class: 'flex flex-col p-5 h-[400px] w-[700px] max-[1500px]:w-[500px] max-[1500px]:h-[450px] max-[1100px]:w-[120%] max-[1100px]:p-[10px] max-[425px]:h-[400px] max-[425px]:w-[140%] rounded-2xl relative overflow-hidden' }) }}>
+<div {{ attributes.defaults({ class: 'flex flex-col h-[420px] w-[430px] max-[1500px]:w-[390px] max-[1500px]:h-[390px] max-[1100px]:w-[310px] max-[1100px]:h-[340px] max-[425px]:w-[280px] max-[425px]:h-[300px] rounded-2xl' }) }}>
 
 {% block content %}
         {% if imgSrc %}
-            <div class="relative flex-1 min-h-0 w-full rounded-[10px] overflow-hidden {{ imgClass }}">
-                <twig:Atoms:Image src="{{ imgSrc }}" alt="{{ imgAlt }}" class="absolute inset-0 w-full h-full object-cover" />
+            <div class="flex-1 min-h-0 w-full flex items-center justify-center {{ imgClass }}">
+                <twig:Atoms:Image src="{{ imgSrc }}" alt="{{ imgAlt }}" class="max-w-full max-h-full object-contain" />
             </div>
         {% endif %}
         {% if description %}
-            <p class="text-text text-center text-sm mt-2 shrink-0">{{ description }}</p>
+            <p class="carousel-card-description text-text text-center text-sm shrink-0 opacity-0 relative z-10">{{ description }}</p>
         {% endif %}
     {% endblock %}
 

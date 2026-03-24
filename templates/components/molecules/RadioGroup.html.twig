@@ -1,45 +1,48 @@
 {% set id = this.computedId %}
 {% set describedBy = this.describedBy %}
 {% set isInvalid = this.effectiveInvalid %}
+{% set legendId = this.legendId %}
+{% set descriptionId = this.descriptionId %}
+{% set errorId = this.errorId %}
 
 <fieldset
   id="{{ id }}"
   {% if describedBy %}aria-describedby="{{ describedBy }}"{% endif %}
-  class="{{ this.class }}"
+  {{ attributes.defaults({ class: '' }) }}
 >
-  {% if this.legend %}
-    <legend id="{{ this.legendId }}" class="text-sm font-semibold text-slate-900">
-      {{ this.legend }}
-      {% if this.required %}
-        <span class="text-slate-700"> (obligatoire)</span>
+  {% if legend %}
+    <legend id="{{ legendId }}" class="text-sm font-semibold text-text">
+      {{ legend }}
+      {% if required %}
+        <span class="text-text-light"> (obligatoire)</span>
       {% endif %}
     </legend>
   {% endif %}
 
-  {% if this.description %}
-    <p id="{{ this.descriptionId }}" class="mt-1 text-sm text-slate-700">{{ this.description }}</p>
+  {% if description %}
+    <p id="{{ descriptionId }}" class="mt-1 text-sm text-text-light">{{ description }}</p>
   {% endif %}
 
-  <div class="mt-4 {{ this.innerClass }}">
-    {% for opt in this.options %}
+  <div class="mt-4 {{ innerClass }}">
+    {% for opt in options %}
       {% set optValue = opt.value|default('') %}
       {% set optId = this.optionId(optValue) %}
-      {% set optDisabled = (this.disabled or opt.disabled|default(false)) %}
+      {% set optDisabled = (disabled or opt.disabled|default(false)) %}
 
       <div class="flex items-start gap-2">
         <input
           id="{{ optId }}"
           type="radio"
-          name="{{ this.name }}"
+          name="{{ name }}"
           value="{{ optValue }}"
           {% if this.isChecked(optValue) %}checked{% endif %}
-          {% if this.required %}required{% endif %}
+          {% if required %}required{% endif %}
           {% if optDisabled %}disabled{% endif %}
           aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
           class="
             mt-0.5 h-4 w-4
-            accent-slate-900
-            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60
+            accent-primary
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/60
             disabled:cursor-not-allowed disabled:opacity-60
           "
         />
@@ -50,15 +53,15 @@
             label="{{ opt.label|default(optValue) }}"
           />
           {% if opt.description is defined and opt.description %}
-            <p class="mt-0.5 text-sm text-slate-700">{{ opt.description }}</p>
+            <p class="mt-0.5 text-sm text-text-light">{{ opt.description }}</p>
           {% endif %}
         </div>
       </div>
     {% endfor %}
   </div>
 
-  {% if this.error %}
-    <p id="{{ this.errorId }}" class="mt-2 text-sm text-red-700" role="alert">{{ this.error }}</p>
+  {% if error %}
+    <p id="{{ errorId }}" class="mt-2 text-sm text-danger" role="alert">{{ error }}</p>
   {% endif %}
 </fieldset>
 

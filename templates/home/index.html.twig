@@ -5,10 +5,10 @@
 {% block body %}
 
 {# carousel #}
-<section class="py-16 bg-bg">
-  <div class="container-main">
+<section class="py-16">
+  <div class="container-main flex flex-col gap-8">
 
-    <div class="text-center mb-12">
+    <div class="text-center">
       <h1 class="text-5xl font-bold text-text mb-4">Samy Dessert</h1>
       <p class="text-xl text-text-light mb-8">Des desserts artisanaux préparés avec passion</p>
       <twig:Atoms:Link
@@ -53,14 +53,14 @@
         class="flex-col gap-2.5 justify-center"
         imgSrc="{{ asset('image/brownies.png') }}"
         imgAlt="Brownies"
-        description="Sur commande pour vos anniversaires, mariages et événements."
+        description="Moelleux au cœur fondant, pépites de chocolat noir intense."
       />
 
       <twig:Molecules:CarouselCard
         class="flex-col gap-2.5 justify-center"
         imgSrc="{{ asset('image/cookie.png') }}"
         imgAlt="Cookies"
-        description="Une question ? Contactez notre équipe !"
+        description="Croustillants à l'extérieur, fondants à l'intérieur, généreux en pépites."
       />
 
     </div>
@@ -127,11 +127,11 @@
 
       <figure class="bg-surface rounded-2xl p-6 flex flex-col gap-4">
         <div class="flex items-center gap-1" aria-label="Note : 5 sur 5">
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
         </div>
         <blockquote class="text-primary text-sm leading-relaxed flex-1">
           "Les macarons sont absolument divins. Je commande pour tous mes événements, on ne peut plus s'en passer !"
@@ -141,11 +141,11 @@
 
       <figure class="bg-surface rounded-2xl p-6 flex flex-col gap-4">
         <div class="flex items-center gap-1" aria-label="Note : 5 sur 5">
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
         </div>
         <blockquote class="text-primary text-sm leading-relaxed flex-1">
           "Gâteau de mariage sur commande, livré à temps et magnifique. Tous nos invités ont adoré. Merci Samy !"
@@ -155,11 +155,11 @@
 
       <figure class="bg-surface rounded-2xl p-6 flex flex-col gap-4">
         <div class="flex items-center gap-1" aria-label="Note : 4 sur 5">
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
-          <i class="fa-solid fa-star text-star" aria-hidden="true"></i>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
+          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
         </div>
         <blockquote class="text-primary text-sm leading-relaxed flex-1">
           "La tarte aux fraises est un régal. Produits frais, goût authentique, je recommande vivement !"

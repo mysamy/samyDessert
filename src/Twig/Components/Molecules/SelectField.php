@@ -25,9 +25,6 @@ final class SelectField
 
     public ?string $placeholder = null;
 
-    public string $class = '';
-    public string $selectClass = '';
-
     public array $options = [];
 
     public function getComputedId(): string

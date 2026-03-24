@@ -10,8 +10,6 @@ final class FormFieldGroup
     public string $id = '';
     public string $legend = '';
     public ?string $description = null;
-
-    public string $class = '';
     public string $innerClass = 'space-y-4';
 
     public function getComputedId(): string
@@ -21,21 +19,17 @@ final class FormFieldGroup
 
     public function getLegendId(): string
     {
-        return $this->getComputedId().'__legend';
+        return $this->getComputedId() . '__legend';
     }
 
     public function getDescriptionId(): string
     {
-        return $this->getComputedId().'__description';
+        return $this->getComputedId() . '__description';
     }
 
     public function getAriaDescribedBy(): ?string
     {
-        if (!$this->description) {
-            return null;
-        }
-
-        return $this->getDescriptionId();
+        return $this->description ? $this->getDescriptionId() : null;
     }
 
     public function hasLegend(): bool

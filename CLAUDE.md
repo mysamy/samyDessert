@@ -1,5 +1,10 @@
 # samyDessert — Conventions de développement
 
+## Début de conversation
+- **Toujours relire ta mémoire** (`MEMORY.md` + fichiers liés) avant de commencer à travailler
+- **Consulter l'état du projet** dans `project_state.md` pour connaître l'avancement, les prochaines étapes et le contexte
+- Si une conversation précédente existe, prendre en compte le résumé pour assurer la continuité
+
 ## Stack
 - Symfony + Twig + Tailwind CSS (JIT) + Stimulus + Symfony UX Twig Components
 - Lancer en dev : `symfony serve` + `php bin/console tailwind:build --watch`
@@ -80,6 +85,9 @@ public float $totalPrice = 0.0;
 - [ ] Afficher/masquer le mot de passe sur les formulaires connexion/inscription
 - [ ] Emails transactionnels (confirmation commande)
 - [ ] Déplacer `docker/` et `docker-compose.yml` en dehors du dossier projet
+
+### Optionnel
+- [ ] Système d'avis (entité `Avis` : note + commentaire, relation User↔Produit, formulaire, note moyenne sur DessertCard)
 
 ### Documentation & Soutenance
 - [ ] Ajouter des commentaires dans le code (PHP + Twig + JS)
