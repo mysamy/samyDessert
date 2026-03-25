@@ -97,8 +97,9 @@
 
 ## Préférence utilisateur
 - À la fin de chaque session, ajouter un résumé dans "Historique des sessions" ci-dessous
-- Copier ensuite dans `.claude/memory/MEMORY.md` (dans le repo) pour portabilité entre PCs
-- Le repo contient `.claude/memory/MEMORY.md` — le committer après chaque session importante
+- **TOUJOURS écrire la mémoire dans `.claude/memory/MEMORY.md` (dans le repo git), JAMAIS dans le dossier local hors-repo** (`C:\Users\benha\.claude\projects\...`)
+- Le dossier local Claude Code est hors du repo → ne se commit/push jamais → mémoire perdue entre les PCs
+- Rappeler à l'utilisateur de commit + push la mémoire en fin de session
 
 ## Historique des sessions
 
@@ -108,3 +109,9 @@
 - Problème résolu : `asset-map:compile` avait créé `public/assets/` → bloquait le service dynamique des assets en mode dev → fix : `docker compose exec php rm -rf public/assets`
 - `asset-map:compile` est inutile en mode dev (Symfony ignore les fichiers compilés en debug mode)
 - Ajout `.claude/memory/MEMORY.md` dans le repo git pour portabilité entre PCs
+
+### 2026-03-25 — Fix mémoire + test persistance
+- Constat : la mémoire n'avait pas été mise à jour depuis le 11 mars malgré plusieurs sessions
+- Cause : Claude écrivait dans le dossier local hors-repo au lieu de `.claude/memory/MEMORY.md`
+- Fix : règle ajoutée pour toujours écrire dans le fichier du repo git
+- Test : si cette ligne est visible après pull sur l'autre PC, la mémoire fonctionne ✅
