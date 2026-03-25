@@ -6,7 +6,7 @@
   {% if this.disabled %}aria-disabled="true"{% endif %}
   {% if this.effectiveAriaLabel %}aria-label="{{ this.effectiveAriaLabel }}"{% endif %}
   {% if this.effectiveAriaDescribedby %}aria-describedby="{{ this.effectiveAriaDescribedby }}"{% endif %}
-  class="{{ this.class }}"
+  {{ attributes.defaults({ class: this.class }) }}
 >
   <fieldset {% if this.disabled %}disabled{% endif %} class="contents">
     {% block content %}{% endblock %}

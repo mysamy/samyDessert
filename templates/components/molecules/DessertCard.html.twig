@@ -1,18 +1,17 @@
 <article {{ attributes.defaults({ class: 'group flex flex-col rounded-2xl border border-border shadow-sm hover:shadow-md transition bg-surface h-full' }) }}>
 
   {# Image + badge difficulté — cliquable si url #}
-  {% if url %}
-    <a href="{{ url }}" class="relative overflow-hidden h-48 bg-surface block rounded-t-2xl" aria-hidden="true" tabindex="-1">
-  {% else %}
-    <div class="relative overflow-hidden h-48 bg-surface rounded-t-2xl">
-  {% endif %}
+  {% set tag = url ? 'a' : 'div' %}
+  <{{ tag }}
+    {% if url %}href="{{ url }}" aria-hidden="true" tabindex="-1"{% endif %}
+    class="relative overflow-hidden h-48 bg-surface block rounded-t-2xl"
+  >
     {% if imageSrc %}
-      <img
+      <twig:Atoms:Image
         src="{{ imageSrc }}"
         alt="{{ titre }}"
         class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
-        loading="lazy"
-      >
+      />
     {% endif %}
     {% if difficulte %}
       <div class="absolute top-3 left-3">
@@ -21,14 +20,14 @@
         </twig:Atoms:Badge>
       </div>
     {% endif %}
-  {% if url %}</a>{% else %}</div>{% endif %}
+  </{{ tag }}>
 
   {# Contenu #}
   <div class="flex flex-col flex-1 p-5">
     <div class="flex items-start justify-between gap-2 mb-1">
       <h3 class="text-base font-bold text-text group-hover:text-accent transition">
         {% if url %}
-          <a href="{{ url }}" class="hover:underline">{{ titre }}</a>
+          <twig:Atoms:Link href="{{ url }}" class="hover:underline">{{ titre }}</twig:Atoms:Link>
         {% else %}
           {{ titre }}
         {% endif %}

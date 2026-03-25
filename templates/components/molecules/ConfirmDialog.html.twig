@@ -1,28 +1,28 @@
+{% set titleId = id ~ '-title' %}
+{% set messageId = id ~ '-message' %}
+
 <dialog
   id="{{ id }}"
+  aria-labelledby="{{ titleId }}"
+  aria-describedby="{{ messageId }}"
   {{ attributes.defaults({ class: 'rounded-2xl p-8 shadow-xl w-full max-w-sm border border-border backdrop:bg-black/50' }) }}
 >
-  <h2 class="text-h4 font-bold text-text mb-3">{{ title }}</h2>
-  <p class="text-text-light mb-6">{{ message|raw }}</p>
+  <h2 id="{{ titleId }}" class="text-h4 font-bold text-text mb-3">{{ title }}</h2>
+  <p id="{{ messageId }}" class="text-text-light mb-6">{{ message|raw }}</p>
   <div class="flex gap-3 justify-end">
-    <button
-      type="button"
+    <twig:Atoms:Button
+      variant="secondary"
       data-dialog-close="{{ id }}"
-      class="px-4 py-2 rounded-lg border border-border text-text hover:bg-surface transition cursor-pointer"
     >
       {{ cancelLabel }}
-    </button>
-    <button
-      type="button"
+    </twig:Atoms:Button>
+    <twig:Atoms:Button
+      variant="primary"
       data-dialog-confirm="{{ id }}"
-      class="px-4 py-2 rounded-lg
-        {% if confirmVariant == 'danger' %}bg-danger text-white hover:bg-danger-dark
-        {% elseif confirmVariant == 'success' %}bg-success text-white hover:bg-success-light
-        {% else %}bg-accent text-white hover:bg-primary{% endif %}
-        transition cursor-pointer"
+      class="{% if confirmVariant == 'danger' %}bg-danger hover:bg-danger-dark{% elseif confirmVariant == 'success' %}bg-success hover:bg-success-light{% endif %}"
     >
       {{ confirmLabel }}
-    </button>
+    </twig:Atoms:Button>
   </div>
 </dialog>
 

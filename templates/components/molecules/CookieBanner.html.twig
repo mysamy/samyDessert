@@ -1,9 +1,12 @@
 <dialog
   data-controller="cookie-banner"
+  role="alertdialog"
+  aria-label="Consentement cookies"
+  aria-describedby="cookie-banner-message"
   {{ attributes.defaults({ class: 'fixed bottom-0 left-0 right-0 m-0 max-w-full w-full border-t-2 border-accent/30 bg-text shadow-2xl p-0 open:flex' }) }}
 >
   <div class="container-main flex flex-col sm:flex-row items-center justify-between gap-6 py-6">
-    <p class="text-base text-white text-center sm:text-left">
+    <p id="cookie-banner-message" class="text-base text-white text-center sm:text-left">
       {{ message }}
       {% if policyUrl %}
         <twig:Atoms:Link href="{{ policyUrl }}" class="text-accent underline ml-1">En savoir plus</twig:Atoms:Link>

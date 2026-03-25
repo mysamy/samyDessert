@@ -1,22 +1,19 @@
 <section class="bg-white border-b border-border py-6">
   <div class="container-main">
     <form method="GET" action="{{ action }}" class="flex gap-3 max-w-xl">
-      <input
+      <twig:Atoms:Input
         type="search"
         name="{{ name }}"
         value="{{ value }}"
         placeholder="{{ placeholder }}"
-        class="flex-1 rounded-full border border-border px-5 py-2.5 text-sm text-text placeholder:text-gray-mid focus:outline-none focus-visible:ring-2 focus-visible:ring-accent/40 focus-visible:border-accent"
         aria-label="{{ placeholder }}"
-      >
+        class="flex-1 rounded-full px-5 py-2.5"
+      />
       {% block extra_inputs %}{% endblock %}
-      <button
-        type="submit"
-        class="inline-flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-full text-sm font-semibold hover:bg-primary transition"
-      >
+      <twig:Atoms:Button type="submit" class="rounded-full px-5 py-2.5">
         <twig:Atoms:Icon name="magnifying-glass" :decorative="true"/>
         {{ buttonLabel }}
-      </button>
+      </twig:Atoms:Button>
     </form>
   </div>
 </section>

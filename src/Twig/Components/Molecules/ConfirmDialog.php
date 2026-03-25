@@ -5,7 +5,7 @@ namespace App\Twig\Components\Molecules;
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
 #[AsTwigComponent]
-class ConfirmDialog
+final class ConfirmDialog
 {
     public string $id = 'confirm-dialog';
     public string $title = 'Confirmation';

@@ -29,16 +29,12 @@
     <twig:Molecules:InputField name="password" type="password" label="Mot de passe" autocomplete="current-password" :required="true" error="{{ passwordError }}"/>
   </twig:Molecules:FormFieldGroup>
 
-  <div class="flex items-start gap-2">
-    <input
-      id="{{ id }}__remember"
-      type="checkbox"
-      name="_remember_me"
-      {% if rememberMe %}checked{% endif %}
-      class="mt-0.5 h-4 w-4 accent-slate-900 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-slate-900/60"
-    />
-    <twig:Atoms:Label for="{{ id }}__remember" label="Se souvenir de moi" />
-  </div>
+  <twig:Molecules:CheckboxField
+    id="{{ id }}__remember"
+    name="_remember_me"
+    label="Se souvenir de moi"
+    :checked="rememberMe"
+  />
 
   <twig:Molecules:FormActions align="end">
     <twig:Atoms:Button type="submit">{{ submitLabel }}</twig:Atoms:Button>

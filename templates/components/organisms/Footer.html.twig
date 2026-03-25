@@ -1,4 +1,4 @@
-{% set baseClass = 'divider bg-slate-50' %}
+{% set baseClass = 'divider bg-surface' %}
 {% set rootAttrs = attributes.defaults({ class: baseClass }) %}
 {% if class %}{% set rootAttrs = rootAttrs.addClass(class) %}{% endif %}
 
@@ -6,7 +6,7 @@
   <div class="mx-auto max-w-7xl space-y-4 px-4 py-6">
 
     {% if brandLabel %}
-      <div class="text-sm font-semibold text-slate-900">
+      <div class="text-sm font-semibold text-text">
         {{ brandLabel }}
       </div>
     {% endif %}
@@ -18,7 +18,7 @@
     />
 
     {% if legalText %}
-      <div class="text-xs text-slate-600">
+      <div class="text-xs text-text-light">
         {{ legalText }}
       </div>
     {% endif %}
