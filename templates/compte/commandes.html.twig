@@ -48,14 +48,14 @@
                 <tr class="border-b border-surface last:border-0">
                   <td class="py-2">{{ ligne.produit.nom }}</td>
                   <td class="py-2 text-center">{{ ligne.quantite }}</td>
-                  <td class="py-2 text-right">{{ ligne.prixUnitaire|number_format(2, ',', ' ') }} €</td>
+                  <td class="py-2 text-right">{{ ligne.prixUnitaire|prix }}</td>
                 </tr>
               {% endfor %}
             </tbody>
           </table>
 
           <div class="flex items-center justify-between">
-            <span class="font-bold text-primary">Total : {{ commande.total|number_format(2, ',', ' ') }} €</span>
+            <span class="font-bold text-primary">Total : {{ commande.total|prix }}</span>
 
             {% if commande.statut.value == 'confirmee' %}
               <button

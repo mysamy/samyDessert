@@ -68,7 +68,7 @@
                 <td style="padding: 0.625rem 0.25rem; color: #374151;">
                   {{ commande.utilisateur.prenom ?? '' }} {{ commande.utilisateur.nom ?? commande.utilisateur.email }}
                 </td>
-                <td style="padding: 0.625rem 0.25rem; text-align: right;">{{ commande.total|number_format(2, ',', ' ') }} €</td>
+                <td style="padding: 0.625rem 0.25rem; text-align: right;">{{ commande.total|prix }}</td>
                 <td style="padding: 0.625rem 0.25rem; text-align: right;">
                   {% set statut = commande.statut.value %}
                   {% if statut == 'en_attente' %}

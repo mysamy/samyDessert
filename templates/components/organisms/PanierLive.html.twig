@@ -22,7 +22,7 @@
     {% for ligne in lignes %}
       {% set produit = ligne.produit %}
       {% set quantite = ligne.quantite %}
-      {% set sousTotal = (produit.prix * quantite)|number_format(2, ',', ' ') %}
+      {% set sousTotal = (produit.prix * quantite)|prix %}
 
       <div class="flex items-center gap-4 py-5">
 
@@ -43,7 +43,7 @@
           {% if produit.categorie %}
             <p class="text-xs text-slate-400 mt-0.5">{{ produit.categorie.nom }}</p>
           {% endif %}
-          <p class="text-sm text-slate-500 mt-1">{{ produit.prix|number_format(2, ',', ' ') }} € / unité</p>
+          <p class="text-sm text-slate-500 mt-1">{{ produit.prix|prix }} / unité</p>
         </div>
 
         {# Contrôles quantité (live) #}
@@ -70,7 +70,7 @@
         </div>
 
         {# Sous-total #}
-        <p class="w-24 text-right font-semibold text-text shrink-0">{{ sousTotal }} €</p>
+        <p class="w-24 text-right font-semibold text-text shrink-0">{{ sousTotal }}</p>
 
         {# Supprimer la ligne #}
         <button
@@ -102,7 +102,7 @@
     {# Total + CTA #}
     <div class="text-right">
       <p class="text-sm text-slate-500 mb-1">Total</p>
-      <p class="text-3xl font-bold text-text mb-4">{{ total|number_format(2, ',', ' ') }} €</p>
+      <p class="text-3xl font-bold text-text mb-4">{{ total|prix }}</p>
       <a href="{{ path('app_commande') }}"
          class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-accent/90 transition">
         Passer commande

@@ -1,14 +1,14 @@
 <form
   method="{{ this.effectiveMethod }}"
-  {% if this.effectiveAction %}action="{{ this.effectiveAction }}"{% endif %}
+  {% if action %}action="{{ action }}"{% endif %}
   {% if this.computedId %}id="{{ this.computedId }}"{% endif %}
-  {% if this.novalidate %}novalidate{% endif %}
-  {% if this.disabled %}aria-disabled="true"{% endif %}
-  {% if this.effectiveAriaLabel %}aria-label="{{ this.effectiveAriaLabel }}"{% endif %}
-  {% if this.effectiveAriaDescribedby %}aria-describedby="{{ this.effectiveAriaDescribedby }}"{% endif %}
-  {{ attributes.defaults({ class: this.class }) }}
+  {% if novalidate %}novalidate{% endif %}
+  {% if disabled %}aria-disabled="true"{% endif %}
+  {% if ariaLabel %}aria-label="{{ ariaLabel }}"{% endif %}
+  {% if ariaDescribedby %}aria-describedby="{{ ariaDescribedby }}"{% endif %}
+  {{ attributes.defaults({ class: '' }) }}
 >
-  <fieldset {% if this.disabled %}disabled{% endif %} class="contents">
+  <fieldset {% if disabled %}disabled{% endif %} class="contents">
     {% block content %}{% endblock %}
   </fieldset>
 </form>
@@ -23,12 +23,10 @@
   - ariaLabel      string|null — aria-label du formulaire (null)
   - ariaDescribedby string|null — aria-describedby (null)
 
-  Utilisation :
-  <twig:Organisms:Form action="{{ path('app_contact') }}" ariaLabel="Formulaire de contact">
-    ...
-  </twig:Organisms:Form>
+  Classes CSS : passent par attributes (merge automatique depuis l'appelant).
 
-  <twig:Organisms:Form action="{{ path('app_register') }}" :novalidate="true">
+  Utilisation :
+  <twig:Organisms:Form action="{{ path('app_contact') }}" ariaLabel="Formulaire de contact" class="max-w-md space-y-6">
     ...
   </twig:Organisms:Form>
 #}

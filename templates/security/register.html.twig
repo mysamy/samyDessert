@@ -18,6 +18,8 @@
       <twig:Organisms:Form
         action="/inscription"
         class="flex flex-col gap-5"
+        data-controller="submit-once"
+        data-action="submit->submit-once#submit"
       >
         <twig:block name="content">
 
@@ -78,8 +80,10 @@
           <twig:Atoms:Button
             type="submit"
             class="w-full justify-center bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-primary transition"
+            data-submit-once-target="btn"
           >
-            Créer mon compte
+            <span data-submit-once-target="label">Créer mon compte</span>
+            <twig:Atoms:Spinner size="sm" ariaLabel="Création en cours" class="hidden" data-submit-once-target="spinner" />
           </twig:Atoms:Button>
 
         </twig:block>

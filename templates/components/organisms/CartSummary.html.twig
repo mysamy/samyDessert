@@ -1,7 +1,7 @@
-<div {{ attributes.defaults({ id: id, class: 'rounded-lg border border-border p-4 ' ~ class }) }}>
+<div {{ attributes.defaults({ class: 'rounded-lg border border-border p-4 space-y-4' }) }}>
   <h2 class="text-base font-semibold text-text">Récapitulatif du panier</h2>
 
-  {% if this.isEmpty() %}
+  {% if this.isEmpty %}
     <p class="text-sm text-text-light">Votre panier est vide.</p>
   {% else %}
     <ul class="divide-y divide-border">
@@ -9,23 +9,20 @@
         <li class="flex items-start justify-between gap-4 py-3">
           <div class="min-w-0">
             <p class="truncate text-sm font-medium text-text">{{ item.name }}</p>
-            <p class="text-sm text-text-light">{{ item.quantity ~ ' × ' ~ item.price ~ currency }}</p>
+            <p class="text-sm text-text-light">{{ item.quantity }} × {{ item.price|prix }}</p>
           </div>
-          <p class="text-sm font-medium text-text">{{ (item.quantity * item.price)|number_format(2, ',', ' ') ~ currency }}</p>
+          <p class="text-sm font-medium text-text">{{ (item.quantity * item.price)|prix }}</p>
         </li>
       {% endfor %}
     </ul>
 
     <div class="flex items-center justify-between divider pt-4">
       <p class="text-sm font-medium text-text">Total ({{ this.totalItems }} articles)</p>
-      <p class="text-base font-semibold text-text">{{ this.totalPrice|number_format(2, ',', ' ') ~ currency }}</p>
+      <p class="text-base font-semibold text-text">{{ this.totalPrice|prix }}</p>
     </div>
 
     {% if checkoutUrl %}
-      <twig:Atoms:Link
-        href="{{ checkoutUrl }}"
-        class="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-md bg-accent px-4 py-2 text-sm font-medium text-white transition hover:bg-primary"
-      >
+      <twig:Atoms:Link href="{{ checkoutUrl }}" class="mt-4 btn-cta w-full justify-center">
         {{ checkoutLabel }}
       </twig:Atoms:Link>
     {% endif %}
@@ -33,20 +30,18 @@
 </div>
 
 {#
-  Props (* = obligatoire) :
-  - items*        array       — lignes du panier { name, quantity, price }
-  - checkoutUrl   string|null — URL du bouton de commande (null = bouton masqué)
-  - checkoutLabel string      — libellé du bouton de commande ('Commander')
-  - currency      string      — symbole monétaire ('€')
-  - id            string      — identifiant HTML ('cart-summary')
+  Props :
+  - items           array       — lignes du panier [{ name, quantity, price }] ([])
+  - checkoutLabel   string      — libellé du bouton ('Commander')
+  - checkoutUrl     string|null — URL du checkout (null = pas de bouton)
 
   Getters calculés :
-  - isEmpty()     bool    — vrai si items est vide
+  - isEmpty       bool    — vrai si items est vide
   - totalItems    int     — somme des quantités
   - totalPrice    float   — somme des sous-totaux
 
-  Utilisation :
-  <twig:Organisms:CartSummary :items="panier" checkoutUrl="{{ path('app_commande_checkout') }}" />
+  Classes CSS : passent par attributes.
 
-  Chaque item : { name: string, quantity: int, price: float }
+  Utilisation :
+  <twig:Organisms:CartSummary :items="panierItems" checkoutUrl="{{ path('app_commande') }}" />
 #}

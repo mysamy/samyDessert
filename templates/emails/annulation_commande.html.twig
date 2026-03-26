@@ -36,13 +36,13 @@
             <tr>
               <td>{{ ligne.produit.nom }}</td>
               <td>{{ ligne.quantite }}</td>
-              <td>{{ ligne.prixUnitaire|number_format(2, ',', ' ') }} €</td>
+              <td>{{ ligne.prixUnitaire|prix }}</td>
             </tr>
           {% endfor %}
         </tbody>
       </table>
 
-      <p class="email__total">Total remboursé : {{ commande.total|number_format(2, ',', ' ') }} €</p>
+      <p class="email__total">Total remboursé : {{ commande.total|prix }}</p>
 
       <p>Le remboursement sera effectué sous 5 à 10 jours ouvrés sur votre moyen de paiement initial.</p>
 

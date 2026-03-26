@@ -7,6 +7,7 @@ import FullcalendarController from './controllers/fullcalendar_controller.js';
 import FavoriController from './controllers/favori_controller.js';
 import FlashTooltipController from './controllers/flash_tooltip_controller.js';
 import CookieBannerController from './controllers/cookie_banner_controller.js';
+import SubmitOnceController from './controllers/submit_once_controller.js';
 
 const app = Application.start();
 app.register('live', LiveController);
@@ -17,3 +18,4 @@ app.register('fullcalendar', FullcalendarController);
 app.register('favori', FavoriController);
 app.register('flash-tooltip', FlashTooltipController);
 app.register('cookie-banner', CookieBannerController);
+app.register('submit-once', SubmitOnceController);
