@@ -22,30 +22,41 @@
           <div class="flex items-center justify-between px-5 py-4">
             <div>
               <p class="font-semibold text-text">{{ ligne.produit.nom }}</p>
-              <p class="text-sm text-slate-400">{{ ligne.produit.prix|number_format(2, ',', ' ') }} € × {{ ligne.quantite }}</p>
+              <p class="text-sm text-slate-400">{{ ligne.produit.prix|prix }} × {{ ligne.quantite }}</p>
             </div>
-            <p class="font-bold text-text">{{ (ligne.produit.prix * ligne.quantite)|number_format(2, ',', ' ') }} €</p>
+            <p class="font-bold text-text">{{ (ligne.produit.prix * ligne.quantite)|prix }}</p>
           </div>
         {% endfor %}
         <div class="flex items-center justify-between px-5 py-4 bg-surface">
           <p class="font-bold text-text">Total</p>
-          <p class="text-2xl font-bold text-accent">{{ total|number_format(2, ',', ' ') }} €</p>
+          <p class="text-2xl font-bold text-accent">{{ total|prix }}</p>
         </div>
       </div>
     </div>
 
     {# Bouton paiement Stripe #}
-    <form action="{{ path('app_commande_paiement') }}" method="POST">
+    <twig:Organisms:Form
+      action="{{ path('app_commande_paiement') }}"
+      ariaLabel="Formulaire de paiement"
+      data-controller="submit-once"
+      data-action="submit->submit-once#submit"
+    >
       <input type="hidden" name="_token" value="{{ csrf_token('commande') }}">
-      <button type="submit"
-        class="w-full flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary transition">
-        <twig:Atoms:Icon name="lock" :decorative="true" class="text-sm"/>
-        Payer {{ total|number_format(2, ',', ' ') }} € en toute sécurité
-      </button>
-    </form>
+      <twig:Atoms:Button
+        type="submit"
+        class="w-full flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary transition"
+        data-submit-once-target="btn"
+      >
+        <span class="flex items-center gap-3" data-submit-once-target="label">
+          <twig:Atoms:Icon name="lock" :decorative="true" class="text-sm"/>
+          Payer {{ total|prix }} en toute sécurité
+        </span>
+        <twig:Atoms:Spinner size="sm" ariaLabel="Paiement en cours" class="hidden" data-submit-once-target="spinner" />
+      </twig:Atoms:Button>
+    </twig:Organisms:Form>
 
     <p class="text-center text-xs text-slate-400 mt-4">
-      <twig:Atoms:Icon name="stripe" style="brands" size="lg" :decorative="true"/>
+      <twig:Atoms:Icon name="stripe" variant="brands" size="lg" :decorative="true"/>
       Paiement sécurisé par Stripe
     </p>
 

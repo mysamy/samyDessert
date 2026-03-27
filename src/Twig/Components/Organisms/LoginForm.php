@@ -8,7 +8,6 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class LoginForm
 {
     public string $action = '';
-    public string $method = 'post';
     public string $id = 'login-form';
     public string $class = 'max-w-md space-y-6';
 

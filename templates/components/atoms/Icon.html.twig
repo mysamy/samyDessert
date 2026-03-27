@@ -1,11 +1,11 @@
 
-{% set variants = {
+{% set variantMap = {
   'solid': 'fa-solid',
   'regular': 'fa-regular',
   'brands': 'fa-brands'
 } %}
 
-{% set base = (variants[style] ?? 'fa-solid') ~ ' fa-' ~ name ~ (size ? ' fa-' ~ size : '') %}
+{% set base = (variantMap[variant] ?? 'fa-solid') ~ ' fa-' ~ name ~ (size ? ' fa-' ~ size : '') %}
 
 <i
   {{ attributes.defaults({ class: base }) }}
@@ -20,14 +20,14 @@
 {#
   Props (* = obligatoire) :
   - name*       string  — nom Font Awesome de l'icône (ex: star, heart, trash)
-  - style       string  — variante FA : solid | regular | brands (solid)
+  - variant     string  — variante FA : solid | regular | brands (solid)
   - size        string  — modificateur de taille FA : xs | sm | lg | xl | 2x… ('')
   - decorative  bool    — si true, aria-hidden="true" ; si false, role="img" (true)
   - ariaLabel   string  — texte accessible quand decorative=false (name par défaut)
 
   Utilisation :
   <twig:Atoms:Icon name="star" />
-  <twig:Atoms:Icon name="heart" style="regular" size="lg" />
-  <twig:Atoms:Icon name="instagram" style="brands" :decorative="true" />
+  <twig:Atoms:Icon name="heart" variant="regular" size="lg" />
+  <twig:Atoms:Icon name="instagram" variant="brands" :decorative="true" />
   <twig:Atoms:Icon name="close" ariaLabel="Fermer" />
 #}

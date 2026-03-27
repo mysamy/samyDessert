@@ -5,6 +5,8 @@
   class="{{ class }}"
   ariaLabel="Formulaire d'adresse"
   ariaDescribedby="{{ this.hasAnyError ? this.errorSummaryId : '' }}"
+  data-controller="submit-once"
+  data-action="submit->submit-once#submit"
 >
   {% if this.hasAnyError %}
     <twig:Molecules:Alert
@@ -48,7 +50,10 @@
   </twig:Molecules:FormFieldGroup>
 
   <twig:Molecules:FormActions align="end">
-    <twig:Atoms:Button type="submit">{{ submitLabel }}</twig:Atoms:Button>
+    <twig:Atoms:Button type="submit" data-submit-once-target="btn">
+      <span data-submit-once-target="label">{{ submitLabel }}</span>
+      <twig:Atoms:Spinner size="sm" ariaLabel="Enregistrement en cours" class="hidden" data-submit-once-target="spinner" />
+    </twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>
 

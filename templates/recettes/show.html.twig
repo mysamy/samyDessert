@@ -58,7 +58,7 @@
         <div class="flex flex-wrap gap-6 text-sm text-text-light">
           {% if recette.temps %}
             <span class="flex items-center gap-2">
-              <twig:Atoms:Icon name="clock" style="regular" :decorative="true" class="text-accent"/>
+              <twig:Atoms:Icon name="clock" variant="regular" :decorative="true" class="text-accent"/>
               {{ recette.temps }}
             </span>
           {% endif %}
@@ -78,7 +78,7 @@
               href="{{ path('app_produit_show', { slug: recette.produit.slug }) }}"
               class="btn-cta-sm"
             >
-              Commander « {{ recette.produit.nom }} » — {{ recette.produit.prix|number_format(2, ',', ' ') }} €
+              Commander « {{ recette.produit.nom }} » — {{ recette.produit.prix|prix }}
             </twig:Atoms:Link>
           </div>
         {% endif %}

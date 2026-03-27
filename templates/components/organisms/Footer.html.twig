@@ -1,44 +1,68 @@
-{% set baseClass = 'divider bg-surface' %}
-{% set rootAttrs = attributes.defaults({ class: baseClass }) %}
-{% if class %}{% set rootAttrs = rootAttrs.addClass(class) %}{% endif %}
+<footer {{ attributes.defaults({ class: 'divider bg-surface' }) }}>
+  <div class="mx-auto max-w-7xl px-4 py-12">
 
-<footer {{ rootAttrs }}>
-  <div class="mx-auto max-w-7xl space-y-4 px-4 py-6">
-
-    {% if brandLabel %}
-      <div class="text-sm font-semibold text-text">
-        {{ brandLabel }}
+    {# Haut : marque + réseaux #}
+    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-8">
+      <div class="text-center sm:text-left">
+        {% if brandLabel %}
+          <div class="text-base font-semibold text-text">{{ brandLabel }}</div>
+        {% endif %}
+        {% if tagline %}
+          <p class="mt-1 text-sm text-text-light">{{ tagline }}</p>
+        {% endif %}
       </div>
+
+      {% if socialLinks %}
+        <div class="flex items-center gap-5">
+          {% for social in socialLinks %}
+            <twig:Atoms:Link
+              href="{{ social.href }}"
+              :external="true"
+              class="text-text-light hover:text-accent transition-colors"
+              aria-label="{{ social.label }}"
+            >
+              <twig:Atoms:Icon name="{{ social.icon }}" variant="{{ social.variant|default('brands') }}" size="xl" :decorative="true" />
+            </twig:Atoms:Link>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
+
+    {# Milieu : liens de navigation #}
+    {% if links %}
+      <twig:Molecules:Nav
+        ariaLabel="Navigation pied de page"
+        :links="links"
+        class="flex-wrap text-sm gap-4"
+      />
     {% endif %}
 
-    <twig:Molecules:Nav
-      ariaLabel="Navigation pied de page"
-      :links="links"
-      class="flex-wrap text-sm"
-    />
+    {# Bas : copyright + liens légaux #}
+    <div class="mt-8 border-t border-border pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      {% if legalText %}
+        <span class="text-xs text-text-light">{{ legalText }}</span>
+      {% endif %}
 
-    {% if legalText %}
-      <div class="text-xs text-text-light">
-        {{ legalText }}
-      </div>
-    {% endif %}
+      {% if legalLinks %}
+        <div class="flex items-center gap-4">
+          {% for link in legalLinks %}
+            <twig:Atoms:Link href="{{ link.href }}" class="text-xs text-text-light hover:text-accent">
+              {{ link.label }}
+            </twig:Atoms:Link>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
 
   </div>
 </footer>
 
 {#
-  Props (* = obligatoire) :
-  - brandLabel  string      — nom de la marque affiché en haut du footer ('')
-  - links       array       — liens de navigation { label, href } ([])
-  - legalText   string|null — texte légal/copyright (null)
-
-  Utilisation :
-  <twig:Organisms:Footer
-    brandLabel="Samy Dessert"
-    legalText="© {{ 'now'|date('Y') }} Samy Dessert. Tous droits réservés."
-    :links="[
-      { label: 'Mentions légales', href: path('app_mentions') },
-      { label: 'Contact', href: path('app_contact') },
-    ]"
-  />
+  Props :
+  - brandLabel  string      — nom de la marque ('')
+  - tagline     string      — phrase d'accroche sous le nom ('')
+  - links       array       — liens nav { label, href } ([])
+  - legalLinks  array       — liens légaux { label, href } ([])
+  - socialLinks array       — { label, href, icon, variant? } ([])
+  - legalText   string|null — texte copyright (null)
 #}

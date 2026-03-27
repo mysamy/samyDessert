@@ -8,11 +8,16 @@ export default class extends Controller {
     this.onResize = () => {
       if (window.innerWidth >= 768 && this.isOpen) this.close()
     }
+    this.onKeydown = (e) => {
+      if (e.key === 'Escape' && this.isOpen) this.close()
+    }
     window.addEventListener('resize', this.onResize)
+    window.addEventListener('keydown', this.onKeydown)
   }
 
   disconnect() {
     window.removeEventListener('resize', this.onResize)
+    window.removeEventListener('keydown', this.onKeydown)
   }
 
   toggle() {
@@ -21,15 +26,15 @@ export default class extends Controller {
 
   open() {
     this.isOpen = true
-    this.menuTarget.classList.remove('hidden')
-    this.iconOpenTarget.classList.add('hidden')
-    this.iconCloseTarget.classList.remove('hidden')
+    this.menuTarget.show()
+    this.iconOpenTarget.style.display = 'none'
+    this.iconCloseTarget.style.display = ''
   }
 
   close() {
     this.isOpen = false
-    this.menuTarget.classList.add('hidden')
-    this.iconOpenTarget.classList.remove('hidden')
-    this.iconCloseTarget.classList.add('hidden')
+    this.menuTarget.close()
+    this.iconOpenTarget.style.display = ''
+    this.iconCloseTarget.style.display = 'none'
   }
 }

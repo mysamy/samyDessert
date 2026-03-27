@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mentions légales — Samy Dessert{% endblock %}
+
+{% block body %}
+<div class="container-main py-12">
+  <h1 class="page-title text-h2 mb-8">Mentions légales</h1>
+
+  <div class="space-y-8 max-w-3xl text-text">
+
+    <section>
+      <h2 class="text-h4 font-semibold mb-3">Éditeur du site</h2>
+      <p>Samy Dessert — Artisan pâtissier</p>
+      <p>Email : <a href="mailto:contact@samydessert.fr" class="text-accent hover:underline">contact@samydessert.fr</a></p>
+    </section>
+
+    <section>
+      <h2 class="text-h4 font-semibold mb-3">Hébergement</h2>
+      <p>Ce site est hébergé dans le cadre d'un projet pédagogique.</p>
+    </section>
+
+    <section>
+      <h2 class="text-h4 font-semibold mb-3">Propriété intellectuelle</h2>
+      <p>L'ensemble des contenus présents sur ce site (textes, images, recettes) sont la propriété exclusive de Samy Dessert. Toute reproduction est interdite sans autorisation préalable.</p>
+    </section>
+
+    <section>
+      <h2 class="text-h4 font-semibold mb-3">Données personnelles (RGPD)</h2>
+      <p>Les données collectées lors de votre inscription (nom, prénom, adresse email) sont utilisées uniquement pour la gestion de votre compte et de vos commandes. Elles ne sont pas transmises à des tiers.</p>
+      <p class="mt-2">Conformément au Règlement Général sur la Protection des Données (RGPD), vous disposez d'un droit d'accès, de rectification et de suppression de vos données. Pour exercer ce droit, contactez-nous à <a href="mailto:contact@samydessert.fr" class="text-accent hover:underline">contact@samydessert.fr</a>.</p>
+    </section>
+
+    <section>
+      <h2 class="text-h4 font-semibold mb-3">Cookies</h2>
+      <p>Ce site utilise un cookie de consentement pour mémoriser vos préférences. Aucun cookie publicitaire ou de tracking n'est utilisé.</p>
+    </section>
+
+  </div>
+</div>
+{% endblock %}

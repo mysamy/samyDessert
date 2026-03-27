@@ -5,8 +5,8 @@
     <title>{% block title %}Samy Dessert{% endblock %}</title>
 
     {% block stylesheets %}
-      <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
       <link rel="stylesheet" href="{{ asset('vendor/@fortawesome/fontawesome-free/css/all.css') }}">
+      <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
     {% endblock %}
 
     {% block javascripts %}
@@ -22,12 +22,15 @@
       logoAlt="Samy Dessert"
     >
       <twig:block name="actions">
-        <twig:Atoms:Link href="/panier" class="flex items-center gap-1.5 text-text hover:text-accent">
-          Panier
-          <twig:Atoms:PanierBadge />
+        <twig:Atoms:Link href="/panier" class="group flex items-center gap-2 text-text hover:text-accent transition-colors" aria-label="Panier">
+          <div class="relative w-fit transition-transform group-hover:scale-110">
+            <twig:Atoms:Icon name="bag-shopping" size="3x" :decorative="true" />
+            <twig:Atoms:PanierBadge class="absolute top-1/2 left-1/2 [translate:-50%_-35%]" />
+          </div>
+          <span class="hidden lg:inline">Panier</span>
         </twig:Atoms:Link>
         {% if app.user %}
-          <div class="relative" data-controller="dropdown">
+          <div class="relative hidden lg:block" data-controller="dropdown">
             <button data-action="dropdown#toggle"
                     class="flex items-center gap-2 text-sm font-medium text-text hover:text-accent transition">
               <twig:Atoms:Icon name="circle-user" size="lg" :decorative="true" />
@@ -53,8 +56,27 @@
             </div>
           </div>
         {% else %}
-          <twig:Atoms:Link href="/connexion" class="bg-accent text-white px-5 py-2 rounded-full font-semibold hover:bg-accent/90 transition">Se connecter</twig:Atoms:Link>
+          <twig:Atoms:Link href="/connexion" class="btn-cta-sm hidden lg:inline-flex">Se connecter</twig:Atoms:Link>
         {% endif %}
+      </twig:block>
+      <twig:block name="mobileActions">
+        <div class="flex flex-col items-center gap-1 border-t border-surface w-full pt-3">
+          {% if app.user %}
+            <twig:Atoms:Link href="{{ path('app_compte_index') }}" class="flex items-center gap-2 px-2 py-2 text-text hover:text-accent">
+              <twig:Atoms:Icon name="user" size="sm" :decorative="true" /> Mon compte
+            </twig:Atoms:Link>
+            {% if is_granted('ROLE_ADMIN') %}
+              <twig:Atoms:Link href="{{ path('admin') }}" class="flex items-center gap-2 px-2 py-2 text-text hover:text-accent">
+                <twig:Atoms:Icon name="screwdriver-wrench" size="sm" :decorative="true" /> Administration
+              </twig:Atoms:Link>
+            {% endif %}
+            <twig:Atoms:Link href="{{ path('_logout_main') }}" class="flex items-center gap-2 px-2 py-2 text-red-600 hover:text-red-700">
+              <twig:Atoms:Icon name="right-from-bracket" size="sm" :decorative="true" /> Se déconnecter
+            </twig:Atoms:Link>
+          {% else %}
+            <twig:Atoms:Link href="/connexion" class="btn-cta-sm mt-1">Se connecter</twig:Atoms:Link>
+          {% endif %}
+        </div>
       </twig:block>
     </twig:Organisms:Header>
 
@@ -66,12 +88,20 @@
 
     <twig:Organisms:Footer
       brandLabel="Samy Dessert"
+      tagline="Artisan pâtissier · Fait maison"
       legalText="© {{ 'now'|date('Y') }} Samy Dessert. Tous droits réservés."
       :links="[
-        { label: 'Accueil', href: '/' },
-        { label: 'Desserts et prix', href: '/produits' },
-        { label: 'Recettes', href: '/recettes' },
-        { label: 'Contactez-moi', href: '/contact' }
+        { label: 'Accueil', href: path('app_home') },
+        { label: 'Desserts et prix', href: path('app_produits') },
+        { label: 'Recettes', href: path('app_recettes') },
+        { label: 'Contactez-moi', href: path('app_contact') }
+      ]"
+      :legalLinks="[
+        { label: 'Mentions légales', href: path('app_mentions_legales') }
+      ]"
+      :socialLinks="[
+        { label: 'Instagram', href: '#', icon: 'instagram' },
+        { label: 'Facebook', href: '#', icon: 'facebook' }
       ]"
     />
 

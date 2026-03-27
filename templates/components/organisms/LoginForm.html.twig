@@ -1,10 +1,11 @@
 <twig:Organisms:Form
   id="{{ id }}"
-  method="{{ method }}"
   action="{{ action }}"
   class="{{ class }}"
   ariaLabel="Formulaire de connexion"
   ariaDescribedby="{{ this.hasAnyError ? this.errorSummaryId : '' }}"
+  data-controller="submit-once"
+  data-action="submit->submit-once#submit"
 >
   {% if this.hasAnyError %}
     <twig:Molecules:Alert
@@ -37,14 +38,17 @@
   />
 
   <twig:Molecules:FormActions align="end">
-    <twig:Atoms:Button type="submit">{{ submitLabel }}</twig:Atoms:Button>
+    <twig:Atoms:Button type="submit" data-submit-once-target="btn">
+      <span data-submit-once-target="label">{{ submitLabel }}</span>
+      <twig:Atoms:Spinner size="sm" ariaLabel="Connexion en cours" class="hidden" data-submit-once-target="spinner" />
+    </twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>
 
 {#
   Props (* = obligatoire) :
-  - action*       string  — URL de soumission du formulaire
-  - csrfToken*    string  — jeton CSRF Symfony
+  - action        string  — URL de soumission du formulaire ('')
+  - csrfToken     string  — jeton CSRF Symfony ('')
   - emailValue    string  — valeur pré-remplie du champ email ('')
   - rememberMe    bool    — case "Se souvenir de moi" cochée (false)
   - submitLabel   string  — libellé du bouton ('Se connecter')

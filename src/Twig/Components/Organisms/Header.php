@@ -11,5 +11,4 @@ final class Header
     public string $brandHref = '/';
     public ?string $logoSrc = null;
     public ?string $logoAlt = null;
-    public ?string $class = null;
 }

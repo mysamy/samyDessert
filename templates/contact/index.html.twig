@@ -30,6 +30,8 @@
       action="/contact"
       ariaLabel="Formulaire de contact"
       class="flex flex-col gap-6"
+      data-controller="submit-once"
+      data-action="submit->submit-once#submit"
     >
       <twig:block name="content">
 
@@ -80,9 +82,13 @@
           <twig:Atoms:Button
             type="submit"
             class="btn-cta"
+            data-submit-once-target="btn"
           >
-            Envoyer le message
-            <twig:Atoms:Icon name="paper-plane" :decorative="true"/>
+            <span class="flex items-center gap-2" data-submit-once-target="label">
+              Envoyer le message
+              <twig:Atoms:Icon name="paper-plane" :decorative="true"/>
+            </span>
+            <twig:Atoms:Spinner size="sm" ariaLabel="Envoi en cours" class="hidden" data-submit-once-target="spinner" />
           </twig:Atoms:Button>
         </div>
 

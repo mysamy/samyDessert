@@ -30,7 +30,7 @@
     {% set itemUrl = item.url ?? (item.slug ? path('app_produit_show', { slug: item.slug }) : null) %}
     {% set itemImageSrc = item.imageSrc ?? null %}
     {% set itemRating = item.rating ?? null %}
-    {% set itemPrix = item.formattedPrice ?? (item.prix ? (item.prix|number_format(2, ',', ' ') ~ ' €') : null) %}
+    {% set itemPrix = item.formattedPrice ?? (item.prix ? item.prix|prix : null) %}
     {% set itemDescription = item.description ?? null %}
     {% set itemCategorieLabel = item.categorieLabel ?? item.categorie.nom ?? null %}
     {% set itemProduitId = item.id ?? null %}

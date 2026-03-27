@@ -8,7 +8,7 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Icon
 {
     public string $name = '';
-    public string $style = 'solid';
+    public string $variant = 'solid';
     public string $size = '';
     public bool $decorative = true;
     public string $ariaLabel = '';
