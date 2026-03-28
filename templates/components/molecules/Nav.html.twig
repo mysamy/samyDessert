@@ -1,5 +1,5 @@
-<nav class="flex" aria-label="{{ ariaLabel }}">
-  <ul {{ attributes.defaults({ class: 'flex items-center gap-6' }) }}>
+<nav {{ attributes.defaults({ class: 'flex' }) }} aria-label="{{ ariaLabel }}">
+  <ul class="flex items-center gap-6">
     {% for item in links %}
       {% set label = item.label|default('') %}
       {% set href = item.href|default('') %}

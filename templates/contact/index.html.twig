@@ -27,7 +27,7 @@
     </div>
 
     <twig:Organisms:Form
-      action="/contact"
+      action="{{ path('app_contact') }}"
       ariaLabel="Formulaire de contact"
       class="flex flex-col gap-6"
       data-controller="submit-once"
@@ -104,7 +104,7 @@
     <div class="grid gap-8 sm:grid-cols-3 text-center">
 
       <div class="flex flex-col items-center gap-3">
-        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-surface text-accent text-xl">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-xl">
           <twig:Atoms:Icon name="location-dot" :decorative="true"/>
         </div>
         <h3 class="font-semibold text-text">Adresse</h3>
@@ -112,7 +112,7 @@
       </div>
 
       <div class="flex flex-col items-center gap-3">
-        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-surface text-accent text-xl">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-xl">
           <twig:Atoms:Icon name="phone" :decorative="true"/>
         </div>
         <h3 class="font-semibold text-text">Téléphone</h3>
@@ -122,7 +122,7 @@
       </div>
 
       <div class="flex flex-col items-center gap-3">
-        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-surface text-accent text-xl">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-xl">
           <twig:Atoms:Icon name="clock" :decorative="true"/>
         </div>
         <h3 class="font-semibold text-text">Horaires</h3>

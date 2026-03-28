@@ -14,10 +14,16 @@ final class HomeController extends AbstractController
     #[Route('/', name: 'app_home')]
     public function index(ProduitRepository $produitRepository): Response
     {
-        $meilleursVendus = $produitRepository->findMeilleursVendus(4);
+        $meilleursVendus = $produitRepository->findMeilleursVendus(6);
+
+        $carouselProduits = $produitRepository->findBySlugsOrdered([
+            'tarte-aux-fraises', 'tiramisu', 'macarons-x6',
+            'cheesecake', 'brownies', 'cookies',
+        ]);
 
         return $this->render('home/index.html.twig', [
-            'meilleursVendus' => $meilleursVendus,
+            'meilleursVendus'  => $meilleursVendus,
+            'carouselProduits' => $carouselProduits,
         ]);
     }
 }

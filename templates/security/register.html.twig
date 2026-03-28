@@ -7,91 +7,26 @@
 <section class="min-h-[80vh] flex items-center justify-center bg-bg py-16 px-4">
   <div class="w-full max-w-md">
 
-    {# Titre #}
     <div class="text-center mb-8">
       <h1 class="text-3xl font-bold text-text mb-1">Créer un compte</h1>
       <p class="text-text-light text-sm">Rejoignez-nous pour commander et suivre vos commandes.</p>
     </div>
 
-    <div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+    <div class="bg-surface rounded-2xl shadow-sm border border-border p-8">
 
-      <twig:Organisms:Form
-        action="/inscription"
+      <twig:Organisms:RegisterForm
+        action="{{ path('app_register') }}"
+        csrfToken="{{ csrf_token('register') }}"
+        prenomValue="{{ values.prenom ?? '' }}"
+        nomValue="{{ values.nom ?? '' }}"
+        emailValue="{{ values.email ?? '' }}"
+        formError="{{ error ?? '' }}"
         class="flex flex-col gap-5"
-        data-controller="submit-once"
-        data-action="submit->submit-once#submit"
-      >
-        <twig:block name="content">
-
-          <div class="grid gap-4 sm:grid-cols-2">
-            <twig:Molecules:InputField
-              name="prenom"
-              label="Prénom"
-              placeholder="Votre prénom"
-              :required="true"
-              autocomplete="given-name"
-              value="{{ values.prenom ?? '' }}"
-            />
-            <twig:Molecules:InputField
-              name="nom"
-              label="Nom"
-              placeholder="Votre nom"
-              :required="true"
-              autocomplete="family-name"
-              value="{{ values.nom ?? '' }}"
-            />
-          </div>
-
-          <twig:Molecules:InputField
-            name="email"
-            type="email"
-            label="Adresse email"
-            placeholder="votre@email.fr"
-            :required="true"
-            autocomplete="email"
-            value="{{ values.email ?? '' }}"
-          />
-
-          <twig:Molecules:InputField
-            name="password"
-            type="password"
-            label="Mot de passe"
-            placeholder="••••••••"
-            :required="true"
-            autocomplete="new-password"
-            help="Minimum 8 caractères"
-          />
-
-          <twig:Molecules:InputField
-            name="password_confirm"
-            type="password"
-            label="Confirmer le mot de passe"
-            placeholder="••••••••"
-            :required="true"
-            autocomplete="new-password"
-          />
-
-          {% if error %}
-            <twig:Molecules:Alert type="error" message="{{ error }}"/>
-          {% endif %}
-
-          <input type="hidden" name="_csrf_token" value="{{ csrf_token('register') }}">
-
-          <twig:Atoms:Button
-            type="submit"
-            class="w-full justify-center bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-primary transition"
-            data-submit-once-target="btn"
-          >
-            <span data-submit-once-target="label">Créer mon compte</span>
-            <twig:Atoms:Spinner size="sm" ariaLabel="Création en cours" class="hidden" data-submit-once-target="spinner" />
-          </twig:Atoms:Button>
-
-        </twig:block>
-      </twig:Organisms:Form>
+      />
 
       <p class="mt-6 text-center text-sm text-text-light">
         Déjà un compte ?
-        <a href="/connexion" class="text-accent font-medium hover:underline">Se connecter</a>
+        <twig:Atoms:Link href="{{ path('app_login') }}" class="text-accent font-medium">Se connecter</twig:Atoms:Link>
       </p>
 
     </div>

@@ -11,6 +11,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
 use Stripe\Stripe;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -25,19 +26,85 @@ class CommandeController extends AbstractController
         private MailerService $mailer,
     ) {}
 
-    // Page récap + formulaire adresse avant paiement
-    #[Route('/commande', name: 'app_commande')]
-    public function index(): Response
+    // Étape 1 : saisie de l'adresse de livraison
+    #[Route('/commande/adresse', name: 'app_commande_adresse')]
+    public function adresse(Request $request): Response
     {
         $lignes = $this->panier->getLignes();
-
         if (empty($lignes)) {
-            return $this->redirectToRoute('app_panier');
+            return $this->redirectToRoute('app_panier_index');
+        }
+
+        $user = $this->getUser();
+        $session = $request->getSession();
+        $errors = [];
+        $values = $session->get('adresse_livraison', []);
+
+        if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('adresse', $request->request->get('_token'))) {
+                throw $this->createAccessDeniedException();
+            }
+
+            $values = [
+                'firstName'  => trim($request->request->get('firstName', '')),
+                'lastName'   => trim($request->request->get('lastName', '')),
+                'address1'   => trim($request->request->get('address1', '')),
+                'postalCode' => trim($request->request->get('postalCode', '')),
+                'city'       => trim($request->request->get('city', '')),
+                'country'    => $request->request->get('country', 'FR'),
+                'phone'      => trim($request->request->get('phone', '')),
+                'notes'      => trim($request->request->get('notes', '')),
+            ];
+
+            if ($values['firstName'] === '') { $errors['firstName'] = 'Le prénom est obligatoire.'; }
+            if ($values['lastName'] === '')  { $errors['lastName']  = 'Le nom est obligatoire.'; }
+            if ($values['address1'] === '')  { $errors['address1']  = 'L\'adresse est obligatoire.'; }
+            if ($values['postalCode'] === '') { $errors['postalCode'] = 'Le code postal est obligatoire.'; }
+            if ($values['city'] === '')      { $errors['city']      = 'La ville est obligatoire.'; }
+
+            if (empty($errors)) {
+                $session->set('adresse_livraison', $values);
+                return $this->redirectToRoute('app_commande');
+            }
+        }
+
+        // Pré-remplir depuis le profil utilisateur si pas encore de données en session
+        if (empty($values)) {
+            $values = [
+                'firstName'  => $user->getPrenom() ?? '',
+                'lastName'   => $user->getNom() ?? '',
+                'address1'   => $user->getAdresse() ?? '',
+                'postalCode' => $user->getCodePostal() ?? '',
+                'city'       => $user->getVille() ?? '',
+                'country'    => 'FR',
+                'phone'      => $user->getTelephone() ?? '',
+                'notes'      => '',
+            ];
+        }
+
+        return $this->render('commande/adresse.html.twig', [
+            'values' => $values,
+            'errors' => $errors,
+        ]);
+    }
+
+    // Étape 2 : récapitulatif avant paiement
+    #[Route('/commande', name: 'app_commande')]
+    public function index(Request $request): Response
+    {
+        $lignes = $this->panier->getLignes();
+        if (empty($lignes)) {
+            return $this->redirectToRoute('app_panier_index');
+        }
+
+        if (!$request->getSession()->has('adresse_livraison')) {
+            return $this->redirectToRoute('app_commande_adresse');
         }
 
         return $this->render('commande/index.html.twig', [
-            'lignes' => $lignes,
-            'total'  => $this->panier->getTotal(),
+            'lignes'  => $lignes,
+            'total'   => $this->panier->getTotal(),
+            'adresse' => $request->getSession()->get('adresse_livraison'),
         ]);
     }
 
@@ -48,7 +115,7 @@ class CommandeController extends AbstractController
         $lignes = $this->panier->getLignes();
 
         if (empty($lignes)) {
-            return $this->redirectToRoute('app_panier');
+            return $this->redirectToRoute('app_panier_index');
         }
 
         Stripe::setApiKey($this->getParameter('stripe_secret_key'));
@@ -82,7 +149,7 @@ class CommandeController extends AbstractController
 
     // Stripe redirige ici après un paiement réussi
     #[Route('/commande/succes', name: 'app_commande_succes')]
-    public function succes(): Response
+    public function succes(Request $request): Response
     {
         $lignes = $this->panier->getLignes();
 
@@ -91,6 +158,16 @@ class CommandeController extends AbstractController
             $commande->setUtilisateur($this->getUser());
             $commande->setStatut(StatutCommande::Confirmee);
             $commande->setTotal((string) $this->panier->getTotal());
+
+            // Sauvegarde l'adresse de livraison depuis la session
+            $adresse = $request->getSession()->get('adresse_livraison', []);
+            if (!empty($adresse)) {
+                $commande->setAdresseLivraison($adresse['address1'] ?? '');
+                $commande->setVille($adresse['city'] ?? '');
+                $commande->setCodePostal($adresse['postalCode'] ?? '');
+                $commande->setNotes($adresse['notes'] ?: null);
+                $request->getSession()->remove('adresse_livraison');
+            }
 
             foreach ($lignes as $ligne) {
                 $cp = new CommandeProduit();

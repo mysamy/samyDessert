@@ -11,4 +11,5 @@ final class CarouselCard
     public string $imgAlt = '';
     public string $imgClass = '';
     public string $description = '';
+    public string $href = '';
 }

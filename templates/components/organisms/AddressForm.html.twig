@@ -1,17 +1,20 @@
+{% set hasError = this.hasAnyError %}
+{% set errorId = this.errorSummaryId %}
+
 <twig:Organisms:Form
   id="{{ id }}"
   method="{{ method }}"
   action="{{ action }}"
   class="{{ class }}"
   ariaLabel="Formulaire d'adresse"
-  ariaDescribedby="{{ this.hasAnyError ? this.errorSummaryId : '' }}"
+  ariaDescribedby="{{ hasError ? errorId : '' }}"
   data-controller="submit-once"
   data-action="submit->submit-once#submit"
 >
-  {% if this.hasAnyError %}
+  {% if hasError %}
     <twig:Molecules:Alert
       type="error"
-      id="{{ this.errorSummaryId }}"
+      id="{{ errorId }}"
       tabindex="-1"
       message="{{ formError is not empty ? formError : 'Le formulaire contient des erreurs. Vérifie les informations saisies.' }}"
     />
@@ -52,7 +55,7 @@
   <twig:Molecules:FormActions align="end">
     <twig:Atoms:Button type="submit" data-submit-once-target="btn">
       <span data-submit-once-target="label">{{ submitLabel }}</span>
-      <twig:Atoms:Spinner size="sm" ariaLabel="Enregistrement en cours" class="hidden" data-submit-once-target="spinner" />
+      <twig:Atoms:Spinner size="lg" ariaLabel="Enregistrement en cours" class="hidden absolute inset-0 m-auto" data-submit-once-target="spinner" />
     </twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>
@@ -63,13 +66,13 @@
   - csrfToken*       string  — jeton CSRF
   - legend           string  — titre du groupe de champs ('Adresse')
   - submitLabel      string  — libellé du bouton de soumission ('Enregistrer')
-  - firstNameValue   string  — valeur prénom ('')
-  - lastNameValue    string  — valeur nom ('')
+  - firstNameValue*  string  — valeur prénom ('')
+  - lastNameValue*   string  — valeur nom ('')
+  - address1Value*   string  — valeur adresse ligne 1 ('')
+  - postalCodeValue* string  — valeur code postal ('')
+  - cityValue*       string  — valeur ville ('')
   - companyValue     string  — valeur société ('')
-  - address1Value    string  — valeur adresse ligne 1 ('')
   - address2Value    string  — valeur adresse ligne 2 ('')
-  - postalCodeValue  string  — valeur code postal ('')
-  - cityValue        string  — valeur ville ('')
   - countryValue     string  — valeur pays (FR)
   - phoneValue       string  — valeur téléphone ('')
   - notesValue       string  — valeur notes ('')

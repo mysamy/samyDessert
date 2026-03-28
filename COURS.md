@@ -2212,3 +2212,45 @@ docker-compose restart init
 ```
 
 > **Important** : Ne jamais supprimer `var/cache/` depuis Windows. Toujours passer par `docker-compose exec php`.
+
+---
+
+# Organisation des fichiers CSS
+
+## Règle générale avec Tailwind v4
+
+`app.css` est le **point d'entrée unique** — il contient `@import "tailwindcss"`, `@source`, `@theme`, `@font-face`, et toutes les classes custom. Pas besoin de le découper en fichiers séparés.
+
+## Pourquoi email.css et pdf.css existent quand même
+
+Ces deux fichiers existent pour des **contextes d'exécution isolés** où le pipeline Tailwind ne tourne pas :
+
+| Fichier | Contexte | Raison |
+|---------|----------|--------|
+| `email.css` | Clients email (Gmail, Outlook…) | Ne supportent pas les variables CSS (`var(--color-*)`) ni Tailwind — valeurs hex directes obligatoires |
+| `pdf.css` | Moteur PDF (Dompdf/Wkhtmltopdf) | Ne charge pas le pipeline Tailwind — même besoin |
+
+Ces fichiers sont chargés directement dans leurs templates respectifs, pas via l'asset mapper.
+
+## Pourquoi PAS un carousel.css
+
+Le carousel est rendu dans des templates Twig normaux via le même `app.css`. Un fichier séparé devrait être importé dans `app.css` de toute façon — autant garder une section commentée dans le même fichier.
+
+## Ce que Tailwind v4 fournit automatiquement
+
+`@import "tailwindcss"` inclut **Preflight** — un reset CSS complet qui normalise `html`, `body`, marges, box-sizing, etc. Pas besoin d'ajouter de CSS de base pour `html` et `body`.
+
+---
+
+# Tokens de couleur — conventions
+
+Dans `app.css`, les couleurs sont définies via `@theme` avec la convention `--color-[nom]`. Tailwind génère automatiquement les classes `bg-*`, `text-*`, `border-*` correspondantes.
+
+| Token | Classe Tailwind | Usage |
+|-------|----------------|-------|
+| `--color-surface` | `bg-surface` | Fonds de cartes, dropdowns, sidebar |
+| `--color-border` | `border-border` | Toutes les bordures |
+| `--color-danger` | `text-danger` | Erreurs, déconnexion, annulations |
+| `--color-danger-light` | `bg-danger-light` | Hover sur actions dangereuses |
+
+**Règle** : ne jamais utiliser `bg-white`, `text-red-600`, `border-gray-200` etc. — toujours passer par les tokens du projet.

@@ -4,14 +4,14 @@
 
 {% block body %}
 
-<section class="py-24 bg-white text-center">
+<section class="py-24 bg-bg text-center">
   <div class="mx-auto max-w-lg px-4">
     <div class="w-20 h-20 bg-success-light rounded-full flex items-center justify-center mx-auto mb-6">
       <twig:Atoms:Icon name="check" :decorative="true" class="text-3xl text-success"/>
     </div>
     <h1 class="text-3xl font-bold text-text mb-3">Commande confirmée !</h1>
     <p class="text-text-light mb-8">Merci pour votre commande. Vous recevrez bientôt vos délicieux desserts artisanaux.</p>
-    <twig:Atoms:Link href="{{ path('app_produits') }}" class="btn-cta">
+    <twig:Atoms:Link href="{{ path('app_produits') }}" class="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-primary transition">
       Continuer mes achats
     </twig:Atoms:Link>
   </div>

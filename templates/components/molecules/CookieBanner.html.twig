@@ -1,12 +1,12 @@
 <dialog
-  data-controller="cookie-banner"
+  data-controller="consent-banner"
   role="alertdialog"
   aria-label="Consentement cookies"
-  aria-describedby="cookie-banner-message"
-  {{ attributes.defaults({ class: 'fixed bottom-0 left-0 right-0 m-0 max-w-full w-full border-t-2 border-accent/30 bg-text shadow-2xl p-0 open:flex' }) }}
+  aria-describedby="consent-banner-message"
+  {{ attributes.defaults({ class: 'fixed bottom-0 left-0 right-0 z-[100] m-0 max-w-full w-full border-t-2 border-accent/30 bg-text shadow-2xl p-0 open:flex' }) }}
 >
   <div class="container-main flex flex-col sm:flex-row items-center justify-between gap-6 py-6">
-    <p id="cookie-banner-message" class="text-base text-white text-center sm:text-left">
+    <p id="consent-banner-message" class="text-base text-white text-center sm:text-left">
       {{ message }}
       {% if policyUrl %}
         <twig:Atoms:Link href="{{ policyUrl }}" class="text-accent underline ml-1">En savoir plus</twig:Atoms:Link>
@@ -16,7 +16,7 @@
       <twig:Atoms:Button
         size="md"
         class="rounded-full"
-        data-action="cookie-banner#accept"
+        data-action="consent-banner#accept"
       >
         {{ acceptLabel }}
       </twig:Atoms:Button>
@@ -24,7 +24,7 @@
         variant="ghost"
         size="md"
         class="rounded-full border border-white/30 text-white hover:bg-white/10"
-        data-action="cookie-banner#reject"
+        data-action="consent-banner#reject"
       >
         {{ rejectLabel }}
       </twig:Atoms:Button>
@@ -34,7 +34,7 @@
 
 {#
   Molécule CookieBanner — bandeau RGPD non-bloquant via <dialog>.
-  Utilise le controller Stimulus `cookie-banner` pour afficher/cacher et stocker le consentement.
+  Utilise le controller Stimulus `consent-banner` pour afficher/cacher et stocker le consentement.
 
   Props :
   - message       string — texte informatif ('Ce site utilise des cookies…')

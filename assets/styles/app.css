@@ -3,39 +3,7 @@
 @source "../../templates/**/*.twig";
 @source "../../assets/**/*.js";
 
-/* ── Police Luciole (accessibilité) ─────────────────────────────────────── */
-@font-face {
-  font-family: 'Luciole';
-  src: url('../fonts/Luciole-Regular.woff2') format('woff2'),
-       url('../fonts/Luciole-Regular.woff')  format('woff');
-  font-weight: 400;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Luciole';
-  src: url('../fonts/Luciole-Italic.woff2') format('woff2'),
-       url('../fonts/Luciole-Italic.woff')  format('woff');
-  font-weight: 400;
-  font-style: italic;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Luciole';
-  src: url('../fonts/Luciole-Bold.woff2') format('woff2'),
-       url('../fonts/Luciole-Bold.woff')  format('woff');
-  font-weight: 700;
-  font-style: normal;
-  font-display: swap;
-}
-@font-face {
-  font-family: 'Luciole';
-  src: url('../fonts/Luciole-BoldItalic.woff2') format('woff2'),
-       url('../fonts/Luciole-BoldItalic.woff')  format('woff');
-  font-weight: 700;
-  font-style: italic;
-  font-display: swap;
-}
+
 
 /* ── Thème Tailwind v4 ───────────────────────────────────────────────────── */
 /*
@@ -55,7 +23,7 @@
  */
 @theme {
   /* ── Chocolat (couleur principale) ── */
-  --color-primary:          #3B1A08;  /* bg-primary      | text-primary      chocolat foncé  */
+  --color-primary:          #5C2309;  /* bg-primary      | text-primary      chocolat foncé  */
   --color-primary-light:    #FEF0E6;  /* bg-primary-light                    crème vanille   */
 
   /* ── Framboise (accent, CTA, prix) ── */
@@ -65,6 +33,10 @@
   /* ── Pistache (succès, disponible, confirmé) ── */
   --color-success:          #3F6212;  /* bg-success      | text-success      pistache foncé  */
   --color-success-light:    #ECFCCB;  /* bg-success-light                    pistache pâle   */
+
+  /* ── Warning (en attente, difficulté moyenne) ── */
+  --color-warning:          #B45309;  /* bg-warning      | text-warning      amber foncé     */
+  --color-warning-light:    #FEF3C7;  /* bg-warning-light                    amber pâle      */
 
   /* ── Danger (erreurs, annulations, rupture) ── */
   --color-danger:           #DC2626;  /* bg-danger       | text-danger       rouge vif       */
@@ -107,6 +79,79 @@
 }
 
 
+/* ── Stabiliser la scrollbar (évite le saut de ~17px au resize sur Windows) */
+html {
+  scrollbar-gutter: stable;
+}
+
+
+/* ── Classes utilitaires personnalisées ──────────────────────────────────── */
+/*
+ * Ces classes regroupent des combinaisons Tailwind qui se répètent souvent.
+ * Utilisation : class="container-main" au lieu de class="mx-auto max-w-7xl px-4"
+ */
+@layer components {
+
+  /* Conteneur centré de page — mx-auto max-w-7xl px-4 */
+  .container-main {
+    @apply mx-auto max-w-7xl px-4;
+  }
+
+  /* Section claire (fond blanc) */
+  .section {
+    @apply py-12 bg-white;
+  }
+
+  /* Section colorée (fond crème) */
+  .section-alt {
+    @apply py-12 bg-bg;
+  }
+
+  /* Bouton CTA principal — framboise, grand (px-8 py-3) */
+  .btn-cta {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-8 py-3 font-semibold hover:bg-primary transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  }
+
+  /* Bouton CTA compact — framboise, petit (px-4 py-2) */
+  .btn-cta-sm {
+    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 font-semibold hover:bg-primary transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+    font-size: var(--font-size-small);
+  }
+
+  /* Bouton CTA secondaire — contour */
+  .btn-cta-outline {
+    @apply inline-flex items-center gap-2 rounded-full border-2 border-accent text-accent px-8 py-3 font-semibold hover:bg-accent hover:text-white transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+  }
+
+  /* Titre principal de page (h1) */
+  .page-title {
+    @apply font-bold text-text;
+    font-size: var(--font-size-h1);
+  }
+
+  /* Titre de section (h2) */
+  .section-title {
+    @apply font-bold text-text;
+    font-size: var(--font-size-h2);
+  }
+
+  /* Carte générique */
+  .card {
+    @apply rounded-2xl border border-border bg-surface shadow-sm;
+  }
+
+  /* Lien de filtre (catégories produits/recettes) */
+  .filter-btn {
+    @apply block w-full rounded-lg px-4 py-2 font-medium transition text-left;
+    font-size: var(--font-size-small);
+  }
+
+  /* Séparateur horizontal */
+  .divider {
+    @apply border-t border-border;
+  }
+
+}
 /* ── Carousel ────────────────────────────────────────────────────────────── */
 /*
  * Ces classes sont créées dynamiquement par le JS (createDivWithClass).
@@ -118,7 +163,6 @@
 
 .carousel__wrapper {
   @apply flex items-center z-1 h-full;
-  transition: transform 0.3s ease-in-out;
 }
 
 .carousel__item {
@@ -208,72 +252,37 @@
   @apply list-disc;
 }
 
-/* ── Classes utilitaires personnalisées ──────────────────────────────────── */
-/*
- * Ces classes regroupent des combinaisons Tailwind qui se répètent souvent.
- * Utilisation : class="container-main" au lieu de class="mx-auto max-w-7xl px-4"
- */
-@layer components {
-
-  /* Conteneur centré de page — mx-auto max-w-7xl px-4 */
-  .container-main {
-    @apply mx-auto max-w-7xl px-4;
-  }
-
-  /* Section claire (fond blanc) */
-  .section {
-    @apply py-12 bg-white;
-  }
-
-  /* Section colorée (fond crème) */
-  .section-alt {
-    @apply py-12 bg-bg;
-  }
-
-  /* Bouton CTA principal — framboise, grand (px-8 py-3) */
-  .btn-cta {
-    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-8 py-3 font-semibold hover:bg-primary transition;
-  }
-
-  /* Bouton CTA compact — framboise, petit (px-4 py-2) */
-  .btn-cta-sm {
-    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 font-semibold hover:bg-primary transition;
-    font-size: var(--font-size-small);
-  }
-
-  /* Bouton CTA secondaire — contour */
-  .btn-cta-outline {
-    @apply inline-flex items-center gap-2 rounded-full border-2 border-accent text-accent px-8 py-3 font-semibold hover:bg-accent hover:text-white transition;
-  }
-
-  /* Titre principal de page (h1) */
-  .page-title {
-    @apply font-bold text-text;
-    font-size: var(--font-size-h1);
-  }
-
-  /* Titre de section (h2) */
-  .section-title {
-    @apply font-bold text-text;
-    font-size: var(--font-size-h2);
-  }
-
-  /* Carte générique */
-  .card {
-    @apply rounded-2xl border border-border bg-surface shadow-sm;
-  }
-
-  /* Lien de filtre (catégories produits/recettes) */
-  .filter-btn {
-    @apply block w-full rounded-lg px-4 py-2 font-medium transition text-left;
-    font-size: var(--font-size-small);
-  }
-
-  /* Séparateur horizontal */
-  .divider {
-    @apply border-t border-border;
-  }
-
+/* ── Police Luciole (accessibilité) ─────────────────────────────────────── */
+@font-face {
+  font-family: 'Luciole';
+  src: url('../fonts/Luciole-Regular.woff2') format('woff2'),
+       url('../fonts/Luciole-Regular.woff')  format('woff');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
 }
-
+@font-face {
+  font-family: 'Luciole';
+  src: url('../fonts/Luciole-Italic.woff2') format('woff2'),
+       url('../fonts/Luciole-Italic.woff')  format('woff');
+  font-weight: 400;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Luciole';
+  src: url('../fonts/Luciole-Bold.woff2') format('woff2'),
+       url('../fonts/Luciole-Bold.woff')  format('woff');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Luciole';
+  src: url('../fonts/Luciole-BoldItalic.woff2') format('woff2'),
+       url('../fonts/Luciole-BoldItalic.woff')  format('woff');
+  font-weight: 700;
+  font-style: italic;
+  font-display: swap;
+}
 

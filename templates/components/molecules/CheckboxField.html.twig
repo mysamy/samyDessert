@@ -1,4 +1,4 @@
-<div class="flex items-start gap-2">
+<div {{ attributes.defaults({ class: 'flex items-start gap-2' }) }}>
   <twig:Atoms:Checkbox
     id="{{ id }}"
     name="{{ name }}"
@@ -6,7 +6,7 @@
     :required="required"
     :disabled="disabled"
     aria-invalid="{{ error ? 'true' : 'false' }}"
-    {% if error %}aria-describedby="{{ this.errorId }}"{% endif %}
+    aria-describedby="{{ error ? this.errorId : '' }}"
     class="mt-0.5"
   />
 

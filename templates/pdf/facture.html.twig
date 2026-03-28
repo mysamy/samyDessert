@@ -1,38 +1,25 @@
+{% apply inline_css(source('@styles/pdf.css')) %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8">
-  <style>
-    body { font-family: Helvetica, Arial, sans-serif; font-size: 13px; color: #333; margin: 0; padding: 40px; }
-    h1 { font-size: 22px; color: #92400e; margin-bottom: 4px; }
-    .subtitle { color: #b45309; font-size: 13px; margin-bottom: 30px; }
-    .row { display: flex; justify-content: space-between; margin-bottom: 30px; }
-    .block-title { font-size: 11px; text-transform: uppercase; color: #b45309; margin-bottom: 6px; letter-spacing: 1px; }
-    .reference { background: #fffbeb; border: 1px solid #fde68a; padding: 8px 14px; border-radius: 4px; display: inline-block; font-weight: bold; color: #92400e; margin-bottom: 30px; }
-    table { width: 100%; border-collapse: collapse; margin-bottom: 20px; }
-    thead tr { background: #92400e; color: white; }
-    thead th { padding: 10px 12px; text-align: left; font-size: 12px; }
-    tbody tr:nth-child(even) { background: #fffbeb; }
-    tbody td { padding: 9px 12px; border-bottom: 1px solid #fde68a; }
-    .total-row { text-align: right; font-size: 15px; font-weight: bold; color: #92400e; padding: 10px 12px; }
-    .footer { margin-top: 40px; padding-top: 16px; border-top: 1px solid #fde68a; font-size: 11px; color: #b45309; text-align: center; }
-  </style>
+  <title>Facture {{ commande.reference ?? commande.id }}</title>
 </head>
 <body>
 
   <h1>Samy Dessert</h1>
-  <div class="subtitle">Pâtisseries artisanales</div>
+  <div class="pdf__subtitle">Pâtisseries artisanales</div>
 
-  <div class="row">
+  <div class="pdf__row">
     <div>
-      <div class="block-title">Facture</div>
+      <div class="pdf__block-title">Facture</div>
       <div>Date : {{ commande.dateCommande|date('d/m/Y') }}</div>
       {% if commande.reference %}
-        <div class="reference">{{ commande.reference }}</div>
+        <div class="pdf__reference">{{ commande.reference }}</div>
       {% endif %}
     </div>
-    <div style="text-align: right;">
-      <div class="block-title">Client</div>
+    <div class="pdf__col-right">
+      <div class="pdf__block-title">Client</div>
       <div>{{ commande.utilisateur.prenom ?? '' }} {{ commande.utilisateur.nom ?? commande.utilisateur.email }}</div>
       <div>{{ commande.utilisateur.email }}</div>
       {% if commande.adresseLivraison %}
@@ -61,8 +48,8 @@
         </tr>
       {% endfor %}
       <tr>
-        <td colspan="3" class="total-row">Total</td>
-        <td class="total-row">{{ commande.total|prix }}</td>
+        <td colspan="3" class="pdf__total">Total</td>
+        <td class="pdf__total">{{ commande.total|prix }}</td>
       </tr>
     </tbody>
   </table>
@@ -71,9 +58,10 @@
     <p><strong>Notes :</strong> {{ commande.notes }}</p>
   {% endif %}
 
-  <div class="footer">
+  <div class="pdf__footer">
     Samy Dessert · Pâtisseries artisanales · Merci pour votre confiance !
   </div>
 
 </body>
 </html>
+{% endapply %}

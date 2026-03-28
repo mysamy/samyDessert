@@ -1,6 +1,6 @@
 {% set variants = {
     default: "bg-surface text-text",
-    warning: "bg-surface text-accent",
+    warning: "bg-warning-light text-warning",
     success: "bg-success-light text-success",
     danger:  "bg-danger-light text-danger"
 } %}
@@ -14,6 +14,7 @@
 {#
   Props (* = obligatoire) :
   - variant     string  — style visuel : default | warning | success | danger (default)
+  {# warning = bg-warning-light text-warning (amber) #}
 
   Utilisation :
   <twig:Atoms:Badge>Nouveau</twig:Atoms:Badge>

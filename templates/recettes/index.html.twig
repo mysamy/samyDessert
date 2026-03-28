@@ -14,7 +14,7 @@
 
 {# ── Barre de recherche ── #}
 <twig:Molecules:SearchBar
-  action="/recettes"
+  action="{{ path('app_recettes') }}"
   value="{{ recherche }}"
   placeholder="Rechercher une recette..."
 >
@@ -36,24 +36,22 @@
         <ul class="flex flex-row flex-wrap gap-2 lg:flex-col lg:gap-1">
 
           <li>
-            <a
-              href="/recettes{% if recherche %}?q={{ recherche|url_encode }}{% endif %}"
-              class="filter-btn
-                {{ categorieActive == '' ? 'bg-accent text-white' : 'text-text hover:bg-surface' }}"
+            <twig:Atoms:Link
+              href="{{ path('app_recettes') }}{% if recherche %}?q={{ recherche|url_encode }}{% endif %}"
+              class="filter-btn {{ categorieActive == '' ? 'bg-accent text-white' : 'text-text hover:bg-surface' }}"
             >
               Toutes les recettes
-            </a>
+            </twig:Atoms:Link>
           </li>
 
           {% for slug, label in categories %}
             <li>
-              <a
-                href="/recettes?categorie={{ slug }}{% if recherche %}&q={{ recherche|url_encode }}{% endif %}"
-                class="filter-btn
-                  {{ categorieActive == slug ? 'bg-accent text-white' : 'text-text hover:bg-surface' }}"
+              <twig:Atoms:Link
+                href="{{ path('app_recettes') }}?categorie={{ slug }}{% if recherche %}&q={{ recherche|url_encode }}{% endif %}"
+                class="filter-btn {{ categorieActive == slug ? 'bg-accent text-white' : 'text-text hover:bg-surface' }}"
               >
                 {{ label }}
-              </a>
+              </twig:Atoms:Link>
             </li>
           {% endfor %}
 
@@ -63,7 +61,6 @@
       {# ── Grille de recettes ── #}
       <div class="flex-1">
 
-        {# Info résultats #}
         <p class="text-sm text-text-light mb-6">
           {% if recherche %}
             {{ recettes|length }} résultat{% if recettes|length > 1 %}s{% endif %} pour « {{ recherche }} »
@@ -74,7 +71,7 @@
         </p>
 
         {% if recettes is empty %}
-          <div class="text-center py-16 text-gray-light">
+          <div class="text-center py-16 text-text-light">
             <twig:Atoms:Icon name="cake-candles" :decorative="true" class="text-4xl mb-4 block"/>
             <p class="text-lg font-medium">Aucune recette trouvée.</p>
             <p class="text-sm mt-1">Essayez un autre mot-clé ou parcourez toutes les catégories.</p>
@@ -110,7 +107,7 @@
     <h2 class="text-2xl font-bold text-white mb-3">Envie de déguster sans cuisiner ?</h2>
     <p class="text-surface mb-6">Commandez nos créations fraîches, préparées chaque jour par nos artisans.</p>
     <twig:Atoms:Link
-      href="/produits"
+      href="{{ path('app_produits') }}"
       class="inline-flex items-center gap-2 bg-white text-accent px-8 py-3 rounded-full font-semibold hover:bg-surface transition"
     >
       Voir nos desserts

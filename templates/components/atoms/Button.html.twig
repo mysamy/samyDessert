@@ -1,7 +1,7 @@
 {% set base =
-  "inline-flex items-center gap-2 rounded-md font-normal transition
+  "relative inline-flex items-center gap-2 rounded-md font-normal transition
    focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
-   disabled:opacity-50 disabled:pointer-events-none"
+   disabled:pointer-events-none hover:underline"
 %}
 
 {% set sizes = {
@@ -11,9 +11,10 @@
 } %}
 
 {% set variants = {
-  primary: "bg-accent text-white hover:bg-primary",
+  primary:   "bg-accent text-white hover:bg-primary",
   secondary: "bg-surface text-text hover:bg-border",
-  ghost: "bg-transparent text-text hover:bg-surface"
+  ghost:     "bg-transparent text-text hover:bg-surface",
+  danger:    "bg-danger text-white hover:bg-danger-dark"
 } %}
 
 <button
@@ -33,7 +34,7 @@
 {#
   Props (* = obligatoire) :
   - type        string  — type du bouton : button | submit | reset (button)
-  - variant     string  — style visuel : primary | secondary | ghost (primary)
+  - variant     string  — style visuel : primary | secondary | ghost | danger (primary)
   - size        string  — taille : sm | md | lg (md)
   - disabled    bool    — désactivé (false)
   - loading     bool    — affiche un spinner et désactive le bouton (false)

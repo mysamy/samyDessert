@@ -13,7 +13,12 @@ final class RegisterForm
 
     public string $submitLabel = 'Créer mon compte';
 
+    public string $prenomValue = '';
+    public string $nomValue = '';
     public string $emailValue = '';
+
+    public string $prenomError = '';
+    public string $nomError = '';
     public string $emailError = '';
 
     public string $passwordError = '';
@@ -26,6 +31,8 @@ final class RegisterForm
     public function getHasAnyError(): bool
     {
         return $this->formError !== ''
+            || $this->prenomError !== ''
+            || $this->nomError !== ''
             || $this->emailError !== ''
             || $this->passwordError !== ''
             || $this->confirmPasswordError !== '';

@@ -3,51 +3,53 @@
 {% block title %}Mon compte — Samy Dessert{% endblock %}
 
 {% block body %}
-<div class="max-w-4xl mx-auto px-4 py-12">
 
-  <h1 class="text-3xl font-bold text-primary mb-2">Mon compte</h1>
-  <p class="text-text-light mb-10">
-    Bonjour {% if utilisateur.prenom %}{{ utilisateur.prenom }}{% else %}{{ utilisateur.email }}{% endif %} !
-  </p>
+<section class="section-alt">
+  <div class="container-main">
+    <h1 class="text-4xl font-bold text-text mb-2">Mon compte</h1>
+    <p class="text-text-light text-lg">
+      Bonjour {% if utilisateur.prenom %}{{ utilisateur.prenom }}{% else %}{{ utilisateur.email }}{% endif %} !
+    </p>
+  </div>
+</section>
 
-  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<section class="section">
+  <div class="mx-auto max-w-4xl px-4">
 
-    {# Infos personnelles #}
-    <div class="bg-white border border-surface rounded-xl p-6 shadow-sm">
-      <h2 class="text-lg font-semibold text-primary mb-4">
-        <twig:Atoms:Icon name="user" :decorative="true" class="mr-2"/> Mes informations
-      </h2>
-      <ul class="space-y-2 text-sm text-text">
-        <li><span class="text-text-light">Email :</span> {{ utilisateur.email }}</li>
-        {% if utilisateur.nom or utilisateur.prenom %}
-          <li><span class="text-text-light">Nom :</span> {{ utilisateur.prenom }} {{ utilisateur.nom }}</li>
-        {% endif %}
-        {% if utilisateur.telephone %}
-          <li><span class="text-text-light">Téléphone :</span> {{ utilisateur.telephone }}</li>
-        {% endif %}
-        {% if utilisateur.adresse %}
-          <li><span class="text-text-light">Adresse :</span> {{ utilisateur.adresse }}, {{ utilisateur.codePostal }} {{ utilisateur.ville }}</li>
-        {% endif %}
-      </ul>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+
+      <twig:Molecules:Card title="Mes informations" icon="user">
+        <ul class="space-y-2 text-sm text-text">
+          <li><span class="text-text-light">Email :</span> {{ utilisateur.email }}</li>
+          {% if utilisateur.nom or utilisateur.prenom %}
+            <li><span class="text-text-light">Nom :</span> {{ utilisateur.prenom }} {{ utilisateur.nom }}</li>
+          {% endif %}
+          {% if utilisateur.telephone %}
+            <li><span class="text-text-light">Téléphone :</span> {{ utilisateur.telephone }}</li>
+          {% endif %}
+          {% if utilisateur.adresse %}
+            <li><span class="text-text-light">Adresse :</span> {{ utilisateur.adresse }}, {{ utilisateur.codePostal }} {{ utilisateur.ville }}</li>
+          {% endif %}
+        </ul>
+      </twig:Molecules:Card>
+
+      <twig:Atoms:Link href="{{ path('app_compte_commandes') }}"
+        class="bg-surface border border-border rounded-xl p-6 shadow-sm hover:border-accent transition block">
+        <h2 class="text-lg font-semibold text-text mb-2">
+          <twig:Atoms:Icon name="bag-shopping" :decorative="true" class="mr-2"/> Mes commandes
+        </h2>
+        <p class="text-sm text-text-light">Consulter et gérer vos commandes passées.</p>
+      </twig:Atoms:Link>
+
     </div>
 
-    {# Mes commandes #}
-    <twig:Atoms:Link href="{{ path('app_compte_commandes') }}"
-      class="bg-white border border-surface rounded-xl p-6 shadow-sm hover:border-accent transition block">
-      <h2 class="text-lg font-semibold text-primary mb-2">
-        <twig:Atoms:Icon name="bag-shopping" :decorative="true" class="mr-2"/> Mes commandes
-      </h2>
-      <p class="text-sm text-text-light">Consulter et gérer vos commandes passées.</p>
-    </twig:Atoms:Link>
+    <div class="mt-10">
+      <twig:Atoms:Link href="{{ path('_logout_main') }}" class="text-sm text-text-light hover:text-accent transition">
+        <twig:Atoms:Icon name="right-from-bracket" :decorative="true" class="mr-1"/> Se déconnecter
+      </twig:Atoms:Link>
+    </div>
 
   </div>
+</section>
 
-  {# Déconnexion #}
-  <div class="mt-10">
-    <twig:Atoms:Link href="{{ path('_logout_main') }}" class="text-sm text-text-light hover:text-accent transition">
-      <twig:Atoms:Icon name="right-from-bracket" :decorative="true" class="mr-1"/> Se déconnecter
-    </twig:Atoms:Link>
-  </div>
-
-</div>
 {% endblock %}

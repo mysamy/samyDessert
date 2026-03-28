@@ -14,15 +14,41 @@
 <section class="section">
   <div class="mx-auto max-w-4xl px-4">
 
+    {# Navigation retour #}
+    <div class="mb-8">
+      <twig:Atoms:Link href="{{ path('app_produits') }}" class="inline-flex items-center gap-1 text-sm text-text-light hover:text-accent transition">
+        <twig:Atoms:Icon name="arrow-left" size="sm" :decorative="true" /> Continuer mes achats
+      </twig:Atoms:Link>
+    </div>
+
+    {# Adresse de livraison #}
+    {% if adresse is defined and adresse is not empty %}
+      <div class="mb-10 rounded-xl border border-border p-5">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-xl font-bold text-text">Adresse de livraison</h2>
+          <twig:Atoms:Link href="{{ path('app_commande_adresse') }}" class="text-sm text-accent">Modifier</twig:Atoms:Link>
+        </div>
+        <p class="text-text">{{ adresse.firstName }} {{ adresse.lastName }}</p>
+        <p class="text-text-light text-sm">{{ adresse.address1 }}</p>
+        <p class="text-text-light text-sm">{{ adresse.postalCode }} {{ adresse.city }}{% if adresse.country != 'FR' %}, {{ adresse.country }}{% endif %}</p>
+        {% if adresse.phone %}
+          <p class="text-text-light text-sm mt-1">{{ adresse.phone }}</p>
+        {% endif %}
+        {% if adresse.notes %}
+          <p class="text-text-light text-sm mt-1 italic">{{ adresse.notes }}</p>
+        {% endif %}
+      </div>
+    {% endif %}
+
     {# Récapitulatif du panier #}
     <div class="mb-10">
       <h2 class="text-xl font-bold text-text mb-4">Récapitulatif</h2>
-      <div class="divide-y divide-slate-100 border border-slate-100 rounded-xl overflow-hidden">
+      <div class="divide-y divide-border border border-border rounded-xl overflow-hidden">
         {% for ligne in lignes %}
           <div class="flex items-center justify-between px-5 py-4">
             <div>
               <p class="font-semibold text-text">{{ ligne.produit.nom }}</p>
-              <p class="text-sm text-slate-400">{{ ligne.produit.prix|prix }} × {{ ligne.quantite }}</p>
+              <p class="text-sm text-text-light">{{ ligne.produit.prix|prix }} × {{ ligne.quantite }}</p>
             </div>
             <p class="font-bold text-text">{{ (ligne.produit.prix * ligne.quantite)|prix }}</p>
           </div>
@@ -51,11 +77,11 @@
           <twig:Atoms:Icon name="lock" :decorative="true" class="text-sm"/>
           Payer {{ total|prix }} en toute sécurité
         </span>
-        <twig:Atoms:Spinner size="sm" ariaLabel="Paiement en cours" class="hidden" data-submit-once-target="spinner" />
+        <twig:Atoms:Spinner size="lg" ariaLabel="Paiement en cours" class="hidden absolute inset-0 m-auto" data-submit-once-target="spinner" />
       </twig:Atoms:Button>
     </twig:Organisms:Form>
 
-    <p class="text-center text-xs text-slate-400 mt-4">
+    <p class="text-center text-xs text-text-light mt-4">
       <twig:Atoms:Icon name="stripe" variant="brands" size="lg" :decorative="true"/>
       Paiement sécurisé par Stripe
     </p>

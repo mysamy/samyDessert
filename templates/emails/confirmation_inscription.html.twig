@@ -16,11 +16,11 @@
       <p>Bonjour {% if utilisateur.prenom %}{{ utilisateur.prenom }}{% else %}{{ utilisateur.email }}{% endif %},</p>
       <p>Merci de vous être inscrit sur Samy Dessert. Cliquez sur le bouton ci-dessous pour confirmer votre adresse email et activer votre compte.</p>
 
-      <p style="text-align: center; margin: 32px 0;">
+      <p class="email__cta">
         <a href="{{ confirmationUrl }}" class="email__btn">Confirmer mon adresse email</a>
       </p>
 
-      <p style="font-size: 13px; color: #b45309;">
+      <p class="email__note">
         Si vous n'avez pas créé de compte, ignorez simplement cet email.
       </p>
     </div>

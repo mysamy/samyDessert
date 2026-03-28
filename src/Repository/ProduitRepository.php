@@ -47,4 +47,32 @@ class ProduitRepository extends ServiceEntityRepository
 
         return $results;
     }
+
+    /**
+     * Retourne les produits correspondant aux slugs donnés, dans l'ordre des slugs.
+     *
+     * @param string[] $slugs
+     * @return Produit[]
+     */
+    public function findBySlugsOrdered(array $slugs): array
+    {
+        $produits = $this->createQueryBuilder('p')
+            ->andWhere('p.slug IN (:slugs)')
+            ->setParameter('slugs', $slugs)
+            ->getQuery()
+            ->getResult();
+
+        // Remettre dans l'ordre des slugs demandés
+        $indexed = [];
+        foreach ($produits as $p) {
+            $indexed[$p->getSlug()] = $p;
+        }
+        $ordered = [];
+        foreach ($slugs as $slug) {
+            if (isset($indexed[$slug])) {
+                $ordered[] = $indexed[$slug];
+            }
+        }
+        return $ordered;
+    }
 }

@@ -1,53 +1,34 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion — Samy Dessert
-{% endblock %}
+{% block title %}Connexion — Samy Dessert{% endblock %}
 
 {% block body %}
 
-	<section class="min-h-[80vh] flex items-center justify-center bg-bg py-16 px-4">
-		<div
-			class="w-full max-w-md">
+<section class="min-h-[80vh] flex items-center justify-center bg-bg py-16 px-4">
+  <div class="w-full max-w-md">
 
-			{# Logo / titre #}
-			<div class="text-center mb-8">
-				<h1 class="text-3xl font-bold text-text mb-1">Connexion</h1>
-				<p class="text-text-light text-sm">Bienvenue ! Connectez-vous à votre compte.</p>
-			</div>
+    <div class="text-center mb-8">
+      <h1 class="text-3xl font-bold text-text mb-1">Connexion</h1>
+      <p class="text-text-light text-sm">Bienvenue ! Connectez-vous à votre compte.</p>
+    </div>
 
-			<div class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+    <div class="bg-surface rounded-2xl shadow-sm border border-border p-8">
 
-				<twig:Organisms:Form action="/connexion" class="flex flex-col gap-5" data-controller="submit-once" data-action="submit->submit-once#submit">
-					<twig:block name="content">
+      <twig:Organisms:LoginForm
+        action="{{ path('app_login') }}"
+        csrfToken="{{ csrf_token('authenticate') }}"
+        emailValue="{{ lastUsername ?? '' }}"
+        formError="{{ error ? error.messageKey|trans({}, 'security') : '' }}"
+        class="flex flex-col gap-5"
+      />
 
-						<twig:Molecules:InputField name="email" type="email" label="Adresse email" placeholder="votre@email.fr" :required="true" autocomplete="email" value="{{ lastUsername }}"/>
+      <p class="mt-6 text-center text-sm text-text-light">
+        Pas encore de compte ?
+        <twig:Atoms:Link href="{{ path('app_register') }}" class="text-accent font-medium">Créer un compte</twig:Atoms:Link>
+      </p>
 
-						<twig:Molecules:InputField name="password" type="password" label="Mot de passe" placeholder="••••••••" :required="true" autocomplete="current-password"/>
-						{% if error %}
-							<twig:Molecules:Alert type="error" message="{{ error.messageKey|trans({}, 'security') }}"/>
-						{% endif %}
-
-						<div class="flex justify-end">
-							<a href="#" class="text-sm text-accent hover:underline">Mot de passe oublié ?</a>
-						</div>
-            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-
-
-						<twig:Atoms:Button type="submit" class="w-full justify-center bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-primary transition" data-submit-once-target="btn">
-							<span data-submit-once-target="label">Se connecter</span>
-							<twig:Atoms:Spinner size="sm" ariaLabel="Connexion en cours" class="hidden" data-submit-once-target="spinner" />
-						</twig:Atoms:Button>
-
-					</twig:block>
-				</twig:Organisms:Form>
-
-				<p class="mt-6 text-center text-sm text-text-light">
-					Pas encore de compte ?
-					<a href="/inscription" class="text-accent font-medium hover:underline">Créer un compte</a>
-				</p>
-
-			</div>
-		</div>
-	</section>
+    </div>
+  </div>
+</section>
 
 {% endblock %}

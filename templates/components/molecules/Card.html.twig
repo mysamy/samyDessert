@@ -1,0 +1,25 @@
+<div {{ attributes.defaults({ class: 'bg-surface border border-border rounded-xl p-6 shadow-sm' }) }}>
+  {% if title %}
+    <{{ titleTag }} class="text-lg font-semibold text-text mb-4">
+      {% if icon %}<twig:Atoms:Icon name="{{ icon }}" :decorative="true" class="mr-2"/>{% endif %}
+      {{ title }}
+    </{{ titleTag }}>
+  {% endif %}
+  {% block content %}{% endblock %}
+</div>
+
+{#
+  Props :
+  - title     string — titre affiché en en-tête ('')
+  - icon      string — nom de l'icône FontAwesome avant le titre ('')
+  - titleTag  string — balise du titre : h2 | h3 | h4 (h2)
+
+  Utilisation :
+  <twig:Molecules:Card title="Mes informations" icon="user">
+    <p>Contenu</p>
+  </twig:Molecules:Card>
+
+  <twig:Molecules:Card title="Commande #123" titleTag="h3" class="mt-4">
+    ...
+  </twig:Molecules:Card>
+#}

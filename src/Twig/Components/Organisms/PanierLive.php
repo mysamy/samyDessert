@@ -6,6 +6,7 @@ use App\Service\PanierService;
 use Symfony\UX\LiveComponent\Attribute\AsLiveComponent;
 use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
+use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
@@ -34,6 +35,10 @@ final class PanierLive
     {
         return $this->panier->getNombreArticles();
     }
+
+    // Re-render quand un autre composant (BoutonPanier) émet 'panierUpdated'
+    #[LiveListener('panierUpdated')]
+    public function onPanierUpdated(): void {}
 
     #[LiveAction]
     public function ajouter(#[LiveArg] int $id): void

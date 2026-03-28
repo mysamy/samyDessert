@@ -27,6 +27,8 @@
 7. Developpement front-end
    7.1 Approche Atomic Design
    7.2 Les atomes
+   7.3 Les molecules
+   7.4 Les organismes
 8. Accessibilite
 9. Securite
    9.1 Authentification et gestion des utilisateurs
@@ -87,6 +89,8 @@ La base de donnees repose sur **MySQL**, permettant de structurer les donnees li
 **JavaScript** et **Stimulus** sont utilises pour ajouter des interactions cote client de maniere legere et structuree.
 
 L'environnement de developpement est contenerise avec **Docker**, avec **Nginx** comme serveur web et **Adminer** pour la gestion de la base de donnees.
+
+La gestion des assets front-end (JavaScript, CSS) repose sur **AssetMapper**, l'outil natif de Symfony qui remplace Webpack Encore. Il permet d'importer des modules JavaScript directement via les import maps du navigateur, sans etape de bundling. En environnement Docker avec Nginx, les assets doivent etre compiles manuellement apres chaque modification avec `php bin/console asset-map:compile`. De meme, les styles Tailwind doivent etre regeneres avec `php bin/console tailwind:build` apres chaque modification CSS ou Twig.
 
 ### 3.2 Outils et services complementaires
 
@@ -260,6 +264,209 @@ Le composant Button est un bon exemple de ce que j'ai voulu mettre en place sur 
 
 Ces 14 atomes forment le vocabulaire visuel de toute l'application. Chaque element d'interface que l'utilisateur voit ou avec lequel il interagit est construit a partir de l'un d'eux.
 
+### 7.3 Les molecules -- assembler les atomes en blocs fonctionnels
+
+#### Qu'est-ce qu'une molecule ?
+
+Dans la logique Atomic Design, une molecule est un groupe d'atomes qui fonctionnent ensemble pour remplir une fonction precise. Par exemple, un champ de formulaire complet est une molecule : il combine un Label (atome), un Input (atome) et un message d'erreur pour former un bloc coherent et reutilisable.
+
+Les molecules ne sont pas des pages ni des sections entières. Ce sont des blocs intermediaires suffisamment autonomes pour etre reutilises dans differents contextes, mais suffisamment simples pour rester faciles a comprendre et a maintenir.
+
+#### Les molecules creees
+
+J'ai developpe **18 molecules** au total :
+
+| Molecule         | Atomes composes                    | Role                                                   |
+|------------------|------------------------------------|---------------------------------------------------------|
+| InputField       | Label + Input                      | Champ de saisie complet avec label, aide et erreur      |
+| TextareaField    | Label + Textarea                   | Zone de texte complete avec label, aide et erreur        |
+| SelectField      | Label + Select                     | Liste deroulante complete avec label, aide et erreur     |
+| CheckboxField    | Checkbox + Label                   | Case a cocher avec label et message d'erreur             |
+| RadioGroup       | Label + inputs radio               | Groupe de boutons radio avec legende et validation       |
+| FormField        | Label + bloc generique             | Champ de formulaire generique (wrapper reutilisable)     |
+| FormFieldGroup   | Fieldset + legende                 | Regroupement semantique de champs (fieldset ou group)    |
+| FormActions      | Bloc d'actions                     | Zone d'actions en bas de formulaire (boutons)            |
+| Alert            | Icon + texte                       | Message d'alerte contextuel (info, succes, erreur)       |
+| DessertCard      | Image + Badge + Link + Icon        | Carte produit ou recette avec image, prix et actions     |
+| BoutonPanier     | ButtonIcon + Icon + Spinner        | Bouton d'ajout au panier avec controle de quantite       |
+| SearchBar        | Input + Button + Icon              | Barre de recherche avec champ et bouton                  |
+| Nav              | Link                               | Liste de liens de navigation                             |
+| NavigationLinks  | Link                               | Navigation principale avec detection de la page active   |
+| FlashTooltip     | Texte + animation                  | Info-bulle temporaire (confirmation d'action)            |
+| ConfirmDialog    | Button (confirmer + annuler)       | Boite de dialogue de confirmation                        |
+| CookieBanner     | Link + Button                      | Bandeau de consentement cookies (RGPD)                   |
+| CarouselCard     | Image + texte                      | Carte de carousel avec image et description              |
+
+#### Conception des molecules
+
+**Des champs de formulaire complets et accessibles**
+
+Les molecules de formulaire (InputField, TextareaField, SelectField, CheckboxField, RadioGroup) suivent toutes le meme schema de conception. Chaque molecule assemble un Label et un champ de saisie, gere automatiquement les identifiants HTML pour lier le label au champ, et affiche un message d'aide ou d'erreur sous le champ lorsque c'est necessaire.
+
+Un systeme de getters calcules en PHP genere les identifiants de maniere coherente. Par exemple, pour un champ dont l'identifiant est `email`, le message d'aide recoit automatiquement l'identifiant `email__help` et le message d'erreur `email__error`. Ces identifiants sont relies au champ via `aria-describedby`, ce qui permet aux lecteurs d'ecran de les associer correctement.
+
+```php
+public function getDescribedBy(): string
+{
+    $ids = [];
+    if ($this->help)  $ids[] = $this->getHelpId();
+    if ($this->error) $ids[] = $this->getErrorId();
+    return implode(' ', $ids);
+}
+```
+
+Lorsqu'une erreur est presente, le champ recoit automatiquement `aria-invalid="true"` et le message d'erreur est annonce aux technologies d'assistance grace a `role="alert"`. Cette logique est partagee par toutes les molecules de formulaire, ce qui garantit une experience coherente sur l'ensemble de l'application.
+
+*[Capture d'ecran : InputField avec label, aide et message d'erreur]*
+
+**La DessertCard : une molecule a double usage**
+
+La molecule DessertCard est le composant central de l'affichage des produits et des recettes. Elle fonctionne en deux modes selon les donnees qu'elle recoit :
+
+- **Mode produit** : affiche le prix, le bouton d'ajout au panier (BoutonPanier) et un lien vers la fiche produit.
+- **Mode recette** : affiche la difficulte (via un Badge colore), le temps de preparation, le nombre de portions, la categorie et un lien vers la recette.
+
+La carte integre egalement un systeme de favoris avec un bouton coeur qui declenche une animation de confirmation via le composant FlashTooltip. L'ensemble est pilote par un controleur Stimulus pour gerer les interactions cote client.
+
+```php
+public string $titre = '';
+public ?string $prix = null;       // → mode produit
+public string $difficulte = '';     // → mode recette
+public ?int $produitId = null;      // → active le BoutonPanier
+public bool $favori = false;        // → etat du favori
+```
+
+*[Capture d'ecran : DessertCard en mode produit et en mode recette cote a cote]*
+
+**Le BoutonPanier : un Live Component reactif**
+
+Le BoutonPanier est l'une des deux molecules implementees en tant que **Symfony UX Live Component**. Il permet d'ajouter un produit au panier et d'ajuster la quantite directement depuis la carte produit, sans rechargement de page.
+
+Lorsque l'utilisateur clique sur "Ajouter au panier", le bouton se transforme en controleur de quantite avec des boutons plus et moins. La quantite est lue depuis le service de panier en session, ce qui garantit que l'affichage reste fiable meme apres un rechargement. A chaque modification, un evenement `panierUpdated` est emis pour mettre a jour le compteur du panier dans le header.
+
+*[Capture d'ecran : BoutonPanier avant et apres ajout au panier]*
+
+**Boites de dialogue et bandeaux**
+
+La molecule ConfirmDialog utilise l'element HTML natif `<dialog>`, ce qui garantit une accessibilite native avec gestion du focus et du clavier. Elle propose des variantes de couleur pour le bouton de confirmation (danger, succes, primaire) et relie le titre et le message au dialogue via `aria-labelledby` et `aria-describedby`.
+
+La molecule CookieBanner gere le consentement cookies conformement au RGPD. Elle utilise `role="alertdialog"` et un controleur Stimulus pour enregistrer le choix de l'utilisateur et masquer le bandeau.
+
+*[Capture d'ecran : ConfirmDialog et CookieBanner]*
+
+**Navigation intelligente**
+
+La molecule NavigationLinks genere automatiquement les liens de navigation a partir de la route courante. Grace a la methode `mount()`, elle detecte la page active et applique `aria-current="page"` sur le lien correspondant, sans configuration manuelle.
+
+```php
+public function mount(): void
+{
+    $path = $this->requestStack->getCurrentRequest()?->getPathInfo() ?? '/';
+    $this->links = [
+        ['label' => 'Accueil',    'href' => '/',         'current' => $path === '/'],
+        ['label' => 'Desserts',   'href' => '/produits',  'current' => str_starts_with($path, '/produits')],
+        // ...
+    ];
+}
+```
+
+### 7.4 Les organismes -- les sections completes de l'interface
+
+#### Qu'est-ce qu'un organisme ?
+
+Un organisme est le niveau le plus eleve de composition avant la page elle-meme. Il regroupe plusieurs molecules et atomes pour former une section complete et autonome de l'interface : un header avec navigation, un formulaire de connexion complet, un panier interactif.
+
+Dans SamyDessert, chaque organisme est egalement un Twig Component avec sa classe PHP et son template. Certains organismes sont des **Live Components** qui se mettent a jour en temps reel sans rechargement de page.
+
+#### Les organismes crees
+
+J'ai developpe **9 organismes** au total :
+
+| Organisme        | Molecules / Atomes composes                              | Role                                            |
+|------------------|-----------------------------------------------------------|-------------------------------------------------|
+| Header           | NavigationLinks + Link + Image + Button + Icon            | En-tete du site avec navigation et menu mobile   |
+| Footer           | Nav + Link + Icon                                        | Pied de page avec liens, mentions et reseaux     |
+| Form             | Bloc generique (fieldset)                                | Formulaire de base reutilisable                  |
+| LoginForm        | Form + Alert + InputField + CheckboxField + FormActions   | Formulaire de connexion complet                  |
+| RegisterForm     | Form + Alert + InputField + FormActions                   | Formulaire d'inscription complet                 |
+| AddressForm      | Form + Alert + InputField + SelectField + TextareaField + CheckboxField | Formulaire d'adresse de livraison   |
+| PanierLive       | ButtonIcon + Icon                                        | Panier interactif en temps reel                  |
+| ProductCardGrid  | DessertCard                                              | Grille responsive de cartes produits/recettes    |
+| CartSummary      | Link                                                     | Recapitulatif du panier avec total et CTA        |
+
+#### Conception des organismes
+
+**Le Header : navigation responsive**
+
+Le Header est un organisme sticky qui reste visible en haut de page lors du defilement. Il integre le logo, le nom de la marque et la navigation principale via la molecule NavigationLinks.
+
+Sur desktop, la navigation s'affiche horizontalement. Sur mobile, un bouton hamburger ouvre un menu plein ecran via un element `<dialog>` natif. Le basculement entre les icones d'ouverture et de fermeture est gere par un controleur Stimulus `nav-toggle`. Le header expose egalement des blocs Twig (`actions` et `mobileActions`) qui permettent d'y injecter des elements supplementaires comme le compteur du panier ou le lien de connexion.
+
+```twig
+<header {{ attributes.defaults({ class: 'border-b bg-bg sticky top-0 z-50' }) }}>
+```
+
+*[Capture d'ecran : Header en version desktop et mobile]*
+
+**Les formulaires : une architecture en couches**
+
+Les formulaires de SamyDessert sont construits en trois couches :
+
+1. **Form** : l'organisme de base qui genere la balise `<form>` avec les attributs d'accessibilite (`aria-label`, `aria-describedby`), la methode HTTP validee par un getter, et un `<fieldset>` optionnel pour desactiver tous les champs d'un coup.
+
+2. **LoginForm, RegisterForm, AddressForm** : des organismes specialises qui composent Form avec les molecules de champs appropriees. Chacun gere ses propres messages d'erreur et expose un getter `getHasAnyError()` qui detecte automatiquement si au moins un champ est en erreur.
+
+3. **Les molecules de champ** (InputField, SelectField, etc.) : chaque champ individuel avec son label, son aide et sa validation.
+
+Tous les formulaires integrent un token CSRF sous forme de champ cache, une protection contre la double soumission via le controleur Stimulus `submit-once`, et un resume d'erreurs en haut du formulaire sous forme d'alerte accessible.
+
+```php
+// LoginForm.php
+public function getHasAnyError(): bool
+{
+    return $this->emailError !== ''
+        || $this->passwordError !== ''
+        || $this->formError !== '';
+}
+```
+
+Les champs de mot de passe utilisent `autocomplete="current-password"` pour la connexion et `autocomplete="new-password"` pour l'inscription, ce qui permet aux gestionnaires de mots de passe de fonctionner correctement. Le formulaire d'adresse utilise des attributs `autocomplete` specifiques (`given-name`, `family-name`, `address-line1`, `postal-code`) et `inputmode="numeric"` sur le code postal pour afficher un clavier numerique sur mobile.
+
+*[Capture d'ecran : LoginForm avec erreurs affichees]*
+
+**Le PanierLive : un panier en temps reel**
+
+Le PanierLive est l'organisme le plus interactif du projet. Implemente en tant que **Symfony UX Live Component**, il ne recoit aucune prop : il s'alimente automatiquement depuis le service de panier stocke en session.
+
+Il expose quatre actions live declenchees directement depuis le template :
+
+- `ajouter(id)` : ajoute une unite d'un produit
+- `retirer(id)` : retire une unite
+- `supprimer(id)` : supprime completement un produit
+- `vider()` : vide l'integralite du panier
+
+Chaque action emet un evenement `panierUpdated` qui est capte par le composant PanierBadge dans le header, assurant ainsi la synchronisation en temps reel entre le panier et le compteur.
+
+La zone des articles utilise `aria-live="polite"` pour que les technologies d'assistance annoncent les modifications du panier. Chaque bouton d'action dispose d'un `aria-label` contextualise avec le nom du produit.
+
+*[Capture d'ecran : PanierLive avec articles et controles de quantite]*
+
+**La ProductCardGrid : grille responsive**
+
+La ProductCardGrid affiche une collection de DessertCard dans une grille responsive qui s'adapte automatiquement :
+
+- **Mobile** : 1 colonne
+- **Tablette** : 2 colonnes
+- **Desktop** : 3 colonnes
+
+```twig
+<ul role="list" class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+```
+
+L'organisme est suffisamment flexible pour accepter aussi bien des produits que des recettes. Un systeme de mapping dans le template normalise les differentes structures de donnees (entites Doctrine ou tableaux) vers les props attendues par la DessertCard. La grille gere egalement l'etat des favoris en comparant les identifiants des produits avec la liste des favoris de l'utilisateur connecte.
+
+*[Capture d'ecran : ProductCardGrid en version mobile, tablette et desktop]*
+
 ---
 
 ## 8. Accessibilite
@@ -360,6 +567,22 @@ Lors de l'affichage des commandes, l'application ne recupere que les commandes a
 Un controle metier est egalement applique sur l'etat de la commande : seules les commandes confirmees peuvent etre annulees. Cette regle protege l'integrite du processus de commande et evite les incoherences fonctionnelles.
 
 ### 9.6 Paiement en ligne avec Stripe
+
+#### Tunnel de commande
+
+Le processus de commande est organise en trois etapes successives, chacune geree par le `CommandeController`.
+
+**Etape 1 — Saisie de l'adresse de livraison (`/commande/adresse`)**
+L'utilisateur renseigne son adresse de livraison via un formulaire dedie. Les champs obligatoires (prenom, nom, adresse, code postal, ville) sont valides cote serveur. En cas d'erreur, le formulaire est reaffiche avec les messages correspondants. Une fois l'adresse valide, elle est stockee en session et l'utilisateur est redirige vers l'etape suivante. Si le panier est vide, une redirection automatique vers la page panier est effectuee.
+
+**Etape 2 — Recapitulatif de commande (`/commande`)**
+L'utilisateur consulte le detail de sa commande : les produits, les quantites, les prix unitaires et le total. L'adresse de livraison saisie precedemment est affichee avec la possibilite de la modifier. Un bouton de paiement securise permet de passer a l'etape suivante. Si la session ne contient pas encore d'adresse, l'utilisateur est automatiquement redirige vers l'etape 1.
+
+**Etape 3 — Paiement via Stripe Checkout**
+Un clic sur le bouton de paiement soumet le formulaire vers `/commande/paiement`. Le serveur cree une session Stripe Checkout avec les articles du panier et redirige l'utilisateur vers la page de paiement hebergee par Stripe. Deux issues sont possibles :
+
+- **Succes** : Stripe redirige vers `/commande/succes`. La commande est enregistree en base de donnees, le panier est vide, un email de confirmation est envoye a l'utilisateur et une page de confirmation lui est affichee.
+- **Annulation** : Stripe redirige vers `/commande/annulation`. Le panier est conserve et l'utilisateur peut reprendre sa commande.
 
 Le paiement en ligne est gere via **Stripe**. Cette approche permet de ne pas faire transiter les donnees bancaires directement par l'application, ce qui limite fortement les risques lies au traitement des paiements.
 

@@ -20,7 +20,7 @@
   {% else %}
     <div class="space-y-6">
       {% for commande in commandes %}
-        <div class="bg-white border border-surface rounded-xl p-6 shadow-sm">
+        <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
 
           <div class="flex items-center justify-between mb-4">
             <div>
@@ -37,7 +37,7 @@
 
           <table class="w-full text-sm mb-4">
             <thead>
-              <tr class="text-text-light border-b border-surface">
+              <tr class="text-text-light border-b border-border">
                 <th class="text-left pb-2">Produit</th>
                 <th class="text-center pb-2">Qté</th>
                 <th class="text-right pb-2">Prix unitaire</th>
@@ -45,7 +45,7 @@
             </thead>
             <tbody>
               {% for ligne in commande.commandeProduits %}
-                <tr class="border-b border-surface last:border-0">
+                <tr class="border-b border-border last:border-0">
                   <td class="py-2">{{ ligne.produit.nom }}</td>
                   <td class="py-2 text-center">{{ ligne.quantite }}</td>
                   <td class="py-2 text-right">{{ ligne.prixUnitaire|prix }}</td>
@@ -58,16 +58,17 @@
             <span class="font-bold text-primary">Total : {{ commande.total|prix }}</span>
 
             {% if commande.statut.value == 'confirmee' %}
-              <button
+              <twig:Atoms:Button
                 type="button"
-                class="text-small px-4 py-2 rounded-lg border border-danger text-danger hover:bg-danger-light transition cursor-pointer"
+                variant="danger"
+                size="sm"
                 data-ref="{{ commande.reference ?? '#' ~ commande.id }}"
                 data-action="{{ path('app_compte_annuler_commande', {id: commande.id}) }}"
                 data-token="{{ csrf_token('annuler_commande_' ~ commande.id) }}"
                 onclick="ouvrirModalAnnulation(this)"
               >
                 Annuler la commande
-              </button>
+              </twig:Atoms:Button>
             {% endif %}
           </div>
 

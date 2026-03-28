@@ -7,7 +7,7 @@
 {# ── Fil d'Ariane ── #}
 <nav class="bg-surface border-b border-border" aria-label="Fil d'Ariane">
   <div class="container-main py-3 text-sm text-text-light">
-    <twig:Atoms:Link href="/produits" class="hover:text-accent">Nos desserts</twig:Atoms:Link>
+    <twig:Atoms:Link href="{{ path('app_produits') }}" class="hover:text-accent">Nos desserts</twig:Atoms:Link>
     <span class="mx-2" aria-hidden="true">/</span>
     <span class="text-text font-medium">{{ produit.nom }}</span>
   </div>
@@ -28,7 +28,7 @@
           >
         {% else %}
           <div class="w-full h-80 rounded-2xl bg-surface flex items-center justify-center">
-            <twig:Atoms:Icon name="cake-candles" :decorative="true" class="text-6xl text-gray-light"/>
+            <twig:Atoms:Icon name="cake-candles" :decorative="true" class="text-6xl text-text-light"/>
           </div>
         {% endif %}
       </div>
@@ -77,7 +77,7 @@
             <p class="text-sm text-text-light mb-2">Envie de le préparer vous-même ?</p>
             <twig:Atoms:Link
               href="{{ path('app_recette_show', { slug: produit.recette.slug }) }}"
-              class="btn-cta-sm"
+              class="inline-flex items-center gap-1 text-sm text-accent hover:underline font-semibold"
             >
               <twig:Atoms:Icon name="book-open" :decorative="true" class="mr-1"/>
               Voir la recette
@@ -87,7 +87,7 @@
 
         {# Lien retour #}
         <div class="mt-auto pt-6">
-          <twig:Atoms:Link href="/produits" class="text-sm text-text-light hover:text-accent">
+          <twig:Atoms:Link href="{{ path('app_produits') }}" class="text-sm text-text-light hover:text-accent">
             <twig:Atoms:Icon name="arrow-left" :decorative="true" class="mr-1"/>
             Retour aux desserts
           </twig:Atoms:Link>

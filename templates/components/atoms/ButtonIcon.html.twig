@@ -6,7 +6,8 @@
 
 {% set variants = {
   outline: 'border border-border text-text-light hover:bg-surface',
-  filled:  'bg-accent text-white hover:bg-primary'
+  filled:  'bg-accent text-white hover:bg-primary',
+  ghost:   'bg-transparent text-text-light hover:text-danger'
 } %}
 
 {% set base = 'inline-flex items-center justify-center rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:pointer-events-none' %}
@@ -25,7 +26,7 @@
   Props (* = obligatoire) :
   - name*     string  — nom Font Awesome de l'icône (ex: plus, minus, xmark)
   - type      string  — type du bouton : button | submit | reset (button)
-  - variant   string  — style visuel : outline | filled (outline)
+  - variant   string  — style visuel : outline | filled | ghost (outline)
   - size      string  — taille : sm | md | lg (md)
   - disabled  bool    — désactivé (false)
 

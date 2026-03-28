@@ -4,14 +4,15 @@
   {% if this.quantite == 0 %}
 
     {# Bouton initial : ajouter au panier #}
-    <button
+    <twig:Atoms:Button
+      type="button"
+      class="btn-cta-sm"
       data-action="live#action"
       data-live-action-param="ajouter"
-      class="btn-cta-sm"
     >
       <twig:Atoms:Icon name="cart-plus" :decorative="true" class="text-xs" />
       Ajouter au panier
-    </button>
+    </twig:Atoms:Button>
 
   {% else %}
 

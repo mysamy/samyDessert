@@ -2,9 +2,10 @@
 {% set describedBy = this.describedBy %}
 {% set isInvalid = this.effectiveInvalid %}
 {% set ariaLabel = this.effectiveAriaLabel %}
-{% set isSelectedEmpty = this.isSelected('') %}
 {% set helpId = this.helpId %}
 {% set errorId = this.errorId %}
+{% set selectedValue = value %}
+{% set isSelectedEmpty = (selectedValue is null or selectedValue == '') %}
 
 <div {{ attributes.defaults({ class: 'w-full' }) }}>
   {% if label %}
@@ -39,7 +40,7 @@
           {% for sub in opt.options %}
             <option
               value="{{ sub.value|default('') }}"
-              {% if this.isSelected(sub.value|default('')) %}selected{% endif %}
+              {% if selectedValue == sub.value|default('') %}selected{% endif %}
               {% if sub.disabled|default(false) %}disabled{% endif %}
             >
               {{ sub.label|default(sub.value|default('')) }}
@@ -49,7 +50,7 @@
       {% else %}
         <option
           value="{{ opt.value|default('') }}"
-          {% if this.isSelected(opt.value|default('')) %}selected{% endif %}
+          {% if selectedValue == opt.value|default('') %}selected{% endif %}
           {% if opt.disabled|default(false) %}disabled{% endif %}
         >
           {{ opt.label|default(opt.value|default('')) }}

@@ -27,6 +27,7 @@ class Carousel {
         pagination: false,
         navigation: true,
         infinite: false,
+        transitionDuration: 500,
       },
       options
     );
@@ -102,9 +103,13 @@ class Carousel {
         this.prev();
       }
     });
-    if (this.options.infinite) {
-      this.container.addEventListener("transitionend", this.resetInfinite.bind(this));
-    }
+    this._onTransitionEnd = () => {
+      this.isAnimating = false;
+      if (this.options.infinite) {
+        this.resetInfinite();
+      }
+    };
+    this.container.addEventListener("transitionend", this._onTransitionEnd);
   }
 
   /**
@@ -113,6 +118,7 @@ class Carousel {
   setStyle() {
     let ratio = this.items.length / this.slidesVisible;
     this.container.style.width = ratio * 100 + "%";
+    this.container.style.transition = `transform ${this.options.transitionDuration}ms ease-in-out`;
     this.items.forEach((item) => (item.style.width = 100 / this.slidesVisible / ratio + "%"));
     this.zoom();
     this.updateAccessibility(this.currentItem);
@@ -182,7 +188,7 @@ class Carousel {
     this.gotoItem(this.currentItem + this.slidesToScroll);
     setTimeout(() => {
       this.isAnimating = false;
-    }, 500);
+    }, this.options.transitionDuration);
   }
 
   prev() {
@@ -191,7 +197,7 @@ class Carousel {
     this.gotoItem(this.currentItem - this.slidesToScroll);
     setTimeout(() => {
       this.isAnimating = false;
-    }, 500);
+    }, this.options.transitionDuration);
   }
 
   /**
@@ -222,12 +228,13 @@ class Carousel {
         if (desc) desc.style.transition = "none";
       });
     }
+    let direction = index > this.currentItem ? 1 : -1;
     let translateX = (index * -100) / this.items.length;
     this.container.style.transform = `translate3d(${translateX}%, 0, 0)`;
     this.currentItem = index;
 
     this.moveCallbacks.forEach((cb) => cb(index));
-    this.zoom();
+    this.zoom(animation, direction);
     this.container.offsetHeight; // Force le navigateur à recalculer le layout (reflow) pour que les transitions/animations se déclenchent correctement
     this.updateAccessibility(this.currentItem, true);
     if (animation === false) {
@@ -243,13 +250,21 @@ class Carousel {
   /**
    * Zoom lélement du milieu
    */
-  zoom() {
+  zoom(animate = true, direction = 1) {
     this.items.forEach((item) => {
       item.classList.remove("carousel__item--zoom");
       const desc = item.querySelector(".carousel-card-description");
       if (desc) {
-        desc.classList.remove("transition-opacity", "duration-300");
-        desc.classList.add("opacity-0");
+        if (animate) {
+          // Le texte sortant glisse dans la direction du mouvement et disparaît
+          desc.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+          desc.style.opacity = "0";
+          desc.style.transform = `translateX(${-direction * 30}px)`;
+        } else {
+          desc.style.transition = "none";
+          desc.style.opacity = "0";
+          desc.style.transform = "translateX(0)";
+        }
       }
     });
     if (this.slidesVisible >= 3) {
@@ -257,14 +272,32 @@ class Carousel {
       this.middleItem = this.items[this.middleIndex];
       if (this.middleItem) {
         this.middleItem.classList.add("carousel__item--zoom");
-        const desc = this.middleItem.querySelector(".carousel-card-description");
-        if (desc) {
-          desc.classList.add("transition-opacity", "duration-300");
-          desc.classList.remove("opacity-0");
-        }
+        this.showDescription(this.middleItem, animate, direction);
       }
     } else {
-      return;
+      let current = this.items[this.currentItem];
+      if (current) {
+        this.showDescription(current, animate, direction);
+      }
+    }
+  }
+
+  showDescription(item, animate = true, direction = 1) {
+    const desc = item.querySelector(".carousel-card-description");
+    if (!desc) return;
+    if (animate) {
+      // Positionner hors-champ du côté d'arrivée (même côté que la sortie)
+      desc.style.transition = "none";
+      desc.style.opacity = "0";
+      desc.style.transform = `translateX(${direction * 30}px)`;
+      desc.offsetHeight; // forcer le reflow
+      desc.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+      desc.style.opacity = "1";
+      desc.style.transform = "translateX(0)";
+    } else {
+      desc.style.transition = "none";
+      desc.style.opacity = "1";
+      desc.style.transform = "translateX(0)";
     }
   }
 
@@ -297,7 +330,7 @@ class Carousel {
       });
     });
     if (setFocus && (document.activeElement === document.body || this.root.contains(document.activeElement))) {
-      this.items[middleIndex].focus();
+      this.items[middleIndex].focus({ preventScroll: true });
     }
     // Mise à jour du status live
     let status = document.getElementById("carousel-status");
@@ -334,8 +367,17 @@ class Carousel {
   onWindowResize() {
     let mobile = window.innerWidth < 1100;
     if (mobile !== this.isMobile) {
+      // Desktop → Mobile : se caler sur la carte qui était au centre
+      if (mobile && this.options.slidesVisible >= 3) {
+        this.currentItem = this.currentItem + Math.floor(this.options.slidesVisible / 2);
+      }
+      // Mobile → Desktop : reculer pour que la carte courante revienne au centre
+      if (!mobile && this.options.slidesVisible >= 3) {
+        this.currentItem = Math.max(0, this.currentItem - Math.floor(this.options.slidesVisible / 2));
+      }
       this.isMobile = mobile;
       this.setStyle();
+      this.gotoItem(this.currentItem, false);
     } else if (!mobile) {
       this.isMobile = false;
       this.setStyle();
@@ -374,6 +416,7 @@ export default class extends Controller {
       slidesToScroll: 1,
       infinite: true,
       pagination: false,
+      transitionDuration: 800,
     })
   }
 

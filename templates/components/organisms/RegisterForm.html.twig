@@ -1,16 +1,19 @@
+{% set hasError = this.hasAnyError %}
+{% set errorId = this.errorSummaryId %}
+
 <twig:Organisms:Form
   id="{{ id }}"
   action="{{ action }}"
   ariaLabel="Formulaire de création de compte"
-  ariaDescribedby="{{ this.hasAnyError ? this.errorSummaryId : '' }}"
+  ariaDescribedby="{{ hasError ? errorId : '' }}"
   class="{{ class }}"
   data-controller="submit-once"
   data-action="submit->submit-once#submit"
 >
-  {% if this.hasAnyError %}
+  {% if hasError %}
     <twig:Molecules:Alert
       type="error"
-      id="{{ this.errorSummaryId }}"
+      id="{{ errorId }}"
       tabindex="-1"
       message="{{ formError is not empty ? formError : 'La création de compte a échoué. Vérifie les informations saisies.' }}"
     />
@@ -26,15 +29,19 @@
     description="Les champs marqués obligatoire doivent être complétés."
     innerClass="space-y-4"
   >
+    <div class="grid gap-4 sm:grid-cols-2">
+      <twig:Molecules:InputField name="prenom" type="text" label="Prénom" autocomplete="given-name" :required="true" value="{{ prenomValue }}" error="{{ prenomError }}"/>
+      <twig:Molecules:InputField name="nom" type="text" label="Nom" autocomplete="family-name" :required="true" value="{{ nomValue }}" error="{{ nomError }}"/>
+    </div>
     <twig:Molecules:InputField name="email" type="email" label="Adresse email" autocomplete="email" :required="true" value="{{ emailValue }}" error="{{ emailError }}"/>
-    <twig:Molecules:InputField name="password" type="password" label="Mot de passe" autocomplete="new-password" :required="true" error="{{ passwordError }}"/>
+    <twig:Molecules:InputField name="password" type="password" label="Mot de passe" autocomplete="new-password" :required="true" help="Minimum 8 caractères" error="{{ passwordError }}"/>
     <twig:Molecules:InputField name="confirmPassword" type="password" label="Confirmer le mot de passe" autocomplete="new-password" :required="true" error="{{ confirmPasswordError }}"/>
   </twig:Molecules:FormFieldGroup>
 
   <twig:Molecules:FormActions align="end">
     <twig:Atoms:Button type="submit" data-submit-once-target="btn">
       <span data-submit-once-target="label">{{ submitLabel }}</span>
-      <twig:Atoms:Spinner size="sm" ariaLabel="Création en cours" class="hidden" data-submit-once-target="spinner" />
+      <twig:Atoms:Spinner size="lg" ariaLabel="Création en cours" class="hidden absolute inset-0 m-auto" data-submit-once-target="spinner" />
     </twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>
@@ -43,8 +50,12 @@
   Props (* = obligatoire) :
   - action               string  — URL de soumission du formulaire ('')
   - csrfToken            string  — jeton CSRF Symfony ('')
+  - prenomValue          string  — valeur pré-remplie du prénom ('')
+  - nomValue             string  — valeur pré-remplie du nom ('')
   - emailValue           string  — valeur pré-remplie du champ email ('')
   - submitLabel          string  — libellé du bouton ('Créer mon compte')
+  - prenomError          string  — erreur sur le champ prénom ('')
+  - nomError             string  — erreur sur le champ nom ('')
   - emailError           string  — erreur sur le champ email ('')
   - passwordError        string  — erreur sur le champ mot de passe ('')
   - confirmPasswordError string  — erreur sur la confirmation du mot de passe ('')
@@ -56,7 +67,8 @@
   <twig:Organisms:RegisterForm
     action="{{ path('app_register') }}"
     csrfToken="{{ csrf_token('register') }}"
-    emailValue="{{ emailValue }}"
-    emailError="{{ errors.email }}"
+    prenomValue="{{ values.prenom }}"
+    nomValue="{{ values.nom }}"
+    emailValue="{{ values.email }}"
   />
 #}

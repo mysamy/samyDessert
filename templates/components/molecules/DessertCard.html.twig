@@ -44,7 +44,7 @@
             {% block content %}
             <button
               type="button"
-              class="text-lg transition {{ favori ? 'text-accent' : 'text-gray-light hover:text-accent' }}"
+              class="text-lg transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm {{ favori ? 'text-accent' : 'text-text-light hover:text-accent' }}"
               aria-label="{{ favori ? 'Retirer des favoris' : 'Ajouter aux favoris' }}"
               data-action="favori#toggle"
               data-favori-target="btn"
@@ -88,7 +88,7 @@
     {% if rating is not null %}
       <div class="flex items-center gap-1 mb-3" role="img" aria-label="{{ rating }} sur 5 étoiles">
         {% for i in 1..5 %}
-          <twig:Atoms:Icon name="star" :decorative="true" class="text-xs {{ rating >= i ? 'text-star' : 'text-gray-light' }}"/>
+          <twig:Atoms:Icon name="star" :decorative="true" class="text-xs {{ rating >= i ? 'text-star' : 'text-text-light' }}"/>
         {% endfor %}
       </div>
     {% endif %}

@@ -4,14 +4,14 @@
 
 {% block body %}
 
-<section class="py-24 bg-white text-center">
+<section class="py-24 bg-bg text-center">
   <div class="mx-auto max-w-lg px-4">
-    <div class="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mx-auto mb-6">
-      <twig:Atoms:Icon name="xmark" :decorative="true" class="text-3xl text-red-400"/>
+    <div class="w-20 h-20 bg-danger-light rounded-full flex items-center justify-center mx-auto mb-6">
+      <twig:Atoms:Icon name="xmark" :decorative="true" class="text-3xl text-danger"/>
     </div>
     <h1 class="text-3xl font-bold text-text mb-3">Paiement annulé</h1>
     <p class="text-text-light mb-8">Votre paiement a été annulé. Votre panier est conservé.</p>
-    <twig:Atoms:Link href="{{ path('app_panier') }}" class="btn-cta">
+    <twig:Atoms:Link href="{{ path('app_panier_index') }}" class="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-primary transition">
       Retour au panier
     </twig:Atoms:Link>
   </div>

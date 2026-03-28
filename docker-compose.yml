@@ -42,13 +42,13 @@ services:
       "
     restart: "no"
 
-  # Assets — recompile le CSS Tailwind en boucle (watch inotify non supporté sur Windows)
+  # Assets — recompile Tailwind + AssetMapper en boucle (watch inotify non supporté sur Windows)
   assets:
     build: ./docker/php
     volumes:
       - .:/var/www/html
     working_dir: /var/www/html
-    command: sh -c "while true; do php bin/console tailwind:build; sleep 3; done"
+    command: sh -c "while true; do php bin/console tailwind:build && php bin/console asset-map:compile; sleep 3; done"
     restart: unless-stopped
     depends_on:
       - php
