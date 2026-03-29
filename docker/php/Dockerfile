@@ -5,6 +5,9 @@ RUN apt-get update && apt-get install -y \
     git unzip libzip-dev libicu-dev libpng-dev \
     && docker-php-ext-install pdo pdo_mysql zip intl opcache
 
+# Mémoire PHP : 256M pour Symfony en dev (cache Twig, requêtes Doctrine)
+RUN echo "memory_limit=256M" > /usr/local/etc/php/conf.d/memory.ini
+
 # OPcache : évite de reparser les fichiers PHP à chaque requête
 RUN echo "opcache.enable=1\n\
 opcache.memory_consumption=256\n\

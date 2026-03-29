@@ -25,7 +25,7 @@ class MailerService
         $email = (new Email())
             ->from($this->mailerFrom)
             ->to($utilisateur->getEmail())
-            ->subject('Confirmez votre adresse email — Samy Dessert')
+            ->subject('Confirmez votre adresse email — SamyDessert')
             ->html($this->twig->render('emails/confirmation_inscription.html.twig', [
                 'utilisateur'     => $utilisateur,
                 'confirmationUrl' => $confirmationUrl,
@@ -40,7 +40,7 @@ class MailerService
         $email = (new Email())
             ->from($this->mailerFrom)
             ->to($utilisateur->getEmail())
-            ->subject('Bienvenue chez Samy Dessert !')
+            ->subject('Bienvenue chez SamyDessert !')
             ->html($this->twig->render('emails/bienvenue.html.twig', [
                 'utilisateur' => $utilisateur,
             ]));
@@ -56,7 +56,7 @@ class MailerService
         $email = (new Email())
             ->from($this->mailerFrom)
             ->to($commande->getUtilisateur()->getEmail())
-            ->subject('Confirmation de votre commande — Samy Dessert')
+            ->subject('Confirmation de votre commande — SamyDessert')
             ->html($this->twig->render('emails/confirmation_commande.html.twig', [
                 'commande' => $commande,
             ]))
@@ -87,7 +87,7 @@ class MailerService
         $email = (new Email())
             ->from($this->mailerFrom)
             ->to($commande->getUtilisateur()->getEmail())
-            ->subject('Annulation de votre commande — Samy Dessert')
+            ->subject('Annulation de votre commande — SamyDessert')
             ->html($this->twig->render('emails/annulation_commande.html.twig', [
                 'commande' => $commande,
             ]));

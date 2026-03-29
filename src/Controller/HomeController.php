@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Entity\Utilisateur;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,9 +22,16 @@ final class HomeController extends AbstractController
             'cheesecake', 'brownies', 'cookies',
         ]);
 
+        $user = $this->getUser();
+        $produitsFavorisIds = [];
+        if ($user instanceof Utilisateur) {
+            $produitsFavorisIds = $user->getProduitsFavoris()->map(fn($p) => $p->getId())->toArray();
+        }
+
         return $this->render('home/index.html.twig', [
-            'meilleursVendus'  => $meilleursVendus,
-            'carouselProduits' => $carouselProduits,
+            'meilleursVendus'    => $meilleursVendus,
+            'carouselProduits'   => $carouselProduits,
+            'produitsFavorisIds' => $produitsFavorisIds,
         ]);
     }
 }

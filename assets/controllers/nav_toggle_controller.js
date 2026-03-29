@@ -5,8 +5,10 @@ export default class extends Controller {
 
   connect() {
     this.isOpen = false
+    this.iconOpenTarget.style.display = ''
+    this.iconCloseTarget.style.display = 'none'
     this.onResize = () => {
-      if (window.innerWidth >= 768 && this.isOpen) this.close()
+      if (window.innerWidth >= 1024 && this.isOpen) this.close()
     }
     this.onKeydown = (e) => {
       if (e.key === 'Escape' && this.isOpen) this.close()
@@ -27,13 +29,20 @@ export default class extends Controller {
   open() {
     this.isOpen = true
     this.menuTarget.show()
+    this.menuTarget.classList.remove('nav-menu-leave')
+    this.menuTarget.classList.add('nav-menu-enter')
     this.iconOpenTarget.style.display = 'none'
     this.iconCloseTarget.style.display = ''
   }
 
   close() {
     this.isOpen = false
-    this.menuTarget.close()
+    this.menuTarget.classList.remove('nav-menu-enter')
+    this.menuTarget.classList.add('nav-menu-leave')
+    this.menuTarget.addEventListener('animationend', () => {
+      this.menuTarget.close()
+      this.menuTarget.classList.remove('nav-menu-leave')
+    }, { once: true })
     this.iconOpenTarget.style.display = ''
     this.iconCloseTarget.style.display = 'none'
   }

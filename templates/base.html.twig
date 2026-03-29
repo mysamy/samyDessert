@@ -2,7 +2,7 @@
 <html lang="fr">
   <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Samy Dessert{% endblock %}</title>
+    <title>{% block title %}SamyDessert{% endblock %}</title>
 
     {% block stylesheets %}
       <link rel="stylesheet" href="{{ asset('vendor/@fortawesome/fontawesome-free/css/all.css') }}">
@@ -16,21 +16,23 @@
   <body class="text-body">
 
     <twig:Organisms:Header
-      brandLabel="Samy Dessert"
+      brandLabel="SamyDessert"
       brandHref="/"
       logoSrc="/logotest.svg"
-      logoAlt="Samy Dessert"
+      logoAlt="SamyDessert"
     >
-      <twig:block name="actions">
-        <twig:Atoms:Link href="/panier" class="group flex items-center gap-2 text-text hover:text-accent transition-colors" aria-label="Panier">
-          <div class="relative w-fit transition-transform group-hover:scale-110">
+      <twig:block name="cartSlot">
+        <twig:Atoms:Link href="{{ path('app_panier_index') }}" class="group flex items-center gap-2 text-primary hover:text-accent transition-colors" aria-label="Panier">
+          <div class="btn-cart relative w-fit transition-transform group-hover:scale-110">
             <twig:Atoms:Icon name="bag-shopping" size="3x" :decorative="true" />
             <twig:Atoms:PanierBadge class="absolute top-1/2 left-1/2 [translate:-50%_-35%]" />
           </div>
-          <span class="hidden lg:inline">Panier</span>
+          <span>Panier</span>
         </twig:Atoms:Link>
+      </twig:block>
+      <twig:block name="desktopActions">
         {% if app.user %}
-          <div class="relative hidden lg:block" data-controller="dropdown">
+          <div class="relative" data-controller="dropdown">
             <button data-action="dropdown#toggle"
                     class="flex items-center gap-2 text-sm font-medium text-text hover:text-accent transition">
               <twig:Atoms:Icon name="circle-user" size="lg" :decorative="true" />
@@ -38,25 +40,25 @@
               <twig:Atoms:Icon name="chevron-down" size="xs" :decorative="true" />
             </button>
             <div data-dropdown-target="menu"
-                 class="hidden absolute right-0 mt-2 w-44 bg-white border border-surface rounded-xl shadow-lg z-50 overflow-hidden text-sm">
+                 class="hidden absolute right-0 mt-2 w-44 bg-surface border border-border rounded-xl shadow-lg z-50 overflow-hidden text-sm">
               <twig:Atoms:Link href="{{ path('app_compte_index') }}"
-                class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-surface transition">
+                class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-bg transition">
                 <twig:Atoms:Icon name="user" size="sm" :decorative="true" /> Mon compte
               </twig:Atoms:Link>
               {% if is_granted('ROLE_ADMIN') %}
                 <twig:Atoms:Link href="{{ path('admin') }}"
-                  class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-surface transition border-t border-surface">
+                  class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-bg transition border-t border-border">
                   <twig:Atoms:Icon name="screwdriver-wrench" size="sm" :decorative="true" /> Administration
                 </twig:Atoms:Link>
               {% endif %}
               <twig:Atoms:Link href="{{ path('_logout_main') }}"
-                class="flex items-center gap-2 px-4 py-3 text-sm text-red-600 hover:bg-red-50 transition border-t border-surface">
+                class="flex items-center gap-2 px-4 py-3 text-sm text-danger hover:bg-danger-light transition border-t border-border">
                 <twig:Atoms:Icon name="right-from-bracket" size="sm" :decorative="true" /> Se déconnecter
               </twig:Atoms:Link>
             </div>
           </div>
         {% else %}
-          <twig:Atoms:Link href="/connexion" class="btn-cta-sm hidden lg:inline-flex">Se connecter</twig:Atoms:Link>
+          <twig:Atoms:Link href="{{ path('app_login') }}" class="btn-cta-sm">Se connecter</twig:Atoms:Link>
         {% endif %}
       </twig:block>
       <twig:block name="mobileActions">
@@ -87,9 +89,9 @@
     <twig:Molecules:CookieBanner />
 
     <twig:Organisms:Footer
-      brandLabel="Samy Dessert"
+      brandLabel="SamyDessert"
       tagline="Artisan pâtissier · Fait maison"
-      legalText="© {{ 'now'|date('Y') }} Samy Dessert. Tous droits réservés."
+      legalText="© {{ 'now'|date('Y') }} SamyDessert. Tous droits réservés."
       :links="[
         { label: 'Accueil', href: path('app_home') },
         { label: 'Desserts et prix', href: path('app_produits') },

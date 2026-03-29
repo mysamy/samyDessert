@@ -34,18 +34,15 @@ export default class extends Controller {
 
   // Appelé automatiquement par Stimulus quand activeValue change
   activeValueChanged() {
-    const icon = this.iconTarget
+    const svg = this.iconTarget
+    const fill = svg.querySelector('.heart-fill')
     const btn = this.btnTarget
 
     if (this.activeValue) {
-      icon.classList.replace('fa-regular', 'fa-solid')
-      btn.classList.remove('text-gray-light', 'hover:text-accent')
-      btn.classList.add('text-accent')
+      if (fill) fill.style.clipPath = 'circle(75% at 50% 55%)'
       btn.setAttribute('aria-label', 'Retirer des favoris')
     } else {
-      icon.classList.replace('fa-solid', 'fa-regular')
-      btn.classList.remove('text-accent')
-      btn.classList.add('text-gray-light', 'hover:text-accent')
+      if (fill) fill.style.clipPath = 'circle(0% at 50% 55%)'
       btn.setAttribute('aria-label', 'Ajouter aux favoris')
     }
   }

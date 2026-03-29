@@ -103,7 +103,8 @@ class Carousel {
         this.prev();
       }
     });
-    this._onTransitionEnd = () => {
+    this._onTransitionEnd = (e) => {
+      if (e.target !== this.container) return;
       this.isAnimating = false;
       if (this.options.infinite) {
         this.resetInfinite();
@@ -120,7 +121,7 @@ class Carousel {
     this.container.style.width = ratio * 100 + "%";
     this.container.style.transition = `transform ${this.options.transitionDuration}ms ease-in-out`;
     this.items.forEach((item) => (item.style.width = 100 / this.slidesVisible / ratio + "%"));
-    this.zoom();
+    this.zoom(false);
     this.updateAccessibility(this.currentItem);
   }
 
@@ -236,14 +237,14 @@ class Carousel {
     this.moveCallbacks.forEach((cb) => cb(index));
     this.zoom(animation, direction);
     this.container.offsetHeight; // Force le navigateur à recalculer le layout (reflow) pour que les transitions/animations se déclenchent correctement
-    this.updateAccessibility(this.currentItem, true);
+    this.updateAccessibility(this.currentItem, animation);
     if (animation === false) {
       this.items.forEach((item) => {
         item.style.transition = "";
         const desc = item.querySelector(".carousel-card-description");
         if (desc) desc.style.transition = "";
       });
-      this.container.style.transition = "";
+      this.container.style.transition = `transform ${this.options.transitionDuration}ms ease-in-out`;
     }
   }
 
@@ -365,7 +366,7 @@ class Carousel {
   }
 
   onWindowResize() {
-    let mobile = window.innerWidth < 1100;
+    let mobile = window.innerWidth < 1024;
     if (mobile !== this.isMobile) {
       // Desktop → Mobile : se caler sur la carte qui était au centre
       if (mobile && this.options.slidesVisible >= 3) {

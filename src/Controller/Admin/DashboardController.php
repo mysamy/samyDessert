@@ -48,7 +48,7 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('Samy Dessert — Administration')
+            ->setTitle('SamyDessert — Administration')
             ->setFaviconPath('/logotest.svg');
     }
 

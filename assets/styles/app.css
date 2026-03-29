@@ -30,18 +30,10 @@
   --color-accent:           #9D174D;  /* bg-accent       | text-accent       framboise foncé */
   --color-accent-light:     #FCE7F3;  /* bg-accent-light                     rose pâle       */
 
-  /* ── Pistache (succès, disponible, confirmé) ── */
-  --color-success:          #3F6212;  /* bg-success      | text-success      pistache foncé  */
-  --color-success-light:    #ECFCCB;  /* bg-success-light                    pistache pâle   */
 
   /* ── Warning (en attente, difficulté moyenne) ── */
   --color-warning:          #B45309;  /* bg-warning      | text-warning      amber foncé     */
   --color-warning-light:    #FEF3C7;  /* bg-warning-light                    amber pâle      */
-
-  /* ── Danger (erreurs, annulations, rupture) ── */
-  --color-danger:           #DC2626;  /* bg-danger       | text-danger       rouge vif       */
-  --color-danger-light:     #FEE2E2;  /* bg-danger-light                     rouge pâle      */
-  --color-danger-dark:      #991B1B;  /* bg-danger-dark  | text-danger-dark  rouge foncé     */
 
   /* ── Neutres (fonds, bordures, textes secondaires) ── */
   --color-bg:               #FDF8F3;  /* bg-bg                               crème très clair */
@@ -49,6 +41,14 @@
   --color-border:           #E8D5C4;  /* border-border                       beige-brun       */
   --color-text:             #1C0A03;  /* text-text                           quasi noir choco */
   --color-text-light:       #6B3A2A;  /* text-text-light                     brun moyen       */
+  
+  /* ── Pistache (succès, disponible, confirmé) ── */
+  --color-success:          #3F6212;  /* bg-success      | text-success      pistache foncé  */
+  --color-success-light:    #ECFCCB;  /* bg-success-light                    pistache pâle   */
+
+  /* ── Danger (erreurs, annulations, rupture) ── */
+  --color-danger:           #DC2626;  /* bg-danger       | text-danger       rouge vif       */
+  --color-danger-light:     #FEE2E2;  /* bg-danger-light                     rouge pâle      */
 
   /* ── Spéciaux ── */
   --color-star:             #F59E0B;  /* text-star       étoiles d'avis (amber universel)   */
@@ -109,18 +109,18 @@ html {
 
   /* Bouton CTA principal — framboise, grand (px-8 py-3) */
   .btn-cta {
-    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-8 py-3 font-semibold hover:bg-primary transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-8 py-3 font-semibold transition-all duration-300 hover:bg-primary hover:scale-105 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
   }
 
   /* Bouton CTA compact — framboise, petit (px-4 py-2) */
   .btn-cta-sm {
-    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 font-semibold hover:bg-primary transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+    @apply inline-flex items-center gap-2 rounded-full bg-accent text-white px-4 py-2 font-semibold transition-all duration-300 hover:bg-primary hover:scale-105 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
     font-size: var(--font-size-small);
   }
 
   /* Bouton CTA secondaire — contour */
   .btn-cta-outline {
-    @apply inline-flex items-center gap-2 rounded-full border-2 border-accent text-accent px-8 py-3 font-semibold hover:bg-accent hover:text-white transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
+    @apply inline-flex items-center gap-2 rounded-full border-2 border-accent text-accent px-8 py-3 font-semibold transition-all duration-300 hover:bg-accent hover:text-white hover:scale-105 hover:shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent;
   }
 
   /* Titre principal de page (h1) */
@@ -151,7 +151,114 @@ html {
     @apply border-t border-border;
   }
 
+  /* Menu mobile — slide down depuis le haut */
+  .nav-menu-enter {
+    animation: navMenuEnter 0.25s ease forwards;
+  }
+
+  .nav-menu-leave {
+    animation: navMenuLeave 0.2s ease forwards;
+  }
+
+  /* Bouton hamburger — légère mise à l'échelle au hover */
+  .nav-toggle-btn {
+    transition: transform 0.15s ease, color 0.15s ease;
+  }
+
+  .nav-toggle-btn:hover {
+    transform: scale(1.15);
+    @apply text-accent;
+  }
+
+  /* Icône panier — cercle ripple au survol */
+  .btn-cart::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background-color: var(--color-accent-light);
+    transform: scale(0);
+    opacity: 0.8;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  .group:hover .btn-cart::after {
+    transform: scale(1);
+    opacity: 0;
+  }
+
+  /* Liens de navigation — trait souligné qui grandit du centre */
+  .nav-link {
+    position: relative;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    border-radius: 9999px;
+    translate: -50% 0;
+    transition: width 0.25s ease;
+  }
+
+  .nav-link:hover::after,
+  .nav-link[aria-current="page"]::after {
+    width: 100%;
+  }
+
+  /* Icônes réseaux sociaux — rotation légère au survol */
+  .social-icon {
+    display: inline-block;
+    transition: transform 0.2s ease, color 0.2s ease;
+  }
+
+  .social-icon:hover {
+    transform: rotate(10deg) scale(1.2);
+  }
+
+  /* Bouton CTA — icône qui avance au survol */
+  .btn-cta:hover .btn-cta__icon,
+  .btn-cta-sm:hover .btn-cta__icon {
+    transform: translateX(3px);
+  }
+
+  .btn-cta__icon {
+    transition: transform 0.2s ease;
+  }
+
 }
+/* ── Animations keyframes ────────────────────────────────────────────────── */
+@keyframes navMenuEnter {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes navMenuLeave {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+}
+
 /* ── Carousel ────────────────────────────────────────────────────────────── */
 /*
  * Ces classes sont créées dynamiquement par le JS (createDivWithClass).
@@ -167,7 +274,7 @@ html {
 
 .carousel__item {
   @apply flex h-[90%] flex-col justify-center items-center p-0;
-  transition: transform 0.3s ease, opacity 0.5s ease;
+  transition: transform 0.8s ease-in-out, opacity 0.5s ease;
 }
 
 .carousel__item--zoom {
@@ -225,16 +332,16 @@ html {
   outline: 10px solid var(--color-focus);
 }
 
-@media (max-width: 875px) {
+@media (max-width: 1024px) {
   .carousel__prev { @apply left-5; }
   .carousel__next { @apply right-5; }
 }
 
-@media (max-width: 769px) {
+@media (max-width: 768px) {
   .carousel { @apply p-5; }
 }
 
-@media (max-width: 425px) {
+@media (max-width: 640px) {
   .carousel__prev { @apply left-0; }
   .carousel__next { @apply right-0; }
 }

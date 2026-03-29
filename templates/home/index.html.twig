@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Samy Dessert — Pâtisserie artisanale{% endblock %}
+{% block title %}SamyDessert — Pâtisserie artisanale{% endblock %}
 
 {% block body %}
 
@@ -9,7 +9,7 @@
   <div class="container-main flex flex-col gap-8">
 
     <div class="text-center">
-      <h1 class="text-5xl font-bold text-text mb-4">Samy Dessert</h1>
+      <h1 class="text-5xl font-bold text-text mb-4">SamyDessert</h1>
       <p class="text-xl text-text-light mb-8">Des desserts artisanaux préparés avec passion</p>
       <twig:Atoms:Link
         href="{{ path('app_produits') }}"
@@ -72,7 +72,7 @@
 <section class="py-16 bg-bg">
   <div class="container-main">
     <h2 class="text-3xl font-bold text-text text-center mb-10">Nos meilleures ventes</h2>
-    <twig:Organisms:ProductCardGrid :items="meilleursVendus" />
+    <twig:Organisms:ProductCardGrid :items="meilleursVendus" :favorisIds="produitsFavorisIds" />
     <div class="text-center mt-10">
       <twig:Atoms:Link
         href="{{ path('app_produits') }}"

@@ -16,14 +16,18 @@
     </div>
 
     <div class="flex items-center gap-3">
-      {% block actions %}{% endblock %}
+      {% block cartSlot %}{% endblock %}
+
+      <div class="hidden lg:flex items-center gap-3">
+        {% block desktopActions %}{% endblock %}
+      </div>
 
       <div class="lg:hidden">
         <twig:Atoms:Button
           type="button"
           variant="ghost"
           size="sm"
-          class="sm:h-10 sm:px-4 sm:text-body"
+          class="nav-toggle-btn sm:h-10 sm:px-4 sm:text-body"
           data-action="nav-toggle#toggle"
           aria-label="Ouvrir le menu"
         >
@@ -54,6 +58,6 @@
   - logoAlt     string|null — texte alt du logo (brandLabel par défaut)
 
   Utilisation :
-  <twig:Organisms:Header brandLabel="Samy Dessert" brandHref="/" />
-  <twig:Organisms:Header brandLabel="Samy Dessert" logoSrc="/logotest.svg" logoAlt="Logo Samy Dessert" brandHref="/" />
+  <twig:Organisms:Header brandLabel="SamyDessert" brandHref="/" />
+  <twig:Organisms:Header brandLabel="SamyDessert" logoSrc="/logotest.svg" logoAlt="Logo SamyDessert" brandHref="/" />
 #}
