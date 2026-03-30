@@ -8,6 +8,7 @@ import FavoriController from './controllers/favori_controller.js';
 import FlashTooltipController from './controllers/flash_tooltip_controller.js';
 import ConsentBannerController from './controllers/consent_banner_controller.js';
 import SubmitOnceController from './controllers/submit_once_controller.js';
+import PasswordToggleController from './controllers/password_toggle_controller.js';
 import CartSidebarController from './controllers/cart_sidebar_controller.js';
 import AnnulationController from './controllers/annulation_controller.js';
 
@@ -21,5 +22,6 @@ app.register('favori', FavoriController);
 app.register('flash-tooltip', FlashTooltipController);
 app.register('consent-banner', ConsentBannerController);
 app.register('submit-once', SubmitOnceController);
+app.register('password-toggle', PasswordToggleController);
 app.register('cart-sidebar', CartSidebarController);
 app.register('annulation', AnnulationController);

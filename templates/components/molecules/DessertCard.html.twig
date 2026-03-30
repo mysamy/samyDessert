@@ -27,7 +27,7 @@
     <div class="flex items-start justify-between gap-2 mb-1">
       <h3 class="text-base font-bold text-text group-hover:text-accent transition">
         {% if url %}
-          <twig:Atoms:Link href="{{ url }}" class="hover:underline">{{ titre }}</twig:Atoms:Link>
+          <twig:Atoms:Link href="{{ url }}">{{ titre }}</twig:Atoms:Link>
         {% else %}
           {{ titre }}
         {% endif %}
@@ -38,7 +38,6 @@
           data-controller="favori"
           data-favori-url-value="{{ favoriUrl }}"
           data-favori-active-value="{{ favori ? 'true' : 'false' }}"
-          data-favori-flash-tooltip-outlet="[data-controller='flash-tooltip']"
         >
           <twig:Molecules:FlashTooltip message="Connectez-vous pour ajouter aux favoris">
             {% block content %}

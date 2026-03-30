@@ -22,3 +22,7 @@
 ###> claude code ###
 /.claude/worktrees/
 ###< claude code ###
+
+###> phpstan/phpstan ###
+phpstan.neon
+###< phpstan/phpstan ###

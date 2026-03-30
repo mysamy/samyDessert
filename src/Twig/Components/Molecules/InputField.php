@@ -18,7 +18,6 @@ final class InputField
     public bool $disabled = false;
     public bool $readonly = false;
 
-    public bool $invalid = false;
     public string $error = '';
     public string $help = '';
 
@@ -29,7 +28,7 @@ final class InputField
     public ?int $maxlength = null;
     public ?string $pattern = null;
 
-    public string $class = '';
+    public bool $showToggle = false;
 
     public function getComputedId(): string
     {
@@ -72,7 +71,7 @@ final class InputField
 
     public function getEffectiveInvalid(): bool
     {
-        return $this->invalid || ($this->error !== '');
+        return $this->error !== '';
     }
 
     public function getEffectiveAriaLabel(): string

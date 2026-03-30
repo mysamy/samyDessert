@@ -93,7 +93,7 @@
     {# Vider le panier #}
     <twig:Atoms:Button
       type="button"
-      class="text-sm text-text-light hover:text-danger underline transition"
+      class="nav-link text-sm text-text-light hover:text-danger transition"
       data-action="live#action"
       data-live-action-param="vider"
     >
@@ -104,9 +104,9 @@
     <div class="text-right">
       <p class="text-sm text-text-light mb-1">Total</p>
       <p class="text-3xl font-bold text-text mb-4">{{ total|prix }}</p>
-      <twig:Atoms:Link href="{{ path('app_commande') }}"
+      <twig:Atoms:Link href="{{ path('app_panier_index') }}"
         class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-accent/90 transition">
-        Passer commande
+        Voir le panier
         <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-sm"/>
       </twig:Atoms:Link>
     </div>

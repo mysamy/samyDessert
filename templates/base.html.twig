@@ -14,6 +14,7 @@
     {% endblock %}
   </head>
   <body class="text-body">
+  <div data-controller="cart-sidebar">
 
     <twig:Organisms:Header
       brandLabel="SamyDessert"
@@ -22,13 +23,18 @@
       logoAlt="SamyDessert"
     >
       <twig:block name="cartSlot">
-        <twig:Atoms:Link href="{{ path('app_panier_index') }}" class="group flex items-center gap-2 text-primary hover:text-accent transition-colors" aria-label="Panier">
+        <button
+          type="button"
+          class="group flex items-center gap-2 text-primary hover:text-accent transition-colors"
+          aria-label="Ouvrir le panier"
+          data-action="cart-sidebar#open"
+        >
           <div class="btn-cart relative w-fit transition-transform group-hover:scale-110">
             <twig:Atoms:Icon name="bag-shopping" size="3x" :decorative="true" />
             <twig:Atoms:PanierBadge class="absolute top-1/2 left-1/2 [translate:-50%_-35%]" />
           </div>
           <span>Panier</span>
-        </twig:Atoms:Link>
+        </button>
       </twig:block>
       <twig:block name="desktopActions">
         {% if app.user %}
@@ -88,6 +94,28 @@
 
     <twig:Molecules:CookieBanner />
 
+    {# Sidebar panier — dialog modal (top-layer, focus trap, Escape natif) #}
+    <dialog
+      data-cart-sidebar-target="panel"
+      data-action="cancel->cart-sidebar#handleCancel click->cart-sidebar#handleBackdropClick"
+      class="cart-sidebar bg-bg translate-x-full transition-transform duration-300"
+    >
+      <div class="flex items-center justify-between px-6 py-4 border-b border-border">
+        <h2 class="text-lg font-semibold text-text">Mon panier</h2>
+        <button
+          type="button"
+          class="text-text-light hover:text-text transition-colors"
+          aria-label="Fermer le panier"
+          data-action="cart-sidebar#close"
+        >
+          <twig:Atoms:Icon name="xmark" size="lg" :decorative="true" />
+        </button>
+      </div>
+      <div class="flex-1 overflow-y-auto px-6 py-4">
+        <twig:Organisms:PanierLive />
+      </div>
+    </dialog>
+
     <twig:Organisms:Footer
       brandLabel="SamyDessert"
       tagline="Artisan pâtissier · Fait maison"
@@ -107,5 +135,6 @@
       ]"
     />
 
+  </div>
   </body>
 </html>

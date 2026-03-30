@@ -42,12 +42,12 @@
     <twig:Molecules:InputField name="address2" type="text" label="Complément d'adresse" autocomplete="address-line2" value="{{ address2Value }}"/>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
-      <twig:Molecules:InputField name="postalCode" type="text" label="Code postal" autocomplete="postal-code" inputmode="numeric" :required="true" value="{{ postalCodeValue }}" error="{{ postalCodeError }}"/>
+      <twig:Molecules:InputField name="postalCode" type="text" label="Code postal" autocomplete="postal-code" inputmode="numeric" placeholder="75001" :required="true" value="{{ postalCodeValue }}" error="{{ postalCodeError }}"/>
       <twig:Molecules:InputField name="city" type="text" label="Ville" autocomplete="address-level2" :required="true" value="{{ cityValue }}" error="{{ cityError }}"/>
       <twig:Molecules:SelectField name="country" label="Pays" :required="true" value="{{ countryValue }}" :options="countries" error="{{ countryError }}"/>
     </div>
 
-    <twig:Molecules:InputField name="phone" type="tel" label="Téléphone" autocomplete="tel" inputmode="tel" value="{{ phoneValue }}" error="{{ phoneError }}"/>
+    <twig:Molecules:InputField name="phone" type="tel" label="Téléphone" autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78" value="{{ phoneValue }}" error="{{ phoneError }}"/>
 
     <twig:Molecules:TextareaField name="notes" label="Notes de livraison" placeholder="Ex: Digicode, étage, instructions…" value="{{ notesValue }}" help="Optionnel."/>
   </twig:Molecules:FormFieldGroup>

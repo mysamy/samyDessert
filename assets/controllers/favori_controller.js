@@ -6,8 +6,6 @@ import { Controller } from '@hotwired/stimulus'
 export default class extends Controller {
   static values = { url: String, active: Boolean }
   static targets = ['icon', 'btn']
-  static outlets = ['flash-tooltip']
-
   async toggle() {
     try {
       const response = await fetch(this.urlValue, {
@@ -15,10 +13,12 @@ export default class extends Controller {
         headers: { 'X-Requested-With': 'XMLHttpRequest' },
       })
 
-      // Non connecté → délègue au flash-tooltip
+      // Non connecté → affiche le tooltip de cette carte uniquement
       if (response.status === 401) {
-        if (this.hasFlashTooltipOutlet) {
-          this.flashTooltipOutlet.show()
+        const el = this.element.querySelector('[data-controller~="flash-tooltip"]')
+        if (el) {
+          const tooltip = this.application.getControllerForElementAndIdentifier(el, 'flash-tooltip')
+          tooltip?.show()
         }
         return
       }

@@ -29,8 +29,8 @@
     description="Saisis ton adresse email et ton mot de passe."
     innerClass="space-y-4"
   >
-    <twig:Molecules:InputField name="email" type="email" label="Adresse email" autocomplete="email" :required="true" value="{{ emailValue }}" error="{{ emailError }}"/>
-    <twig:Molecules:InputField name="password" type="password" label="Mot de passe" autocomplete="current-password" :required="true" error="{{ passwordError }}"/>
+    <twig:Molecules:InputField name="email" type="email" label="Adresse email" autocomplete="email" placeholder="jean@exemple.fr" :required="true" value="{{ emailValue }}" error="{{ emailError }}"/>
+    <twig:Molecules:InputField name="password" type="password" label="Mot de passe" autocomplete="current-password" :required="true" :showToggle="true" error="{{ passwordError }}"/>
   </twig:Molecules:FormFieldGroup>
 
   <twig:Molecules:CheckboxField

@@ -5,7 +5,10 @@
       "Bash(curl -s http://localhost:8080)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/assets/controllers/carousel_controller-IRVluKY.js)",
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/assets/stimulus_bootstrap-EyL2HAv.js)",
-      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/assets/app-DDv-ss8.js)"
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/assets/app-DDv-ss8.js)",
+      "Bash(php bin/console tailwind:build)",
+      "Bash(php bin/console debug:router)",
+      "Bash(php bin/console asset-map:compile)"
     ]
   }
 }

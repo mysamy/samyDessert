@@ -13,23 +13,57 @@
     />
   {% endif %}
 
-  <twig:Atoms:Input
-    id="{{ id }}"
-    name="{{ name }}"
-    type="{{ type }}"
-    :value="value"
-    :placeholder="placeholder"
-    :required="required"
-    :disabled="disabled"
-    :readonly="readonly"
-    :autocomplete="autocomplete"
-    :inputmode="inputmode"
-    :maxlength="maxlength"
-    :pattern="pattern"
-    aria-describedby="{{ describedBy }}"
-    aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
-    aria-label="{{ ariaLabel }}"
-  />
+  {% if type == 'password' and showToggle %}
+    <div class="relative" data-controller="password-toggle">
+      <twig:Atoms:Input
+        id="{{ id }}"
+        name="{{ name }}"
+        type="{{ type }}"
+        :value="value"
+        :placeholder="placeholder"
+        :required="required"
+        :disabled="disabled"
+        :readonly="readonly"
+        :autocomplete="autocomplete"
+        :inputmode="inputmode"
+        :maxlength="maxlength"
+        :pattern="pattern"
+        aria-describedby="{{ describedBy }}"
+        aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
+        aria-label="{{ ariaLabel }}"
+        class="pr-10"
+        data-password-toggle-target="input"
+      />
+      <button
+        type="button"
+        class="absolute inset-y-0 right-0 flex items-center px-3 text-text-light hover:text-text transition-colors"
+        data-action="password-toggle#toggle"
+        data-password-toggle-target="btn"
+        aria-label="Afficher le mot de passe"
+      >
+        <twig:Atoms:Icon name="eye" :decorative="true" data-password-toggle-target="iconShow" />
+        <twig:Atoms:Icon name="eye-slash" :decorative="true" data-password-toggle-target="iconHide" style="display:none" />
+      </button>
+    </div>
+  {% else %}
+    <twig:Atoms:Input
+      id="{{ id }}"
+      name="{{ name }}"
+      type="{{ type }}"
+      :value="value"
+      :placeholder="placeholder"
+      :required="required"
+      :disabled="disabled"
+      :readonly="readonly"
+      :autocomplete="autocomplete"
+      :inputmode="inputmode"
+      :maxlength="maxlength"
+      :pattern="pattern"
+      aria-describedby="{{ describedBy }}"
+      aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
+      aria-label="{{ ariaLabel }}"
+    />
+  {% endif %}
 
   {% if help %}
     <p id="{{ this.helpId }}" class="mt-1 text-sm text-text-light">{{ help }}</p>

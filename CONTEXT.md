@@ -78,3 +78,6 @@ php bin/console doctrine:migrations:migrate # appliquer les migrations
 - `this.` uniquement pour les getters PHP dans Twig
 - Après modif JS → toujours `asset-map:compile`
 - Après modif CSS → toujours `tailwind:build`
+
+composer require --dev phpstan/phpstan
+vendor/bin/phpstan analyse src/

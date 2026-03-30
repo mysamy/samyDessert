@@ -76,7 +76,7 @@
             <p class="text-sm text-text-light mb-2">Envie de le déguster sans cuisiner ?</p>
             <twig:Atoms:Link
               href="{{ path('app_produit_show', { slug: recette.produit.slug }) }}"
-              class="inline-flex items-center gap-1 text-sm text-accent hover:underline font-semibold"
+              class="inline-flex items-center gap-1 text-sm text-accent font-semibold"
             >
               Commander « {{ recette.produit.nom }} » — {{ recette.produit.prix|prix }}
             </twig:Atoms:Link>

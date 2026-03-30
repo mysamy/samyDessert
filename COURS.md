@@ -2253,4 +2253,138 @@ Dans `app.css`, les couleurs sont définies via `@theme` avec la convention `--c
 | `--color-danger` | `text-danger` | Erreurs, déconnexion, annulations |
 | `--color-danger-light` | `bg-danger-light` | Hover sur actions dangereuses |
 
+---
+
+# Stimulus
+
+## C'est quoi ?
+
+Stimulus est un framework JavaScript **léger** créé par les auteurs de Ruby on Rails. Au lieu d'écrire du JS libre dans des `<script>`, on organise le code en **controllers** — des classes JS attachées à des éléments HTML via des attributs `data-*`.
+
+**Philosophie :** le HTML reste dans Twig, le JS ne gère que le comportement.
+
+## Les 3 concepts clés
+
+| Concept | Attribut HTML | Accès en JS |
+|---|---|---|
+| **Controller** | `data-controller="nav-toggle"` | Classe JS activée sur cet élément |
+| **Target** | `data-nav-toggle-target="menu"` | `this.menuTarget` |
+| **Action** | `data-action="nav-toggle#toggle"` | Appelle `toggle()` au clic |
+
+## Exemple concret — nav-toggle
+
+```html
+<header data-controller="nav-toggle">
+  <button data-action="nav-toggle#toggle">Menu</button>
+  <dialog data-nav-toggle-target="menu">...</dialog>
+</header>
+```
+
+```js
+export default class extends Controller {
+  static targets = ['menu']
+
+  toggle() {
+    this.menuTarget.show() // Stimulus trouve l'élément automatiquement
+  }
+}
+```
+
+## Enregistrement dans le projet
+
+Chaque controller doit être déclaré dans `assets/stimulus_bootstrap.js` :
+
+```js
+import NavToggleController from './controllers/nav_toggle_controller.js'
+app.register('nav-toggle', NavToggleController)
+```
+
+Puis compilé avec :
+```bash
+php bin/console asset-map:compile
+```
+
+---
+
+# Stripe Webhook
+
+## C'est quoi un webhook ?
+
+Un webhook est une URL sur ton serveur que Stripe appelle automatiquement quand un événement se produit (paiement réussi, remboursement, etc.).
+
+## Sans webhook (situation actuelle)
+
+```
+Utilisateur paie → Stripe redirige vers /commande/succes → commande créée
+```
+
+**Problème :** si la redirection échoue (internet coupé, onglet fermé), la commande n'est jamais créée. Ou à l'inverse, quelqu'un navigue manuellement vers `/commande/succes` sans avoir payé.
+
+## Avec webhook
+
+```
+Utilisateur paie → Stripe appelle ton serveur en arrière-plan → commande créée
+                   (indépendant du navigateur de l'utilisateur)
+```
+
+Stripe envoie un `POST` à `/stripe/webhook` avec les infos du paiement. Le serveur vérifie la **signature** (pour s'assurer que c'est bien Stripe qui envoie), puis crée la commande.
+
+**Obligatoire en production.** En développement local avec les clés test, l'implémentation actuelle (redirection) fonctionne.
+
+---
+
+# UX — Placeholders
+
+## Règle d'utilisation
+
+Les placeholders **disparaissent** dès que l'utilisateur commence à taper. Ils ne remplacent pas un `<label>`.
+
+| Cas | Recommandation |
+|---|---|
+| Champ avec label | Le placeholder est inutile s'il répète le label |
+| Format spécifique | Utile pour montrer l'exemple (`jean@exemple.fr`, `06 12 34 56 78`, `75001`) |
+| Contrainte | Préférer `help` (reste visible pendant la saisie) |
+
+**Dans ce projet :** placeholders uniquement sur email, téléphone et code postal pour montrer le format attendu.
+
+---
+
+# CSS — Cascade et `@layer`
+
+## Pourquoi `hidden` ne fonctionnait pas avec Font Awesome
+
+Tailwind v4 place ses utilitaires dans `@layer utilities`. En CSS Cascade Level 5, les règles dans un `@layer` ont **toujours moins de priorité** que les règles sans layer (dites "unlayered").
+
+Font Awesome définit `display: inline-block` en CSS unlayered → il gagne sur `hidden` de Tailwind (`@layer utilities`), peu importe l'ordre de chargement.
+
+**Solution :** utiliser des `inline styles` en JS (`element.style.display = 'none'`). Les styles inline ont la priorité absolue sur tout CSS.
+
+## Tailwind v4 — pièges à connaître
+
+### Valeurs négatives arbitraires
+
+```
+❌ -right-[3px]     (syntaxe Tailwind v3)
+✅ right-[-3px]     (syntaxe Tailwind v4 — le - est à l'intérieur)
+```
+
+### Combiner translate-x et translate-y
+
+En Tailwind v4, `translate-x-*` et `translate-y-*` déclarent tous les deux la propriété CSS `translate`. Le dernier dans la cascade écrase le premier.
+
+```
+❌ class="translate-x-1/2 -translate-y-1/2"   (conflit — un seul s'applique)
+✅ class="[translate:50%_-50%]"               (une seule déclaration, les deux axes)
+```
+
+### Pourquoi `translate: 50%` centre un badge sur un coin
+
+```
+top-0 right-0             → coin haut-droit du badge = coin haut-droit du parent
+[translate:50%_-50%]      → décale de 50% de la taille DU BADGE lui-même
+                             → centre du badge = coin du parent ✓
+```
+
+Les `%` dans `translate` sont relatifs à **l'élément lui-même**, pas au parent.
+
 **Règle** : ne jamais utiliser `bg-white`, `text-red-600`, `border-gray-200` etc. — toujours passer par les tokens du projet.

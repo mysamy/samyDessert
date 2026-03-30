@@ -215,6 +215,42 @@ html {
     width: 100%;
   }
 
+  /* Trait blanc sur les <twig:Atoms:Link> à fond framboise (nav-link présent par défaut) */
+  .nav-link.bg-accent::after,
+  .nav-link.btn-cta::after {
+    background-color: white;
+    bottom: 10px; /* py-3 = 12px → 2 px sous le texte */
+  }
+
+  .nav-link.btn-cta-sm::after {
+    background-color: white;
+    bottom: 6px; /* py-2 = 8px → 2 px sous le texte */
+  }
+
+  .nav-link.bg-accent:hover::after { width: calc(100% - 3rem); } /* px-6 = 1.5rem/côté */
+  .nav-link.btn-cta:hover::after   { width: calc(100% - 4rem); } /* px-8 = 2rem/côté */
+  .nav-link.btn-cta-sm:hover::after { width: calc(100% - 2rem); } /* px-4 = 1rem/côté */
+
+  /* Trait pour les <twig:Atoms:Button class="btn-cta[-sm]"> (pas de nav-link sur <button>) */
+  .btn-cta::after,
+  .btn-cta-sm::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: white;
+    border-radius: 9999px;
+    translate: -50% 0;
+    transition: width 0.25s ease;
+  }
+
+  .btn-cta::after { bottom: 10px; }
+  .btn-cta-sm::after { bottom: 6px; }
+
+  .btn-cta:hover::after { width: calc(100% - 4rem); } /* px-8 = 2rem/côté */
+  .btn-cta-sm:hover::after { width: calc(100% - 2rem); } /* px-4 = 1rem/côté */
+
   /* Icônes réseaux sociaux — rotation légère au survol */
   .social-icon {
     display: inline-block;
@@ -391,5 +427,30 @@ html {
   font-weight: 700;
   font-style: italic;
   font-display: swap;
+}
+
+/* Cart sidebar — hors @layer pour surcharger le UA stylesheet du <dialog> */
+dialog.cart-sidebar {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: auto;
+  bottom: 0;
+  height: 100%;
+  width: 100%;
+  max-width: 36rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+}
+
+dialog.cart-sidebar[open] {
+  display: flex;
+  flex-direction: column;
+}
+
+dialog.cart-sidebar::backdrop {
+  background: rgba(0, 0, 0, 0.5);
 }
 
