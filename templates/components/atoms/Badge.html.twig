@@ -1,12 +1,10 @@
-{% set variants = {
-    default: "bg-surface text-text",
-    warning: "bg-warning-light text-warning",
-    success: "bg-success-light text-success",
-    danger:  "bg-danger-light text-danger"
-} %}
-
 <span {{ attributes.defaults({
-    class: "inline-block rounded-full px-3 pt-1.5 pb-0.5 text-small font-normal " ~ (variants[variant] ?? variants.default)
+    class: "inline-block rounded-full px-3 pt-1.5 pb-0.5 text-small font-normal " ~ (
+        variant == 'warning' ? 'bg-warning-light text-warning' :
+        variant == 'success' ? 'bg-success-light text-success' :
+        variant == 'danger'  ? 'bg-danger-light text-danger'  :
+        'bg-surface text-text'
+    )
 }) }}>
     {% block content %}{% endblock %}
 </span>

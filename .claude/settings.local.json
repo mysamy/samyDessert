@@ -8,7 +8,11 @@
       "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:8080/assets/app-DDv-ss8.js)",
       "Bash(php bin/console tailwind:build)",
       "Bash(php bin/console debug:router)",
-      "Bash(php bin/console asset-map:compile)"
+      "Bash(php bin/console asset-map:compile)",
+      "Bash(php -r \"echo ini_get\\(''memory_limit''\\);\")",
+      "Bash(php bin/console debug:router app_produit_show)",
+      "Bash(php bin/console debug:twig --filter=CarouselCard)",
+      "Bash(php bin/console debug:twig)"
     ]
   }
 }

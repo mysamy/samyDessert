@@ -22,46 +22,15 @@
 
     <div data-controller="carousel" class="how__carousel" role="region" aria-roledescription="carrousel" aria-label="Nos spécialités">
 
-      <twig:Molecules:CarouselCard
-        class="flex-col gap-2.5 justify-center"
-        imgSrc="{{ asset('image/tarteFraise.png') }}"
-        imgAlt="Tarte aux fraises"
-        description="Pâte sablée maison, crème pâtissière et fraises fraîches de saison."
-      />
-
-      <twig:Molecules:CarouselCard
-        imgSrc="{{ asset('image/tiramisuChocolat.png') }}"
-        imgAlt="Tiramisu au chocolat"
-        description="Mascarpone onctueux, biscuits imbibés et cacao amer en finition."
-      />
-
-      <twig:Molecules:CarouselCard
-        class="flex-col gap-2.5 justify-center"
-        imgSrc="{{ asset('image/macarons.png') }}"
-        imgAlt="Macarons"
-        description="12 parfums au choix, coques croustillantes et ganaches maison."
-      />
-
-      <twig:Molecules:CarouselCard
-        class="flex-col"
-        imgSrc="{{ asset('image/cheesecake.png') }}"
-        imgAlt="Cheesecake"
-        description="Base biscuitée croustillante, crème onctueuse et coulis de fruits rouges."
-      />
-
-      <twig:Molecules:CarouselCard
-        class="flex-col gap-2.5 justify-center"
-        imgSrc="{{ asset('image/brownies.png') }}"
-        imgAlt="Brownies"
-        description="Moelleux au cœur fondant, pépites de chocolat noir intense."
-      />
-
-      <twig:Molecules:CarouselCard
-        class="flex-col gap-2.5 justify-center"
-        imgSrc="{{ asset('image/cookie.png') }}"
-        imgAlt="Cookies"
-        description="Croustillants à l'extérieur, fondants à l'intérieur, généreux en pépites."
-      />
+      {% for produit in carouselProduits %}
+        <twig:Molecules:CarouselCard
+          class="flex-col gap-2.5 justify-center"
+          imgSrc="{{ produit.imageSrc }}"
+          imgAlt="{{ produit.nom }}"
+          description="{{ produit.description }}"
+          url="{{ path('app_produit_show', { slug: produit.slug }) }}"
+        />
+      {% endfor %}
 
     </div>
 
