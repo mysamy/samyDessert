@@ -29,7 +29,7 @@
           aria-label="Ouvrir le panier"
           data-action="cart-sidebar#open"
         >
-          <div class="btn-cart relative w-fit transition-transform group-hover:scale-110">
+          <div class="cart__btn relative w-fit transition-transform group-hover:scale-110">
             <twig:Atoms:Icon name="bag-shopping" size="3x" :decorative="true" />
             <twig:Atoms:PanierBadge class="absolute top-1/2 left-1/2 [translate:-50%_-35%]" />
           </div>
@@ -64,7 +64,7 @@
             </div>
           </div>
         {% else %}
-          <twig:Atoms:Link href="{{ path('app_login') }}" class="btn-cta-sm">Se connecter</twig:Atoms:Link>
+          <twig:Atoms:Link href="{{ path('app_login') }}" variant="cta" class="px-4 py-2 text-small">Se connecter</twig:Atoms:Link>
         {% endif %}
       </twig:block>
       <twig:block name="mobileActions">
@@ -82,7 +82,7 @@
               <twig:Atoms:Icon name="right-from-bracket" size="sm" :decorative="true" /> Se déconnecter
             </twig:Atoms:Link>
           {% else %}
-            <twig:Atoms:Link href="/connexion" class="btn-cta-sm mt-1">Se connecter</twig:Atoms:Link>
+            <twig:Atoms:Link href="/connexion" variant="cta" class="px-4 py-2 text-small" class="mt-1">Se connecter</twig:Atoms:Link>
           {% endif %}
         </div>
       </twig:block>

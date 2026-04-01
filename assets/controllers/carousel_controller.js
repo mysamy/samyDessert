@@ -119,8 +119,11 @@ class Carousel {
   setStyle() {
     let ratio = this.items.length / this.slidesVisible;
     this.container.style.width = ratio * 100 + "%";
-    this.container.style.transition = `transform ${this.options.transitionDuration}ms ease-in-out`;
-    this.items.forEach((item) => (item.style.width = 100 / this.slidesVisible / ratio + "%"));
+    this.container.style.transition = "none";
+    this.items.forEach((item) => {
+      item.style.transition = "none";
+      item.style.width = 100 / this.slidesVisible / ratio + "%";
+    });
     this.zoom(false);
     this.updateAccessibility(this.currentItem);
   }
@@ -382,6 +385,7 @@ class Carousel {
     } else if (!mobile) {
       this.isMobile = false;
       this.setStyle();
+      this.gotoItem(this.currentItem, false);
     }
     this.moveCallbacks.forEach((cb) => cb(this.currentItem));
   }

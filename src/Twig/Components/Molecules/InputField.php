@@ -15,6 +15,7 @@ final class InputField
     public string $value = '';
 
     public bool $required = false;
+    public bool $optional = false;
     public bool $disabled = false;
     public bool $readonly = false;
 

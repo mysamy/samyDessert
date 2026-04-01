@@ -5,7 +5,7 @@
 {% block body %}
 
 <section class="section-alt">
-  <div class="container-main">
+  <div class="container-main text-center">
     <h1 class="text-4xl font-bold text-text mb-2">Passer commande</h1>
     <p class="text-text-light text-lg">Vérifiez votre commande avant de procéder au paiement.</p>
   </div>
@@ -16,7 +16,7 @@
 
     {# Navigation retour #}
     <div class="mb-8">
-      <twig:Atoms:Link href="{{ path('app_produits') }}" class="inline-flex items-center gap-1 text-sm text-text-light hover:text-accent transition">
+      <twig:Atoms:Link href="{{ path('app_produits') }}" class="inline-flex items-center gap-1 text-small text-text-light hover:text-accent hover:underline transition">
         <twig:Atoms:Icon name="arrow-left" size="sm" :decorative="true" /> Continuer mes achats
       </twig:Atoms:Link>
     </div>
@@ -26,7 +26,7 @@
       <div class="mb-10 rounded-xl border border-border p-5">
         <div class="flex items-center justify-between mb-3">
           <h2 class="text-xl font-bold text-text">Adresse de livraison</h2>
-          <twig:Atoms:Link href="{{ path('app_commande_adresse') }}" class="text-sm text-accent">Modifier</twig:Atoms:Link>
+          <twig:Atoms:Link href="{{ path('app_commande_adresse') }}" class="text-small text-accent hover:underline transition">Modifier</twig:Atoms:Link>
         </div>
         <p class="text-text">{{ adresse.firstName }} {{ adresse.lastName }}</p>
         <p class="text-text-light text-sm">{{ adresse.address1 }}</p>
@@ -70,7 +70,7 @@
       <input type="hidden" name="_token" value="{{ csrf_token('commande') }}">
       <twig:Atoms:Button
         type="submit"
-        class="w-full flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary transition"
+        class="mx-auto flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary hover:scale-105 transition"
         data-submit-once-target="btn"
       >
         <span class="flex items-center gap-3" data-submit-once-target="label">

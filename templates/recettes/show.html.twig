@@ -20,9 +20,9 @@
 
       {# ── Image ── #}
       <div class="lg:w-1/2">
-        {% if recette.imageSrc %}
+        {% if recette.imageName %}
           <img
-            src="{{ recette.imageSrc }}"
+            src="{{ vich_uploader_asset(recette, 'imageFile') }}"
             alt="{{ recette.titre }}"
             class="w-full rounded-2xl object-cover max-h-[500px]"
           >

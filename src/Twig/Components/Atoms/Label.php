@@ -9,4 +9,5 @@ final class Label
 {
     public string $label = '';
     public bool $required = false;
+    public bool $optional = false;
 }

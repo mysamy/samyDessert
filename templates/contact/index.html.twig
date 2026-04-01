@@ -11,7 +11,7 @@
   </div>
 </section>
 
-<section class="py-16 bg-white">
+<section class="section">
   <div class="mx-auto max-w-2xl px-4">
 
     {% for message in app.flashes('success') %}
@@ -81,7 +81,6 @@
         <div class="flex justify-end">
           <twig:Atoms:Button
             type="submit"
-            class="btn-cta"
             data-submit-once-target="btn"
           >
             <span class="flex items-center gap-2" data-submit-once-target="label">

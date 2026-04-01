@@ -1,0 +1,13 @@
+/* ── Thème SamyDessert pour EasyAdmin ── */
+:root {
+    --color-primary:                             #9D174D;
+    --color-primary-dark:                        #5C2309;
+    --sidebar-background-color:                  #3B0F07;
+    --sidebar-brand-background-color:            #2E0B05;
+    --sidebar-brand-color:                       #ffffff;
+    --sidebar-menu-item-color:                   rgba(255, 255, 255, 0.7);
+    --sidebar-menu-item-active-color:            #ffffff;
+    --sidebar-menu-item-active-background-color: rgba(157, 23, 77, 0.45);
+    --sidebar-section-title-color:               rgba(255, 255, 255, 0.35);
+    --link-color:                                #9D174D;
+}

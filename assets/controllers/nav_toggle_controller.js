@@ -5,6 +5,7 @@ export default class extends Controller {
 
   connect() {
     this.isOpen = false
+    this._pendingClose = null
     this.iconOpenTarget.style.display = ''
     this.iconCloseTarget.style.display = 'none'
     this.onResize = () => {
@@ -28,21 +29,27 @@ export default class extends Controller {
 
   open() {
     this.isOpen = true
+    if (this._pendingClose) {
+      this.menuTarget.removeEventListener('animationend', this._pendingClose)
+      this._pendingClose = null
+    }
     this.menuTarget.show()
-    this.menuTarget.classList.remove('nav-menu-leave')
-    this.menuTarget.classList.add('nav-menu-enter')
+    this.menuTarget.classList.remove('nav__menu--leave')
+    this.menuTarget.classList.add('nav__menu--enter')
     this.iconOpenTarget.style.display = 'none'
     this.iconCloseTarget.style.display = ''
   }
 
   close() {
     this.isOpen = false
-    this.menuTarget.classList.remove('nav-menu-enter')
-    this.menuTarget.classList.add('nav-menu-leave')
-    this.menuTarget.addEventListener('animationend', () => {
+    this.menuTarget.classList.remove('nav__menu--enter')
+    this.menuTarget.classList.add('nav__menu--leave')
+    this._pendingClose = () => {
       this.menuTarget.close()
-      this.menuTarget.classList.remove('nav-menu-leave')
-    }, { once: true })
+      this.menuTarget.classList.remove('nav__menu--leave')
+      this._pendingClose = null
+    }
+    this.menuTarget.addEventListener('animationend', this._pendingClose, { once: true })
     this.iconOpenTarget.style.display = ''
     this.iconCloseTarget.style.display = 'none'
   }

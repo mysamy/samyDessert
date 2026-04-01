@@ -38,7 +38,7 @@
           <li>
             <twig:Atoms:Link
               href="{{ path('app_produits') }}{% if recherche %}?q={{ recherche|url_encode }}{% endif %}"
-              class="filter-btn {{ categorieActive == '' ? 'bg-accent text-white' : 'text-text hover:bg-surface' }}"
+              class="block w-full rounded-lg px-4 py-2 font-medium transition text-left text-small {{ categorieActive == '' ? 'bg-accent text-white' : 'text-text hover:bg-surface' }}"
             >
               Tous les desserts
             </twig:Atoms:Link>
@@ -48,7 +48,7 @@
             <li>
               <twig:Atoms:Link
                 href="{{ path('app_produits') }}?categorie={{ slug }}{% if recherche %}&q={{ recherche|url_encode }}{% endif %}"
-                class="filter-btn {{ categorieActive == slug ? 'bg-accent text-white' : 'text-text hover:bg-surface' }}"
+                class="block w-full rounded-lg px-4 py-2 font-medium transition text-left text-small {{ categorieActive == slug ? 'bg-accent text-white' : 'text-text hover:bg-surface' }}"
               >
                 {{ label }}
               </twig:Atoms:Link>

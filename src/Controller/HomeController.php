@@ -17,18 +17,10 @@ final class HomeController extends AbstractController
     {
         $meilleursVendus = $produitRepository->findMeilleursVendus(6);
 
-        $carouselProduits = array_map(
-            fn($p) => [
-                'imageSrc'    => $p->getImageSrc(),
-                'nom'         => $p->getNom(),
-                'description' => $p->getDescription(),
-                'slug'        => $p->getSlug(),
-            ],
-            $produitRepository->findBySlugsOrdered([
-                'tarte-aux-fraises', 'tiramisu', 'macarons-x6',
-                'cheesecake', 'brownies', 'cookies',
-            ])
-        );
+        $carouselProduits = $produitRepository->findBySlugsOrdered([
+            'tarte-aux-fraises', 'tiramisu', 'macarons-x6',
+            'cheesecake', 'brownies', 'cookies',
+        ]);
 
         $user = $this->getUser();
         $produitsFavorisIds = [];

@@ -11,10 +11,7 @@
     <div class="text-center">
       <h1 class="text-5xl font-bold text-text mb-4">SamyDessert</h1>
       <p class="text-xl text-text-light mb-8">Des desserts artisanaux préparés avec passion</p>
-      <twig:Atoms:Link
-        href="{{ path('app_produits') }}"
-        class="btn-cta"
-      >
+      <twig:Atoms:Link href="{{ path('app_produits') }}" variant="cta">
         Voir nos desserts
         <twig:Atoms:Icon name="arrow-right" :decorative="true"/>
       </twig:Atoms:Link>
@@ -25,7 +22,7 @@
       {% for produit in carouselProduits %}
         <twig:Molecules:CarouselCard
           class="flex-col gap-2.5 justify-center"
-          imgSrc="{{ produit.imageSrc }}"
+          imgSrc="{{ produit.imageName ? vich_uploader_asset(produit, 'imageFile') : '' }}"
           imgAlt="{{ produit.nom }}"
           description="{{ produit.description }}"
           url="{{ path('app_produit_show', { slug: produit.slug }) }}"

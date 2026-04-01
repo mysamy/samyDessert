@@ -4,7 +4,7 @@ namespace App\Twig\Components\Atoms;
 
 use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 
-#[AsTwigComponent('Atoms:Badge')]
+#[AsTwigComponent]
 final class Badge
 {
     public string $variant = 'default';

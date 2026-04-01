@@ -35,11 +35,11 @@
       <twig:Molecules:InputField name="lastName" type="text" label="Nom" autocomplete="family-name" :required="true" value="{{ lastNameValue }}" error="{{ lastNameError }}"/>
     </div>
 
-    <twig:Molecules:InputField name="company" type="text" label="Société" autocomplete="organization" value="{{ companyValue }}"/>
+    <twig:Molecules:InputField name="company" type="text" label="Société" autocomplete="organization" :optional="true" value="{{ companyValue }}"/>
 
     <twig:Molecules:InputField name="address1" type="text" label="Adresse" autocomplete="address-line1" :required="true" value="{{ address1Value }}" error="{{ address1Error }}"/>
 
-    <twig:Molecules:InputField name="address2" type="text" label="Complément d'adresse" autocomplete="address-line2" value="{{ address2Value }}"/>
+    <twig:Molecules:InputField name="address2" type="text" label="Complément d'adresse" autocomplete="address-line2" :optional="true" value="{{ address2Value }}"/>
 
     <div class="grid grid-cols-1 gap-4 sm:grid-cols-3">
       <twig:Molecules:InputField name="postalCode" type="text" label="Code postal" autocomplete="postal-code" inputmode="numeric" placeholder="75001" :required="true" value="{{ postalCodeValue }}" error="{{ postalCodeError }}"/>
@@ -47,9 +47,9 @@
       <twig:Molecules:SelectField name="country" label="Pays" :required="true" value="{{ countryValue }}" :options="countries" error="{{ countryError }}"/>
     </div>
 
-    <twig:Molecules:InputField name="phone" type="tel" label="Téléphone" autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78" value="{{ phoneValue }}" error="{{ phoneError }}"/>
+    <twig:Molecules:InputField name="phone" type="tel" label="Téléphone" autocomplete="tel" inputmode="tel" placeholder="06 12 34 56 78" :optional="true" value="{{ phoneValue }}" error="{{ phoneError }}"/>
 
-    <twig:Molecules:TextareaField name="notes" label="Notes de livraison" placeholder="Ex: Digicode, étage, instructions…" value="{{ notesValue }}" help="Optionnel."/>
+    <twig:Molecules:TextareaField name="notes" label="Notes de livraison" placeholder="Ex: Digicode, étage, instructions…" :optional="true" value="{{ notesValue }}"/>
   </twig:Molecules:FormFieldGroup>
 
   <twig:Molecules:FormActions align="end">

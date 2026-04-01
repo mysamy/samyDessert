@@ -6,9 +6,12 @@ use App\Enum\Difficulte;
 use App\Repository\RecetteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 // Entité Recette : représente une recette de pâtisserie publiée sur le site
 #[ORM\Entity(repositoryClass: RecetteRepository::class)]
+#[Vich\Uploadable]
 class Recette
 {
     #[ORM\Id]
@@ -27,8 +30,13 @@ class Recette
     #[ORM\Column(type: Types::TEXT)]
     private string $contenu = '';
 
+    // Fichier image uploadé (non persisté en base, géré par VichUploader)
+    #[Vich\UploadableField(mapping: 'recette_image', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
+
+    // Nom du fichier image stocké dans public/uploads/recettes/
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageSrc = null;
+    private ?string $imageName = null;
 
     // Durée en minutes
     #[ORM\Column(nullable: true)]
@@ -38,8 +46,8 @@ class Recette
     #[ORM\Column(type: 'string', enumType: Difficulte::class, nullable: true)]
     private ?Difficulte $difficulte = null;
 
-    // Produit associé à la recette (optionnel)
-    #[ORM\ManyToOne(targetEntity: Produit::class, inversedBy: 'recettes')]
+    // Produit associé à la recette (optionnel — certaines recettes sont standalone)
+    #[ORM\OneToOne(targetEntity: Produit::class, inversedBy: 'recette')]
     #[ORM\JoinColumn(nullable: true)]
     private ?Produit $produit = null;
 
@@ -76,6 +84,11 @@ class Recette
         return $this->id;
     }
 
+    public function __toString(): string
+    {
+        return $this->titre;
+    }
+
     public function getTitre(): string
     {
         return $this->titre;
@@ -109,14 +122,28 @@ class Recette
         return $this;
     }
 
-    public function getImageSrc(): ?string
+    public function getImageFile(): ?File
     {
-        return $this->imageSrc;
+        return $this->imageFile;
     }
 
-    public function setImageSrc(?string $imageSrc): static
+    public function setImageFile(?File $imageFile): static
     {
-        $this->imageSrc = $imageSrc;
+        $this->imageFile = $imageFile;
+        if ($imageFile !== null) {
+            $this->updatedAt = new \DateTime();
+        }
+        return $this;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName): static
+    {
+        $this->imageName = $imageName;
         return $this;
     }
 

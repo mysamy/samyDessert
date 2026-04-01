@@ -4,11 +4,13 @@ namespace App\Controller\Admin;
 
 use App\Entity\Commande;
 use App\Entity\Produit;
+use App\Entity\Recette;
 use App\Entity\Utilisateur;
 use App\Repository\CommandeRepository;
 use App\Repository\ProduitRepository;
 use App\Repository\UtilisateurRepository;
 use EasyCorp\Bundle\EasyAdminBundle\Attribute\AdminDashboard;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Assets;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
@@ -49,7 +51,14 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('SamyDessert — Administration')
-            ->setFaviconPath('/logotest.svg');
+            ->setFaviconPath('/logotest.svg')
+            ->disableDarkMode();
+    }
+
+    public function configureAssets(): Assets
+    {
+        return Assets::new()
+            ->addCssFile('admin.css');
     }
 
     public function configureMenuItems(): iterable
@@ -58,6 +67,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToRoute('Calendrier', 'fa fa-calendar', 'admin_calendrier');
         yield MenuItem::section('Catalogue');
         yield MenuItem::linkToCrud('Produits', 'fa fa-cake-candles', Produit::class);
+        yield MenuItem::linkToCrud('Recettes', 'fa fa-book-open', Recette::class);
         yield MenuItem::section('Ventes');
         yield MenuItem::linkToCrud('Commandes', 'fa fa-bag-shopping', Commande::class);
         yield MenuItem::section('Utilisateurs');

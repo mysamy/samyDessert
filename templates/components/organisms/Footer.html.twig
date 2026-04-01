@@ -2,13 +2,13 @@
   <div class="mx-auto max-w-7xl px-4 py-12">
 
     {# Haut : marque + réseaux #}
-    <div class="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-8">
-      <div class="text-center sm:text-left">
+    <div class="flex flex-col items-center gap-6 mb-8">
+      <div class="text-center">
         {% if brandLabel %}
           <div class="text-base font-semibold text-text">{{ brandLabel }}</div>
         {% endif %}
         {% if tagline %}
-          <p class="mt-1 text-sm text-text-light">{{ tagline }}</p>
+          <p class="mt-1 text-small text-text-light">{{ tagline }}</p>
         {% endif %}
       </div>
 
@@ -18,7 +18,7 @@
             <twig:Atoms:Link
               href="{{ social.href }}"
               :external="true"
-              class="social-icon text-text-light hover:text-accent"
+              class="inline-block transition hover:rotate-12 hover:scale-110 text-text-light hover:text-accent"
               aria-label="{{ social.label }}"
             >
               <twig:Atoms:Icon name="{{ social.icon }}" variant="{{ social.variant|default('brands') }}" size="xl" :decorative="true" />
@@ -33,20 +33,20 @@
       <twig:Molecules:Nav
         ariaLabel="Navigation pied de page"
         :links="links"
-        class="flex-wrap text-sm gap-4"
+        class="flex-wrap justify-center text-small gap-4"
       />
     {% endif %}
 
     {# Bas : copyright + liens légaux #}
     <div class="mt-8 border-t border-border pt-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
       {% if legalText %}
-        <span class="text-xs text-text-light">{{ legalText }}</span>
+        <span class="text-small text-text-light">{{ legalText }}</span>
       {% endif %}
 
       {% if legalLinks %}
         <div class="flex items-center gap-4">
           {% for link in legalLinks %}
-            <twig:Atoms:Link href="{{ link.href }}" class="text-xs text-text-light hover:text-accent">
+            <twig:Atoms:Link href="{{ link.href }}" class="text-small text-text-light hover:text-accent hover:underline transition">
               {{ link.label }}
             </twig:Atoms:Link>
           {% endfor %}

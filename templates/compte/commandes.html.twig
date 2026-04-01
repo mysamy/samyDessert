@@ -16,7 +16,7 @@
 
   {% if commandes is empty %}
     <p class="text-text-light">Vous n'avez pas encore de commande.</p>
-    <twig:Atoms:Link href="{{ path('app_produits') }}" class="mt-4 inline-block text-accent">Voir nos produits</twig:Atoms:Link>
+    <twig:Atoms:Link href="{{ path('app_produits') }}" class="mt-4 inline-block text-accent underline">Voir nos produits</twig:Atoms:Link>
   {% else %}
     <div class="space-y-6">
       {% for commande in commandes %}

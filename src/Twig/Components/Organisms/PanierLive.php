@@ -8,6 +8,7 @@ use Symfony\UX\LiveComponent\Attribute\LiveAction;
 use Symfony\UX\LiveComponent\Attribute\LiveArg;
 use Symfony\UX\LiveComponent\Attribute\LiveListener;
 use Symfony\UX\LiveComponent\ComponentToolsTrait;
+use Symfony\UX\LiveComponent\Attribute\LiveProp;
 use Symfony\UX\LiveComponent\DefaultActionTrait;
 
 // Live component : affichage complet du panier avec mise à jour en temps réel.
@@ -17,6 +18,10 @@ final class PanierLive
 {
     use DefaultActionTrait;
     use ComponentToolsTrait;
+
+    // true = page /panier (CTA → passer commande), false = sidebar (CTA → voir le panier)
+    #[LiveProp]
+    public bool $isPage = false;
 
     public function __construct(private PanierService $panier) {}
 

@@ -5,12 +5,12 @@
             <a href="{{ url }}" class="flex-1 min-h-0 w-full flex flex-col gap-2.5">
         {% endif %}
         {% if imgSrc %}
-            <div class="flex-1 min-h-0 w-full flex items-center justify-center {{ imgClass }}">
-                <twig:Atoms:Image src="{{ imgSrc }}" alt="{{ imgAlt }}" class="max-w-full max-h-full object-contain" />
+            <div class="flex-1 min-h-0 w-full {{ imgClass }}">
+                <twig:Atoms:Image src="{{ imgSrc }}" alt="{{ imgAlt }}" class="w-full h-full object-contain" />
             </div>
         {% endif %}
         {% if description %}
-            <p class="carousel-card-description text-primary text-center text-base shrink-0 opacity-0 relative z-10">{{ description }}</p>
+            <p class="carousel-card-description text-primary text-center text-base shrink-0 opacity-0 relative z-10 line-clamp-2 h-12">{{ description }}</p>
         {% endif %}
         {% if url %}
             </a>

@@ -3,13 +3,14 @@
 namespace App\Entity;
 
 use App\Repository\ProduitRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 // Entité Produit : représente un produit de pâtisserie vendu sur le site
 #[ORM\Entity(repositoryClass: ProduitRepository::class)]
+#[Vich\Uploadable]
 class Produit
 {
     #[ORM\Id]
@@ -27,9 +28,17 @@ class Produit
     #[ORM\Column(type: Types::DECIMAL, precision: 8, scale: 2)]
     private string $prix = '0.00';
 
-    // Chemin ou URL de l'image du produit
+    // Fichier image uploadé (non persisté en base, géré par VichUploader)
+    #[Vich\UploadableField(mapping: 'produit_image', fileNameProperty: 'imageName')]
+    private ?File $imageFile = null;
+
+    // Nom du fichier image stocké dans public/uploads/produits/
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $imageSrc = null;
+    private ?string $imageName = null;
+
+    // Date de dernière modification (requis par VichUploader pour détecter les changements)
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $updatedAt = null;
 
     // Indique si le produit est visible et achetable sur le site
     #[ORM\Column]
@@ -43,13 +52,9 @@ class Produit
     #[ORM\Column(length: 255, unique: true, nullable: true)]
     private ?string $slug = null;
 
-    // Quantité disponible en stock
-    #[ORM\Column]
-    private int $stock = 0;
-
-    // Recettes liées à ce produit (côté inverse de Recette.produit)
-    #[ORM\OneToMany(mappedBy: 'produit', targetEntity: Recette::class)]
-    private Collection $recettes;
+    // Recette liée à ce produit (nullable — pas encore publiée)
+    #[ORM\OneToOne(mappedBy: 'produit', targetEntity: Recette::class)]
+    private ?Recette $recette = null;
 
     // Date d'ajout du produit au catalogue
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
@@ -58,12 +63,16 @@ class Produit
     public function __construct()
     {
         $this->createdAt = new \DateTime();
-        $this->recettes = new ArrayCollection();
     }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function __toString(): string
+    {
+        return $this->nom;
     }
 
     public function getNom(): string
@@ -99,14 +108,39 @@ class Produit
         return $this;
     }
 
-    public function getImageSrc(): ?string
+    public function getImageFile(): ?File
     {
-        return $this->imageSrc;
+        return $this->imageFile;
     }
 
-    public function setImageSrc(?string $imageSrc): static
+    public function setImageFile(?File $imageFile): static
     {
-        $this->imageSrc = $imageSrc;
+        $this->imageFile = $imageFile;
+        if ($imageFile !== null) {
+            $this->updatedAt = new \DateTime();
+        }
+        return $this;
+    }
+
+    public function getImageName(): ?string
+    {
+        return $this->imageName;
+    }
+
+    public function setImageName(?string $imageName): static
+    {
+        $this->imageName = $imageName;
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
         return $this;
     }
 
@@ -143,26 +177,9 @@ class Produit
         return $this;
     }
 
-    public function getStock(): int
-    {
-        return $this->stock;
-    }
-
-    public function setStock(int $stock): static
-    {
-        $this->stock = $stock;
-        return $this;
-    }
-
-    // Retourne la recette associée (la première liée, ou null)
     public function getRecette(): ?Recette
     {
-        return $this->recettes->first() ?: null;
-    }
-
-    public function getRecettes(): Collection
-    {
-        return $this->recettes;
+        return $this->recette;
     }
 
     public function getCreatedAt(): ?\DateTimeInterface

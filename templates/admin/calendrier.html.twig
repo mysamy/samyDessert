@@ -11,8 +11,14 @@
 {% block main %}
 <div style="padding: 1.5rem;">
 
+    {# Bannière "en cours de développement" #}
+    <div style="display: flex; align-items: center; gap: 0.6rem; background: #fef9c3; border: 1px solid #fde047; border-radius: 0.5rem; padding: 0.75rem 1rem; margin-bottom: 1.5rem; font-size: 0.875rem; color: #713f12;">
+        <span style="font-size: 1.1rem;">🚧</span>
+        <span>Fonctionnalité en cours de développement — non disponible pour le moment.</span>
+    </div>
+
     {# Légende des couleurs de statut #}
-    <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap;">
+    <div style="display: flex; gap: 1.5rem; margin-bottom: 1.5rem; flex-wrap: wrap; opacity: 0.4; pointer-events: none;">
         <span style="display: flex; align-items: center; gap: 0.4rem; font-size: 0.85rem; color: #374151;">
             <span style="display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #f59e0b;"></span> En attente
         </span>
@@ -27,12 +33,14 @@
         </span>
     </div>
 
-    {# Calendrier FullCalendar #}
-    <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.06);">
-        <div
-            data-controller="fullcalendar"
-            data-fullcalendar-events-url-value="{{ path('admin_calendrier_events') }}"
-        ></div>
+    {# Calendrier FullCalendar — grisé #}
+    <div style="position: relative;">
+        <div style="opacity: 0.3; pointer-events: none; filter: grayscale(1); background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.06);">
+            <div
+                data-controller="fullcalendar"
+                data-fullcalendar-events-url-value="{{ path('admin_calendrier_events') }}"
+            ></div>
+        </div>
     </div>
 
 </div>

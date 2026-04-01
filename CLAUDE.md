@@ -37,6 +37,7 @@
 - [ ] Système d'avis (entité `Avis`, note moyenne sur DessertCard)
 - [ ] Commentaires dans le code (PHP + Twig + JS)
 - [ ] Résumé projet + questionnaire d'entraînement pour la soutenance
+- [ ] Gestion des images : VichUploaderBundle + stockage local (`public/uploads/`) + formulaire upload dans l'admin
 
 ## Référence rapide
 

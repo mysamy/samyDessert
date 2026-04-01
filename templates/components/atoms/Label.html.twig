@@ -1,6 +1,7 @@
 <label {{ attributes.defaults({ class: 'text-small font-bold text-text' }) }}>
   {{ label }}
   {% if required %}<span class="text-danger ml-0.5" aria-hidden="true">*</span>{% endif %}
+  {% if optional %}<span class="text-text-light font-normal text-small ml-1">(optionnel)</span>{% endif %}
 </label>
 
 {#

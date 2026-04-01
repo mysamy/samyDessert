@@ -15,6 +15,7 @@ final class TextareaField
     public ?string $placeholder = null;
 
     public bool $required = false;
+    public bool $optional = false;
     public bool $disabled = false;
     public bool $readonly = false;
 

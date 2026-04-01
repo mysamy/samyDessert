@@ -120,6 +120,12 @@ class Utilisateur implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function eraseCredentials(): void {}
 
+    public function __toString(): string
+    {
+        $name = trim(($this->prenom ?? '') . ' ' . ($this->nom ?? ''));
+        return $name !== '' ? $name : $this->email;
+    }
+
     public function getNom(): ?string
     {
         return $this->nom;

@@ -28,8 +28,8 @@
 
         {# Image #}
         <div class="w-20 h-20 shrink-0 rounded-lg overflow-hidden bg-surface">
-          {% if produit.imageSrc %}
-            <img src="{{ produit.imageSrc }}" alt="{{ produit.nom }}" class="w-full h-full object-cover">
+          {% if produit.imageName %}
+            <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt="{{ produit.nom }}" class="w-full h-full object-cover">
           {% else %}
             <div class="w-full h-full flex items-center justify-center text-text-light">
               <twig:Atoms:Icon name="image" :decorative="true" class="text-2xl"/>
@@ -93,7 +93,7 @@
     {# Vider le panier #}
     <twig:Atoms:Button
       type="button"
-      class="nav-link text-sm text-text-light hover:text-danger transition"
+      class="text-sm text-text-light hover:scale-105 transition-transform"
       data-action="live#action"
       data-live-action-param="vider"
     >
@@ -104,11 +104,19 @@
     <div class="text-right">
       <p class="text-sm text-text-light mb-1">Total</p>
       <p class="text-3xl font-bold text-text mb-4">{{ total|prix }}</p>
-      <twig:Atoms:Link href="{{ path('app_panier_index') }}"
-        class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-accent/90 transition">
-        Voir le panier
-        <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-sm"/>
-      </twig:Atoms:Link>
+      {% if isPage %}
+        <twig:Atoms:Link href="{{ path('app_commande') }}"
+          class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-300">
+          Passer commande
+          <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-sm"/>
+        </twig:Atoms:Link>
+      {% else %}
+        <twig:Atoms:Link href="{{ path('app_panier_index') }}"
+          class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-300">
+          Voir le panier
+          <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-sm"/>
+        </twig:Atoms:Link>
+      {% endif %}
     </div>
 
   </div>
