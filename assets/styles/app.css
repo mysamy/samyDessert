@@ -224,12 +224,12 @@ html {
 
 .carousel__prev {
   @apply left-[5px];
-  background-image: url("../image/chevron-left-solid.svg");
+  background-image: url("/images/chevron-left-solid.svg");
 }
 
 .carousel__next {
   @apply right-[5px];
-  background-image: url("../image/chevron-right-solid.svg");
+  background-image: url("/images/chevron-right-solid.svg");
 }
 
 .carousel__next--hidden,

@@ -17,6 +17,9 @@ final class ProductCardGrid
     // IDs des produits en favoris (pour afficher le coeur rempli)
     public array $favorisIds = [];
 
+    // Map productId => noteMoyenne (optionnel)
+    public array $ratingsMap = [];
+
     public function getTitleId(): string
     {
         $base = $this->id ?: 'product-card-grid';

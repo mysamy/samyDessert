@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Produit;
 use App\Entity\Utilisateur;
+use App\Repository\AvisRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ final class ProduitsController extends AbstractController
 {
     // Affiche la liste des produits avec filtre par catégorie et recherche par nom
     #[Route('/produits', name: 'app_produits')]
-    public function index(Request $request, ProduitRepository $produitRepo): Response
+    public function index(Request $request, ProduitRepository $produitRepo, AvisRepository $avisRepo): Response
     {
         $recherche       = trim($request->query->get('q', ''));
         $categorieActive = $request->query->get('categorie', '');
@@ -54,26 +55,41 @@ final class ProduitsController extends AbstractController
             $produitsFavorisIds = $user->getProduitsFavoris()->map(fn($p) => $p->getId())->toArray();
         }
 
+        $notesMap = $avisRepo->findNotesMoyennes($produits);
+
         return $this->render('produits/index.html.twig', [
             'produits'           => $produits,
             'categories'         => $categories,
             'categorieActive'    => $categorieActive,
             'recherche'          => $recherche,
             'produitsFavorisIds' => $produitsFavorisIds,
+            'notesMap'           => $notesMap,
         ]);
     }
 
     // Affiche la page de détail d'un produit
     #[Route('/produits/{slug}', name: 'app_produit_show')]
-    public function show(string $slug, ProduitRepository $produitRepo): Response
+    public function show(string $slug, ProduitRepository $produitRepo, AvisRepository $avisRepo): Response
     {
         $produit = $produitRepo->findOneBy(['slug' => $slug]);
         if (!$produit) {
             throw $this->createNotFoundException('Produit introuvable.');
         }
 
+        $avis        = $avisRepo->findByProduit($produit);
+        $noteMoyenne = $avisRepo->findNoteMoyenne($produit);
+
+        $user    = $this->getUser();
+        $monAvis = null;
+        if ($user instanceof Utilisateur) {
+            $monAvis = $avisRepo->findOneByUserAndProduit($user, $produit);
+        }
+
         return $this->render('produits/show.html.twig', [
-            'produit' => $produit,
+            'produit'     => $produit,
+            'avis'        => $avis,
+            'noteMoyenne' => $noteMoyenne,
+            'monAvis'     => $monAvis,
         ]);
     }
 }

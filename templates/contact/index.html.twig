@@ -18,14 +18,6 @@
       <twig:Molecules:Alert type="success" message="{{ message }}" class="mb-8" />
     {% endfor %}
 
-    {# TEST — à supprimer #}
-    <div class="space-y-4 mb-8">
-      <twig:Molecules:Alert type="info" message="Votre message a bien été envoyé." />
-      <twig:Molecules:Alert type="success" title="Commande confirmée" message="Vous recevrez un email de confirmation." />
-      <twig:Molecules:Alert type="warning" message="Stock limité, commandez vite." />
-      <twig:Molecules:Alert type="error" title="Paiement refusé" message="Vérifiez les informations de votre carte." />
-    </div>
-
     <twig:Organisms:Form
       action="{{ path('app_contact') }}"
       ariaLabel="Formulaire de contact"

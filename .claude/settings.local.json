@@ -12,7 +12,17 @@
       "Bash(php -r \"echo ini_get\\(''memory_limit''\\);\")",
       "Bash(php bin/console debug:router app_produit_show)",
       "Bash(php bin/console debug:twig --filter=CarouselCard)",
-      "Bash(php bin/console debug:twig)"
+      "Bash(php bin/console debug:twig)",
+      "Bash(composer require:*)",
+      "Bash(composer show:*)",
+      "Bash(php bin/phpunit)",
+      "Bash(php -m)",
+      "Bash(php bin/console doctrine:database:create --env=test)",
+      "Bash(php bin/console doctrine:migrations:migrate --env=test --no-interaction)",
+      "Bash(php bin/console doctrine:schema:create --env=test)",
+      "Bash(php bin/phpunit --display-notices)",
+      "Bash(php bin/phpunit -v)",
+      "Bash(php bin/phpunit --filter testAdresseRedirigeVersConnexionSiNonConnecte)"
     ]
   }
 }

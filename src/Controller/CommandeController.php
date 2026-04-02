@@ -18,6 +18,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use App\Entity\Utilisateur;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+// Contrôleur du tunnel de commande : adresse de livraison → récapitulatif → paiement Stripe → confirmation
+// Toutes les routes sont protégées — connexion obligatoire
 #[IsGranted('ROLE_USER')]
 class CommandeController extends AbstractController
 {

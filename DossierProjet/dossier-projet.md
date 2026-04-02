@@ -73,13 +73,13 @@ Annexe C -- Bug OOM BlockStack (exemple de debogage)
 
 Dans le cadre de ma formation de developpeur web et web mobile a l'ESRP Auxilia de Nanterre, j'ai realise le projet SamyDessert comme projet de fin de formation, destine a etre presente devant un jury.
 
-Ce projet a ete commence au debut du mois de decembre et s'inscrit dans une demarche professionnalisante visant a mettre en pratique l'ensemble des competences acquises durant la formation, aussi bien en conception qu'en developpement.
+Ce projet a ete commence au debut du mois de novembre 2025 et s'inscrit dans une demarche professionnalisante visant a mettre en pratique l'ensemble des competences acquises durant la formation, aussi bien en conception qu'en developpement.
 
-SamyDessert est un projet individuel, realise avec l'accompagnement de mon formateur ainsi que de mes deux tuteurs de stage au sein de l'association Creative Handicap. Ces echanges m'ont permis de prendre du recul sur mes choix techniques, de mieux comprendre les attentes du metier et d'ameliorer la qualite globale du projet.
+SamyDessert est un projet individuel, realise avec l'accompagnement de mon formateur à Auxilia : Stéphane ASSABY ainsi que de mes deux tuteurs de stage : Miguel Sevilla et Jean-Baptiste Guérin au sein de l'association Creative Handicap. Ces echanges m'ont permis d'apprendre avec des proffesionnels, de prendre du recul sur mes choix techniques, de mieux comprendre les attentes du metier et d'ameliorer la qualite globale du projet.
 
 Le projet s'appuie egalement sur l'utilisation d'outils modernes, dont certains outils d'intelligence artificielle utilises comme support d'apprentissage, de recherche et d'optimisation. Ces outils ont ete utilises de maniere complementaire a la documentation officielle et aux ressources techniques.
 
-SamyDessert est un projet fictif, mais concu pour repondre a un besoin reel. Il s'agit d'une plateforme e-commerce hybride combinant deux approches : proposer des recettes de desserts gratuites afin d'attirer les utilisateurs, et permettre la commande de gateaux faits maison, simples et accessibles.
+SamyDessert est un projet fictif, mais concu pour repondre a un besoin reel. Il s'agit d'une plateforme e-commerce hybride combinant deux approches : proposer des recettes de desserts gratuites afin d'attirer les utilisateurs, et permettre la commande de gateaux faits maison par un artisan patissier, simples et accessibles.
 
 Ce projet a pour objectif de demontrer ma capacite a concevoir, structurer et developper une application web complete, en prenant en compte les enjeux actuels du web tels que l'accessibilite, l'experience utilisateur, la performance et la maintenabilite du code.
 
@@ -299,6 +299,7 @@ La gestion des assets front-end (JavaScript, CSS) repose sur **AssetMapper**, l'
 - **Mailtrap** permet de tester l'envoi d'emails en environnement de developpement.
 - Des outils comme **Coolors**, **Adobe Color** et **Colorable** ont ete utilises pour definir et tester les palettes de couleurs.
 - Un outil d'analyse d'accessibilite comme **BlooAI** est prevu pour tester le site une fois developpe.
+- **Unsplash** est utilise comme source d'images libres de droits pour les produits et les recettes (photos de patisseries en haute resolution, licence Unsplash gratuite pour usage commercial).
 
 ---
 
@@ -399,7 +400,7 @@ La base de donnees repose sur **MySQL** et est geree via **Doctrine ORM**. Elle 
 Represente un compte client. Stocke l'email (identifiant unique), le mot de passe hache, les informations personnelles (nom, prenom, telephone, adresse) et les roles Symfony. Deux champs specifiques gerent la verification d'email : `isVerified` (booleen) et `verificationToken` (token a usage unique supprime apres validation). Un utilisateur peut avoir plusieurs commandes et plusieurs produits en favoris.
 
 **Produit**
-Represente un dessert vendu sur le site. Contient le nom, la description, le prix (stocke en DECIMAL pour eviter les erreurs d'arrondi), le nom du fichier image (gere par VichUploaderBundle), le stock disponible, un slug SEO-friendly et la date d'ajout. Un produit appartient a une categorie et peut etre associe a une recette.
+Represente un dessert vendu sur le site. Contient le nom, la description, le prix (stocke en DECIMAL pour eviter les erreurs d'arrondi), le nom du fichier image (gere par VichUploaderBundle), un indicateur de disponibilite, un slug SEO-friendly et la date d'ajout. Un produit appartient a une categorie et peut etre associe a une recette.
 
 **Categorie**
 Regroupe les produits et les recettes par type (ex : Tartes, Choux, Petits fours). Possede un nom et un slug unique.
@@ -433,6 +434,16 @@ Utilisateur  >──< Produit        (favoris — relation ManyToMany)
 Le prix est stocke en `DECIMAL(8,2)` plutot qu'en `FLOAT` pour eviter les erreurs d'arrondi sur les calculs financiers. Le prix unitaire est duplique dans `CommandeProduit` pour conserver un historique fiable, independamment des modifications futures du catalogue. Les enums PHP natifs (`StatutCommande`, `Difficulte`) sont utilises pour les colonnes a valeurs controlees, ce qui garantit l'integrite des donnees au niveau du code.
 
 Les images produits et recettes sont gerees par **VichUploaderBundle** : le fichier physique est stocke dans `public/uploads/produits/` ou `public/uploads/recettes/`, et seul le nom du fichier est enregistre en base de donnees. Cette approche evite de stocker des donnees binaires en base.
+
+#### Ajout des images en pratique
+
+Les images du catalogue ont ete preparees manuellement puis integrees de deux facons selon le contexte :
+
+**Via l'interface d'administration (EasyAdmin)** : pour chaque produit ou recette, un champ upload est disponible dans le formulaire d'edition. L'administrateur selectionne une image depuis son poste, VichUploaderBundle la renomme automatiquement (via `SmartUniqueNamer`) pour eviter les conflits, et la depose dans le bon dossier (`public/uploads/produits/` ou `public/uploads/recettes/`). Seul le nom du fichier resultant est enregistre en base.
+
+**Via les fixtures de developpement** : les images preparees (photos libres de droits provenant d'**Unsplash**, au format JPG, PNG ou WebP) ont ete deposees directement dans `public/uploads/produits/` et `public/uploads/recettes/`, puis leur nom de fichier a ete renseigne dans les fixtures PHP (`AppFixtures`). Cette methode permet de charger rapidement un jeu de donnees complet avec des visuels realistes sans passer par l'interface d'administration.
+
+Dans les deux cas, le template Twig utilise la fonction `vich_uploader_asset(produit, 'imageFile')` pour generer l'URL publique de l'image a partir du nom de fichier stocke en base.
 
 ---
 
@@ -773,7 +784,7 @@ La police **Luciole** est chargee localement avec `font-display: swap`, en forma
 
 #### Les controllers PHP
 
-Le back-end est organise autour de **10 controllers** Symfony :
+Le back-end est organise autour de **11 controllers** Symfony :
 
 | Controller                | Route(s)                      | Role                                               |
 |---------------------------|-------------------------------|----------------------------------------------------|
@@ -786,6 +797,7 @@ Le back-end est organise autour de **10 controllers** Symfony :
 | `SecurityController`      | `/connexion`, `/inscription`  | Authentification, inscription, verification email  |
 | `ContactController`       | `/contact`                    | Formulaire de contact avec envoi d'email           |
 | `FavoriController`        | `/favori/{type}/{id}`         | Toggle favori en AJAX (produits et recettes)       |
+| `AvisController`          | `/produits/{slug}/avis`       | Soumission d'un avis note + commentaire            |
 | `MentionsLegalesController` | `/mentions-legales`         | Page statique des mentions legales                 |
 
 **CommandeController**
@@ -801,6 +813,10 @@ Apres le paiement, Stripe redirige vers `/commande/succes` ou le controller enre
 **FavoriController**
 
 Appele exclusivement en AJAX. Il verifie que l'utilisateur est connecte (renvoie un 401 sinon), valide que la requete est bien AJAX, bascule l'etat favori, puis renvoie un JSON `{ favori: true|false }`.
+
+**AvisController**
+
+Accessible uniquement aux utilisateurs connectes (`#[IsGranted('ROLE_USER')]`). Valide le token CSRF, verifie que la note est comprise entre 1 et 5, puis cree ou met a jour l'avis de l'utilisateur sur le produit (un seul avis par couple utilisateur/produit, grace a la contrainte unique en base). L'avis est marque comme valide (`isValide = true`) directement a la soumission. La note moyenne et la liste des avis sont calcules par `AvisRepository` et affiches sur la fiche produit.
 
 #### Les services
 
@@ -1003,9 +1019,106 @@ La navigation au clavier a ete verifiee sur tous les composants interactifs. Les
 
 L'interface a ete verifiee aux trois breakpoints (mobile, tablette, desktop) via les outils de developpement du navigateur.
 
-### Pistes d'amelioration
+### Tests automatises
 
-Dans une version plus avancee : tests unitaires PHP avec PHPUnit, tests fonctionnels Symfony pour les controleurs, tests end-to-end avec Playwright.
+En complement des tests manuels, une suite de tests automatises a ete mise en place avec **PHPUnit 12**, **Symfony WebTestCase** et **Zenstruck Foundry v2**.
+
+#### Infrastructure de test
+
+| Outil | Role |
+|-------|------|
+| PHPUnit 12 | Framework de test PHP |
+| Symfony WebTestCase | Client HTTP simulant un navigateur pour les tests fonctionnels |
+| Zenstruck Foundry v2 | Fabrication d'entites en base de donnees (fixtures de test) |
+| FakerPHP | Generation de donnees realistes (emails, noms, prix...) |
+
+Chaque test s'execute sur une base de donnees isolee (`samydessert_test`). Le trait `ResetDatabase` de Foundry reiitialise la base entre chaque test, garantissant l'independance des cas.
+
+#### Factories de donnees
+
+Deux factories ont ete creees pour generer des entites de test sans effort :
+
+- **`UtilisateurFactory`** : cree un utilisateur avec un email unique, un mot de passe hache (`motdepasse123`) et un compte verifie par defaut.
+- **`ProduitFactory`** : cree un produit avec un nom, un slug, un prix et une image generee par Faker.
+
+```php
+$user    = UtilisateurFactory::createOne(['email' => 'test@test.com']);
+$produit = ProduitFactory::createOne(['prix' => '9.90']);
+$client->loginUser($user);
+```
+
+#### Categories de tests
+
+**Tests unitaires** (sans base de donnees, sans requete HTTP) :
+
+| Fichier | Ce qui est verifie |
+|---------|-------------------|
+| `tests/Service/PanierServiceTest.php` | Ajout, retrait, suppression, vidage et calcul du total panier (9 tests) |
+| `tests/Entity/CommandeTest.php` | Calcul du total d'une commande, ajout de lignes, statuts (8 tests) |
+| `tests/Service/MailerServiceTest.php` | Envoi d'emails (confirmation commande, contact) via mailer mocke (5 tests) |
+| `tests/Security/UserCheckerTest.php` | Blocage de connexion si compte non verifie, message d'erreur (4 tests) |
+
+**Tests fonctionnels** (requetes HTTP sur le vrai noyau Symfony) :
+
+| Fichier | Ce qui est verifie |
+|---------|-------------------|
+| `tests/Controller/PagesTest.php` | Codes HTTP des pages publiques (200, 301, 404) — 11 tests |
+| `tests/Controller/ContactControllerTest.php` | Affichage et soumission du formulaire de contact (2 tests) |
+| `tests/Controller/ConnexionControllerTest.php` | Connexion valide, echec, redirection (3 tests) |
+| `tests/Controller/InscriptionControllerTest.php` | Inscription valide, email deja utilise, champs manquants (5 tests) |
+| `tests/Controller/PanierControllerTest.php` | Ajout, retrait, vidage du panier via les routes POST (6 tests) |
+| `tests/Controller/CommandeControllerTest.php` | Acces sans connexion, panier vide, saisie d'adresse, CSRF (9 tests) |
+| `tests/Controller/CompteControllerTest.php` | Acces protege, affichage de l'email (3 tests) |
+| `tests/Controller/FavoriControllerTest.php` | Toggle favori (ajout/retrait), reponse JSON, auth requise (8 tests) |
+
+#### Exemple : test du toggle favori
+
+```php
+public function testToggleProduitAjouteFavori(): void
+{
+    $client  = static::createClient();
+    $user    = UtilisateurFactory::createOne();
+    $produit = ProduitFactory::createOne();
+    $client->loginUser($user);
+
+    $client->request('POST', '/favori/produit/' . $produit->getId(), [], [], [
+        'HTTP_X-Requested-With' => 'XMLHttpRequest',
+    ]);
+
+    $this->assertResponseIsSuccessful();
+    $data = json_decode($client->getResponse()->getContent(), true);
+    $this->assertTrue($data['favori']); // premier toggle → ajout
+}
+```
+
+#### Exemple : test CSRF sur le formulaire d'adresse
+
+Pour les formulaires proteges par un token CSRF, le test recupere le token depuis la page rendue avant de soumettre :
+
+```php
+$crawler   = $client->request('GET', '/commande/adresse');
+$csrfToken = $crawler->filter('input[name="_token"]')->attr('value');
+
+$client->request('POST', '/commande/adresse', [
+    'firstName' => 'Jean', 'lastName' => 'Dupont',
+    'address1'  => '12 rue de la Paix', 'postalCode' => '75001',
+    'city'      => 'Paris', 'country' => 'FR',
+    '_token'    => $csrfToken,
+]);
+$this->assertResponseRedirects('/commande');
+```
+
+#### Resultats
+
+```
+OK (74 tests, 132 assertions)
+```
+
+Les 74 tests s'executent avec la commande :
+
+```bash
+php bin/phpunit
+```
 
 ---
 
@@ -1054,21 +1167,20 @@ Le deploiement en production n'est pas encore realise. Les etapes prevues seraie
 
 **Fonctionnalites a finaliser**
 - Afficher et masquer le mot de passe sur les formulaires de connexion et d'inscription
-- Emails transactionnels : confirmation de commande avec recapitulatif detaille
-- Systeme d'avis : permettre aux utilisateurs de laisser une note et un commentaire sur un produit, avec affichage de la note moyenne sur les cartes produits
 - Calendrier des commandes dans l'administration
 - Gestion des variations de produits (tailles, parfums)
+- Permettre aux utilisateurs de proposer leurs propres recettes
 
 **Ameliorations techniques**
-- Renforcer le tunnel de paiement avec un webhook Stripe
+- Renforcer le tunnel de paiement avec un webhook Stripe (actuellement la commande est enregistree cote serveur uniquement sur la redirection `/commande/succes`, sans verification cryptographique Stripe)
 - Ajouter une expiration sur les tokens de verification d'email
-- Ameliorer la protection du formulaire de contact (token CSRF, anti-spam)
-- Mettre en place des tests automatises (PHPUnit, Playwright)
+- Ameliorer la protection du formulaire de contact (anti-spam)
+- Moderation des avis depuis l'administration (actuellement les avis sont valides automatiquement)
 
 **Infrastructure**
 - Deplacer le dossier `docker/` et `docker-compose.yml` en dehors du projet
-- Mettre en place un pipeline de deploiement continu
-- Migrer le stockage des images vers un service externe (S3 ou equivalent) pour la production
+- Mettre en place un pipeline de deploiement continu (CI/CD)
+- Migrer le stockage des images vers un service externe (AWS S3 ou equivalent) pour la production, afin que les uploads ne soient pas perdus lors d'un redeploi
 
 ---
 
@@ -1098,7 +1210,7 @@ Le point que je considere comme le plus reussi est la partie UI/UX design ainsi 
 
 **Ce que j'ameliorerais**
 
-Si j'avais eu plus de temps, j'aurais ajoute une section de commentaires et de notation pour les recettes et les produits, permis aux utilisateurs de proposer leurs propres recettes, et explore le modele marketplace (vente par des tiers). Ces evolutions feraient de SamyDessert une plateforme plus collaborative.
+Si j'avais eu plus de temps, j'aurais mis en place la moderation des avis depuis l'administration, permis aux utilisateurs de proposer leurs propres recettes, et explore le modele marketplace (vente par des tiers). Ces evolutions feraient de SamyDessert une plateforme plus collaborative.
 
 ---
 
@@ -1116,15 +1228,109 @@ Ce projet demontre ma capacite a concevoir, structurer et developper une applica
 
 Afin de mieux visualiser la structure des donnees du projet, un schema relationnel a ete realise avec l'outil DBDiagram.
 
-*[Capture : schema relationnel DBDiagram a ajouter]*
-
 Ce schema met en evidence les differentes entites du projet ainsi que leurs relations :
 
 - un utilisateur peut posseder plusieurs commandes
 - une commande est composee de plusieurs lignes (CommandeProduit)
 - un produit peut apparaitre dans plusieurs commandes
 - une categorie regroupe plusieurs produits et recettes
-- un utilisateur peut ajouter des produits en favoris
+- un utilisateur peut ajouter des produits et des recettes en favoris
+- un utilisateur peut laisser un avis (note + commentaire) par produit
+
+```dbml
+Table utilisateur {
+  id int [pk, increment]
+  email varchar(180) [not null, unique]
+  roles json [not null]
+  password varchar(255) [not null]
+  nom varchar(100) [null]
+  prenom varchar(100) [null]
+  telephone varchar(20) [null]
+  adresse varchar(255) [null]
+  ville varchar(100) [null]
+  code_postal varchar(10) [null]
+}
+
+Table categorie {
+  id int [pk, increment]
+  nom varchar(100) [not null]
+  slug varchar(100) [not null, unique]
+}
+
+Table produit {
+  id int [pk, increment]
+  nom varchar(255) [not null]
+  description text [null]
+  prix decimal(8,2) [not null]
+  image_name varchar(255) [null]
+  disponible boolean [not null, default: true]
+  slug varchar(255) [not null, unique]
+  created_at datetime [not null]
+  updated_at datetime [null]
+  categorie_id int [null, ref: > categorie.id]
+}
+
+Table recette {
+  id int [pk, increment]
+  titre varchar(255) [not null]
+  slug varchar(255) [not null, unique]
+  description text [null]
+  contenu text [not null]
+  image_name varchar(255) [null]
+  duree int [null]
+  portions int [null]
+  difficulte varchar(20) [null]
+  is_published boolean [not null, default: false]
+  created_at datetime [not null]
+  updated_at datetime [null]
+  categorie_id int [null, ref: > categorie.id]
+  produit_id int [null, ref: > produit.id]
+}
+
+Table commande {
+  id int [pk, increment]
+  utilisateur_id int [not null, ref: > utilisateur.id]
+  date_commande datetime [not null]
+  statut varchar(50) [not null]
+  total decimal(8,2) [not null]
+  reference varchar(50) [null]
+  adresse_livraison varchar(255) [null]
+  ville varchar(100) [null]
+  code_postal varchar(10) [null]
+  notes text [null]
+}
+
+Table commande_produit {
+  commande_id int [pk, ref: > commande.id]
+  produit_id int [pk, ref: > produit.id]
+  quantite int [not null, default: 1]
+  prix_unitaire decimal(8,2) [not null]
+}
+
+Table avis {
+  id int [pk, increment]
+  utilisateur_id int [not null, ref: > utilisateur.id]
+  produit_id int [not null, ref: > produit.id]
+  note int [not null]
+  commentaire text [null]
+  is_valide boolean [not null, default: false]
+  created_at datetime [not null]
+
+  indexes {
+    (utilisateur_id, produit_id) [unique]
+  }
+}
+
+Table utilisateur_produit_favori {
+  utilisateur_id int [ref: > utilisateur.id]
+  produit_id int [ref: > produit.id]
+}
+
+Table utilisateur_recette_favori {
+  utilisateur_id int [ref: > utilisateur.id]
+  recette_id int [ref: > recette.id]
+}
+```
 
 ---
 

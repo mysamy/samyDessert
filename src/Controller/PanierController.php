@@ -8,6 +8,8 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
+// Contrôleur du panier : affichage et actions (ajouter, retirer, supprimer, vider)
+// Le panier est stocké en session via PanierService, sans base de données
 #[Route('/panier', name: 'app_panier_')]
 final class PanierController extends AbstractController
 {

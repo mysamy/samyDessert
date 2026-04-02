@@ -98,4 +98,116 @@
   </div>
 </section>
 
+{# ── Section Avis ── #}
+<section class="section-alt" aria-labelledby="avis-titre">
+  <div class="container-main">
+
+    <h2 id="avis-titre" class="section-title mb-8">
+      Avis clients
+      {% if noteMoyenne %}
+        <span class="text-accent text-2xl font-bold ml-3">{{ noteMoyenne }}/5</span>
+        <span class="text-text-light text-base font-normal ml-1">({{ avis|length }} avis)</span>
+      {% endif %}
+    </h2>
+
+    {# ── Liste des avis ── #}
+    {% if avis is empty %}
+      <p class="text-text-light text-sm mb-8">Aucun avis pour l'instant. Soyez le premier à en laisser un !</p>
+    {% else %}
+      <div class="grid gap-4 mb-10 sm:grid-cols-2 lg:grid-cols-3">
+        {% for a in avis %}
+          <article class="bg-surface rounded-2xl border border-border p-5 flex flex-col gap-2">
+            <div class="flex items-center justify-between">
+              <span class="font-semibold text-text text-sm">
+                {{ a.utilisateur.prenom ?? a.utilisateur.email|split('@')[0] }}
+              </span>
+              <time class="text-xs text-text-light" datetime="{{ a.createdAt|date('Y-m-d') }}">
+                {{ a.createdAt|date('d/m/Y') }}
+              </time>
+            </div>
+            <div class="flex gap-0.5" aria-label="Note : {{ a.note }} sur 5">
+              {% for i in 1..5 %}
+                <twig:Atoms:Icon
+                  name="star"
+                  :decorative="true"
+                  class="{{ i <= a.note ? 'text-star' : 'text-border' }}"
+                />
+              {% endfor %}
+            </div>
+            {% if a.commentaire %}
+              <p class="text-text-light text-sm leading-relaxed">{{ a.commentaire }}</p>
+            {% endif %}
+          </article>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# ── Formulaire d'avis ── #}
+    {% if app.user %}
+      <div class="bg-surface rounded-2xl border border-border p-6 max-w-lg">
+        <h3 class="font-semibold text-text mb-4">
+          {{ monAvis ? 'Modifier votre avis' : 'Laisser un avis' }}
+        </h3>
+        <form
+          action="{{ path('app_avis_submit', { slug: produit.slug }) }}"
+          method="POST"
+          class="flex flex-col gap-4"
+        >
+          <input type="hidden" name="_token" value="{{ csrf_token('avis_' ~ produit.id) }}">
+
+          {# Étoiles interactives #}
+          <fieldset>
+            <legend class="text-sm font-medium text-text mb-2">Note <span class="text-danger">*</span></legend>
+            <div class="flex gap-2" role="group">
+              {% for i in 1..5 %}
+                <label class="cursor-pointer group">
+                  <input
+                    type="radio"
+                    name="note"
+                    value="{{ i }}"
+                    class="sr-only peer"
+                    {% if monAvis and monAvis.note == i %}checked{% endif %}
+                    required
+                  >
+                  <twig:Atoms:Icon
+                    name="star"
+                    :decorative="true"
+                    class="text-2xl text-border peer-checked:text-star transition-colors group-hover:text-star"
+                  />
+                  <span class="sr-only">{{ i }} étoile{{ i > 1 ? 's' : '' }}</span>
+                </label>
+              {% endfor %}
+            </div>
+          </fieldset>
+
+          {# Commentaire #}
+          <div>
+            <label for="commentaire" class="block text-sm font-medium text-text mb-1">Commentaire <span class="text-text-light font-normal">(facultatif)</span></label>
+            <textarea
+              id="commentaire"
+              name="commentaire"
+              rows="3"
+              maxlength="500"
+              class="w-full rounded-xl border border-border bg-bg px-4 py-2 text-sm text-text placeholder:text-text-light focus:outline-none focus:ring-2 focus:ring-accent/50 resize-none"
+              placeholder="Partagez votre expérience..."
+            >{{ monAvis ? monAvis.commentaire : '' }}</textarea>
+          </div>
+
+          <div class="flex justify-end">
+            <twig:Atoms:Button type="submit" variant="primary">
+              {{ monAvis ? 'Mettre à jour' : 'Publier mon avis' }}
+            </twig:Atoms:Button>
+          </div>
+        </form>
+      </div>
+    {% else %}
+      <p class="text-sm text-text-light">
+        <twig:Atoms:Link href="{{ path('app_login') }}" class="text-accent font-medium underline">Connectez-vous</twig:Atoms:Link>
+        pour laisser un avis.
+      </p>
+    {% endif %}
+
+  </div>
+</section>
+
 {% endblock %}

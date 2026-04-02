@@ -14,6 +14,8 @@ use Symfony\Component\Security\Csrf\CsrfToken;
 use Symfony\Component\Security\Csrf\CsrfTokenManagerInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+// Contrôleur de l'espace client : profil, historique des commandes, annulation
+// Toutes les routes sont protégées par IsGranted('ROLE_USER') — connexion obligatoire
 #[IsGranted('ROLE_USER')]
 #[Route('/mon-compte', name: 'app_compte_')]
 class CompteController extends AbstractController
