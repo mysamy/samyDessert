@@ -1,0 +1,71 @@
+<twig:Organisms:Form
+  action="{{ action }}"
+  ariaLabel="Formulaire de contact"
+  class="flex flex-col gap-6"
+  data-controller="submit-once"
+  data-action="submit->submit-once#submit"
+>
+  <twig:block name="content">
+
+    <div class="grid gap-4 sm:grid-cols-2">
+      <twig:Molecules:InputField
+        name="nom"
+        label="Nom"
+        placeholder="Votre nom"
+        :required="true"
+        autocomplete="name"
+      />
+      <twig:Molecules:InputField
+        name="email"
+        type="email"
+        label="Email"
+        placeholder="votre@email.fr"
+        :required="true"
+        autocomplete="email"
+      />
+    </div>
+
+    <twig:Molecules:SelectField
+      name="sujet"
+      label="Sujet"
+      placeholder="Choisissez un sujet"
+      :required="true"
+      :options="[
+        { value: 'commande',  label: 'Commande sur mesure' },
+        { value: 'info',      label: 'Renseignement produit' },
+        { value: 'livraison', label: 'Livraison' },
+        { value: 'autre',     label: 'Autre' }
+      ]"
+    />
+
+    <twig:Molecules:TextareaField
+      name="message"
+      label="Message"
+      placeholder="Décrivez votre demande..."
+      :required="true"
+      :rows="6"
+    />
+
+    <div class="flex justify-end">
+      <twig:Atoms:Button
+        type="submit"
+        data-submit-once-target="btn"
+      >
+        <span class="flex items-center gap-2" data-submit-once-target="label">
+          Envoyer le message
+          <twig:Atoms:Icon name="paper-plane" :decorative="true"/>
+        </span>
+        <twig:Atoms:Spinner size="sm" ariaLabel="Envoi en cours" class="hidden" data-submit-once-target="spinner" />
+      </twig:Atoms:Button>
+    </div>
+
+  </twig:block>
+</twig:Organisms:Form>
+
+{#
+  Props (* = obligatoire) :
+  - action*  string — URL de soumission du formulaire
+
+  Utilisation :
+  <twig:Organisms:ContactForm action="{{ path('app_contact') }}" />
+#}

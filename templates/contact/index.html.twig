@@ -6,8 +6,8 @@
 
 <section class="section-alt">
   <div class="container-main">
-    <h1 class="text-4xl font-bold text-text mb-2">Contactez-nous</h1>
-    <p class="text-text-light text-lg">Une question, une commande sur mesure ? Écrivez-nous.</p>
+    <h1 class="text-h1 font-bold text-text mb-2">Contactez-nous</h1>
+    <p class="text-text-light text-body">Une question, une commande sur mesure ? Écrivez-nous.</p>
   </div>
 </section>
 
@@ -18,73 +18,7 @@
       <twig:Molecules:Alert type="success" message="{{ message }}" class="mb-8" />
     {% endfor %}
 
-    <twig:Organisms:Form
-      action="{{ path('app_contact') }}"
-      ariaLabel="Formulaire de contact"
-      class="flex flex-col gap-6"
-      data-controller="submit-once"
-      data-action="submit->submit-once#submit"
-    >
-      <twig:block name="content">
-
-        {# Nom + Email côte à côte sur grand écran #}
-        <div class="grid gap-4 sm:grid-cols-2">
-          <twig:Molecules:InputField
-            name="nom"
-            label="Nom"
-            placeholder="Votre nom"
-            :required="true"
-            autocomplete="name"
-          />
-          <twig:Molecules:InputField
-            name="email"
-            type="email"
-            label="Email"
-            placeholder="votre@email.fr"
-            :required="true"
-            autocomplete="email"
-          />
-        </div>
-
-        {# Sujet #}
-        <twig:Molecules:SelectField
-          name="sujet"
-          label="Sujet"
-          placeholder="Choisissez un sujet"
-          :required="true"
-          :options="[
-            { value: 'commande', label: 'Commande sur mesure' },
-            { value: 'info',     label: 'Renseignement produit' },
-            { value: 'livraison',label: 'Livraison' },
-            { value: 'autre',    label: 'Autre' }
-          ]"
-        />
-
-        {# Message #}
-        <twig:Molecules:TextareaField
-          name="message"
-          label="Message"
-          placeholder="Décrivez votre demande..."
-          :required="true"
-          :rows="6"
-        />
-
-        {# Submit #}
-        <div class="flex justify-end">
-          <twig:Atoms:Button
-            type="submit"
-            data-submit-once-target="btn"
-          >
-            <span class="flex items-center gap-2" data-submit-once-target="label">
-              Envoyer le message
-              <twig:Atoms:Icon name="paper-plane" :decorative="true"/>
-            </span>
-            <twig:Atoms:Spinner size="sm" ariaLabel="Envoi en cours" class="hidden" data-submit-once-target="spinner" />
-          </twig:Atoms:Button>
-        </div>
-
-      </twig:block>
-    </twig:Organisms:Form>
+    <twig:Organisms:ContactForm action="{{ path('app_contact') }}" />
 
   </div>
 </section>
@@ -95,29 +29,29 @@
     <div class="grid gap-8 sm:grid-cols-3 text-center">
 
       <div class="flex flex-col items-center gap-3">
-        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-xl">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-body">
           <twig:Atoms:Icon name="location-dot" :decorative="true"/>
         </div>
         <h3 class="font-semibold text-text">Adresse</h3>
-        <p class="text-text-light text-sm">12 rue de la Pâtisserie<br>75001 Paris</p>
+        <p class="text-text-light text-small">12 rue de la Pâtisserie<br>75001 Paris</p>
       </div>
 
       <div class="flex flex-col items-center gap-3">
-        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-xl">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-body">
           <twig:Atoms:Icon name="phone" :decorative="true"/>
         </div>
         <h3 class="font-semibold text-text">Téléphone</h3>
-        <twig:Atoms:Link href="tel:+33123456789" class="text-accent text-sm">
+        <twig:Atoms:Link href="tel:+33123456789" class="text-accent text-small">
           01 23 45 67 89
         </twig:Atoms:Link>
       </div>
 
       <div class="flex flex-col items-center gap-3">
-        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-xl">
+        <div class="flex items-center justify-center w-12 h-12 rounded-full bg-primary-light text-primary text-body">
           <twig:Atoms:Icon name="clock" :decorative="true"/>
         </div>
         <h3 class="font-semibold text-text">Horaires</h3>
-        <p class="text-text-light text-sm">Lun – Sam : 9h – 19h<br>Dimanche : fermé</p>
+        <p class="text-text-light text-small">Lun – Sam : 9h – 19h<br>Dimanche : fermé</p>
       </div>
 
     </div>

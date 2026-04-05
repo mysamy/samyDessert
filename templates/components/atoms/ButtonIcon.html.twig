@@ -1,7 +1,7 @@
 {% set sizes = {
-  sm: 'w-7 h-7 text-xs',
-  md: 'w-8 h-8 text-sm',
-  lg: 'w-10 h-10 text-base'
+  sm: 'w-7 h-7 text-small',
+  md: 'w-8 h-8 text-small',
+  lg: 'w-10 h-10 text-small'
 } %}
 
 {% set variants = {
@@ -10,7 +10,7 @@
   ghost:   'bg-transparent text-text-light hover:text-danger'
 } %}
 
-{% set base = 'inline-flex items-center justify-center rounded-full transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:pointer-events-none' %}
+{% set base = 'inline-flex items-center justify-center rounded-full transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent disabled:opacity-50 disabled:pointer-events-none' %}
 
 <button
   type="{{ type }}"

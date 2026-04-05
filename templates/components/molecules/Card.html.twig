@@ -1,6 +1,6 @@
-<div {{ attributes.defaults({ class: 'bg-surface border border-border rounded-xl p-6 shadow-sm' }) }}>
+<div {{ attributes.defaults({ class: 'bg-surface border border-border rounded-md p-6 shadow-card' }) }}>
   {% if title %}
-    <{{ titleTag }} class="text-lg font-semibold text-text mb-4">
+    <{{ titleTag }} class="text-body font-semibold text-text mb-4">
       {% if icon %}<twig:Atoms:Icon name="{{ icon }}" :decorative="true" class="mr-2"/>{% endif %}
       {{ title }}
     </{{ titleTag }}>

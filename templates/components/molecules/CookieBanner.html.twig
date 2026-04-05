@@ -6,7 +6,7 @@
   {{ attributes.defaults({ class: 'fixed bottom-0 left-0 right-0 z-[100] m-0 max-w-full w-full border-t-2 border-accent/30 bg-text shadow-2xl p-0 open:flex' }) }}
 >
   <div class="container-main flex flex-col sm:flex-row items-center justify-between gap-6 py-6">
-    <p id="consent-banner-message" class="text-base text-white text-center sm:text-left">
+    <p id="consent-banner-message" class="text-small text-white text-center sm:text-left">
       {{ message }}
       {% if policyUrl %}
         <twig:Atoms:Link href="{{ policyUrl }}" class="text-accent underline ml-1">En savoir plus</twig:Atoms:Link>
@@ -23,7 +23,7 @@
       <twig:Atoms:Button
         variant="ghost"
         size="md"
-        class="rounded-full border border-white/30 text-white hover:bg-white/10"
+        class="rounded-full border border-white/30 text-white hover:bg-bg/10"
         data-action="consent-banner#reject"
       >
         {{ rejectLabel }}

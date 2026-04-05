@@ -8,33 +8,33 @@
   {# ── Cartes de stats ── #}
   <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin-bottom: 2rem;">
 
-    <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.06);">
-      <div style="background: #fef3c7; border-radius: 0.5rem; padding: 0.75rem;">
-        <i class="fa fa-cake-candles" style="color: #d97706; font-size: 1.5rem;"></i>
+    <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: var(--shadow-card);">
+      <div style="background: var(--color-warning-light); border-radius: var(--radius-sm); padding: 0.75rem;">
+        <i class="fa fa-cake-candles" style="color: var(--color-warning); font-size: 1.5rem;"></i>
       </div>
       <div>
-        <div style="font-size: 2rem; font-weight: 700; color: #111827;">{{ nbProduits }}</div>
-        <div style="color: #6b7280; font-size: 0.875rem;">Produits</div>
+        <div style="font-size: var(--text-h3); font-weight: 700; color: var(--color-text);">{{ nbProduits }}</div>
+        <div style="color: var(--color-text-light); font-size: var(--text-small);">Produits</div>
       </div>
     </div>
 
-    <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.06);">
-      <div style="background: #dcfce7; border-radius: 0.5rem; padding: 0.75rem;">
-        <i class="fa fa-bag-shopping" style="color: #16a34a; font-size: 1.5rem;"></i>
+    <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: var(--shadow-card);">
+      <div style="background: var(--color-success-light); border-radius: var(--radius-sm); padding: 0.75rem;">
+        <i class="fa fa-bag-shopping" style="color: var(--color-success); font-size: 1.5rem;"></i>
       </div>
       <div>
-        <div style="font-size: 2rem; font-weight: 700; color: #111827;">{{ nbCommandes }}</div>
-        <div style="color: #6b7280; font-size: 0.875rem;">Commandes</div>
+        <div style="font-size: var(--text-h3); font-weight: 700; color: var(--color-text);">{{ nbCommandes }}</div>
+        <div style="color: var(--color-text-light); font-size: var(--text-small);">Commandes</div>
       </div>
     </div>
 
-    <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,.06);">
-      <div style="background: #ede9fe; border-radius: 0.5rem; padding: 0.75rem;">
-        <i class="fa fa-users" style="color: #7c3aed; font-size: 1.5rem;"></i>
+    <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem; display: flex; align-items: center; gap: 1rem; box-shadow: var(--shadow-card);">
+      <div style="background: var(--color-accent-light); border-radius: var(--radius-sm); padding: 0.75rem;">
+        <i class="fa fa-users" style="color: var(--color-accent); font-size: 1.5rem;"></i>
       </div>
       <div>
-        <div style="font-size: 2rem; font-weight: 700; color: #111827;">{{ nbUtilisateurs }}</div>
-        <div style="color: #6b7280; font-size: 0.875rem;">Utilisateurs</div>
+        <div style="font-size: var(--text-h3); font-weight: 700; color: var(--color-text);">{{ nbUtilisateurs }}</div>
+        <div style="color: var(--color-text-light); font-size: var(--text-small);">Utilisateurs</div>
       </div>
     </div>
 
@@ -44,43 +44,43 @@
   <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
 
     {# Colonne gauche : dernières commandes #}
-    <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.06);">
-      <h3 style="margin: 0 0 1rem; font-size: 1rem; font-weight: 600; color: #111827;">
-        <i class="fa fa-clock-rotate-left" style="margin-right: 0.5rem; color: #6b7280;"></i>
+    <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-card);">
+      <h3 style="margin: 0 0 1rem; font-size: var(--text-small); font-weight: 600; color: var(--color-text);">
+        <i class="fa fa-clock-rotate-left" style="margin-right: 0.5rem; color: var(--color-text-light);"></i>
         Dernières commandes
       </h3>
       {% if dernieresCommandes is empty %}
-        <p style="color: #9ca3af; font-size: 0.875rem;">Aucune commande pour le moment.</p>
+        <p style="color: var(--color-text-light); font-size: var(--text-small);">Aucune commande pour le moment.</p>
       {% else %}
-        <table style="width: 100%; border-collapse: collapse; font-size: 0.875rem;">
+        <table style="width: 100%; border-collapse: collapse; font-size: var(--text-small);">
           <thead>
-            <tr style="border-bottom: 1px solid #f3f4f6;">
-              <th style="text-align: left; padding: 0.5rem 0.25rem; color: #6b7280; font-weight: 500;">Référence</th>
-              <th style="text-align: left; padding: 0.5rem 0.25rem; color: #6b7280; font-weight: 500;">Client</th>
-              <th style="text-align: right; padding: 0.5rem 0.25rem; color: #6b7280; font-weight: 500;">Total</th>
-              <th style="text-align: right; padding: 0.5rem 0.25rem; color: #6b7280; font-weight: 500;">Statut</th>
+            <tr style="border-bottom: 1px solid var(--color-border);">
+              <th style="text-align: left; padding: 0.5rem 0.25rem; color: var(--color-text-light); font-weight: 500;">Référence</th>
+              <th style="text-align: left; padding: 0.5rem 0.25rem; color: var(--color-text-light); font-weight: 500;">Client</th>
+              <th style="text-align: right; padding: 0.5rem 0.25rem; color: var(--color-text-light); font-weight: 500;">Total</th>
+              <th style="text-align: right; padding: 0.5rem 0.25rem; color: var(--color-text-light); font-weight: 500;">Statut</th>
             </tr>
           </thead>
           <tbody>
             {% for commande in dernieresCommandes %}
-              <tr style="border-bottom: 1px solid #f9fafb;">
+              <tr style="border-bottom: 1px solid var(--color-border);">
                 <td style="padding: 0.625rem 0.25rem; font-weight: 500;">{{ commande.reference ?? '#' ~ commande.id }}</td>
-                <td style="padding: 0.625rem 0.25rem; color: #374151;">
+                <td style="padding: 0.625rem 0.25rem; color: var(--color-text-light);">
                   {{ commande.utilisateur.prenom ?? '' }} {{ commande.utilisateur.nom ?? commande.utilisateur.email }}
                 </td>
                 <td style="padding: 0.625rem 0.25rem; text-align: right;">{{ commande.total|prix }}</td>
                 <td style="padding: 0.625rem 0.25rem; text-align: right;">
                   {% set statut = commande.statut.value %}
                   {% if statut == 'en_attente' %}
-                    <span style="background: #fef3c7; color: #92400e; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem;">En attente</span>
+                    <span style="background: var(--color-warning-light); color: var(--color-warning); padding: 0.125rem 0.5rem; border-radius: var(--radius-full); font-size: var(--text-small);">En attente</span>
                   {% elseif statut == 'confirmee' %}
-                    <span style="background: #dcfce7; color: #166534; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem;">Confirmée</span>
+                    <span style="background: var(--color-success-light); color: var(--color-success); padding: 0.125rem 0.5rem; border-radius: var(--radius-full); font-size: var(--text-small);">Confirmée</span>
                   {% elseif statut == 'livree' %}
-                    <span style="background: #dbeafe; color: #1e40af; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem;">Livrée</span>
+                    <span style="background: #dbeafe; color: #1e40af; padding: 0.125rem 0.5rem; border-radius: var(--radius-full); font-size: var(--text-small);">Livrée</span>
                   {% elseif statut == 'annulee' %}
-                    <span style="background: #fee2e2; color: #991b1b; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem;">Annulée</span>
+                    <span style="background: var(--color-danger-light); color: var(--color-danger); padding: 0.125rem 0.5rem; border-radius: var(--radius-full); font-size: var(--text-small);">Annulée</span>
                   {% else %}
-                    <span style="background: #f3f4f6; color: #374151; padding: 0.125rem 0.5rem; border-radius: 9999px; font-size: 0.75rem;">{{ statut }}</span>
+                    <span style="background: var(--color-surface); color: var(--color-text-light); padding: 0.125rem 0.5rem; border-radius: var(--radius-full); font-size: var(--text-small);">{{ statut }}</span>
                   {% endif %}
                 </td>
               </tr>
@@ -91,7 +91,7 @@
     </div>
 
     {# Colonne droite : calendrier du mois en cours #}
-    <div style="background: #fff; border: 1px solid #e5e7eb; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 1px 3px rgba(0,0,0,.06);">
+    <div style="background: var(--color-bg); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 1.5rem; box-shadow: var(--shadow-card);">
       {% set today = 'now'|date('Y-m-d') %}
       {% set year = 'now'|date('Y') %}
       {% set month = 'now'|date('m') %}
@@ -99,28 +99,26 @@
       {% set firstDay = (year ~ '-' ~ month ~ '-01')|date('N') %}
       {% set daysInMonth = ('last day of ' ~ year ~ '-' ~ month)|date('d') %}
 
-      <h3 style="margin: 0 0 1rem; font-size: 1rem; font-weight: 600; color: #111827; display: flex; justify-content: space-between; align-items: center;">
-        <span><i class="fa fa-calendar" style="margin-right: 0.5rem; color: #6b7280;"></i>{{ monthName }} {{ year }}</span>
-        <span style="font-size: 0.75rem; color: #9ca3af; font-weight: 400;">
-          <i class="fa fa-circle" style="color: #f97316;"></i> = commandes
+      <h3 style="margin: 0 0 1rem; font-size: var(--text-small); font-weight: 600; color: var(--color-text); display: flex; justify-content: space-between; align-items: center;">
+        <span><i class="fa fa-calendar" style="margin-right: 0.5rem; color: var(--color-text-light);"></i>{{ monthName }} {{ year }}</span>
+        <span style="font-size: var(--text-small); color: var(--color-text-light); font-weight: 400;">
+          <i class="fa fa-circle" style="color: var(--color-warning);"></i> = commandes
         </span>
       </h3>
 
       {# En-têtes jours #}
       <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px; margin-bottom: 0.25rem;">
         {% for day in ['L','M','M','J','V','S','D'] %}
-          <div style="text-align: center; font-size: 0.7rem; font-weight: 600; color: #9ca3af; padding: 0.25rem 0;">{{ day }}</div>
+          <div style="text-align: center; font-size: var(--text-small); font-weight: 600; color: var(--color-text-light); padding: 0.25rem 0;">{{ day }}</div>
         {% endfor %}
       </div>
 
       {# Cases du calendrier #}
       <div style="display: grid; grid-template-columns: repeat(7, 1fr); gap: 2px;">
-        {# Cellules vides avant le 1er #}
         {% for i in 1..(firstDay - 1) %}
           <div style="padding: 0.375rem; min-height: 2.5rem;"></div>
         {% endfor %}
 
-        {# Jours du mois #}
         {% for d in 1..daysInMonth %}
           {% set dateKey = year ~ '-' ~ month ~ '-' ~ (d < 10 ? '0' ~ d : d) %}
           {% set hasCommande = commandesParDate[dateKey] is defined %}
@@ -130,11 +128,11 @@
             text-align: center;
             padding: 0.375rem 0.25rem;
             min-height: 2.5rem;
-            border-radius: 0.375rem;
-            font-size: 0.8rem;
+            border-radius: var(--radius-sm);
+            font-size: var(--text-small);
             position: relative;
-            {{ isToday ? 'background: #f97316; color: #fff; font-weight: 700;' : '' }}
-            {{ hasCommande and not isToday ? 'background: #fff7ed; color: #c2410c;' : '' }}
+            {{ isToday ? 'background: var(--color-warning); color: var(--color-bg); font-weight: 700;' : '' }}
+            {{ hasCommande and not isToday ? 'background: var(--color-warning-light); color: var(--color-warning);' : '' }}
           ">
             {{ d }}
             {% if hasCommande %}
@@ -145,7 +143,7 @@
                 transform: translateX(-50%);
                 width: 5px; height: 5px;
                 border-radius: 50%;
-                background: {{ isToday ? '#fff' : '#f97316' }};
+                background: {{ isToday ? 'var(--color-bg)' : 'var(--color-warning)' }};
               "></div>
             {% endif %}
           </div>
@@ -153,7 +151,7 @@
       </div>
 
       {% if commandesParDate is not empty %}
-        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid #f3f4f6; font-size: 0.75rem; color: #6b7280;">
+        <div style="margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--color-border); font-size: var(--text-small); color: var(--color-text-light);">
           {{ commandesParDate|length }} jour(s) avec commande(s) ce mois-ci
         </div>
       {% endif %}

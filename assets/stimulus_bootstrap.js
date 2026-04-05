@@ -11,6 +11,8 @@ import SubmitOnceController from './controllers/submit_once_controller.js';
 import PasswordToggleController from './controllers/password_toggle_controller.js';
 import CartSidebarController from './controllers/cart_sidebar_controller.js';
 import AnnulationController from './controllers/annulation_controller.js';
+import ImageZoomController from './controllers/image_zoom_controller.js';
+import ConfirmController from './controllers/confirm_controller.js';
 
 const app = Application.start();
 app.register('live', LiveController);
@@ -25,3 +27,5 @@ app.register('submit-once', SubmitOnceController);
 app.register('password-toggle', PasswordToggleController);
 app.register('cart-sidebar', CartSidebarController);
 app.register('annulation', AnnulationController);
+app.register('image-zoom', ImageZoomController);
+app.register('confirm', ConfirmController);

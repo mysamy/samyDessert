@@ -7,8 +7,8 @@
   {# Panier vide #}
   <div class="text-center py-24 text-text-light">
     <twig:Atoms:Icon name="cart-shopping" size="3x" :decorative="true" class="mb-6 block"/>
-    <p class="text-xl font-medium mb-2">Votre panier est vide.</p>
-    <p class="text-sm mb-8">Découvrez nos desserts artisanaux et ajoutez-en à votre panier.</p>
+    <p class="text-body font-medium mb-2">Votre panier est vide.</p>
+    <p class="text-small mb-8">Découvrez nos desserts artisanaux et ajoutez-en à votre panier.</p>
     <twig:Atoms:Link href="{{ path('app_produits') }}"
       class="inline-flex items-center gap-2 bg-accent text-white px-6 py-3 rounded-full font-semibold hover:bg-accent/90 transition">
       Voir nos desserts
@@ -32,7 +32,7 @@
             <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt="{{ produit.nom }}" class="w-full h-full object-cover">
           {% else %}
             <div class="w-full h-full flex items-center justify-center text-text-light">
-              <twig:Atoms:Icon name="image" :decorative="true" class="text-2xl"/>
+              <twig:Atoms:Icon name="image" :decorative="true" class="text-h4"/>
             </div>
           {% endif %}
         </div>
@@ -41,9 +41,9 @@
         <div class="flex-1 min-w-0">
           <p class="font-semibold text-text truncate">{{ produit.nom }}</p>
           {% if produit.categorie %}
-            <p class="text-xs text-text-light mt-0.5">{{ produit.categorie.nom }}</p>
+            <p class="text-small text-text-light mt-0.5">{{ produit.categorie.nom }}</p>
           {% endif %}
-          <p class="text-sm text-text-light mt-1">{{ produit.prix|prix }} / unité</p>
+          <p class="text-small text-text-light mt-1">{{ produit.prix|prix }} / unité</p>
         </div>
 
         {# Contrôles quantité (live) #}
@@ -88,36 +88,62 @@
   </div>
 
   {# Récapitulatif + actions #}
-  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 divider pt-6">
+  <div class="divider pt-6 flex flex-col gap-4">
 
-    {# Vider le panier #}
-    <twig:Atoms:Button
-      type="button"
-      class="text-sm text-text-light hover:scale-105 transition-transform"
-      data-action="live#action"
-      data-live-action-param="vider"
-    >
-      Vider le panier
-    </twig:Atoms:Button>
+    {# Total #}
+    <div class="flex items-center justify-between">
+      <p class="text-small text-text-light">Total</p>
+      <p class="text-h3 font-bold text-text">{{ total|prix }}</p>
+    </div>
 
-    {# Total + CTA #}
-    <div class="text-right">
-      <p class="text-sm text-text-light mb-1">Total</p>
-      <p class="text-3xl font-bold text-text mb-4">{{ total|prix }}</p>
+    {# Boutons alignés #}
+    <div class="flex items-center justify-between gap-3" data-controller="confirm">
+
+      <twig:Atoms:Button
+        type="button"
+        variant="ghost-danger"
+        size="sm"
+        data-action="confirm#open"
+      >
+        Vider le panier
+      </twig:Atoms:Button>
+
       {% if isPage %}
-        <twig:Atoms:Link href="{{ path('app_commande') }}"
-          class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-300">
+        <twig:Atoms:Link href="{{ path('app_commande') }}" variant="cta-sm">
           Passer commande
-          <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-sm"/>
+          <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-small"/>
         </twig:Atoms:Link>
       {% else %}
-        <twig:Atoms:Link href="{{ path('app_panier_index') }}"
-          class="inline-flex items-center gap-2 bg-accent text-white px-8 py-3 rounded-full font-semibold hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-300">
+        <twig:Atoms:Link href="{{ path('app_panier_index') }}" variant="cta-sm">
           Voir le panier
-          <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-sm"/>
+          <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-small"/>
         </twig:Atoms:Link>
       {% endif %}
+
+      <dialog
+        data-confirm-target="dialog"
+        data-action="click->confirm#closeOnBackdrop"
+        class="rounded-xl shadow-xl p-6 max-w-sm w-[calc(100%-2rem)] m-auto backdrop:bg-overlay"
+      >
+        <h3 class="text-body font-semibold text-text mb-2">Vider le panier ?</h3>
+        <p class="text-small text-text-light mb-6">Tous les articles seront supprimés. Cette action est irréversible.</p>
+        <div class="flex justify-end gap-3">
+          <twig:Atoms:Button type="button" variant="secondary" size="sm" data-action="confirm#close">
+            Annuler
+          </twig:Atoms:Button>
+          <twig:Atoms:Button
+            type="button"
+            variant="danger"
+            size="sm"
+            data-action="confirm#close live#action"
+            data-live-action-param="vider"
+          >
+            Vider le panier
+          </twig:Atoms:Button>
+        </div>
+      </dialog>
     </div>
+  </div>
 
   </div>
 

@@ -6,8 +6,8 @@
 
 <section class="section-alt">
   <div class="container-main text-center">
-    <h1 class="text-4xl font-bold text-text mb-2">Passer commande</h1>
-    <p class="text-text-light text-lg">Vérifiez votre commande avant de procéder au paiement.</p>
+    <h1 class="text-h1 font-bold text-text mb-2">Passer commande</h1>
+    <p class="text-text-light text-body">Vérifiez votre commande avant de procéder au paiement.</p>
   </div>
 </section>
 
@@ -23,39 +23,39 @@
 
     {# Adresse de livraison #}
     {% if adresse is defined and adresse is not empty %}
-      <div class="mb-10 rounded-xl border border-border p-5">
+      <div class="mb-10 rounded-md border border-border p-5">
         <div class="flex items-center justify-between mb-3">
-          <h2 class="text-xl font-bold text-text">Adresse de livraison</h2>
+          <h2 class="text-body font-bold text-text">Adresse de livraison</h2>
           <twig:Atoms:Link href="{{ path('app_commande_adresse') }}" class="text-small text-accent hover:underline transition">Modifier</twig:Atoms:Link>
         </div>
         <p class="text-text">{{ adresse.firstName }} {{ adresse.lastName }}</p>
-        <p class="text-text-light text-sm">{{ adresse.address1 }}</p>
-        <p class="text-text-light text-sm">{{ adresse.postalCode }} {{ adresse.city }}{% if adresse.country != 'FR' %}, {{ adresse.country }}{% endif %}</p>
+        <p class="text-text-light text-small">{{ adresse.address1 }}</p>
+        <p class="text-text-light text-small">{{ adresse.postalCode }} {{ adresse.city }}{% if adresse.country != 'FR' %}, {{ adresse.country }}{% endif %}</p>
         {% if adresse.phone %}
-          <p class="text-text-light text-sm mt-1">{{ adresse.phone }}</p>
+          <p class="text-text-light text-small mt-1">{{ adresse.phone }}</p>
         {% endif %}
         {% if adresse.notes %}
-          <p class="text-text-light text-sm mt-1 italic">{{ adresse.notes }}</p>
+          <p class="text-text-light text-small mt-1 italic">{{ adresse.notes }}</p>
         {% endif %}
       </div>
     {% endif %}
 
     {# Récapitulatif du panier #}
     <div class="mb-10">
-      <h2 class="text-xl font-bold text-text mb-4">Récapitulatif</h2>
-      <div class="divide-y divide-border border border-border rounded-xl overflow-hidden">
+      <h2 class="text-body font-bold text-text mb-4">Récapitulatif</h2>
+      <div class="divide-y divide-border border border-border rounded-md overflow-hidden">
         {% for ligne in lignes %}
           <div class="flex items-center justify-between px-5 py-4">
             <div>
               <p class="font-semibold text-text">{{ ligne.produit.nom }}</p>
-              <p class="text-sm text-text-light">{{ ligne.produit.prix|prix }} × {{ ligne.quantite }}</p>
+              <p class="text-small text-text-light">{{ ligne.produit.prix|prix }} × {{ ligne.quantite }}</p>
             </div>
             <p class="font-bold text-text">{{ (ligne.produit.prix * ligne.quantite)|prix }}</p>
           </div>
         {% endfor %}
         <div class="flex items-center justify-between px-5 py-4 bg-surface">
           <p class="font-bold text-text">Total</p>
-          <p class="text-2xl font-bold text-accent">{{ total|prix }}</p>
+          <p class="text-h4 font-bold text-accent">{{ total|prix }}</p>
         </div>
       </div>
     </div>
@@ -70,18 +70,18 @@
       <input type="hidden" name="_token" value="{{ csrf_token('commande') }}">
       <twig:Atoms:Button
         type="submit"
-        class="mx-auto flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full text-lg font-semibold hover:bg-primary hover:scale-105 transition"
+        class="mx-auto flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full text-body font-semibold hover:bg-primary hover:scale-105 transition"
         data-submit-once-target="btn"
       >
         <span class="flex items-center gap-3" data-submit-once-target="label">
-          <twig:Atoms:Icon name="lock" :decorative="true" class="text-sm"/>
+          <twig:Atoms:Icon name="lock" :decorative="true" class="text-small"/>
           Payer {{ total|prix }} en toute sécurité
         </span>
         <twig:Atoms:Spinner size="lg" ariaLabel="Paiement en cours" class="hidden absolute inset-0 m-auto" data-submit-once-target="spinner" />
       </twig:Atoms:Button>
     </twig:Organisms:Form>
 
-    <p class="text-center text-xs text-text-light mt-4">
+    <p class="text-center text-small text-text-light mt-4">
       <twig:Atoms:Icon name="stripe" variant="brands" size="lg" :decorative="true"/>
       Paiement sécurisé par Stripe
     </p>

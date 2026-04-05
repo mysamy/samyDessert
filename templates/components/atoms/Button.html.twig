@@ -1,6 +1,6 @@
 {% set base =
-  "relative inline-flex items-center gap-2 rounded-md font-normal transition
-   focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
+  "relative inline-flex items-center gap-2 rounded-full font-normal transition pt-px
+   focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent
    disabled:pointer-events-none"
 %}
 
@@ -11,10 +11,11 @@
 } %}
 
 {% set variants = {
-  primary:   "bg-accent text-white hover:bg-primary hover:scale-105",
-  secondary: "bg-surface text-text hover:bg-border",
-  ghost:     "bg-transparent text-text hover:bg-surface",
-  danger:    "bg-danger text-white hover:bg-danger-dark"
+  primary:        "bg-accent text-white hover:bg-primary hover:scale-105",
+  secondary:      "bg-surface text-text hover:bg-border",
+  ghost:          "bg-transparent text-text hover:bg-surface",
+  danger:         "bg-danger text-white hover:bg-danger-dark",
+  'ghost-danger': "font-semibold bg-transparent text-warning border border-warning hover:bg-warning hover:text-white"
 } %}
 
 <button

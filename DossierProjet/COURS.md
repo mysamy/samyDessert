@@ -2608,3 +2608,103 @@ Navigateur visite /mentions-legales
 → Retourne une Response avec le HTML
 → Navigateur affiche la page
 ```
+
+---
+
+## Turbo Frames (Hotwire)
+
+Symfony UX intègre `@hotwired/turbo`. Les **Turbo Frames** permettent de ne rafraîchir qu'une partie de la page sans recharger toute la vue.
+
+### Principe
+
+```html
+<!-- Dans le template -->
+<turbo-frame id="produits-results">
+  <!-- Seul ce bloc est remplacé lors d'une navigation ciblée -->
+</turbo-frame>
+```
+
+Un lien ou formulaire peut cibler ce frame :
+```html
+<a href="/produits?categorie=tartes" data-turbo-frame="produits-results">Tartes</a>
+<form data-turbo-frame="produits-results">...</form>
+```
+
+### Turbo Drive vs Turbo Frames
+
+| | Turbo Drive | Turbo Frames |
+|---|---|---|
+| Périmètre | Toute la page (`<body>`) | Un élément `<turbo-frame>` |
+| Activation | Automatique sur tous les liens | Explicite avec `data-turbo-frame` |
+| Conflit Live Components | Oui (`Content missing`) | Non |
+
+**Dans ce projet** : Turbo Drive est désactivé (`Turbo.session.drive = false`) pour éviter les conflits avec Symfony UX Live Components. Seuls les Turbo Frames sont utilisés.
+
+### Où c'est utilisé
+
+- `/produits` et `/recettes` : sidebar catégories + grille se met à jour sans recharger hero/searchbar
+- `/produits/{slug}` : section avis se met à jour après soumission sans recharger la page produit
+
+---
+
+## `data-loading` (Symfony UX Live Component)
+
+Les éléments avec `data-loading="show"` s'affichent pendant le chargement d'un Live Component.
+Les éléments avec `data-loading="hide"` se masquent pendant le chargement.
+
+⚠️ `data-loading="show"` applique `display: block`, pas `display: flex`. Éviter `items-center` sur cet élément — centrer avec `absolute inset-0 m-auto` à la place.
+
+```html
+<twig:Atoms:Icon name="cart-plus" data-loading="hide" />
+<twig:Atoms:Spinner class="hidden" data-loading="show" />
+```
+
+---
+
+## Dialog native HTML (`<dialog>`)
+
+L'élément `<dialog>` est natif HTML5. Avec `showModal()` il s'affiche en top layer avec backdrop.
+
+```js
+dialog.showModal() // ouvre en modal (focus trap + Échap = ferme)
+dialog.close()     // ferme
+```
+
+```css
+dialog::backdrop { background: rgba(0,0,0,0.5); }
+/* En Tailwind : backdrop:bg-overlay */
+```
+
+**Centrage** : Tailwind v4 peut réinitialiser `margin: auto` — ajouter `m-auto` sur le `<dialog>`.
+
+**Accessibilité** : `showModal()` gère automatiquement le focus trap et la touche Échap.
+
+---
+
+## Conflits de classes Tailwind
+
+Quand deux classes du même groupe CSS (`rounded-md` et `rounded-full`) sont toutes deux dans le HTML, c'est l'ordre dans le **fichier CSS généré** qui détermine laquelle s'applique — pas l'ordre dans l'attribut `class`.
+
+**Solution** : ne pas avoir de conflits. Si tous les boutons ont `rounded-full`, le mettre dans la classe de base, pas dans chaque variant.
+
+Sans `tailwind-merge`, il faut concevoir les composants pour éviter les classes conflictuelles.
+
+---
+
+## JS dynamique vs Twig + Tailwind
+
+### Pourquoi le carousel ne utilise pas Twig ni Tailwind
+
+Le fichier `carousel_controller.js` crée des éléments HTML directement en JS (`document.createElement`). C'est normal et correct.
+
+**Règle générale :**
+- HTML de page / composants → **Twig + Tailwind**
+- DOM créé dynamiquement par JS → **classes CSS custom dans `app.css`**
+
+**Pourquoi Twig est impossible ici :**
+Twig est un moteur de template qui s'exécute **côté serveur** (PHP). Le controller JS s'exécute **côté navigateur**. Au moment où le JS tourne, Twig a déjà fini son travail — il n'est plus accessible.
+
+**Pourquoi les classes custom plutôt que Tailwind :**
+Pour un widget JS comme un carousel, les classes structurelles (`carousel__prev`, `carousel__item--zoom`) décrivent l'état interne du composant. Les utiliser directement dans `app.css` avec `@apply` ou des règles CSS classiques est plus lisible et maintenable que d'injecter des classes Tailwind via JS.
+
+Note : Tailwind **peut** détecter des classes dans les fichiers JS (il scanne `assets/**/*.js`), donc si tu mets `class="flex items-center"` dans ton JS elles seront bien compilées. Mais pour les éléments structurels d'un widget, les classes BEM custom sont préférables.

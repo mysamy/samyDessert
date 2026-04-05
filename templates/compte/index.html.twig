@@ -6,8 +6,8 @@
 
 <section class="section-alt">
   <div class="container-main">
-    <h1 class="text-4xl font-bold text-text mb-2">Mon compte</h1>
-    <p class="text-text-light text-lg">
+    <h1 class="text-h1 font-bold text-text mb-2">Mon compte</h1>
+    <p class="text-text-light text-body">
       Bonjour {% if utilisateur.prenom %}{{ utilisateur.prenom }}{% else %}{{ utilisateur.email }}{% endif %} !
     </p>
   </div>
@@ -19,7 +19,7 @@
     <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
 
       <twig:Molecules:Card title="Mes informations" icon="user">
-        <ul class="space-y-2 text-sm text-text">
+        <ul class="space-y-2 text-small text-text">
           <li><span class="text-text-light">Email :</span> {{ utilisateur.email }}</li>
           {% if utilisateur.nom or utilisateur.prenom %}
             <li><span class="text-text-light">Nom :</span> {{ utilisateur.prenom }} {{ utilisateur.nom }}</li>
@@ -34,17 +34,17 @@
       </twig:Molecules:Card>
 
       <twig:Atoms:Link href="{{ path('app_compte_commandes') }}"
-        class="bg-surface border border-border rounded-xl p-6 shadow-sm hover:border-accent transition block">
-        <h2 class="text-lg font-semibold text-text mb-2">
+        class="bg-surface border border-border rounded-md p-6 shadow-card hover:border-accent transition block">
+        <h2 class="text-body font-semibold text-text mb-2">
           <twig:Atoms:Icon name="bag-shopping" :decorative="true" class="mr-2"/> Mes commandes
         </h2>
-        <p class="text-sm text-text-light">Consulter et gérer vos commandes passées.</p>
+        <p class="text-small text-text-light">Consulter et gérer vos commandes passées.</p>
       </twig:Atoms:Link>
 
     </div>
 
     <div class="mt-10">
-      <twig:Atoms:Link href="{{ path('_logout_main') }}" class="text-sm text-text-light hover:text-accent transition">
+      <twig:Atoms:Link href="{{ path('_logout_main') }}" class="text-small text-text-light hover:text-accent transition">
         <twig:Atoms:Icon name="right-from-bracket" :decorative="true" class="mr-1"/> Se déconnecter
       </twig:Atoms:Link>
     </div>

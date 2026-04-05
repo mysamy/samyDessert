@@ -1,12 +1,14 @@
 {% set variantClass = {
   cta:     'rounded-full bg-accent text-white font-semibold px-8 py-3 hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-300',
-  outline: 'rounded-full border-2 border-accent text-accent font-semibold px-8 py-3 hover:bg-accent hover:text-white hover:scale-105 hover:shadow-md transition-all duration-300'
+  'cta-sm': 'rounded-full bg-accent text-white font-semibold px-5 h-9 text-small hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-300',
+  outline: 'rounded-full border-2 border-accent text-accent font-semibold px-8 py-3 hover:bg-accent hover:text-white hover:scale-105 hover:shadow-md transition-all duration-300',
+  white:   'rounded-full bg-bg text-accent font-semibold px-8 py-3 hover:bg-surface hover:scale-105 transition-all duration-300'
 }[variant] ?? '' %}
 
 <a
   {% if external %}target="_blank" rel="noopener noreferrer"{% endif %}
   {% if current %}aria-current="page"{% endif %}
-  {{ attributes.defaults({ class: 'inline-flex items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm ' ~ variantClass }) }}
+  {{ attributes.defaults({ class: 'inline-flex items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent focus-visible:outline ' ~ variantClass }) }}
 >
   {% block content %}{% endblock %}
 </a>
@@ -15,14 +17,14 @@
   Props (* = obligatoire) :
   - external  bool   — ajoute target="_blank" rel="noopener noreferrer" (false)
   - current   bool   — ajoute aria-current="page" pour la nav (false)
-  - variant   string — cta | cta-sm | outline | '' (plain) ('')
+  - variant   string — cta | outline | white | '' (plain) ('')
 
   Attributs HTML utiles (via attributes) :
   - href*       — URL de destination
   - aria-label  — si le texte du lien n'est pas explicite
 
   Utilisation :
-  <twig:Atoms:Link href="{{ path('app_home') }}" class="nav__link text-text hover:text-accent">Accueil</twig:Atoms:Link>
+  <twig:Atoms:Link href="{{ path('app_home') }}" class="nav-link text-text hover:text-accent">Accueil</twig:Atoms:Link>
   <twig:Atoms:Link href="{{ path('app_produits') }}" variant="cta">Voir nos desserts</twig:Atoms:Link>
   <twig:Atoms:Link href="{{ path('app_login') }}" variant="cta" size="sm">Se connecter</twig:Atoms:Link>
 #}

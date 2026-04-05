@@ -3,294 +3,7 @@
 @source "../../templates/**/*.twig";
 @source "../../assets/**/*.js";
 
-
-
-/* ── Thème Tailwind v4 ───────────────────────────────────────────────────── */
-/*
- * @theme génère automatiquement les CSS variables ET les classes Tailwind.
- * Règle : --[catégorie]-[nom] → classe-[nom]
- *
- * Catégories disponibles :
- *   --color-*      → bg-* / text-* / border-* / ring-* / from-* / to-*
- *   --font-size-*  → text-*
- *   --font-*       → font-*
- *   --spacing-*    → p-* / m-* / gap-* / w-* / h-* / top-* / etc.
- *   --radius-*     → rounded-*
- *   --shadow-*     → shadow-*
- *   --animate-*    → animate-*
- *   --breakpoint-* → sm: / md: / lg: (responsive)
- *   --z-index-*    → z-*
- */
-@theme {
-  /* ── Chocolat (couleur principale) ── */
-  --color-primary:          #5C2309;  /* bg-primary      | text-primary      chocolat foncé  */
-  --color-primary-light:    #FEF0E6;  /* bg-primary-light                    crème vanille   */
-
-  /* ── Framboise (accent, CTA, prix) ── */
-  --color-accent:           #9D174D;  /* bg-accent       | text-accent       framboise foncé */
-  --color-accent-light:     #FCE7F3;  /* bg-accent-light                     rose pâle       */
-
-
-  /* ── Warning (en attente, difficulté moyenne) ── */
-  --color-warning:          #B45309;  /* bg-warning      | text-warning      amber foncé     */
-  --color-warning-light:    #FEF3C7;  /* bg-warning-light                    amber pâle      */
-
-  /* ── Neutres (fonds, bordures, textes secondaires) ── */
-  --color-bg:               #FDF8F3;  /* bg-bg                               crème très clair */
-  --color-surface:          #F5EDE4;  /* bg-surface                          crème doux       */
-  --color-border:           #E8D5C4;  /* border-border                       beige-brun       */
-  --color-text:             #1C0A03;  /* text-text                           quasi noir choco */
-  --color-text-light:       #6B3A2A;  /* text-text-light                     brun moyen       */
-
-  /* ── Pistache (succès, disponible, confirmé) ── */
-  --color-success:          #3F6212;  /* bg-success      | text-success      pistache foncé  */
-  --color-success-light:    #ECFCCB;  /* bg-success-light                    pistache pâle   */
-
-  /* ── Danger (erreurs, annulations, rupture) ── */
-  --color-danger:           #DC2626;  /* bg-danger       | text-danger       rouge vif       */
-  --color-danger-light:     #FEE2E2;  /* bg-danger-light                     rouge pâle      */
-
-  /* ── Spéciaux ── */
-  --color-star:             #F59E0B;  /* text-star       étoiles d'avis (amber universel)   */
-  --color-focus:            #9D174D;  /* outline-focus   framboise (cohérent avec l'accent)  */
-
-  /* ── Police ── */
-  --font-sans: 'Luciole', system-ui, sans-serif;
-
-  /* ── Typographie ── */
-  --font-size-h1:   3.0625rem / 1.2; /* text-h1   */
-  --font-size-h2:   2.4375rem / 1.25; /* text-h2   */
-  --font-size-h3:   1.9375rem / 1.3; /* text-h3   */
-  --font-size-h4:   1.5625rem / 1.35; /* text-h4   */
-  --font-size-body: 1.25rem / 1.6;   /* text-body */
-  --font-size-small: 1rem ;      /* text-small — labels, badges, légendes */
-
-  /* ── Espacement ── */
-  --spacing-side:  clamp(1rem, 15vw, 50rem); /* px-side / mx-side / w-side */
-  --spacing-side2: clamp(1rem, 5vw, 50rem);  /* px-side2 etc.              */
-  --spacing-top:   clamp(1rem, 5vh, 5rem);   /* pt-top / mt-top etc.       */
-
-
-  /* ── Ombres ── */
-  --shadow-card: 0 4px 24px 0 rgb(0 0 0 / 0.08);  /* shadow-card */
-
-  /* ── Z-index ── */
-  /* --z-index-modal: 100; */  /* z-modal — exemple désactivé */
-}
-
-
-/* ── Stabiliser la scrollbar (évite le saut de ~17px au resize sur Windows) */
-html {
-  scrollbar-gutter: stable;
-}
-
-
-/* ── Composants ──────────────────────────────────────────────────────────── */
-@layer components {
-
-  /* ── Layout ── */
-
-  .container-main {
-    @apply mx-auto max-w-7xl px-4;
-  }
-
-  .section {
-    @apply py-12 bg-bg;
-  }
-
-  .section-alt {
-    @apply py-12 text-center bg-bg;
-  }
-
-  .divider {
-    @apply border-t border-border;
-  }
-
-
-  /* ── Navigation ── */
-
-  /* nav__link — trait souligné animé (uniquement pour les liens de nav) */
-  .nav__link {
-    position: relative;
-    transition: color 0.2s ease;
-  }
-
-  .nav__link::after {
-    content: '';
-    position: absolute;
-    bottom: -2px;
-    left: 50%;
-    width: 0;
-    height: 2px;
-    background-color: var(--color-accent);
-    border-radius: 9999px;
-    translate: -50% 0;
-    transition: width 0.25s ease;
-  }
-
-  .nav__link:hover::after,
-  .nav__link[aria-current="page"]::after {
-    width: 100%;
-  }
-
-  /* nav__menu — animation slide du menu mobile */
-  .nav__menu--enter {
-    animation: navMenuEnter 0.25s ease forwards;
-  }
-
-  .nav__menu--leave {
-    animation: navMenuLeave 0.2s ease forwards;
-  }
-
-
-  /* ── Panier ── */
-
-  /* cart__btn — cercle ripple au survol */
-  .cart__btn::after {
-    content: '';
-    position: absolute;
-    width: 150%;
-    height: 150%;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    border-radius: 50%;
-    background-color: var(--color-accent-light);
-    transform: scale(0);
-    opacity: 0.8;
-    transition: transform 0.35s ease, opacity 0.35s ease;
-    pointer-events: none;
-  }
-
-  .cart__btn:hover::after {
-    transform: scale(1);
-    opacity: 0;
-  }
-
-
-
-}
-/* ── Animations keyframes ────────────────────────────────────────────────── */
-@keyframes navMenuEnter {
-  from {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
-}
-
-@keyframes navMenuLeave {
-  from {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  to {
-    opacity: 0;
-    transform: translateY(-10px);
-  }
-}
-
-/* ── Carousel ────────────────────────────────────────────────────────────── */
-/*
- * Ces classes sont créées dynamiquement par le JS (createDivWithClass).
- * On garde les noms BEM mais on utilise @apply pour les styles.
- */
-.carousel {
-  @apply h-[600px] w-[70%] flex flex-col justify-center;
-}
-
-.carousel__wrapper {
-  @apply flex items-center z-1 h-full;
-}
-
-.carousel__item {
-  @apply flex h-[90%] flex-col justify-center items-center p-0;
-  transition: transform 0.8s ease-in-out, opacity 0.5s ease;
-}
-
-.carousel__item--zoom {
-  transform: scale(1.5);
-  z-index: 2;
-}
-
-.carousel__next,
-.carousel__prev {
-  @apply z-10 absolute w-10 h-[60px] bg-cover bg-center bg-no-repeat cursor-pointer top-1/2 -mt-[25px];
-  transition: opacity 0.3s;
-}
-
-.carousel__prev {
-  @apply left-[5px];
-  background-image: url("/images/chevron-left-solid.svg");
-}
-
-.carousel__next {
-  @apply right-[5px];
-  background-image: url("/images/chevron-right-solid.svg");
-}
-
-.carousel__next--hidden,
-.carousel__prev--hidden {
-  @apply opacity-0;
-}
-
-.carousel__pagination {
-  @apply absolute bottom-0 left-0 right-0 text-center;
-}
-
-.carousel__pagination__button {
-  @apply bg-primary w-2.5 h-2.5 rounded-full inline-block;
-  transition: transform 0.3s;
-}
-
-.carousel__pagination__button--active,
-.carousel__pagination__button:hover {
-  @apply scale-[1.4];
-}
-
-.carousel__item--zoom.no-transition {
-  @apply transition-none;
-}
-
-.carousel__next:focus-visible,
-.carousel__prev:focus-visible {
-  @apply z-10;
-  outline: 5px solid var(--color-focus);
-}
-
-.carousel__item:focus-visible .item {
-  @apply relative z-10;
-  outline: 10px solid var(--color-focus);
-}
-
-@media (max-width: 1024px) {
-  .carousel__prev { @apply left-5; }
-  .carousel__next { @apply right-5; }
-}
-
-
-@media (max-width: 640px) {
-  .carousel__prev { @apply left-0; }
-  .carousel__next { @apply right-0; }
-}
-
-/* ── How section ─────────────────────────────────────────────────────────── */
-.how__carousel {
-  @apply w-full flex min-h-[650px] justify-center relative overflow-hidden items-center;
-}
-
-.how {
-  @apply flex flex-col items-center gap-5;
-}
-
-.how__item {
-  @apply list-disc;
-}
-
-/* ── Police Luciole (accessibilité) ─────────────────────────────────────── */
+/* ── Police Luciole (accessibilité dyslexie) ── */
 @font-face {
   font-family: 'Luciole';
   src: url('../fonts/Luciole-Regular.woff2') format('woff2'),
@@ -324,7 +37,222 @@ html {
   font-display: swap;
 }
 
-/* Cart sidebar — hors @layer pour surcharger le UA stylesheet du <dialog> */
+/* ── Tokens du design system ── */
+@theme {
+  /* Couleurs */
+  --color-primary:       #5C2309;
+  --color-primary-light: #FEF0E6;
+
+  --color-accent:        #9D174D;
+  --color-accent-light:  #FCE7F3;
+
+  --color-warning:       #B45309;
+  --color-warning-light: #FEF3C7;
+
+  --color-bg:            #FDF8F3;
+  --color-white:         var(--color-bg);
+  --color-surface:       #F5EDE4;
+  --color-border:        #E8D5C4;
+  --color-text:          #1C0A03;
+  --color-text-light:    #6B3A2A;
+
+  --color-success:       #3F6212;
+  --color-success-light: #ECFCCB;
+
+  --color-danger:        #DC2626;
+  --color-danger-light:  #FEE2E2;
+
+  --color-star:          #F59E0B;
+  --color-focus:         var(--color-primary);
+
+  /* Police */
+  --font-sans: 'Luciole', system-ui, sans-serif;
+
+  /* Typographie */
+  --text-display: 4rem;
+  --text-h1:    3.0625rem;
+  --text-h2:    2.4375rem;
+  --text-h3:    1.9375rem;
+  --text-h4:    1.5625rem;
+  --text-body:  1.25rem;
+  --text-small: 1rem;
+
+  /* Espacement fluide */
+  --spacing-side: clamp(1rem, 15vw, 50rem);
+  --spacing-top:  clamp(1rem, 5vh, 5rem);
+
+  /* Arrondis */
+  --radius-sm:   0.375rem;
+  --radius-md:   0.75rem;
+  --radius-lg:   1rem;
+  --radius-full: 9999px;
+
+  /* Ombres */
+  --shadow-card:    0 4px 24px 0 rgb(28 10 3 / 0.08);
+  --shadow-btn:     0 4px 16px 0 rgb(28 10 3 / 0.30);
+  --shadow-sidebar: -4px 0 24px rgb(28 10 3 / 0.12);
+  --color-overlay:  rgb(28 10 3 / 0.6);
+}
+
+/* Évite le saut de ~17px dû à l'apparition de la scrollbar sur Windows */
+html {
+  scrollbar-gutter: stable;
+}
+
+/* Outline focus : masqué au clic souris, visible au clavier */
+*:focus:not(:focus-visible) {
+  outline: none;
+}
+
+*:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 3px;
+  border-radius: var(--radius-sm);
+  z-index: 10;
+}
+
+@layer components {
+
+  /* ── Layout ── */
+
+  .container-main {
+    @apply mx-auto max-w-7xl px-4;
+  }
+
+  .section {
+    @apply py-12 bg-bg;
+  }
+
+  .section-alt {
+    @apply py-12 text-center bg-surface;
+  }
+
+  .divider {
+    @apply border-t border-border;
+  }
+
+  /* ── Navigation ── */
+
+  /* Trait souligné animé centré au hover et sur la page active */
+  .nav-link {
+    position: relative;
+    transition: color 0.2s ease;
+  }
+
+  .nav-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 50%;
+    width: 0;
+    height: 2px;
+    background-color: var(--color-accent);
+    border-radius: var(--radius-full);
+    translate: -50% 0;
+    transition: width 0.25s ease;
+  }
+
+  .nav-link:hover::after,
+  .nav-link[aria-current="page"]::after {
+    width: 100%;
+  }
+
+  .nav-menu-enter {
+    animation: navMenuEnter 0.25s ease forwards;
+  }
+
+  .nav-menu-leave {
+    animation: navMenuLeave 0.2s ease forwards;
+  }
+
+
+  /* ── Carousel (classes générées par JS) ── */
+
+  .carousel {
+    @apply h-[600px] w-[70%] flex flex-col justify-center;
+  }
+
+  .carousel__wrapper {
+    @apply flex items-center z-1 h-full;
+  }
+
+  .carousel__item {
+    @apply flex h-[90%] flex-col justify-center items-center p-0;
+    transition: transform 0.8s ease-in-out, opacity 0.5s ease;
+  }
+
+  .carousel__item--zoom {
+    transform: scale(1.5);
+    z-index: 2;
+  }
+
+  .carousel__next,
+  .carousel__prev {
+    @apply z-10 absolute w-14 h-14 rounded-full cursor-pointer top-1/2 flex items-center justify-center;
+    transform: translateY(-50%);
+    background-color: var(--color-accent);
+    color: var(--color-bg);
+    border: none;
+    box-shadow: var(--shadow-btn);
+    transition: opacity 0.3s, background-color 0.2s, transform 0.2s;
+  }
+
+  .carousel__next:hover,
+  .carousel__prev:hover {
+    background-color: var(--color-primary);
+    transform: translateY(-50%) scale(1.1);
+  }
+
+  .carousel__prev { @apply left-[5px]; }
+  .carousel__next { @apply right-[5px]; }
+
+  .carousel__next--hidden,
+  .carousel__prev--hidden {
+    @apply opacity-0;
+  }
+
+  .carousel__pagination {
+    @apply absolute bottom-0 left-0 right-0 text-center;
+  }
+
+  .carousel__pagination__button {
+    @apply bg-primary w-2.5 h-2.5 rounded-full inline-block;
+    transition: transform 0.3s;
+  }
+
+  .carousel__pagination__button--active,
+  .carousel__pagination__button:hover {
+    @apply scale-[1.4];
+  }
+
+  .carousel__item--zoom.no-transition {
+    @apply transition-none;
+  }
+
+  @variant max-lg {
+    .carousel__prev { @apply left-5; }
+    .carousel__next { @apply right-5; }
+    .carousel__next, .carousel__prev { @apply w-16 h-16; }
+  }
+
+  @variant max-sm {
+    .carousel__prev { @apply left-0; }
+    .carousel__next { @apply right-0; }
+  }
+
+}
+
+@keyframes navMenuEnter {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes navMenuLeave {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-10px); }
+}
+
+/* Hors @layer pour surcharger les styles natifs du <dialog> */
 dialog.cart-sidebar {
   position: fixed;
   top: 0;
@@ -337,7 +265,7 @@ dialog.cart-sidebar {
   margin: 0;
   padding: 0;
   border: none;
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+  box-shadow: var(--shadow-sidebar);
 }
 
 dialog.cart-sidebar[open] {
@@ -346,6 +274,28 @@ dialog.cart-sidebar[open] {
 }
 
 dialog.cart-sidebar::backdrop {
-  background: rgba(0, 0, 0, 0.5);
+  background: var(--color-overlay);
 }
+  /* ── Panier ── */
 
+  /* Ripple au survol du bouton panier */
+  .cart-icon::after {
+    content: '';
+    position: absolute;
+    width: 150%;
+    height: 150%;
+    top: 50%;
+    left: 50%;
+    translate: -50% -50%;
+    border-radius: 50%;
+    background-color: var(--color-accent-light);
+    transform: scale(0);
+    opacity: 0.8;
+    transition: transform 0.35s ease, opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  .cart-icon:hover::after {
+    transform: scale(1);
+    opacity: 0;
+  }

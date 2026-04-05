@@ -1,6 +1,5 @@
 {# Root unique obligatoire pour les live components #}
 <div {{ attributes.defaults({ class: 'relative' }) }}>
-  <twig:Atoms:Spinner size="sm" class="hidden absolute inset-0 m-auto" data-loading="show" />
   {% if this.quantite == 0 %}
 
     {# Bouton initial : ajouter au panier #}
@@ -10,7 +9,8 @@
       data-action="live#action"
       data-live-action-param="ajouter"
     >
-      <twig:Atoms:Icon name="cart-plus" :decorative="true" class="text-xs" />
+      <twig:Atoms:Icon name="cart-plus" :decorative="true" class="text-small" data-loading="hide" />
+      <twig:Atoms:Spinner size="md" ariaLabel="Ajout en cours" class="hidden text-white" data-loading="show" />
       Ajouter au panier
     </twig:Atoms:Button>
 
@@ -26,7 +26,8 @@
         data-live-action-param="retirer"
       />
 
-      <span class="w-6 text-center font-semibold text-text text-sm">{{ this.quantite }}</span>
+      <span class="w-6 text-center font-semibold text-text text-small" data-loading="hide">{{ this.quantite }}</span>
+      <twig:Atoms:Spinner size="md" class="hidden text-accent" data-loading="show" ariaLabel="Mise à jour" />
 
       <twig:Atoms:ButtonIcon
         name="plus"

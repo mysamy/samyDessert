@@ -1,23 +1,30 @@
 import { Controller } from '@hotwired/stimulus'
 
+/**
+ * Classe Carousel — gestion complète d'un carousel responsive et accessible.
+ *
+ * Basé sur le tutoriel Grafikart, étendu avec :
+ * - effet de zoom sur la carte centrale
+ * - animations directionnelles des descriptions
+ * - gestion de l'accessibilité ARIA (inert, aria-current, aria-live)
+ * - adaptation responsive mobile/desktop
+ * - protection contre le double-clic (isAnimating)
+ */
 class Carousel {
   /**
-   * @param element - The `element` parameter typically refers to the HTML element that the constructor
-   * will be working with. It could be a reference to a specific DOM element on the webpage.
-   * @param [options] - The `options` parameter in the constructor function is an object that allows you
-   * to pass additional configuration settings or properties when creating an instance of the class. It
-   * is optional, meaning you can provide default values for these options if they are not specified
-   * when creating an instance.
-   * @param {Object} [options.slidesToScroll=1] Nombre d'éléments a faire défiler
-   * @param {Object} [options.slidesVisible=1] Nombre d'éléments visible dans un slide
-   * @param {boolean} [options.loop=false] Doit ton boucler en fin de carousel
-   * @param {boolean} [options.infinite=false] carousel infini ou pas
-   * @param {boolean} [options.navigation=true] Doit ton mettre une pagination
-   *  @param {boolean} [options.pagination=false]
+   * @param {HTMLElement} element           - Élément racine contenant les slides
+   * @param {Object}      [options]         - Options de configuration
+   * @param {number}      [options.slidesToScroll=1]      - Nombre de slides à faire défiler à chaque navigation
+   * @param {number}      [options.slidesVisible=1]       - Nombre de slides visibles simultanément
+   * @param {boolean}     [options.loop=false]            - Boucle simple (retour au début en fin de liste)
+   * @param {boolean}     [options.infinite=false]        - Boucle infinie par clonage des slides
+   * @param {boolean}     [options.navigation=true]       - Affiche les boutons précédent / suivant
+   * @param {boolean}     [options.pagination=false]      - Affiche les points de pagination
+   * @param {number}      [options.transitionDuration=500]- Durée de la transition en millisecondes
    */
   constructor(element, options = {}) {
     this.element = element;
-    // method assign permet de mettre des valeurs par default si lutilisteur ne met rien
+    // Object.assign fusionne les options par défaut avec celles passées en paramètre
     this.options = Object.assign(
       {},
       {
@@ -40,8 +47,8 @@ class Carousel {
     this.moveCallbacks = [];
     this.offset = 0;
     this.isAnimating = false;
-    this.middleIndex = this.slidesVisible >= 3 ? Math.floor(this.slidesVisible / 2) : 0;
-    // Modification du DOM
+
+    // Construction du DOM : on enveloppe chaque enfant dans un carousel__item
     this.root = this.createDivWithClass("carousel");
     this.container = this.createDivWithClass("carousel__wrapper");
     this.root.appendChild(this.container);
@@ -55,6 +62,7 @@ class Carousel {
       return item;
     });
 
+    // Mode infini : on clone les premiers et derniers éléments pour simuler une boucle sans saut
     if (this.options.infinite) {
       this.offset = this.options.slidesVisible + this.options.slidesToScroll;
       if (this.offset > children.length) {
@@ -70,7 +78,6 @@ class Carousel {
 
     this.items.forEach((item) => this.container.appendChild(item));
     this.onWindowResize();
-    this.setStyle();
     this.zoom();
 
     if (this.options.navigation) {
@@ -81,7 +88,7 @@ class Carousel {
       this.createPagination();
     }
 
-    // Evenements
+    // Masque les slides hors champ (opacité 0 + pointer-events none)
     this.onMove((index) => {
       this.items.forEach((item, i) => {
         if (i >= index && i < index + this.slidesVisible) {
@@ -94,8 +101,12 @@ class Carousel {
       });
     });
     this.moveCallbacks.forEach((cb) => cb(this.currentItem));
+
+    // Stocké pour pouvoir retirer l'écouteur dans destroy()
     this._onResize = this.onWindowResize.bind(this);
     window.addEventListener("resize", this._onResize);
+
+    // Navigation clavier : flèches gauche/droite depuis n'importe quel élément du carousel
     this.root.addEventListener("keyup", (e) => {
       if (e.key === "ArrowRight" || e.key === "Right") {
         this.next();
@@ -103,6 +114,8 @@ class Carousel {
         this.prev();
       }
     });
+
+    // Repositionnement silencieux après la fin de la transition (mode infini)
     this._onTransitionEnd = (e) => {
       if (e.target !== this.container) return;
       this.isAnimating = false;
@@ -114,7 +127,8 @@ class Carousel {
   }
 
   /**
-   * Applique les bonnes dimentions aux élément de la carousel
+   * Calcule et applique les largeurs du conteneur et de chaque slide.
+   * Appelé au chargement et à chaque changement de breakpoint.
    */
   setStyle() {
     let ratio = this.items.length / this.slidesVisible;
@@ -129,15 +143,21 @@ class Carousel {
   }
 
   /**
-   * Creer la navigation
+   * Crée et insère les boutons de navigation précédent / suivant.
+   * En mode loop, les boutons sont toujours visibles.
+   * En mode normal, ils se masquent aux extrémités de la liste.
    */
   createNavigation() {
-    let prevButton = this.createDivWithClass("carousel__prev");
+    let prevButton = document.createElement("button");
+    prevButton.setAttribute("class", "carousel__prev");
     prevButton.setAttribute("aria-label", "étape précédente");
-    prevButton.setAttribute("tabindex", "0");
-    let nextButton = this.createDivWithClass("carousel__next");
+    prevButton.setAttribute("type", "button");
+    prevButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg>';
+    let nextButton = document.createElement("button");
+    nextButton.setAttribute("class", "carousel__next");
     nextButton.setAttribute("aria-label", "étape suivante");
-    nextButton.setAttribute("tabindex", "0");
+    nextButton.setAttribute("type", "button");
+    nextButton.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18l6-6-6-6"/></svg>';
     this.root.appendChild(prevButton);
     this.root.appendChild(nextButton);
 
@@ -146,6 +166,7 @@ class Carousel {
     if (this.options.loop === true) {
       return;
     }
+    // Masque le bouton précédent en début de liste, suivant en fin de liste
     this.onMove((index) => {
       if (index === 0) {
         prevButton.classList.add("carousel__prev--hidden");
@@ -164,7 +185,8 @@ class Carousel {
   }
 
   /**
-   * Creer la Pagination
+   * Crée les points de pagination cliquables.
+   * Chaque point correspond à un groupe de slides (selon slidesToScroll).
    */
   createPagination() {
     let pagination = this.createDivWithClass("carousel__pagination");
@@ -186,15 +208,24 @@ class Carousel {
     });
   }
 
+  /**
+   * Avance d'un groupe de slides vers la droite.
+   * Bloqué pendant une animation en cours (isAnimating).
+   */
   next() {
     if (this.isAnimating) return;
     this.isAnimating = true;
     this.gotoItem(this.currentItem + this.slidesToScroll);
+    // Filet de sécurité : libère le verrou si transitionend ne se déclenche pas (ex: onglet inactif)
     setTimeout(() => {
       this.isAnimating = false;
     }, this.options.transitionDuration);
   }
 
+  /**
+   * Recule d'un groupe de slides vers la gauche.
+   * Bloqué pendant une animation en cours (isAnimating).
+   */
   prev() {
     if (this.isAnimating) return;
     this.isAnimating = true;
@@ -205,9 +236,10 @@ class Carousel {
   }
 
   /**
-   * Déplace le carousel ver l'élément cible
-   * @para (number) index
-   * @param {boolean} [animation = true]
+   * Déplace le carousel vers la slide à l'index donné.
+   *
+   * @param {number}  index               - Index de la slide cible
+   * @param {boolean} [animation=true]    - Si false, le déplacement est instantané (sans transition CSS)
    */
   gotoItem(index, animation = true) {
     if (index < 0) {
@@ -224,6 +256,7 @@ class Carousel {
       }
     }
 
+    // Désactive les transitions CSS pour un repositionnement instantané
     if (animation === false) {
       this.container.style.transition = "none";
       this.items.forEach((item) => {
@@ -239,8 +272,10 @@ class Carousel {
 
     this.moveCallbacks.forEach((cb) => cb(index));
     this.zoom(animation, direction);
-    this.container.offsetHeight; // Force le navigateur à recalculer le layout (reflow) pour que les transitions/animations se déclenchent correctement
-    this.updateAccessibility(this.currentItem, animation);
+    this.container.offsetHeight; // Force un reflow pour que les transitions se déclenchent après la remise à zéro
+    this.updateAccessibility(this.currentItem);
+
+    // Réactive les transitions CSS après le repositionnement instantané
     if (animation === false) {
       this.items.forEach((item) => {
         item.style.transition = "";
@@ -252,7 +287,10 @@ class Carousel {
   }
 
   /**
-   * Zoom lélement du milieu
+   * Applique le zoom sur la carte centrale et masque les descriptions des autres cartes.
+   *
+   * @param {boolean} [animate=true]  - Si false, pas de transition (initialisation ou resize)
+   * @param {number}  [direction=1]   - Sens du déplacement : 1 = droite, -1 = gauche
    */
   zoom(animate = true, direction = 1) {
     this.items.forEach((item) => {
@@ -272,11 +310,11 @@ class Carousel {
       }
     });
     if (this.slidesVisible >= 3) {
-      this.middleIndex = this.currentItem + Math.floor(this.slidesVisible / 2);
-      this.middleItem = this.items[this.middleIndex];
-      if (this.middleItem) {
-        this.middleItem.classList.add("carousel__item--zoom");
-        this.showDescription(this.middleItem, animate, direction);
+      const middleIndex = this.currentItem + Math.floor(this.slidesVisible / 2);
+      const middleItem = this.items[middleIndex];
+      if (middleItem) {
+        middleItem.classList.add("carousel__item--zoom");
+        this.showDescription(middleItem, animate, direction);
       }
     } else {
       let current = this.items[this.currentItem];
@@ -286,15 +324,23 @@ class Carousel {
     }
   }
 
+  /**
+   * Anime l'apparition de la description de la carte active.
+   * Le texte entre depuis le côté d'arrivée (même direction que le déplacement).
+   *
+   * @param {HTMLElement} item            - Carte dont la description doit apparaître
+   * @param {boolean}     [animate=true]  - Si false, affichage instantané
+   * @param {number}      [direction=1]   - Sens du déplacement : 1 = droite, -1 = gauche
+   */
   showDescription(item, animate = true, direction = 1) {
     const desc = item.querySelector(".carousel-card-description");
     if (!desc) return;
     if (animate) {
-      // Positionner hors-champ du côté d'arrivée (même côté que la sortie)
+      // Place le texte hors-champ côté arrivée, puis le fait glisser vers sa position finale
       desc.style.transition = "none";
       desc.style.opacity = "0";
       desc.style.transform = `translateX(${direction * 30}px)`;
-      desc.offsetHeight; // forcer le reflow
+      desc.offsetHeight; // Force un reflow pour que la transition de départ soit prise en compte
       desc.style.transition = "opacity 0.5s ease, transform 0.5s ease";
       desc.style.opacity = "1";
       desc.style.transform = "translateX(0)";
@@ -306,10 +352,12 @@ class Carousel {
   }
 
   /**
-   * Met à jour l'accessibilité des cartes du carousel.
-   * Définit la slide active pour les lecteurs d'écran et met à jour le status.
+   * Met à jour les attributs d'accessibilité sur chaque slide.
+   * La slide active reçoit aria-current="true", les autres sont rendues inertes.
+   * Met également à jour le texte de la zone aria-live pour les lecteurs d'écran.
    *
-   * @param {number} index - L'index de la slide actuellement active.
+   * @param {number}  index             - Index de la slide courante
+   * @param {boolean} [setFocus=false]  - Si true, déplace le focus clavier sur la slide active
    */
   updateAccessibility(index, setFocus = false) {
     let middleIndex;
@@ -321,22 +369,18 @@ class Carousel {
 
     this.items.forEach((item, i) => {
       const isActive = i === middleIndex;
-      item.setAttribute("aria-hidden", isActive ? "false" : "true");
-      item.setAttribute("tabindex", isActive ? "0" : "-1");
+      // inert désactive tout le contenu interactif (focus, tab, événements) en une seule propriété
+      item.inert = !isActive;
       if (isActive) {
         item.setAttribute("aria-current", "true");
       } else {
         item.removeAttribute("aria-current");
       }
-      const buttons = item.querySelectorAll("button, a");
-      buttons.forEach((btn) => {
-        btn.tabIndex = isActive ? 0 : -1;
-      });
     });
     if (setFocus && (document.activeElement === document.body || this.root.contains(document.activeElement))) {
       this.items[middleIndex].focus({ preventScroll: true });
     }
-    // Mise à jour du status live
+    // Met à jour l'annonce vocale du numéro de slide courant
     let status = document.getElementById("carousel-status");
     if (status) {
       let visibleSlideNumber;
@@ -350,7 +394,8 @@ class Carousel {
   }
 
   /**
-   * Déplace le container pour donner l'impression d'un slide infini
+   * Repositionne silencieusement le carousel après une transition infinie.
+   * Quand on dépasse un clone, on saute sur le vrai élément correspondant sans animation.
    */
   resetInfinite() {
     if (this.currentItem <= this.options.slidesToScroll) {
@@ -361,13 +406,18 @@ class Carousel {
   }
 
   /**
-   * Rajoute un écouteur qui écoute le déplacement du carousel
-   * @param {moveCallbacks} cb
+   * Enregistre un callback appelé à chaque déplacement du carousel.
+   *
+   * @param {Function} cb - Fonction appelée avec l'index courant en paramètre
    */
   onMove(cb) {
     this.moveCallbacks.push(cb);
   }
 
+  /**
+   * Gère le changement de breakpoint mobile/desktop.
+   * Recale la carte active pour qu'elle reste visible après le changement.
+   */
   onWindowResize() {
     let mobile = window.innerWidth < 1024;
     if (mobile !== this.isMobile) {
@@ -391,7 +441,9 @@ class Carousel {
   }
 
   /**
-   * @param {string} className
+   * Crée un élément div avec la classe CSS donnée.
+   *
+   * @param {string}      className - Classe CSS à appliquer
    * @returns {HTMLElement}
    */
   createDivWithClass(className) {
@@ -400,20 +452,36 @@ class Carousel {
     return div;
   }
 
-  /** @returns {number} */
+  /**
+   * Nombre de slides à faire défiler — toujours 1 sur mobile.
+   * @returns {number}
+   */
   get slidesToScroll() {
     return this.isMobile ? 1 : this.options.slidesToScroll;
   }
 
+  /**
+   * Nombre de slides visibles — toujours 1 sur mobile.
+   * @returns {number}
+   */
   get slidesVisible() {
     return this.isMobile ? 1 : this.options.slidesVisible;
   }
 
+  /**
+   * Supprime les écouteurs d'événements globaux.
+   * Appelé par Stimulus lors de la déconnexion du controller.
+   */
   destroy() {
     window.removeEventListener("resize", this._onResize);
+    this.container.removeEventListener("transitionend", this._onTransitionEnd);
   }
 }
 
+/**
+ * Controller Stimulus — instancie et détruit la classe Carousel
+ * en suivant le cycle de vie du composant Stimulus (connect / disconnect).
+ */
 export default class extends Controller {
   connect() {
     this.carousel = new Carousel(this.element, {

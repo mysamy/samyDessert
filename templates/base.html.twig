@@ -25,12 +25,12 @@
       <twig:block name="cartSlot">
         <button
           type="button"
-          class="group flex items-center gap-2 text-primary hover:text-accent transition-colors"
+          class="group flex items-center gap-2 text-accent hover:text-primary transition-colors"
           aria-label="Ouvrir le panier"
           data-action="cart-sidebar#open"
         >
-          <div class="cart__btn relative w-fit transition-transform group-hover:scale-110">
-            <twig:Atoms:Icon name="bag-shopping" size="3x" :decorative="true" />
+          <div class="cart-icon relative w-fit transition-transform group-hover:scale-110">
+            <twig:Atoms:Icon name="bag-shopping" class="text-[2.5rem]" :decorative="true" />
             <twig:Atoms:PanierBadge class="absolute top-1/2 left-1/2 [translate:-50%_-35%]" />
           </div>
           <span>Panier</span>
@@ -40,31 +40,31 @@
         {% if app.user %}
           <div class="relative" data-controller="dropdown">
             <button data-action="dropdown#toggle"
-                    class="flex items-center gap-2 text-sm font-medium text-text hover:text-accent transition">
+                    class="flex items-center gap-2 text-small font-medium text-text hover:text-accent transition">
               <twig:Atoms:Icon name="circle-user" size="lg" :decorative="true" />
               {{ app.user.prenom ?? app.user.userIdentifier }}
               <twig:Atoms:Icon name="chevron-down" size="xs" :decorative="true" />
             </button>
             <div data-dropdown-target="menu"
-                 class="hidden absolute right-0 mt-2 w-44 bg-surface border border-border rounded-xl shadow-lg z-50 overflow-hidden text-sm">
+                 class="hidden absolute right-0 mt-2 w-44 bg-surface border border-border rounded-md shadow-lg z-50 overflow-hidden text-small">
               <twig:Atoms:Link href="{{ path('app_compte_index') }}"
-                class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-bg transition">
+                class="flex items-center gap-2 px-4 py-3 text-small hover:bg-bg transition">
                 <twig:Atoms:Icon name="user" size="sm" :decorative="true" /> Mon compte
               </twig:Atoms:Link>
               {% if is_granted('ROLE_ADMIN') %}
                 <twig:Atoms:Link href="{{ path('admin') }}"
-                  class="flex items-center gap-2 px-4 py-3 text-sm hover:bg-bg transition border-t border-border">
+                  class="flex items-center gap-2 px-4 py-3 text-small hover:bg-bg transition border-t border-border">
                   <twig:Atoms:Icon name="screwdriver-wrench" size="sm" :decorative="true" /> Administration
                 </twig:Atoms:Link>
               {% endif %}
               <twig:Atoms:Link href="{{ path('_logout_main') }}"
-                class="flex items-center gap-2 px-4 py-3 text-sm text-danger hover:bg-danger-light transition border-t border-border">
+                class="flex items-center gap-2 px-4 py-3 text-small text-danger hover:bg-danger-light transition border-t border-border">
                 <twig:Atoms:Icon name="right-from-bracket" size="sm" :decorative="true" /> Se déconnecter
               </twig:Atoms:Link>
             </div>
           </div>
         {% else %}
-          <twig:Atoms:Link href="{{ path('app_login') }}" variant="cta" class="px-4 py-2 text-small">Se connecter</twig:Atoms:Link>
+          <twig:Atoms:Link href="{{ path('app_login') }}" class="bg-accent text-white hover:bg-primary hover:scale-105 transition rounded-md px-4 h-10 text-body font-normal">Se connecter</twig:Atoms:Link>
         {% endif %}
       </twig:block>
       <twig:block name="mobileActions">
@@ -78,11 +78,11 @@
                 <twig:Atoms:Icon name="screwdriver-wrench" size="sm" :decorative="true" /> Administration
               </twig:Atoms:Link>
             {% endif %}
-            <twig:Atoms:Link href="{{ path('_logout_main') }}" class="flex items-center gap-2 px-2 py-2 text-red-600 hover:text-red-700">
+            <twig:Atoms:Link href="{{ path('_logout_main') }}" class="flex items-center gap-2 px-2 py-2 text-danger hover:text-danger">
               <twig:Atoms:Icon name="right-from-bracket" size="sm" :decorative="true" /> Se déconnecter
             </twig:Atoms:Link>
           {% else %}
-            <twig:Atoms:Link href="/connexion" variant="cta" class="px-4 py-2 text-small" class="mt-1">Se connecter</twig:Atoms:Link>
+            <twig:Atoms:Link href="{{ path('app_login') }}" variant="cta" class="px-4 py-2 mt-1 text-small">Se connecter</twig:Atoms:Link>
           {% endif %}
         </div>
       </twig:block>
@@ -101,7 +101,7 @@
       class="cart-sidebar bg-bg translate-x-full transition-transform duration-300"
     >
       <div class="flex items-center justify-between px-6 py-4 border-b border-border">
-        <h2 class="text-lg font-semibold text-text">Mon panier</h2>
+        <h2 class="text-body font-semibold text-text">Mon panier</h2>
         <button
           type="button"
           class="text-text-light hover:text-text transition-colors"

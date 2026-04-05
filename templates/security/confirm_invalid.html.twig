@@ -5,13 +5,13 @@
 {% block body %}
 <section class="min-h-[80vh] flex items-center justify-center bg-bg py-16 px-4">
   <div class="w-full max-w-md text-center">
-    <div class="bg-surface rounded-2xl shadow-sm border border-border p-10">
-      <p class="text-5xl mb-6" aria-hidden="true">❌</p>
-      <h1 class="text-2xl font-bold text-text mb-3">Lien invalide</h1>
+    <div class="bg-surface rounded-lg shadow-card border border-border p-10">
+      <p class="text-display mb-6" aria-hidden="true">❌</p>
+      <h1 class="text-h1 font-bold text-text mb-3">Lien invalide</h1>
       <p class="text-text-light mb-6">
         Ce lien de confirmation est invalide ou a déjà été utilisé.
       </p>
-      <twig:Atoms:Link href="{{ path('app_register') }}" class="text-accent font-medium text-sm underline">
+      <twig:Atoms:Link href="{{ path('app_register') }}" class="text-accent font-medium text-small underline">
         Créer un nouveau compte
       </twig:Atoms:Link>
     </div>

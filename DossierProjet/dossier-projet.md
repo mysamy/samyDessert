@@ -713,19 +713,106 @@ J'ai developpe **10 controllers** au total :
 
 #### Exemples detailles
 
-**`carousel` — carousel infini avec gestion de l'accessibilite**
+**`carousel` — carousel infini avec zoom, transitions et accessibilite**
 
-Le carousel est le controller le plus complexe du projet. Il gere le mode infini par clonage des premiers et derniers elements, une navigation par fleches clavier, un effet de zoom sur la carte centrale, des transitions d'animation sur les descriptions et une mise a jour en temps reel des attributs ARIA. Un element `aria-live` annonce le numero de slide aux technologies d'assistance.
+Le carousel est le controller le plus complexe du projet. Il est construit autour d'une classe `Carousel` autonome (pure JS, sans dependance externe), instanciee par un controller Stimulus qui gere le cycle de vie du composant.
+
+La base du carousel s'appuie sur le tutoriel de **Grafikart** (YouTube/grafikart.fr) consacre a la creation d'un carousel en JavaScript vanilla. J'ai ensuite etendu cette base avec plusieurs fonctionnalites supplementaires : l'effet de zoom sur la carte centrale, les animations de description directionnelles, la gestion de l'accessibilite ARIA, l'adaptation responsive mobile/desktop et la protection contre le double-clic via `isAnimating`.
+
+Le carousel est le seul composant du projet a utiliser la convention de nommage **BEM** (`carousel__item`, `carousel__next`, `carousel__prev`…). Ce choix est delibere : le JS genere les elements du DOM dynamiquement via `createDivWithClass()` et manipule les classes au runtime. Dans ce contexte, la hierarchie BEM rend les relations entre elements explicites directement dans le code JavaScript, sans avoir a ouvrir le CSS. Pour tous les autres composants, Tailwind CSS suffit et l'ajout de BEM aurait ete redondant.
 
 ```js
-// Repositionnement silencieux apres la transition (via transitionend)
-this._onTransitionEnd = () => {
-  this.isAnimating = false;
-  if (this.options.infinite) {
-    this.resetInfinite();
+// assets/controllers/carousel_controller.js — lignes 417-431
+export default class extends Controller {
+  connect() {
+    this.carousel = new Carousel(this.element, {
+      slidesVisible: 3,
+      slidesToScroll: 1,
+      infinite: true,
+      transitionDuration: 800,
+    })
   }
-};
+  disconnect() {
+    this.carousel.destroy()
+  }
+}
 ```
+
+*[Capture : carousel desktop — 3 cartes visibles, carte centrale zoomee]*
+
+*[Capture : carousel mobile — 1 carte visible]*
+
+**Mode infini par clonage**
+
+Pour simuler un carousel sans fin, les premiers et derniers elements sont clones et inseres en debut/fin du conteneur. Quand la transition se termine, un repositionnement silencieux (`animation = false`) remet le curseur sur les vrais elements — l'utilisateur ne voit pas le saut.
+
+```js
+// lignes 58-68 : construction de la liste avec clones
+this.offset = this.options.slidesVisible + this.options.slidesToScroll;
+this.items = [
+  ...this.items.slice(this.items.length - this.offset).map(item => item.cloneNode(true)),
+  ...this.items,
+  ...this.items.slice(0, this.offset).map(item => item.cloneNode(true)),
+];
+
+// lignes 355-361 : repositionnement silencieux apres transition
+resetInfinite() {
+  if (this.currentItem <= this.options.slidesToScroll) {
+    this.gotoItem(this.currentItem + this.items.length - 2 * this.offset, false);
+  } else if (this.currentItem >= this.items.length - this.offset) {
+    this.gotoItem(this.currentItem - (this.items.length - 2 * this.offset), false);
+  }
+}
+```
+
+*[Capture DevTools : DOM du carousel — voir les elements clones en debut et fin du conteneur]*
+
+**Responsive : adaptation mobile/desktop**
+
+Deux getters retournent des valeurs differentes selon le contexte. A la connexion et a chaque resize, `onWindowResize` detecte le changement et recale la carte active pour qu'elle reste visible.
+
+```js
+// lignes 403-409
+get slidesToScroll() { return this.isMobile ? 1 : this.options.slidesToScroll; }
+get slidesVisible()  { return this.isMobile ? 1 : this.options.slidesVisible; }
+```
+
+**Effet zoom et animation des descriptions**
+
+La carte centrale recoit la classe `carousel__item--zoom` (scale CSS). Quand le carousel avance, le texte de la carte sortante glisse dans la direction du mouvement et disparait ; le texte de la carte entrante arrive depuis le cote oppose. Un reflow force (`desc.offsetHeight`) est necessaire pour que la transition CSS se declenche apres la remise a zero de la position.
+
+```js
+// lignes 289-306 : animation d'entree du texte
+showDescription(item, animate = true, direction = 1) {
+  const desc = item.querySelector(".carousel-card-description");
+  if (!desc) return;
+  desc.style.transition = "none";
+  desc.style.opacity = "0";
+  desc.style.transform = `translateX(${direction * 30}px)`;
+  desc.offsetHeight; // force le reflow
+  desc.style.transition = "opacity 0.5s ease, transform 0.5s ease";
+  desc.style.opacity = "1";
+  desc.style.transform = "translateX(0)";
+}
+```
+
+**Protection contre le double-clic**
+
+Le drapeau `isAnimating` est passe a `true` au debut de `next()`/`prev()` et remis a `false` a la fin de la transition (`transitionend`). Un `setTimeout` de secours evite un blocage si l'evenement `transitionend` ne se declenche pas.
+
+```js
+// lignes 189-205
+next() {
+  if (this.isAnimating) return;
+  this.isAnimating = true;
+  this.gotoItem(this.currentItem + this.slidesToScroll);
+  setTimeout(() => { this.isAnimating = false; }, this.options.transitionDuration);
+}
+```
+
+**Accessibilite**
+
+`updateAccessibility` met a jour les attributs ARIA a chaque deplacement : `aria-hidden`, `aria-current`, `tabindex` sur les cartes et leurs boutons internes. La navigation au clavier (fleches gauche/droite) est geree par un ecouteur sur le conteneur racine. Un element `aria-live="polite"` annonce le numero de slide courant aux technologies d'assistance.
 
 **`favori` — requetes AJAX et outlets Stimulus**
 
@@ -921,6 +1008,8 @@ firewalls:
         provider: app_user_provider
         user_checker: App\Security\UserChecker
 ```
+
+Le message d'erreur en cas d'echec de connexion est volontairement vague : "Adresse email ou mot de passe incorrect." Il ne precise pas lequel des deux est faux. C'est un choix de securite delibere : si le message indiquait "email inconnu", un attaquant pourrait enumerer les comptes existants ; s'il indiquait "mot de passe incorrect", il saurait que l'email est valide et pourrait cibler ses tentatives. Le message ambigu protege contre ces deux vecteurs d'attaque.
 
 ### 11.2 Inscription et verification d'e-mail
 

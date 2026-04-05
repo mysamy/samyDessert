@@ -10,7 +10,7 @@
 <div
   role="alert"
   aria-live="{{ type == 'error' ? 'assertive' : 'polite' }}"
-  {{ attributes.defaults({ class: 'rounded-md border px-4 py-3 text-sm ' ~ current.class }) }}
+  {{ attributes.defaults({ class: 'rounded-md border px-4 py-3 text-small ' ~ current.class }) }}
 >
   <div class="flex gap-3">
     <twig:Atoms:Icon name="{{ current.icon }}" :decorative="true" class="mt-0.5 shrink-0" />

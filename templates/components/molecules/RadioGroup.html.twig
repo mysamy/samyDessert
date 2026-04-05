@@ -11,7 +11,7 @@
   {{ attributes.defaults({ class: '' }) }}
 >
   {% if legend %}
-    <legend id="{{ legendId }}" class="text-sm font-semibold text-text">
+    <legend id="{{ legendId }}" class="text-small font-semibold text-text">
       {{ legend }}
       {% if required %}
         <span class="text-text-light"> (obligatoire)</span>
@@ -20,7 +20,7 @@
   {% endif %}
 
   {% if description %}
-    <p id="{{ descriptionId }}" class="mt-1 text-sm text-text-light">{{ description }}</p>
+    <p id="{{ descriptionId }}" class="mt-1 text-small text-text-light">{{ description }}</p>
   {% endif %}
 
   <div class="mt-4 {{ innerClass }}">
@@ -53,7 +53,7 @@
             label="{{ opt.label|default(optValue) }}"
           />
           {% if opt.description is defined and opt.description %}
-            <p class="mt-0.5 text-sm text-text-light">{{ opt.description }}</p>
+            <p class="mt-0.5 text-small text-text-light">{{ opt.description }}</p>
           {% endif %}
         </div>
       </div>
@@ -61,7 +61,7 @@
   </div>
 
   {% if error %}
-    <p id="{{ errorId }}" class="mt-2 text-sm text-danger" role="alert">{{ error }}</p>
+    <p id="{{ errorId }}" class="mt-2 text-small text-danger" role="alert">{{ error }}</p>
   {% endif %}
 </fieldset>
 

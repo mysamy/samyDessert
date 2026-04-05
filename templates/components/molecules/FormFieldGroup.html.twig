@@ -12,13 +12,13 @@
   {{ attributes.defaults({ class: '' }) }}
 >
   {% if hasLegend %}
-    <legend id="{{ legendId }}" class="text-sm font-semibold text-text">
+    <legend id="{{ legendId }}" class="text-small font-semibold text-text">
       {{ legend }}
     </legend>
   {% endif %}
 
   {% if description %}
-    <p id="{{ descriptionId }}" class="{% if hasLegend %}mt-1{% endif %} text-sm text-text-light">{{ description }}</p>
+    <p id="{{ descriptionId }}" class="{% if hasLegend %}mt-1{% endif %} text-small text-text-light">{{ description }}</p>
   {% endif %}
 
   <div class="{% if description or hasLegend %}mt-4{% endif %} {{ innerClass }}">

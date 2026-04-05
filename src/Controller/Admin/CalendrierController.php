@@ -46,11 +46,11 @@ class CalendrierController extends AbstractController
         foreach ($commandes as $commande) {
             $statut = $commande->getStatut()->value;
             $color = match ($statut) {
-                'en_attente' => '#f59e0b',
-                'confirmee'  => '#22c55e',
-                'livree'     => '#3b82f6',
-                'annulee'    => '#ef4444',
-                default      => '#6b7280',
+                'en_attente' => '#B45309', // --color-warning
+                'confirmee'  => '#3F6212', // --color-success
+                'livree'     => '#3b82f6', // pas de token bleu dans le design system
+                'annulee'    => '#DC2626', // --color-danger
+                default      => '#6B3A2A', // --color-text-light
             };
 
             $events[] = [

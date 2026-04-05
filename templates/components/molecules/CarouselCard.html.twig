@@ -1,4 +1,4 @@
-<div {{ attributes.defaults({ class: 'flex flex-col w-full h-4/5 rounded-2xl' }) }}>
+<div {{ attributes.defaults({ class: 'flex flex-col w-full h-4/5 rounded-lg' }) }}>
 
 {% block content %}
         {% if url %}
@@ -6,11 +6,11 @@
         {% endif %}
         {% if imgSrc %}
             <div class="flex-1 min-h-0 w-full {{ imgClass }}">
-                <twig:Atoms:Image src="{{ imgSrc }}" alt="{{ imgAlt }}" class="w-full h-full object-contain" />
+                <twig:Atoms:Image src="{{ imgSrc }}" alt="{{ imgAlt }}" loading="eager" class="w-full h-full object-contain" />
             </div>
         {% endif %}
         {% if description %}
-            <p class="carousel-card-description text-primary text-center text-base shrink-0 opacity-0 relative z-10 line-clamp-2 h-12">{{ description }}</p>
+            <p class="carousel-card-description text-primary text-center text-small shrink-0 opacity-0 relative z-10 line-clamp-2 h-12">{{ description }}</p>
         {% endif %}
         {% if url %}
             </a>

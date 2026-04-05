@@ -1,6 +1,6 @@
 <section {{ attributes.defaults({ class: 'bg-bg border-b border-border py-6' }) }}>
   <div class="container-main">
-    <form method="GET" action="{{ action }}" class="flex gap-3 max-w-xl">
+    <form method="GET" action="{{ action }}" class="flex gap-3 max-w-xl" {% if frameId %}data-turbo-frame="{{ frameId }}"{% endif %}>
       <twig:Atoms:Input
         type="search"
         name="{{ name }}"

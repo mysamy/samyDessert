@@ -5,7 +5,7 @@
   id="{{ id }}"
   aria-labelledby="{{ titleId }}"
   aria-describedby="{{ messageId }}"
-  {{ attributes.defaults({ class: 'rounded-2xl p-8 shadow-xl w-full max-w-sm border border-border backdrop:bg-black/50' }) }}
+  {{ attributes.defaults({ class: 'rounded-lg p-8 shadow-xl w-full max-w-sm border border-border backdrop:bg-black/50' }) }}
 >
   <h2 id="{{ titleId }}" class="text-h4 font-bold text-text mb-3">{{ title }}</h2>
   <p id="{{ messageId }}" class="text-text-light mb-6">{{ message|raw }}</p>

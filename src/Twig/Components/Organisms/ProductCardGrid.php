@@ -14,10 +14,12 @@ final class ProductCardGrid
 
     public array $items = [];
 
-    // IDs des produits en favoris (pour afficher le coeur rempli)
+    public string $type = 'produit'; // 'produit' ou 'recette'
+
+    // IDs des favoris (pour afficher le coeur rempli)
     public array $favorisIds = [];
 
-    // Map productId => noteMoyenne (optionnel)
+    // Map id => noteMoyenne (optionnel, produits uniquement)
     public array $ratingsMap = [];
 
     public function getTitleId(): string

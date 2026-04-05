@@ -12,4 +12,5 @@ final class SearchBar
     public string $placeholder = 'Rechercher...';
     public string $buttonLabel = 'Rechercher';
     public string $name = 'q';
+    public string $frameId = '';
 }

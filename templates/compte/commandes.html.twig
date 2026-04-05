@@ -5,7 +5,7 @@
 {% block body %}
 <div class="max-w-4xl mx-auto px-4 py-12">
 
-  <h1 class="text-3xl font-bold text-primary mb-8">Mes commandes</h1>
+  <h1 class="text-h1 font-bold text-primary mb-8">Mes commandes</h1>
 
   {% for message in app.flashes('success') %}
     <twig:Molecules:Alert type="success" message="{{ message }}" class="mb-4" />
@@ -20,12 +20,12 @@
   {% else %}
     <div class="space-y-6">
       {% for commande in commandes %}
-        <div class="bg-surface border border-border rounded-xl p-6 shadow-sm">
+        <div class="bg-surface border border-border rounded-md p-6 shadow-card">
 
           <div class="flex items-center justify-between mb-4">
             <div>
               <span class="font-bold text-primary">{{ commande.reference ?? '#' ~ commande.id }}</span>
-              <span class="text-text-light text-sm ml-3">{{ commande.dateCommande|date('d/m/Y à H:i') }}</span>
+              <span class="text-text-light text-small ml-3">{{ commande.dateCommande|date('d/m/Y à H:i') }}</span>
             </div>
             {% set statutVariant = commande.statut.value == 'confirmee' ? 'success' :
               (commande.statut.value == 'annulee' ? 'danger' :
@@ -35,7 +35,7 @@
             </twig:Atoms:Badge>
           </div>
 
-          <table class="w-full text-sm mb-4">
+          <table class="w-full text-small mb-4">
             <thead>
               <tr class="text-text-light border-b border-border">
                 <th class="text-left pb-2">Produit</th>

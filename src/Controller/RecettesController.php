@@ -19,12 +19,13 @@ final class RecettesController extends AbstractController
     {
         $recherche       = trim($request->query->get('q', ''));
         $categorieActive = $request->query->get('categorie', '');
+        $tri             = $request->query->get('tri', '');
 
         $categories = [
             'tartes'       => 'Tartes',
             'choux'        => 'Choux & Éclairs',
-            'petits-fours' => 'Petits fours',
-            'entremets'    => 'Entremets',
+            'petits-fours' => 'Petits Gâteaux',
+            'entremets'    => 'Gâteaux',
         ];
 
         // Requête Doctrine : uniquement les recettes publiées
@@ -42,7 +43,21 @@ final class RecettesController extends AbstractController
                ->setParameter('recherche', '%' . $recherche . '%');
         }
 
-        $recettes = $qb->orderBy('r.createdAt', 'DESC')->getQuery()->getResult();
+        if ($tri !== 'difficulte_asc' && $tri !== 'difficulte_desc') {
+            $qb->orderBy('r.createdAt', 'DESC');
+        }
+
+        $recettes = $qb->getQuery()->getResult();
+
+        // Tri par difficulté (facile < moyen < difficile)
+        if ($tri === 'difficulte_asc' || $tri === 'difficulte_desc') {
+            $ordre = ['facile' => 1, 'moyen' => 2, 'difficile' => 3];
+            usort($recettes, function ($a, $b) use ($ordre, $tri) {
+                $va = $ordre[$a->getDifficulte()?->value ?? ''] ?? 0;
+                $vb = $ordre[$b->getDifficulte()?->value ?? ''] ?? 0;
+                return $tri === 'difficulte_asc' ? $va <=> $vb : $vb <=> $va;
+            });
+        }
 
         // Récupère les IDs des recettes favorites de l'utilisateur connecté
         $user = $this->getUser();
@@ -56,6 +71,7 @@ final class RecettesController extends AbstractController
             'categories'         => $categories,
             'categorieActive'    => $categorieActive,
             'recherche'          => $recherche,
+            'tri'                => $tri,
             'recettesFavorisIds' => $recettesFavorisIds,
         ]);
     }

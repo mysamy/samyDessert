@@ -20,13 +20,14 @@ final class ProduitsController extends AbstractController
     {
         $recherche       = trim($request->query->get('q', ''));
         $categorieActive = $request->query->get('categorie', '');
+        $tri             = $request->query->get('tri', '');
 
         // Map slug URL → nom en base (correspond aux fixtures)
         $categories = [
             'tartes'       => 'Tartes',
             'choux'        => 'Choux & Éclairs',
-            'petits-fours' => 'Petits fours',
-            'entremets'    => 'Entremets',
+            'petits-fours' => 'Petits Gâteaux',
+            'entremets'    => 'Gâteaux',
         ];
 
         // Construit la requête Doctrine avec les filtres actifs
@@ -46,7 +47,20 @@ final class ProduitsController extends AbstractController
                ->setParameter('recherche', '%' . $recherche . '%');
         }
 
+        // Tri par prix
+        if ($tri === 'prix_asc') {
+            $qb->orderBy('p.prix', 'ASC');
+        } elseif ($tri === 'prix_desc') {
+            $qb->orderBy('p.prix', 'DESC');
+        }
+
         $produits = $qb->getQuery()->getResult();
+
+        // Tri par note (calculé après récupération des avis)
+        if ($tri === 'note') {
+            $notesMapTri = $avisRepo->findNotesMoyennes($produits);
+            usort($produits, fn($a, $b) => ($notesMapTri[$b->getId()] ?? 0) <=> ($notesMapTri[$a->getId()] ?? 0));
+        }
 
         // Récupère les IDs des produits favoris de l'utilisateur connecté
         $user = $this->getUser();
@@ -62,6 +76,7 @@ final class ProduitsController extends AbstractController
             'categories'         => $categories,
             'categorieActive'    => $categorieActive,
             'recherche'          => $recherche,
+            'tri'                => $tri,
             'produitsFavorisIds' => $produitsFavorisIds,
             'notesMap'           => $notesMap,
         ]);

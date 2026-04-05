@@ -8,11 +8,11 @@
   <div class="w-full max-w-md">
 
     <div class="text-center mb-8">
-      <h1 class="text-3xl font-bold text-text mb-1">Connexion</h1>
-      <p class="text-text-light text-sm">Bienvenue ! Connectez-vous à votre compte.</p>
+      <h1 class="text-h1 font-bold text-text mb-1">Connexion</h1>
+      <p class="text-text-light text-small">Bienvenue ! Connectez-vous à votre compte.</p>
     </div>
 
-    <div class="bg-surface rounded-2xl shadow-sm border border-border p-8">
+    <div class="bg-surface rounded-lg shadow-card border border-border p-8">
 
       <twig:Organisms:LoginForm
         action="{{ path('app_login') }}"
@@ -22,7 +22,7 @@
         class="flex flex-col gap-5"
       />
 
-      <p class="mt-6 text-center text-sm text-text-light">
+      <p class="mt-6 text-center text-small text-text-light">
         Pas encore de compte ?
         <twig:Atoms:Link href="{{ path('app_register') }}" class="text-accent font-medium underline">Créer un compte</twig:Atoms:Link>
       </p>

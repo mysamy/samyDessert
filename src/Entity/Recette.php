@@ -7,7 +7,7 @@ use App\Repository\RecetteRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 
 // Entité Recette : représente une recette de pâtisserie publiée sur le site
 #[ORM\Entity(repositoryClass: RecetteRepository::class)]

@@ -6,7 +6,7 @@
 
 {# ── Fil d'Ariane ── #}
 <nav class="bg-surface border-b border-border" aria-label="Fil d'Ariane">
-  <div class="container-main py-3 text-sm text-text-light">
+  <div class="container-main py-3 text-small text-text-light">
     <twig:Atoms:Link href="{{ path('app_recettes') }}" class="hover:text-accent">Nos recettes</twig:Atoms:Link>
     <span class="mx-2" aria-hidden="true">/</span>
     <span class="text-text font-medium">{{ recette.titre }}</span>
@@ -24,18 +24,18 @@
           <img
             src="{{ vich_uploader_asset(recette, 'imageFile') }}"
             alt="{{ recette.titre }}"
-            class="w-full rounded-2xl object-cover max-h-[500px]"
+            class="w-full rounded-lg object-cover h-64 sm:h-80 lg:h-[500px]"
           >
         {% else %}
-          <div class="w-full h-80 rounded-2xl bg-surface flex items-center justify-center">
-            <twig:Atoms:Icon name="cake-candles" :decorative="true" class="text-6xl text-text-light"/>
+          <div class="w-full h-80 rounded-lg bg-surface flex items-center justify-center">
+            <twig:Atoms:Icon name="cake-candles" :decorative="true" class="text-display text-text-light"/>
           </div>
         {% endif %}
       </div>
 
       {# ── Infos ── #}
       <div class="lg:w-1/2 flex flex-col gap-4">
-        <h1 class="text-3xl font-bold text-text">{{ recette.titre }}</h1>
+        <h1 class="text-h1 font-bold text-text">{{ recette.titre }}</h1>
 
         {# Badges : difficulté + catégorie #}
         <div class="flex flex-wrap gap-2">
@@ -51,11 +51,11 @@
         </div>
 
         {% if recette.description %}
-          <p class="text-text-light text-lg leading-relaxed">{{ recette.description }}</p>
+          <p class="text-text-light text-body leading-relaxed">{{ recette.description }}</p>
         {% endif %}
 
         {# Méta : temps, portions #}
-        <div class="flex flex-wrap gap-6 text-sm text-text-light">
+        <div class="flex flex-wrap gap-6 text-small text-text-light">
           {% if recette.temps %}
             <span class="flex items-center gap-2">
               <twig:Atoms:Icon name="clock" variant="regular" :decorative="true" class="text-accent"/>
@@ -72,11 +72,11 @@
 
         {# Produit associé #}
         {% if recette.produit %}
-          <div class="mt-4 p-4 rounded-xl bg-surface border border-border">
-            <p class="text-sm text-text-light mb-2">Envie de le déguster sans cuisiner ?</p>
+          <div class="mt-4 p-4 rounded-md bg-surface border border-border">
+            <p class="text-small text-text-light mb-2">Envie de le déguster sans cuisiner ?</p>
             <twig:Atoms:Link
               href="{{ path('app_produit_show', { slug: recette.produit.slug }) }}"
-              class="inline-flex items-center gap-1 text-sm text-accent font-semibold"
+              class="inline-flex items-center gap-1 text-small text-accent font-semibold"
             >
               Commander « {{ recette.produit.nom }} » — {{ recette.produit.prix|prix }}
             </twig:Atoms:Link>
@@ -93,7 +93,7 @@
 {% if etapes|length > 0 %}
 <section class="section-alt">
   <div class="container-main max-w-3xl">
-    <h2 class="text-2xl font-bold text-text mb-8">
+    <h2 class="text-h4 font-bold text-text mb-8">
       <twig:Atoms:Icon name="list-ol" :decorative="true" class="text-accent mr-2"/>
       Préparation
     </h2>
@@ -102,7 +102,7 @@
       {% for etape in etapes %}
         {% if etape|trim is not empty %}
           <li class="flex gap-4">
-            <span class="shrink-0 w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center font-bold text-sm">
+            <span class="shrink-0 w-10 h-10 rounded-full bg-accent text-white flex items-center justify-center font-bold text-small">
               {{ loop.index }}
             </span>
             <div class="flex-1 pt-2">
@@ -119,7 +119,7 @@
 {# ── Lien retour ── #}
 <section class="section">
   <div class="container-main">
-    <twig:Atoms:Link href="{{ path('app_recettes') }}" class="text-sm text-text-light hover:text-accent">
+    <twig:Atoms:Link href="{{ path('app_recettes') }}" class="text-small text-text-light hover:text-accent">
       <twig:Atoms:Icon name="arrow-left" :decorative="true" class="mr-1"/>
       Retour aux recettes
     </twig:Atoms:Link>

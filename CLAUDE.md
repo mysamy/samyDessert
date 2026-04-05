@@ -8,6 +8,13 @@
 - Dev : `symfony serve` + `php bin/console tailwind:build --watch`
 - Après modif JS : `php bin/console asset-map:compile`
 
+## Environnement local
+- **Docker** (pas Laragon) — toujours lancer `docker compose up -d` avant de travailler
+- MySQL sur port **3307** (pas 3306)
+- Commandes Symfony qui touchent la DB : `docker compose exec php php bin/console ...`
+- Images produits : `public/uploads/produits/` — Images recettes : `public/uploads/recettes/`
+- Recharger les fixtures : `docker compose exec php php bin/console doctrine:fixtures:load`
+
 ## Architecture Atomic Design
 - `templates/components/atoms|molecules|organisms/` + `src/Twig/Components/Atoms|Molecules|Organisms/`
 
@@ -31,13 +38,14 @@
 - `stimulus_bootstrap.js` : `Application.start()` + enregistrement manuel des controllers
 
 ## TODO
-- [ ] Afficher/masquer le mot de passe (connexion/inscription)
-- [ ] Emails transactionnels (confirmation commande)
-- [ ] Déplacer `docker/` et `docker-compose.yml` hors du dossier projet
+- [x] Afficher/masquer le mot de passe (connexion/inscription)
+- [x] Emails transactionnels (confirmation commande)
 - [ ] Système d'avis (entité `Avis`, note moyenne sur DessertCard)
 - [ ] Commentaires dans le code (PHP + Twig + JS)
 - [ ] Résumé projet + questionnaire d'entraînement pour la soutenance
-- [ ] Gestion des images : VichUploaderBundle + stockage local (`public/uploads/`) + formulaire upload dans l'admin
+- [ ] Formulaire upload images dans l'admin (VichUploader installé ✅, stockage local ✅)
+- [ ] Captures d'écran dossier-projet (voir memory project_captures_dossier.md)
+- [ ] Images produits/recettes Unsplash à remplacer par fichiers locaux (voir memory project_images_todo.md)
 
 ## Référence rapide
 
@@ -67,6 +75,7 @@
 | `btn-cta` | CTA grand, fond framboise, `px-8 py-3 rounded-full` |
 | `btn-cta-sm` | CTA compact, fond framboise, `px-4 py-2 rounded-full` |
 | `btn-cta-outline` | CTA contour framboise |
+| `variant="white"` sur `Link` | Bouton blanc texte framboise (sur fond coloré) |
 | `btn-cta__icon` | Icône dans btn-cta (avance au hover) |
 | `nav-link` | Lien avec trait souligné animé (croît du centre) |
 | `page-title` | `<h1>` de page |

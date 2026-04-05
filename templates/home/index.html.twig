@@ -9,15 +9,15 @@
   <div class="container-main flex flex-col gap-8">
 
     <div class="text-center">
-      <h1 class="text-5xl font-bold text-text mb-4">SamyDessert</h1>
-      <p class="text-xl text-text-light mb-8">Des desserts artisanaux préparés avec passion</p>
+      <h1 class="text-h1 font-bold text-text mb-4">SamyDessert</h1>
+      <p class="text-body text-text-light mb-8">Des desserts artisanaux préparés avec passion</p>
       <twig:Atoms:Link href="{{ path('app_produits') }}" variant="cta">
         Voir nos desserts
         <twig:Atoms:Icon name="arrow-right" :decorative="true"/>
       </twig:Atoms:Link>
     </div>
 
-    <div data-controller="carousel" class="how__carousel" role="region" aria-roledescription="carrousel" aria-label="Nos spécialités">
+    <div data-controller="carousel" class="w-full flex min-h-[650px] justify-center relative overflow-hidden items-center" role="region" aria-roledescription="carrousel" aria-label="Nos spécialités">
 
       {% for produit in carouselProduits %}
         <twig:Molecules:CarouselCard
@@ -37,13 +37,10 @@
 {# ── Produits phares ── #}
 <section class="py-16 bg-bg">
   <div class="container-main">
-    <h2 class="text-3xl font-bold text-text text-center mb-10">Nos meilleures ventes</h2>
+    <h2 class="text-h3 font-bold text-text text-center mb-10">Nos meilleures ventes</h2>
     <twig:Organisms:ProductCardGrid :items="meilleursVendus" :favorisIds="produitsFavorisIds" />
     <div class="text-center mt-10">
-      <twig:Atoms:Link
-        href="{{ path('app_produits') }}"
-        class="inline-flex items-center gap-2 border-2 border-accent text-text-light px-8 py-3 rounded-full font-semibold hover:bg-surface transition"
-      >
+      <twig:Atoms:Link href="{{ path('app_produits') }}" variant="outline">
         Voir tous les desserts
         <twig:Atoms:Icon name="arrow-right" :decorative="true"/>
       </twig:Atoms:Link>
@@ -54,31 +51,31 @@
 {# ── Nos valeurs ── #}
 <section class="py-16 bg-surface">
   <div class="container-main">
-    <h2 class="text-3xl font-bold text-text text-center mb-12">Nos valeurs</h2>
+    <h2 class="text-h3 font-bold text-text text-center mb-12">Nos valeurs</h2>
     <div class="grid gap-8 sm:grid-cols-3 text-center">
 
       <div class="flex flex-col items-center gap-4">
-        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-2xl">
+        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-h4">
           <twig:Atoms:Icon name="leaf" :decorative="true"/>
         </div>
-        <h3 class="text-lg font-semibold text-text">Ingrédients frais</h3>
-        <p class="text-text-light text-sm leading-relaxed">Nous sélectionnons des produits locaux et de saison pour des saveurs authentiques.</p>
+        <h3 class="text-body font-semibold text-text">Ingrédients frais</h3>
+        <p class="text-text-light text-small leading-relaxed">Nous sélectionnons des produits locaux et de saison pour des saveurs authentiques.</p>
       </div>
 
       <div class="flex flex-col items-center gap-4">
-        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-2xl">
+        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-h4">
           <twig:Atoms:Icon name="hands" :decorative="true"/>
         </div>
-        <h3 class="text-lg font-semibold text-text">Fait à la main</h3>
-        <p class="text-text-light text-sm leading-relaxed">Chaque dessert est façonné avec soin, sans compromis sur la qualité artisanale.</p>
+        <h3 class="text-body font-semibold text-text">Fait à la main</h3>
+        <p class="text-text-light text-small leading-relaxed">Chaque dessert est façonné avec soin, sans compromis sur la qualité artisanale.</p>
       </div>
 
       <div class="flex flex-col items-center gap-4">
-        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-2xl">
+        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-h4">
           <twig:Atoms:Icon name="gift" :decorative="true"/>
         </div>
-        <h3 class="text-lg font-semibold text-text">Sur commande</h3>
-        <p class="text-text-light text-sm leading-relaxed">Anniversaires, mariages, événements — nous créons le dessert qui correspond à votre moment.</p>
+        <h3 class="text-body font-semibold text-text">Sur commande</h3>
+        <p class="text-text-light text-small leading-relaxed">Anniversaires, mariages, événements — nous créons le dessert qui correspond à votre moment.</p>
       </div>
 
     </div>
@@ -88,10 +85,10 @@
 {# ── Témoignages ── #}
 <section class="py-16 bg-bg">
   <div class="container-main">
-    <h2 class="text-3xl font-bold text-text text-center mb-12">Ce que nos clients disent</h2>
+    <h2 class="text-h3 font-bold text-text text-center mb-12">Ce que nos clients disent</h2>
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
-      <figure class="bg-surface rounded-2xl p-6 flex flex-col gap-4">
+      <figure class="bg-surface rounded-lg p-6 flex flex-col gap-4">
         <div class="flex items-center gap-1" aria-label="Note : 5 sur 5">
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
@@ -99,13 +96,13 @@
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
         </div>
-        <blockquote class="text-primary text-sm leading-relaxed flex-1">
+        <blockquote class="text-primary text-small leading-relaxed flex-1">
           "Les macarons sont absolument divins. Je commande pour tous mes événements, on ne peut plus s'en passer !"
         </blockquote>
-        <figcaption class="text-accent text-sm font-semibold">— Sophie M.</figcaption>
+        <figcaption class="text-accent text-small font-semibold">— Sophie M.</figcaption>
       </figure>
 
-      <figure class="bg-surface rounded-2xl p-6 flex flex-col gap-4">
+      <figure class="bg-surface rounded-lg p-6 flex flex-col gap-4">
         <div class="flex items-center gap-1" aria-label="Note : 5 sur 5">
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
@@ -113,13 +110,13 @@
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
         </div>
-        <blockquote class="text-primary text-sm leading-relaxed flex-1">
+        <blockquote class="text-primary text-small leading-relaxed flex-1">
           "Gâteau de mariage sur commande, livré à temps et magnifique. Tous nos invités ont adoré. Merci Samy !"
         </blockquote>
-        <figcaption class="text-accent text-sm font-semibold">— Thomas & Léa</figcaption>
+        <figcaption class="text-accent text-small font-semibold">— Thomas & Léa</figcaption>
       </figure>
 
-      <figure class="bg-surface rounded-2xl p-6 flex flex-col gap-4">
+      <figure class="bg-surface rounded-lg p-6 flex flex-col gap-4">
         <div class="flex items-center gap-1" aria-label="Note : 4 sur 5">
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
@@ -127,10 +124,10 @@
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
           <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
         </div>
-        <blockquote class="text-primary text-sm leading-relaxed flex-1">
+        <blockquote class="text-primary text-small leading-relaxed flex-1">
           "La tarte aux fraises est un régal. Produits frais, goût authentique, je recommande vivement !"
         </blockquote>
-        <figcaption class="text-accent text-sm font-semibold">— Camille R.</figcaption>
+        <figcaption class="text-accent text-small font-semibold">— Camille R.</figcaption>
       </figure>
 
     </div>
@@ -140,12 +137,9 @@
 {# ── CTA commande personnalisée ── #}
 <section class="py-20 bg-accent">
   <div class="container-main text-center">
-    <h2 class="text-3xl font-bold text-white mb-4">Un événement à célébrer ?</h2>
-    <p class="text-surface text-lg mb-8 max-w-xl mx-auto">Contactez-nous pour créer le gâteau de vos rêves. Devis gratuit, livraison possible.</p>
-    <twig:Atoms:Link
-      href="/contact"
-      class="inline-flex items-center gap-2 bg-white text-text-light px-8 py-3 rounded-full font-semibold hover:bg-surface transition"
-    >
+    <h2 class="text-h3 font-bold text-white mb-4">Un événement à célébrer ?</h2>
+    <p class="text-surface text-body mb-8 max-w-xl mx-auto">Contactez-nous pour créer le gâteau de vos rêves. Devis gratuit, livraison possible.</p>
+    <twig:Atoms:Link href="{{ path('app_contact') }}" variant="white">
       Nous contacter
       <twig:Atoms:Icon name="envelope" :decorative="true"/>
     </twig:Atoms:Link>

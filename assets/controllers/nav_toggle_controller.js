@@ -34,19 +34,19 @@ export default class extends Controller {
       this._pendingClose = null
     }
     this.menuTarget.show()
-    this.menuTarget.classList.remove('nav__menu--leave')
-    this.menuTarget.classList.add('nav__menu--enter')
+    this.menuTarget.classList.remove('nav-menu-leave')
+    this.menuTarget.classList.add('nav-menu-enter')
     this.iconOpenTarget.style.display = 'none'
     this.iconCloseTarget.style.display = ''
   }
 
   close() {
     this.isOpen = false
-    this.menuTarget.classList.remove('nav__menu--enter')
-    this.menuTarget.classList.add('nav__menu--leave')
+    this.menuTarget.classList.remove('nav-menu-enter')
+    this.menuTarget.classList.add('nav-menu-leave')
     this._pendingClose = () => {
       this.menuTarget.close()
-      this.menuTarget.classList.remove('nav__menu--leave')
+      this.menuTarget.classList.remove('nav-menu-leave')
       this._pendingClose = null
     }
     this.menuTarget.addEventListener('animationend', this._pendingClose, { once: true })
