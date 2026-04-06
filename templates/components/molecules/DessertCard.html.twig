@@ -2,7 +2,7 @@
 
   {# Image + badge difficulté — cliquable si url #}
   {% set tag = url ? 'a' : 'div' %}
-  <div class="relative overflow-hidden h-56 bg-surface rounded-t-lg">
+  <div class="relative overflow-hidden h-56 bg-bg rounded-t-lg">
     <{{ tag }}
       {% if url %}href="{{ url }}" aria-hidden="true" tabindex="-1"{% endif %}
       class="block w-full h-full"

@@ -57,7 +57,8 @@
             data-live-id-param="{{ produit.id }}"
           />
 
-          <span class="w-8 text-center font-semibold text-text">{{ quantite }}</span>
+          <span class="w-8 text-center font-semibold text-text" data-loading="hide">{{ quantite }}</span>
+          <twig:Atoms:Spinner size="md" class="hidden text-accent" data-loading="show" ariaLabel="Mise à jour" />
 
           <twig:Atoms:ButtonIcon
             name="plus"
@@ -109,14 +110,13 @@
       </twig:Atoms:Button>
 
       {% if isPage %}
-        <twig:Atoms:Link href="{{ path('app_commande') }}" variant="cta-sm">
+        <twig:Atoms:Link href="{{ path('app_commande') }}" variant="cta" size="sm">
           Passer commande
           <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-small"/>
         </twig:Atoms:Link>
       {% else %}
-        <twig:Atoms:Link href="{{ path('app_panier_index') }}" variant="cta-sm">
+        <twig:Atoms:Link href="{{ path('app_panier_index') }}" variant="cta" size="sm">
           Voir le panier
-          <twig:Atoms:Icon name="arrow-right" :decorative="true" class="text-small"/>
         </twig:Atoms:Link>
       {% endif %}
 

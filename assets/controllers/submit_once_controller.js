@@ -8,7 +8,14 @@ export default class extends Controller {
       this.btnTarget.disabled = true
       this.btnTarget.setAttribute('aria-busy', 'true')
     }
-    if (this.hasLabelTarget) this.labelTarget.classList.add('invisible')
+    if (this.hasLabelTarget) {
+      const loadingLabel = this.element.dataset.submitOnceLoadingLabel
+      if (loadingLabel) {
+        this.labelTarget.textContent = loadingLabel
+      } else {
+        this.labelTarget.classList.add('invisible')
+      }
+    }
     if (this.hasSpinnerTarget) this.spinnerTarget.classList.remove('hidden')
   }
 }

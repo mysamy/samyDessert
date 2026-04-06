@@ -1,14 +1,19 @@
+{% set sizes = {
+  sm: 'px-5 pt-[7px] pb-[5px] text-small',
+  md: 'px-8 pt-[13px] pb-[11px]',
+  lg: 'px-10 pt-[15px] pb-[13px] text-lg'
+} %}
+
 {% set variantClass = {
-  cta:     'rounded-full bg-accent text-white font-semibold px-8 py-3 hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-300',
-  'cta-sm': 'rounded-full bg-accent text-white font-semibold px-5 h-9 text-small hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-300',
-  outline: 'rounded-full border-2 border-accent text-accent font-semibold px-8 py-3 hover:bg-accent hover:text-white hover:scale-105 hover:shadow-md transition-all duration-300',
-  white:   'rounded-full bg-bg text-accent font-semibold px-8 py-3 hover:bg-surface hover:scale-105 transition-all duration-300'
+  cta:     'rounded-full bg-accent text-white font-semibold hover:bg-primary hover:scale-105 hover:shadow-md transition-all duration-350',
+  outline: 'rounded-full border-2 border-accent text-accent font-semibold hover:bg-accent hover:text-white hover:scale-105 hover:shadow-md transition-all duration-350',
+  white:   'rounded-full bg-bg text-accent font-semibold hover:bg-surface hover:scale-105 transition-all duration-350'
 }[variant] ?? '' %}
 
 <a
   {% if external %}target="_blank" rel="noopener noreferrer"{% endif %}
   {% if current %}aria-current="page"{% endif %}
-  {{ attributes.defaults({ class: 'inline-flex items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent focus-visible:outline ' ~ variantClass }) }}
+  {{ attributes.defaults({ class: 'inline-flex items-center focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent focus-visible:outline ' ~ (variantClass ? (sizes[size] ?? sizes.md) ~ ' ' : '') ~ variantClass }) }}
 >
   {% block content %}{% endblock %}
 </a>
@@ -18,6 +23,7 @@
   - external  bool   — ajoute target="_blank" rel="noopener noreferrer" (false)
   - current   bool   — ajoute aria-current="page" pour la nav (false)
   - variant   string — cta | outline | white | '' (plain) ('')
+  - size      string — sm | md | lg (md) — s'applique uniquement si variant est défini
 
   Attributs HTML utiles (via attributes) :
   - href*       — URL de destination
@@ -26,5 +32,5 @@
   Utilisation :
   <twig:Atoms:Link href="{{ path('app_home') }}" class="nav-link text-text hover:text-accent">Accueil</twig:Atoms:Link>
   <twig:Atoms:Link href="{{ path('app_produits') }}" variant="cta">Voir nos desserts</twig:Atoms:Link>
-  <twig:Atoms:Link href="{{ path('app_login') }}" variant="cta" size="sm">Se connecter</twig:Atoms:Link>
+  <twig:Atoms:Link href="{{ path('app_login') }}" variant="outline" size="sm">Se connecter</twig:Atoms:Link>
 #}

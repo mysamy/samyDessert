@@ -25,15 +25,15 @@
       <twig:block name="cartSlot">
         <button
           type="button"
-          class="group flex items-center gap-2 text-accent hover:text-primary transition-colors"
+          class="group flex items-center gap-2 text-accent hover:text-primary transition-colors duration-350"
           aria-label="Ouvrir le panier"
           data-action="cart-sidebar#open"
         >
-          <div class="cart-icon relative w-fit transition-transform group-hover:scale-110">
+          <div class="cart-icon relative w-fit">
             <twig:Atoms:Icon name="bag-shopping" class="text-[2.5rem]" :decorative="true" />
-            <twig:Atoms:PanierBadge class="absolute top-1/2 left-1/2 [translate:-50%_-35%]" />
+            <twig:Atoms:PanierBadge class="absolute top-1/2 left-1/2 [translate:-50%_calc(-35%-0.5px)]" />
           </div>
-          <span>Panier</span>
+          <span class="nav-link">Panier</span>
         </button>
       </twig:block>
       <twig:block name="desktopActions">
@@ -64,7 +64,7 @@
             </div>
           </div>
         {% else %}
-          <twig:Atoms:Link href="{{ path('app_login') }}" class="bg-accent text-white hover:bg-primary hover:scale-105 transition rounded-md px-4 h-10 text-body font-normal">Se connecter</twig:Atoms:Link>
+          <twig:Atoms:Link href="{{ path('app_login') }}" variant="outline" size="sm">Se connecter</twig:Atoms:Link>
         {% endif %}
       </twig:block>
       <twig:block name="mobileActions">
@@ -82,7 +82,7 @@
               <twig:Atoms:Icon name="right-from-bracket" size="sm" :decorative="true" /> Se déconnecter
             </twig:Atoms:Link>
           {% else %}
-            <twig:Atoms:Link href="{{ path('app_login') }}" variant="cta" class="px-4 py-2 mt-1 text-small">Se connecter</twig:Atoms:Link>
+            <twig:Atoms:Link href="{{ path('app_login') }}" variant="outline" size="sm" class="mt-1">Se connecter</twig:Atoms:Link>
           {% endif %}
         </div>
       </twig:block>
@@ -104,7 +104,7 @@
         <h2 class="text-body font-semibold text-text">Mon panier</h2>
         <button
           type="button"
-          class="text-text-light hover:text-text transition-colors"
+          class="text-text-light hover:text-text transition-colors duration-350"
           aria-label="Fermer le panier"
           data-action="cart-sidebar#close"
         >

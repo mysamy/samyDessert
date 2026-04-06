@@ -40,30 +40,30 @@
 /* ── Tokens du design system ── */
 @theme {
   /* Couleurs */
-  --color-primary:       #5C2309;
-  --color-primary-light: #FEF0E6;
+  --color-primary:       #5C2309;  /* chocolat foncé */
+  --color-primary-light: #FEF0E6;  /* chocolat clair */
 
-  --color-accent:        #9D174D;
-  --color-accent-light:  #FCE7F3;
+  --color-accent:        #9D174D;  /* framboise — CTA */
+  --color-accent-light:  #FCE7F3;  /* framboise clair */
 
-  --color-warning:       #B45309;
-  --color-warning-light: #FEF3C7;
+  --color-warning:       #B45309;  /* orange — alertes */
+  --color-warning-light: #FEF3C7;  /* orange clair */
 
-  --color-bg:            #FDF8F3;
-  --color-white:         var(--color-bg);
-  --color-surface:       #F5EDE4;
-  --color-border:        #E8D5C4;
-  --color-text:          #1C0A03;
-  --color-text-light:    #6B3A2A;
+  --color-bg:            #FDF8F3;  /* fond de page */
+  --color-white:         var(--color-bg);  /* text-white sur fond coloré */
+  --color-surface:       #F5EDE4;  /* fond cards */
+  --color-border:        #E8D5C4;  /* séparateurs */
+  --color-text:          #1C0A03;  /* texte principal */
+  --color-text-light:    #6B3A2A;  /* texte secondaire */
 
-  --color-success:       #3F6212;
-  --color-success-light: #ECFCCB;
+  --color-success:       #3F6212;  /* vert — badges */
+  --color-success-light: #ECFCCB;  /* vert clair */
 
-  --color-danger:        #DC2626;
-  --color-danger-light:  #FEE2E2;
+  --color-danger:        #DC2626;  /* rouge — erreurs */
+  --color-danger-light:  #FEE2E2;  /* rouge clair */
 
-  --color-star:          #F59E0B;
-  --color-focus:         var(--color-primary);
+  --color-star:          #F59E0B;  /* étoiles */
+  --color-focus:         var(--color-primary);  /* outline clavier */
 
   /* Police */
   --font-sans: 'Luciole', system-ui, sans-serif;
@@ -136,7 +136,7 @@ html {
   /* Trait souligné animé centré au hover et sur la page active */
   .nav-link {
     position: relative;
-    transition: color 0.2s ease;
+    transition: color 0.35s ease;
   }
 
   .nav-link::after {
@@ -278,24 +278,3 @@ dialog.cart-sidebar::backdrop {
 }
   /* ── Panier ── */
 
-  /* Ripple au survol du bouton panier */
-  .cart-icon::after {
-    content: '';
-    position: absolute;
-    width: 150%;
-    height: 150%;
-    top: 50%;
-    left: 50%;
-    translate: -50% -50%;
-    border-radius: 50%;
-    background-color: var(--color-accent-light);
-    transform: scale(0);
-    opacity: 0.8;
-    transition: transform 0.35s ease, opacity 0.35s ease;
-    pointer-events: none;
-  }
-
-  .cart-icon:hover::after {
-    transform: scale(1);
-    opacity: 0;
-  }

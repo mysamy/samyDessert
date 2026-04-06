@@ -27,7 +27,7 @@ class InscriptionControllerTest extends WebTestCase
         $client->request('POST', '/inscription', [
             'email'            => 'nouveau@test.com',
             'password'         => 'motdepasse123',
-            'password_confirm' => 'autrechose456',
+            'confirmPassword'  => 'autrechose456',
         ]);
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('body', 'correspondent pas');
@@ -39,7 +39,7 @@ class InscriptionControllerTest extends WebTestCase
         $client->request('POST', '/inscription', [
             'email'            => 'nouveau@test.com',
             'password'         => '1234',
-            'password_confirm' => '1234',
+            'confirmPassword'  => '1234',
         ]);
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('body', '8 caractères');
@@ -51,7 +51,7 @@ class InscriptionControllerTest extends WebTestCase
         $client->request('POST', '/inscription', [
             'email'            => 'nouveau@test.com',
             'password'         => 'motdepasse123',
-            'password_confirm' => 'motdepasse123',
+            'confirmPassword'  => 'motdepasse123',
             'nom'              => 'Dupont',
             'prenom'           => 'Jean',
         ]);
@@ -73,7 +73,7 @@ class InscriptionControllerTest extends WebTestCase
         $client->request('POST', '/inscription', [
             'email'            => 'existant@test.com',
             'password'         => 'motdepasse123',
-            'password_confirm' => 'motdepasse123',
+            'confirmPassword'  => 'motdepasse123',
         ]);
         $this->assertResponseIsSuccessful();
         $this->assertSelectorTextContains('body', 'déjà utilisée');

@@ -42,16 +42,18 @@ final class SecurityController extends AbstractController
         if ($request->isMethod('POST')) {
             $email    = $request->request->get('email', '');
             $password = $request->request->get('password', '');
-            $confirm  = $request->request->get('password_confirm', '');
+            $confirm  = $request->request->get('confirmPassword', '');
             $nom      = $request->request->get('nom', '');
             $prenom   = $request->request->get('prenom', '');
 
-            if ($password !== $confirm) {
-                $error = 'Les mots de passe ne correspondent pas.';
-            } elseif (strlen($password) < 8) {
-                $error = 'Le mot de passe doit contenir au moins 8 caractères.';
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+                $error = 'Adresse email invalide.';
             } elseif ($em->getRepository(Utilisateur::class)->findOneBy(['email' => $email])) {
                 $error = 'Cette adresse email est déjà utilisée.';
+            } elseif (strlen($password) < 8) {
+                $error = 'Le mot de passe doit contenir au moins 8 caractères.';
+            } elseif ($password !== $confirm) {
+                $error = 'Les mots de passe ne correspondent pas.';
             } else {
                 // Génère un token aléatoire de 64 caractères hexadécimaux
                 $token = bin2hex(random_bytes(32));
