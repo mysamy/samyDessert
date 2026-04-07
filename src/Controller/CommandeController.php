@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Commande;
 use App\Entity\CommandeProduit;
 use App\Enum\StatutCommande;
-use App\Service\MailerService;
+use App\Repository\CommandeRepository;
 use App\Service\PanierService;
 use Doctrine\ORM\EntityManagerInterface;
 use Stripe\Checkout\Session;
@@ -26,7 +26,6 @@ class CommandeController extends AbstractController
     public function __construct(
         private PanierService $panier,
         private EntityManagerInterface $em,
-        private MailerService $mailer,
     ) {}
 
     // Étape 1 : saisie de l'adresse de livraison
@@ -112,9 +111,9 @@ class CommandeController extends AbstractController
         ]);
     }
 
-    // Crée la session Stripe Checkout et redirige vers la page de paiement Stripe
+    // Crée la session Stripe Checkout, enregistre la commande en attente, puis redirige vers Stripe
     #[Route('/commande/paiement', name: 'app_commande_paiement', methods: ['POST'])]
-    public function paiement(): Response
+    public function paiement(Request $request): Response
     {
         $lignes = $this->panier->getLignes();
 
@@ -131,15 +130,13 @@ class CommandeController extends AbstractController
                 'price_data' => [
                     'currency'     => 'eur',
                     'unit_amount'  => (int) round((float) $ligne['produit']->getPrix() * 100),
-                    'product_data' => [
-                        'name' => $ligne['produit']->getNom(),
-                    ],
+                    'product_data' => ['name' => $ligne['produit']->getNom()],
                 ],
                 'quantity' => $ligne['quantite'],
             ];
         }
 
-        $session = Session::create([
+        $stripeSession = Session::create([
             'payment_method_types' => ['card'],
             'line_items'           => $lineItems,
             'mode'                 => 'payment',
@@ -148,51 +145,51 @@ class CommandeController extends AbstractController
             'customer_email'       => $this->getUser()->getUserIdentifier(),
         ]);
 
-        return $this->redirect($session->url, 303);
-    }
+        // Créer la commande en base avant de quitter le site — le webhook la confirmera après paiement
+        $adresse = $request->getSession()->get('adresse_livraison', []);
 
-    // Stripe redirige ici après un paiement réussi
-    #[Route('/commande/succes', name: 'app_commande_succes')]
-    public function succes(Request $request): Response
-    {
-        $lignes = $this->panier->getLignes();
+        $commande = new Commande();
+        $commande->setUtilisateur($this->getUser());
+        $commande->setStatut(StatutCommande::EnAttente);
+        $commande->setTotal((string) $this->panier->getTotal());
+        $commande->setStripeSessionId($stripeSession->id);
+        $commande->setReference('CMD-' . date('Y') . '-' . str_pad((string) random_int(1, 99999), 5, '0', STR_PAD_LEFT));
 
-        if (!empty($lignes)) {
-            $commande = new Commande();
-            $commande->setUtilisateur($this->getUser());
-            $commande->setStatut(StatutCommande::Confirmee);
-            $commande->setTotal((string) $this->panier->getTotal());
-
-            // Sauvegarde l'adresse de livraison depuis la session
-            $adresse = $request->getSession()->get('adresse_livraison', []);
-            if (!empty($adresse)) {
-                $commande->setAdresseLivraison($adresse['address1'] ?? '');
-                $commande->setVille($adresse['city'] ?? '');
-                $commande->setCodePostal($adresse['postalCode'] ?? '');
-                $commande->setNotes($adresse['notes'] ?: null);
-                $request->getSession()->remove('adresse_livraison');
-            }
-
-            foreach ($lignes as $ligne) {
-                $cp = new CommandeProduit();
-                $cp->setCommande($commande);
-                $cp->setProduit($ligne['produit']);
-                $cp->setQuantite($ligne['quantite']);
-                $cp->setPrixUnitaire((string) $ligne['produit']->getPrix());
-                $this->em->persist($cp);
-            }
-
-            // Génère une référence lisible ex: CMD-2026-00001
-            $commande->setReference('CMD-' . date('Y') . '-' . str_pad((string) random_int(1, 99999), 5, '0', STR_PAD_LEFT));
-
-            $this->em->persist($commande);
-            $this->em->flush();
-
-            $this->panier->vider();
-            $this->mailer->envoyerConfirmationCommande($commande);
+        if (!empty($adresse)) {
+            $commande->setAdresseLivraison($adresse['address1'] ?? '');
+            $commande->setVille($adresse['city'] ?? '');
+            $commande->setCodePostal($adresse['postalCode'] ?? '');
+            $commande->setNotes($adresse['notes'] ?: null);
         }
 
-        return $this->render('commande/succes.html.twig');
+        foreach ($lignes as $ligne) {
+            $cp = new CommandeProduit();
+            $cp->setCommande($commande);
+            $cp->setProduit($ligne['produit']);
+            $cp->setQuantite($ligne['quantite']);
+            $cp->setPrixUnitaire((string) $ligne['produit']->getPrix());
+            $this->em->persist($cp);
+        }
+
+        $this->em->persist($commande);
+        $this->em->flush();
+
+        return $this->redirect($stripeSession->url, 303);
+    }
+
+    // Stripe redirige ici après un paiement réussi — la commande est déjà en base, le webhook l'a confirmée
+    #[Route('/commande/succes', name: 'app_commande_succes')]
+    public function succes(Request $request, CommandeRepository $commandeRepo): Response
+    {
+        // Vider le panier et l'adresse de session dès le retour de Stripe
+        $this->panier->vider();
+        $request->getSession()->remove('adresse_livraison');
+
+        // Récupérer la commande pour l'afficher dans la page de confirmation
+        $sessionId = $request->query->get('session_id');
+        $commande = $sessionId ? $commandeRepo->findOneByStripeSessionId($sessionId) : null;
+
+        return $this->render('commande/succes.html.twig', ['commande' => $commande]);
     }
 
     // Stripe redirige ici si l'utilisateur annule le paiement

@@ -13,4 +13,9 @@ class CommandeRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, Commande::class);
     }
+
+    public function findOneByStripeSessionId(string $sessionId): ?Commande
+    {
+        return $this->findOneBy(['stripeSessionId' => $sessionId]);
+    }
 }

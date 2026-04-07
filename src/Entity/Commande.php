@@ -52,6 +52,10 @@ class Commande
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $notes = null;
 
+    // Identifiant de la session Stripe Checkout — sert à retrouver la commande depuis le webhook
+    #[ORM\Column(length: 255, nullable: true, unique: true)]
+    private ?string $stripeSessionId = null;
+
     // Liste des produits inclus dans cette commande (supprimés si la commande est supprimée)
     #[ORM\OneToMany(targetEntity: CommandeProduit::class, mappedBy: 'commande', cascade: ['persist', 'remove'])]
     private Collection $commandeProduits;
@@ -169,5 +173,16 @@ class Commande
     public function getCommandeProduits(): Collection
     {
         return $this->commandeProduits;
+    }
+
+    public function getStripeSessionId(): ?string
+    {
+        return $this->stripeSessionId;
+    }
+
+    public function setStripeSessionId(?string $stripeSessionId): static
+    {
+        $this->stripeSessionId = $stripeSessionId;
+        return $this;
     }
 }

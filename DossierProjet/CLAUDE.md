@@ -41,11 +41,13 @@
 - [x] Afficher/masquer le mot de passe (connexion/inscription)
 - [x] Emails transactionnels (confirmation commande)
 - [x] Système d'avis (entité `Avis`, note moyenne sur DessertCard)
+- [x] Webhook Stripe (`/webhook/stripe`, idempotent, `checkout.session.completed` → `Confirmee` + email)
 - [ ] Commentaires dans le code (PHP + Twig + JS)
 - [ ] Résumé projet + questionnaire d'entraînement pour la soutenance
 - [ ] Formulaire upload images dans l'admin (VichUploader installé ✅, stockage local ✅)
 - [ ] Captures d'écran dossier-projet (voir memory project_captures_dossier.md)
 - [ ] Images produits/recettes Unsplash à remplacer par fichiers locaux (voir memory project_images_todo.md)
+- [ ] Déploiement : créer branche `dev` + brancher Railway sur `main` pour mise en production
 
 ## Référence rapide
 

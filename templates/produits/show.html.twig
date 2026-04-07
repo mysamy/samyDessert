@@ -16,12 +16,12 @@
     <div class="flex flex-col lg:flex-row gap-10">
 
       {# ── Image ── #}
-      <div class="lg:w-1/2">
+      <div class="max-w-2xl mx-auto w-full lg:max-w-none lg:w-1/2 lg:mx-0">
         {% if produit.imageName %}
           <img
             src="{{ vich_uploader_asset(produit, 'imageFile') }}"
             alt="{{ produit.nom }}"
-            class="w-full rounded-lg object-cover h-48 sm:h-80 lg:h-[500px]"
+            class="w-full rounded-lg object-cover aspect-4/3 lg:aspect-auto lg:h-[500px]"
           >
         {% else %}
           <div class="w-full h-80 rounded-lg bg-surface flex items-center justify-center">
