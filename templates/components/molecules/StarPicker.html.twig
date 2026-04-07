@@ -1,0 +1,47 @@
+<fieldset {{ attributes.defaults({ class: '' }) }}>
+  <div class="flex items-center gap-4" data-controller="star-rating">
+    <legend class="text-small font-medium text-text">
+      {{ label }}{% if required %} <span class="text-danger">*</span>{% endif %}
+    </legend>
+    <div class="flex gap-1" role="group">
+      {% for i in 1..max %}
+        <label class="cursor-pointer"
+          data-index="{{ i }}"
+          data-action="mouseenter->star-rating#highlight mouseleave->star-rating#reset"
+        >
+          <input
+            type="radio"
+            name="{{ name }}"
+            value="{{ i }}"
+            class="sr-only"
+            data-star-rating-target="input"
+            data-action="change->star-rating#select"
+            {% if value == i %}checked{% endif %}
+            {% if required %}required{% endif %}
+          >
+          <twig:Atoms:Icon
+            name="star"
+            :decorative="true"
+            class="text-subtitle transition-colors duration-150 {{ i <= value ? 'text-star' : 'text-border' }}"
+            data-star-rating-target="star"
+          />
+          <span class="sr-only">{{ i }} étoile{{ i > 1 ? 's' : '' }}</span>
+        </label>
+      {% endfor %}
+    </div>
+  </div>
+</fieldset>
+
+{#
+  Props (* = obligatoire) :
+  - name      string — attribut name du groupe radio ('note')
+  - value     int    — étoile pré-sélectionnée, 0 = aucune (0)
+  - label     string — légende du fieldset ('Note')
+  - required  bool   — rend les inputs required (false)
+  - max       int    — nombre d'étoiles max (5)
+
+  Dépendance : Stimulus controller star-rating (assets/controllers/star_rating_controller.js)
+
+  Utilisation :
+  <twig:Molecules:StarPicker name="note" :value="monAvis ? monAvis.note : 0" :required="true" />
+#}

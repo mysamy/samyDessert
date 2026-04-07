@@ -16,6 +16,10 @@ final class ContactController extends AbstractController
     public function index(Request $request, MailerService $mailer): Response
     {
         if ($request->isMethod('POST')) {
+            if (!$this->isCsrfTokenValid('contact', $request->request->get('_token'))) {
+                throw $this->createAccessDeniedException();
+            }
+
             $nom     = $request->request->get('nom', '');
             $email   = $request->request->get('email', '');
             $sujet   = $request->request->get('sujet', '');

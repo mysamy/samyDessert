@@ -1,0 +1,19 @@
+{% set count = this.nombreArticles %}
+<span {{ attributes.defaults({ class: 'inline-block' }) }} aria-live="polite" aria-atomic="true">
+  {% if count > 0 %}
+    <span class="inline-flex items-center justify-center w-5 h-5 text-small font-bold text-white">{{ count }}</span>
+  {% endif %}
+</span>
+
+{#
+  Props (* = obligatoire) :
+  — aucune prop. Live Component auto-alimenté depuis PanierService.
+
+  Getter :
+  - nombreArticles  int  — nombre total d'articles dans le panier
+
+  Écoute l'événement 'panierUpdated' pour se rafraîchir automatiquement.
+
+  Utilisation :
+  <twig:Molecules:PanierBadge {{ attributes }} />
+#}

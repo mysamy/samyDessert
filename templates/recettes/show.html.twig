@@ -4,14 +4,11 @@
 
 {% block body %}
 
-{# ── Fil d'Ariane ── #}
-<nav class="bg-surface border-b border-border" aria-label="Fil d'Ariane">
-  <div class="container-main py-3 text-small text-text-light">
-    <twig:Atoms:Link href="{{ path('app_recettes') }}" class="hover:text-accent">Nos recettes</twig:Atoms:Link>
-    <span class="mx-2" aria-hidden="true">/</span>
-    <span class="text-text font-medium">{{ recette.titre }}</span>
-  </div>
-</nav>
+<twig:Molecules:Breadcrumb
+  parentLabel="Nos recettes"
+  parentHref="{{ path('app_recettes') }}"
+  currentLabel="{{ recette.titre }}"
+/>
 
 {# ── Hero recette ── #}
 <section class="section">
@@ -35,7 +32,7 @@
 
       {# ── Infos ── #}
       <div class="lg:w-1/2 flex flex-col gap-4">
-        <h1 class="text-h1 font-bold text-text">{{ recette.titre }}</h1>
+        <h1 class="text-title font-bold text-text">{{ recette.titre }}</h1>
 
         {# Badges : difficulté + catégorie #}
         <div class="flex flex-wrap gap-2">
@@ -93,7 +90,7 @@
 {% if etapes|length > 0 %}
 <section class="section-alt">
   <div class="container-main max-w-3xl">
-    <h2 class="text-h4 font-bold text-text mb-8">
+    <h2 class="text-subtitle font-bold text-text mb-8">
       <twig:Atoms:Icon name="list-ol" :decorative="true" class="text-accent mr-2"/>
       Préparation
     </h2>

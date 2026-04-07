@@ -2,6 +2,7 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Avis;
 use App\Entity\Commande;
 use App\Entity\Produit;
 use App\Entity\Recette;
@@ -72,6 +73,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkToCrud('Commandes', 'fa fa-bag-shopping', Commande::class);
         yield MenuItem::section('Utilisateurs');
         yield MenuItem::linkToCrud('Utilisateurs', 'fa fa-users', Utilisateur::class);
+        yield MenuItem::linkToCrud('Avis clients', 'fa fa-star', Avis::class);
         yield MenuItem::section('');
         yield MenuItem::linkToRoute('Retour au site', 'fa fa-arrow-left', 'app_home');
     }

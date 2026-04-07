@@ -4,14 +4,11 @@
 
 {% block body %}
 
-{# ── Fil d'Ariane ── #}
-<nav class="bg-surface border-b border-border" aria-label="Fil d'Ariane">
-  <div class="container-main py-3 text-small text-text-light">
-    <twig:Atoms:Link href="{{ path('app_produits') }}" class="hover:text-accent">Nos desserts</twig:Atoms:Link>
-    <span class="mx-2" aria-hidden="true">/</span>
-    <span class="text-text font-medium">{{ produit.nom }}</span>
-  </div>
-</nav>
+<twig:Molecules:Breadcrumb
+  parentLabel="Nos desserts"
+  parentHref="{{ path('app_produits') }}"
+  currentLabel="{{ produit.nom }}"
+/>
 
 {# ── Contenu principal ── #}
 <section class="section">
@@ -24,7 +21,7 @@
           <img
             src="{{ vich_uploader_asset(produit, 'imageFile') }}"
             alt="{{ produit.nom }}"
-            class="w-full rounded-lg object-cover h-64 sm:h-80 lg:h-[500px]"
+            class="w-full rounded-lg object-cover h-48 sm:h-80 lg:h-[500px]"
           >
         {% else %}
           <div class="w-full h-80 rounded-lg bg-surface flex items-center justify-center">
@@ -35,10 +32,10 @@
 
       {# ── Infos ── #}
       <div class="lg:w-1/2 flex flex-col gap-4">
-        <h1 class="text-h1 font-bold text-text">{{ produit.nom }}</h1>
+        <h1 class="text-title font-bold text-text">{{ produit.nom }}</h1>
 
         {% if produit.categorie %}
-          <twig:Atoms:Badge variant="default">{{ produit.categorie.nom }}</twig:Atoms:Badge>
+          <twig:Atoms:Badge variant="default" class="self-start">{{ produit.categorie.nom }}</twig:Atoms:Badge>
         {% endif %}
 
         {% if produit.description %}
@@ -46,7 +43,7 @@
         {% endif %}
 
         {# Prix #}
-        <p class="text-h4 font-bold text-accent">
+        <p class="text-subtitle font-bold text-accent">
           {{ produit.prix|prix }}
         </p>
 
@@ -65,7 +62,7 @@
 
         {# Bouton panier #}
         <div class="mt-4">
-          <twig:Molecules:BoutonPanier
+          <twig:Organisms:BoutonPanier
             :produitId="produit.id"
             :produitNom="produit.nom"
           />
@@ -99,125 +96,11 @@
 </section>
 
 {# ── Section Avis ── #}
-<turbo-frame id="avis">
-<section class="section-alt" aria-labelledby="avis-titre">
-  <div class="container-main">
-
-    {% for message in app.flashes('success') %}
-      <twig:Molecules:Alert type="success" message="{{ message }}" class="mb-6" />
-    {% endfor %}
-    {% for message in app.flashes('error') %}
-      <twig:Molecules:Alert type="error" message="{{ message }}" class="mb-6" />
-    {% endfor %}
-
-    <h2 id="avis-titre" class="section-title mb-8">
-      Avis clients
-      {% if noteMoyenne %}
-        <span class="text-accent text-h4 font-bold ml-3">{{ noteMoyenne }}/5</span>
-        <span class="text-text-light text-small font-normal ml-1">({{ avis|length }} avis)</span>
-      {% endif %}
-    </h2>
-
-    {# ── Liste des avis ── #}
-    {% if avis is empty %}
-      <p class="text-text-light text-small mb-8">Aucun avis pour l'instant. Soyez le premier à en laisser un !</p>
-    {% else %}
-      <div class="grid gap-4 mb-10 sm:grid-cols-2 lg:grid-cols-3">
-        {% for a in avis %}
-          <article class="bg-surface rounded-lg border border-border p-5 flex flex-col gap-2">
-            <div class="flex items-center justify-between">
-              <span class="font-semibold text-text text-small">
-                {{ a.utilisateur.prenom ?? a.utilisateur.email|split('@')[0] }}
-              </span>
-              <time class="text-small text-text-light" datetime="{{ a.createdAt|date('Y-m-d') }}">
-                {{ a.createdAt|date('d/m/Y') }}
-              </time>
-            </div>
-            <div class="flex gap-0.5" aria-label="Note : {{ a.note }} sur 5">
-              {% for i in 1..5 %}
-                <twig:Atoms:Icon
-                  name="star"
-                  :decorative="true"
-                  class="{{ i <= a.note ? 'text-star' : 'text-border' }}"
-                />
-              {% endfor %}
-            </div>
-            {% if a.commentaire %}
-              <p class="text-text-light text-small leading-relaxed">{{ a.commentaire }}</p>
-            {% endif %}
-          </article>
-        {% endfor %}
-      </div>
-    {% endif %}
-
-    {# ── Formulaire d'avis ── #}
-    {% if app.user %}
-      <div class="bg-surface rounded-lg border border-border p-6 max-w-lg">
-        <h3 class="font-semibold text-text mb-4">
-          {{ monAvis ? 'Modifier votre avis' : 'Laisser un avis' }}
-        </h3>
-        <form
-          action="{{ path('app_avis_submit', { slug: produit.slug }) }}"
-          method="POST"
-          class="flex flex-col gap-4"
-          data-turbo-frame="avis"
-        >
-          <input type="hidden" name="_token" value="{{ csrf_token('avis_' ~ produit.id) }}">
-
-          {# Étoiles interactives #}
-          <fieldset>
-            <legend class="text-small font-medium text-text mb-2">Note <span class="text-danger">*</span></legend>
-            <div class="flex gap-2" role="group">
-              {% for i in 1..5 %}
-                <label class="cursor-pointer group">
-                  <input
-                    type="radio"
-                    name="note"
-                    value="{{ i }}"
-                    class="sr-only peer"
-                    {% if monAvis and monAvis.note == i %}checked{% endif %}
-                    required
-                  >
-                  <twig:Atoms:Icon
-                    name="star"
-                    :decorative="true"
-                    class="text-h4 text-border peer-checked:text-star transition-colors duration-350 group-hover:text-star"
-                  />
-                  <span class="sr-only">{{ i }} étoile{{ i > 1 ? 's' : '' }}</span>
-                </label>
-              {% endfor %}
-            </div>
-          </fieldset>
-
-          {# Commentaire #}
-          <div>
-            <label for="commentaire" class="block text-small font-medium text-text mb-1">Commentaire <span class="text-text-light font-normal">(facultatif)</span></label>
-            <textarea
-              id="commentaire"
-              name="commentaire"
-              rows="3"
-              maxlength="500"
-              class="w-full rounded-md border border-border bg-bg px-4 py-2 text-small text-text placeholder:text-text-light focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent resize-none"
-              placeholder="Partagez votre expérience..."
-            >{{ monAvis ? monAvis.commentaire : '' }}</textarea>
-          </div>
-
-          <div class="flex justify-end">
-            <twig:Atoms:Button type="submit" variant="primary">
-              {{ monAvis ? 'Mettre à jour' : 'Publier mon avis' }}
-            </twig:Atoms:Button>
-          </div>
-        </form>
-      </div>
-    {% else %}
-      <p class="text-small text-text-light">
-        <twig:Atoms:Link href="{{ path('app_login') }}" class="text-accent font-medium underline">Connectez-vous</twig:Atoms:Link>
-        pour laisser un avis.
-      </p>
-    {% endif %}
-
-  </div>
-</section>
-</turbo-frame>
+<twig:Organisms:AvisSection
+  :produit="produit"
+  :avis="avis"
+  :noteMoyenne="noteMoyenne"
+  :monAvis="monAvis"
+/>
 
 {% endblock %}

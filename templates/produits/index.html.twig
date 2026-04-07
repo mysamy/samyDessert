@@ -7,7 +7,7 @@
 {# ── Hero ── #}
 <section class="section-alt">
   <div class="container-main">
-    <h1 class="text-h1 font-bold text-text mb-2">Nos desserts</h1>
+    <h1 class="text-title font-bold text-text mb-2">Nos desserts</h1>
     <p class="text-text-light text-body">Pâtisseries artisanales préparées chaque jour avec des ingrédients frais.</p>
   </div>
 </section>
@@ -95,7 +95,7 @@
 
         {% if produits is empty %}
           <div class="text-center py-16 text-text-light">
-            <twig:Atoms:Icon name="face-sad-tear" :decorative="true" class="text-h2 mb-4 block"/>
+            <twig:Atoms:Icon name="face-sad-tear" :decorative="true" class="text-title mb-4 block"/>
             <p class="text-body font-medium">Aucun dessert trouvé.</p>
             <twig:Atoms:Link href="{{ path('app_produits') }}" class="mt-4 inline-block text-small text-accent">
               Voir tous les desserts
@@ -114,7 +114,7 @@
 {# ── CTA commande ── #}
 <section class="py-16 bg-accent">
   <div class="container-main text-center">
-    <h2 class="text-h4 font-bold text-white mb-3">Vous ne trouvez pas ce que vous cherchez ?</h2>
+    <h2 class="text-subtitle font-bold text-white mb-3">Vous ne trouvez pas ce que vous cherchez ?</h2>
     <p class="text-surface mb-6">Contactez-nous pour une commande sur mesure.</p>
     <twig:Atoms:Link
       href="{{ path('app_contact') }}"

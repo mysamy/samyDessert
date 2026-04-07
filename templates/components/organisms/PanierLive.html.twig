@@ -32,7 +32,7 @@
             <img src="{{ vich_uploader_asset(produit, 'imageFile') }}" alt="{{ produit.nom }}" class="w-full h-full object-cover">
           {% else %}
             <div class="w-full h-full flex items-center justify-center text-text-light">
-              <twig:Atoms:Icon name="image" :decorative="true" class="text-h4"/>
+              <twig:Atoms:Icon name="image" :decorative="true" class="text-subtitle"/>
             </div>
           {% endif %}
         </div>
@@ -94,7 +94,7 @@
     {# Total #}
     <div class="flex items-center justify-between">
       <p class="text-small text-text-light">Total</p>
-      <p class="text-h3 font-bold text-text">{{ total|prix }}</p>
+      <p class="text-section font-bold text-text">{{ total|prix }}</p>
     </div>
 
     {# Boutons alignés #}

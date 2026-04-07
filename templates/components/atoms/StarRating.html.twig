@@ -1,0 +1,9 @@
+<div {{ attributes.defaults({ class: 'flex gap-0.5' }) }} aria-label="Note : {{ note }} sur {{ max }}">
+  {% for i in 1..max %}
+    <twig:Atoms:Icon
+      name="star"
+      :decorative="true"
+      class="{{ i <= note ? 'text-star' : 'text-border' }}"
+    />
+  {% endfor %}
+</div>

@@ -1,0 +1,207 @@
+<article data-controller="image-zoom" {{ attributes.defaults({ class: 'group flex flex-col rounded-lg border border-border shadow-card hover:shadow-lg hover:-translate-y-1 hover:z-10 relative transition-all duration-300 bg-surface h-full' }) }}>
+
+  {# Image + badge difficulté — cliquable si url #}
+  {% set tag = url ? 'a' : 'div' %}
+  <div class="relative overflow-hidden h-56 bg-bg rounded-t-lg">
+    <{{ tag }}
+      {% if url %}href="{{ url }}" aria-hidden="true" tabindex="-1"{% endif %}
+      class="block w-full h-full"
+    >
+      {% if imageSrc %}
+        <twig:Atoms:Image
+          src="{{ imageSrc }}"
+          alt="{{ titre }}"
+          class="w-full h-full object-cover group-hover:scale-105 transition duration-300"
+        />
+      {% endif %}
+    </{{ tag }}>
+    {% if difficulte %}
+      <div class="absolute top-3 left-3">
+        <twig:Atoms:Badge variant="{{ difficulte == 'facile' ? 'success' : (difficulte == 'moyen' ? 'warning' : 'danger') }}">
+          {{ difficulte|capitalize }}
+        </twig:Atoms:Badge>
+      </div>
+    {% endif %}
+    {% if imageSrc %}
+      <button
+        type="button"
+        data-action="image-zoom#open"
+        aria-label="Agrandir l'image de {{ titre }}"
+        class="absolute bottom-2 right-2 bg-overlay text-white rounded-full p-1.5 opacity-0 group-hover:opacity-100 transition-opacity focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35M11 8v6M8 11h6"/>
+        </svg>
+      </button>
+    {% endif %}
+  </div>
+
+  {# Dialog zoom image #}
+  {% if imageSrc %}
+    <dialog
+      data-image-zoom-target="dialog"
+      data-action="click->image-zoom#closeOnBackdrop"
+      class="rounded-xl shadow-xl p-0 max-w-2xl w-[calc(100%-2rem)] m-auto backdrop:bg-overlay"
+    >
+      <div class="relative">
+        <img src="{{ imageSrc }}" alt="{{ titre }}" class="w-full rounded-xl object-contain max-h-[80vh]">
+        <button
+          type="button"
+          data-action="image-zoom#close"
+          aria-label="Fermer"
+          class="absolute top-3 right-3 bg-overlay text-white rounded-full p-1.5 hover:bg-text transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+            <path d="M18 6 6 18M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+    </dialog>
+  {% endif %}
+
+  {# Contenu #}
+  <div class="flex flex-col flex-1 p-5">
+    <div class="flex items-start justify-between gap-2 mb-1">
+      <h3 class="text-small font-bold text-text group-hover:text-accent transition">
+        {% if url %}
+          <twig:Atoms:Link href="{{ url }}">{{ titre }}</twig:Atoms:Link>
+        {% else %}
+          {{ titre }}
+        {% endif %}
+      </h3>
+      {% if favoriUrl %}
+        <div
+          class="shrink-0"
+          data-controller="favori"
+          data-favori-url-value="{{ favoriUrl }}"
+          data-favori-active-value="{{ favori ? 'true' : 'false' }}"
+        >
+          <twig:Molecules:FlashTooltip message="Connectez-vous pour ajouter aux favoris">
+            {% block content %}
+            <button
+              type="button"
+              class="transition focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent rounded-sm"
+              aria-label="{{ favori ? 'Retirer des favoris' : 'Ajouter aux favoris' }}"
+              data-action="favori#toggle"
+              data-favori-target="btn"
+            >
+              <svg data-favori-target="icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" class="text-accent">
+                {# Contour — toujours visible #}
+                <path
+                  d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 11.91 3.85 13 5.08C14.09 3.85 15.76 3 17.5 3C20.58 3 23 5.42 23 8.5C23 14.5 12 21 12 21Z"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linejoin="round"
+                />
+                {# Remplissage — animé via clip-path #}
+                <path
+                  class="heart-fill"
+                  d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 11.91 3.85 13 5.08C14.09 3.85 15.76 3 17.5 3C20.58 3 23 5.42 23 8.5C23 14.5 12 21 12 21Z"
+                  fill="currentColor"
+                  style="clip-path: circle({{ favori ? '75%' : '0%' }} at 50% 55%); transition: clip-path 0.4s ease;"
+                />
+              </svg>
+            </button>
+            {% endblock %}
+          </twig:Molecules:FlashTooltip>
+        </div>
+      {% endif %}
+    </div>
+    {% if description %}
+      <p class="text-small text-text-light mb-4 flex-1 line-clamp-2">{{ description }}</p>
+    {% endif %}
+
+    {# Méta recette : temps + portions + catégorie #}
+    {% if temps or portions or categorieLabel %}
+      <div class="flex flex-wrap items-center gap-x-3 gap-y-1 text-small text-text-light mb-4">
+        {% if temps %}
+          <span class="flex items-center gap-1">
+            <twig:Atoms:Icon name="clock" variant="regular" :decorative="true"/>
+            {{ temps }}
+          </span>
+        {% endif %}
+        {% if portions %}
+          <span class="flex items-center gap-1">
+            <twig:Atoms:Icon name="users" :decorative="true"/>
+            {{ portions }} pers.
+          </span>
+        {% endif %}
+        {% if categorieLabel %}
+          <span class="flex items-center gap-1">
+            <twig:Atoms:Icon name="tag" :decorative="true"/>
+            {{ categorieLabel }}
+          </span>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {# Étoiles (produit) #}
+    {% if rating is not null %}
+      <div class="flex items-center gap-1 mb-3" role="img" aria-label="{{ rating }} sur 5 étoiles">
+        {% for i in 1..5 %}
+          <twig:Atoms:Icon name="star" :decorative="true" class="text-small {{ rating >= i ? 'text-star' : 'text-text-light' }}"/>
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {# Bouton bas de carte #}
+    <div class="flex items-center justify-between gap-3 mt-auto pt-3">
+      {% if prix is not null %}
+        {# Produit : prix + bouton panier #}
+        <span class="text-small font-bold text-text whitespace-nowrap">{{ prix }}</span>
+        {% if produitId is not null %}
+          <twig:Organisms:BoutonPanier
+            :produitId="produitId"
+            :produitNom="titre"
+          />
+        {% endif %}
+      {% elseif url %}
+        {# Recette : voir la recette #}
+        <twig:Atoms:Link href="{{ url }}" variant="cta" class="px-4 py-2 text-small ml-auto">
+          Voir la recette
+          <twig:Atoms:Icon name="arrow-right" :decorative="true"/>
+        </twig:Atoms:Link>
+      {% endif %}
+    </div>
+  </div>
+
+</article>
+
+{#
+  Props (* = obligatoire) :
+  - titre*            string      — nom du produit ou de la recette
+  - description       string|null — description courte (null)
+  - imageSrc          string|null — URL de l'image (null)
+  - url               string|null — lien vers la page de détail produit ou recette (null)
+  - favori            bool        — déjà en favori ? (false)
+  - favoriUrl         string|null — URL pour toggle favori, null = pas de bouton (null)
+
+  Props recette :
+  - difficulte        string      — Facile | Moyen | Difficile ('')
+  - temps             string|null — durée ex: "45 min" (null)
+  - portions          int|null    — nombre de portions (null)
+  - categorieLabel    string|null — nom de la catégorie (null)
+
+  Props produit :
+  - prix              string|null — prix formaté ex: "9,90 €" (null)
+  - rating            float|null  — note sur 5 (null)
+  - produitId         int|null    — id pour le live component BoutonPanier (null)
+
+  Utilisation :
+  <twig:Organisms:DessertCard
+    titre="{{ produit.nom }}"
+    imageSrc="{{ produit.imageSrc }}"
+    prix="{{ produit.prix }}"
+    :produitId="produit.id"
+  />
+
+  <twig:Organisms:DessertCard
+    titre="{{ recette.titre }}"
+    description="{{ recette.description }}"
+    difficulte="{{ recette.difficulte }}"
+    temps="{{ recette.temps }}"
+    :portions="recette.portions"
+    url="{{ path('app_recette', { slug: recette.slug }) }}"
+  />
+#}

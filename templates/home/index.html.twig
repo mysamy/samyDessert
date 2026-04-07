@@ -9,7 +9,7 @@
   <div class="container-main flex flex-col gap-8">
 
     <div class="text-center">
-      <h1 class="text-h1 font-bold text-text mb-4">SamyDessert</h1>
+      <h1 class="text-title font-bold text-text mb-4">SamyDessert</h1>
       <p class="text-body text-text-light mb-8">Des desserts artisanaux préparés avec passion</p>
       <twig:Atoms:Link href="{{ path('app_produits') }}" variant="cta">
         Voir nos desserts
@@ -37,8 +37,8 @@
 {# ── Produits phares ── #}
 <section class="py-16">
   <div class="container-main">
-    <h2 class="text-h3 font-bold text-text text-center mb-10">Nos meilleures ventes</h2>
-    <twig:Organisms:ProductCardGrid :items="meilleursVendus" :favorisIds="produitsFavorisIds" />
+    <h2 class="section-title mb-10">Nos meilleures ventes</h2>
+    <twig:Organisms:ProductCardGrid :items="meilleursVendus" :favorisIds="produitsFavorisIds" :ratingsMap="ratingsMap" />
     <div class="text-center mt-10">
       <twig:Atoms:Link href="{{ path('app_produits') }}" variant="outline">
         Voir tous les desserts
@@ -51,11 +51,11 @@
 {# ── Nos valeurs ── #}
 <section class="py-16 bg-surface">
   <div class="container-main">
-    <h2 class="text-h3 font-bold text-text text-center mb-12">Nos valeurs</h2>
+    <h2 class="section-title mb-12">Nos valeurs</h2>
     <div class="grid gap-8 sm:grid-cols-3 text-center">
 
       <div class="flex flex-col items-center gap-4">
-        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-h4">
+        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-subtitle">
           <twig:Atoms:Icon name="leaf" :decorative="true"/>
         </div>
         <h3 class="text-body font-semibold text-text">Ingrédients frais</h3>
@@ -63,7 +63,7 @@
       </div>
 
       <div class="flex flex-col items-center gap-4">
-        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-h4">
+        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-subtitle">
           <twig:Atoms:Icon name="hands" :decorative="true"/>
         </div>
         <h3 class="text-body font-semibold text-text">Fait à la main</h3>
@@ -71,7 +71,7 @@
       </div>
 
       <div class="flex flex-col items-center gap-4">
-        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-h4">
+        <div class="flex items-center justify-center w-16 h-16 rounded-full bg-primary-light text-primary text-subtitle">
           <twig:Atoms:Icon name="gift" :decorative="true"/>
         </div>
         <h3 class="text-body font-semibold text-text">Sur commande</h3>
@@ -85,17 +85,11 @@
 {# ── Témoignages ── #}
 <section class="py-16 bg-bg">
   <div class="container-main">
-    <h2 class="text-h3 font-bold text-text text-center mb-12">Ce que nos clients disent</h2>
+    <h2 class="section-title mb-12">Ce que nos clients disent</h2>
     <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
 
       <figure class="bg-surface rounded-lg p-6 flex flex-col gap-4">
-        <div class="flex items-center gap-1" aria-label="Note : 5 sur 5">
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-        </div>
+        <twig:Atoms:StarRating :note="5" />
         <blockquote class="text-primary text-small leading-relaxed flex-1">
           "Les macarons sont absolument divins. Je commande pour tous mes événements, on ne peut plus s'en passer !"
         </blockquote>
@@ -103,13 +97,7 @@
       </figure>
 
       <figure class="bg-surface rounded-lg p-6 flex flex-col gap-4">
-        <div class="flex items-center gap-1" aria-label="Note : 5 sur 5">
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-        </div>
+        <twig:Atoms:StarRating :note="5" />
         <blockquote class="text-primary text-small leading-relaxed flex-1">
           "Gâteau de mariage sur commande, livré à temps et magnifique. Tous nos invités ont adoré. Merci Samy !"
         </blockquote>
@@ -117,13 +105,7 @@
       </figure>
 
       <figure class="bg-surface rounded-lg p-6 flex flex-col gap-4">
-        <div class="flex items-center gap-1" aria-label="Note : 4 sur 5">
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-          <twig:Atoms:Icon name="star" class="text-star" :decorative="true"/>
-        </div>
+        <twig:Atoms:StarRating :note="5" />
         <blockquote class="text-primary text-small leading-relaxed flex-1">
           "La tarte aux fraises est un régal. Produits frais, goût authentique, je recommande vivement !"
         </blockquote>
@@ -137,7 +119,7 @@
 {# ── CTA commande personnalisée ── #}
 <section class="py-20 bg-accent">
   <div class="container-main text-center">
-    <h2 class="text-h3 font-bold text-white mb-4">Un événement à célébrer ?</h2>
+    <h2 class="text-section font-bold text-white mb-4">Un événement à célébrer ?</h2>
     <p class="text-surface text-body mb-8 max-w-xl mx-auto">Contactez-nous pour créer le gâteau de vos rêves. Devis gratuit, livraison possible.</p>
     <twig:Atoms:Link href="{{ path('app_contact') }}" variant="white">
       Nous contacter

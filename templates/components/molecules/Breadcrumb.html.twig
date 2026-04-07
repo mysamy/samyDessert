@@ -1,0 +1,7 @@
+<nav {{ attributes.defaults({ class: 'bg-bg border-b border-border' }) }} aria-label="Fil d'Ariane">
+  <div class="container-main py-3 text-small text-text-light">
+    <twig:Atoms:Link href="{{ parentHref }}" class="hover:text-accent">{{ parentLabel }}</twig:Atoms:Link>
+    <span class="mx-2" aria-hidden="true">/</span>
+    <span class="text-text font-medium">{{ currentLabel }}</span>
+  </div>
+</nav>

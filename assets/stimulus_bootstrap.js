@@ -13,6 +13,7 @@ import CartSidebarController from './controllers/cart_sidebar_controller.js';
 import AnnulationController from './controllers/annulation_controller.js';
 import ImageZoomController from './controllers/image_zoom_controller.js';
 import ConfirmController from './controllers/confirm_controller.js';
+import StarRatingController from './controllers/star_rating_controller.js';
 
 const app = Application.start();
 app.register('live', LiveController);
@@ -29,3 +30,4 @@ app.register('cart-sidebar', CartSidebarController);
 app.register('annulation', AnnulationController);
 app.register('image-zoom', ImageZoomController);
 app.register('confirm', ConfirmController);
+app.register('star-rating', StarRatingController);

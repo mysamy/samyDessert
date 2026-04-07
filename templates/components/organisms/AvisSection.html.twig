@@ -1,0 +1,52 @@
+<turbo-frame id="avis">
+<section {{ attributes.defaults({ class: 'bg-bg py-16' }) }} aria-labelledby="avis-titre">
+  <div class="container-main">
+
+    {% for message in app.flashes('success') %}
+      <twig:Molecules:Alert type="success" message="{{ message }}" class="mb-6" />
+    {% endfor %}
+    {% for message in app.flashes('error') %}
+      <twig:Molecules:Alert type="error" message="{{ message }}" class="mb-6" />
+    {% endfor %}
+
+    <h2 id="avis-titre" class="section-title mb-8">
+      Avis clients
+      {% if noteMoyenne %}
+        <span class="text-accent text-subtitle font-bold ml-3">{{ noteMoyenne }}/5</span>
+        <span class="text-text-light text-small font-normal ml-1">({{ this.avis|length }} avis)</span>
+      {% endif %}
+    </h2>
+
+    {% if this.avis is empty %}
+      <p class="text-text-light text-small mb-8 text-center">Aucun avis pour l'instant. Soyez le premier à en laisser un !</p>
+    {% else %}
+      <div class="grid gap-4 mb-10 sm:grid-cols-2 lg:grid-cols-3">
+        {% for a in this.avis %}
+          <twig:Molecules:AvisCard :avis="a" />
+        {% endfor %}
+      </div>
+    {% endif %}
+
+    {% if app.user %}
+      {% set monAvisLocal = monAvis %}
+      <div class="py-10 flex justify-center">
+        <twig:Molecules:Card
+          title="{{ monAvisLocal ? 'Modifier votre avis' : 'Laisser un avis' }}"
+          titleTag="h3"
+          class="w-full max-w-lg"
+        >
+          <twig:block name="content">
+            <twig:Organisms:AvisForm :produit="produit" :monAvis="monAvisLocal" />
+          </twig:block>
+        </twig:Molecules:Card>
+      </div>
+    {% else %}
+      <p class="text-small text-text-light">
+        <twig:Atoms:Link href="{{ path('app_login') }}" class="text-accent font-medium underline">Connectez-vous</twig:Atoms:Link>
+        pour laisser un avis.
+      </p>
+    {% endif %}
+
+  </div>
+</section>
+</turbo-frame>

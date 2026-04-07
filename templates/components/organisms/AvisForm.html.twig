@@ -1,0 +1,44 @@
+<twig:Organisms:Form
+  action="{{ path('app_avis_submit', { slug: produit.slug }) }}"
+  class="flex flex-col gap-4"
+  data-turbo-frame="avis"
+>
+  <twig:block name="content">
+  <input type="hidden" name="_token" value="{{ csrf_token('avis_' ~ produit.id) }}">
+
+  <twig:Molecules:StarPicker
+    name="note"
+    :value="monAvis ? monAvis.note : 0"
+    :required="true"
+  />
+
+  <twig:Molecules:TextareaField
+    name="commentaire"
+    label="Commentaire"
+    :optional="true"
+    value="{{ monAvis ? monAvis.commentaire : '' }}"
+    placeholder="Partagez votre expérience..."
+    :rows="3"
+    :maxlength="500"
+  />
+
+  <twig:Molecules:FormActions>
+    <twig:Atoms:Button type="submit" variant="primary">
+      {{ monAvis ? 'Mettre à jour' : 'Publier mon avis' }}
+    </twig:Atoms:Button>
+  </twig:Molecules:FormActions>
+  </twig:block>
+</twig:Organisms:Form>
+
+{#
+  Props (* = obligatoire) :
+  - produit*  Produit   — entité produit (slug pour l'action, id pour le CSRF)
+  - monAvis   Avis|null — avis existant de l'utilisateur, null = nouveau (null)
+
+  Soumission en POST vers app_avis_submit avec Turbo Frame "avis".
+  CSRF token lié à 'avis_{produit.id}'.
+
+  Utilisation :
+  <twig:Organisms:AvisForm :produit="produit" />
+  <twig:Organisms:AvisForm :produit="produit" :monAvis="monAvis" />
+#}

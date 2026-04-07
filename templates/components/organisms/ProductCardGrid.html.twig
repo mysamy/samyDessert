@@ -1,60 +1,43 @@
 {% set hasTitle = title is not empty %}
-{% set hasItems = items|length > 0 %}
-
-{% set titleId = id ? (id ~ '-title') : 'product-card-grid-title' %}
+{% set normalizedItems = this.normalizedItems %}
+{% set hasItems = normalizedItems|length > 0 %}
 
 {% set attrDefaults = {} %}
 {% if id %}{% set attrDefaults = attrDefaults|merge({ id: id }) %}{% endif %}
-{% if hasTitle %}{% set attrDefaults = attrDefaults|merge({ 'aria-labelledby': titleId }) %}{% endif %}
+{% if hasTitle %}{% set attrDefaults = attrDefaults|merge({ 'aria-labelledby': this.titleId }) %}{% endif %}
 
-{% set baseClass = 'space-y-4' %}
 {% set rootAttrs = attributes.defaults(attrDefaults) %}
 {% set rootAttrs = class ? rootAttrs.addClass(class) : rootAttrs %}
 
 <section {{ rootAttrs }}>
   {% if hasTitle %}
-    <h2 id="{{ titleId }}" class="text-body font-semibold text-text">
+    <h2 id="{{ this.titleId }}" class="text-body font-semibold text-text">
       {{ title }}
     </h2>
   {% endif %}
 
   {% if hasItems %}
     <ul role="list" class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-  {% for item in items %}
-    {% set itemTitre = item.nom ?? item.titre ?? '' %}
-    {% set itemUrl = item.slug ? path(type == 'recette' ? 'app_recette_show' : 'app_produit_show', { slug: item.slug }) : null %}
-    {% set itemImageSrc = item.imageName ? vich_uploader_asset(item, 'imageFile') : null %}
-    {% set itemRating = type == 'produit' ? (ratingsMap[item.id] ?? null) : null %}
-    {% set itemPrix = type == 'produit' ? (item.prix ? item.prix|prix : null) : null %}
-    {% set itemDescription = item.description ?? null %}
-    {% set itemDifficulte = type == 'recette' ? (item.difficulte ? item.difficulte.value : '') : '' %}
-    {% set itemTemps = type == 'recette' ? item.temps : null %}
-    {% set itemPortions = type == 'recette' ? item.portions : null %}
-    {% set itemCategorieLabel = item.categorie ? item.categorie.nom : null %}
-    {% set itemId = item.id ?? null %}
-    {% set itemFavori = itemId ? (itemId in favorisIds) : false %}
-    {% set itemFavoriUrl = itemId ? path('app_favori_toggle', { type: type, id: itemId }) : null %}
-
-    <li>
-      <twig:Molecules:DessertCard
-        :titre="itemTitre"
-        :url="itemUrl"
-        :imageSrc="itemImageSrc"
-        :rating="itemRating"
-        :prix="itemPrix"
-        :description="itemDescription"
-        :difficulte="itemDifficulte"
-        :temps="itemTemps"
-        :portions="itemPortions"
-        :categorieLabel="itemCategorieLabel"
-        :produitId="type == 'produit' ? itemId : null"
-        :favori="itemFavori"
-        :favoriUrl="itemFavoriUrl"
-      />
-    </li>
-  {% endfor %}
-</ul>
-
+      {% for item in normalizedItems %}
+        <li>
+          <twig:Organisms:DessertCard
+            :titre="item.titre"
+            :url="item.url"
+            :imageSrc="item.imageSrc"
+            :rating="item.rating"
+            :prix="item.prix"
+            :description="item.description"
+            :difficulte="item.difficulte"
+            :temps="item.temps"
+            :portions="item.portions"
+            :categorieLabel="item.categorieLabel"
+            :produitId="item.produitId"
+            :favori="item.favori"
+            :favoriUrl="item.favoriUrl"
+          />
+        </li>
+      {% endfor %}
+    </ul>
   {% else %}
     <div class="rounded-lg border border-border bg-surface p-6 text-text">
       <p>Aucun {{ type == 'recette' ? 'recette' : 'produit' }} à afficher.</p>
@@ -64,13 +47,14 @@
 
 {#
   Props (* = obligatoire) :
-  - items*      array       — produits ou recettes à afficher
+  - items*      array       — produits ou recettes (entités Symfony)
+  - type        string      — 'produit' (défaut) ou 'recette'
   - title       string|null — titre de la section (null)
   - id          string|null — identifiant HTML de la section (null)
-
-  Chaque item doit avoir : { nom, imageSrc, prix, id, difficulte?, description?, slug? }
+  - favorisIds  array       — IDs des favoris de l'utilisateur ([])
+  - ratingsMap  array       — map id => noteMoyenne ([])
 
   Utilisation :
   <twig:Organisms:ProductCardGrid :items="produits" title="Nos produits" />
-  <twig:Organisms:ProductCardGrid :items="recettes" title="Nos recettes" id="recettes" />
+  <twig:Organisms:ProductCardGrid :items="recettes" type="recette" title="Nos recettes" />
 #}

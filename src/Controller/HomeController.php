@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Utilisateur;
+use App\Repository\AvisRepository;
 use App\Repository\ProduitRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -13,9 +14,10 @@ final class HomeController extends AbstractController
 {
     // Affiche la page d'accueil du site
     #[Route('/', name: 'app_home')]
-    public function index(ProduitRepository $produitRepository): Response
+    public function index(ProduitRepository $produitRepository, AvisRepository $avisRepository): Response
     {
         $meilleursVendus = $produitRepository->findMeilleursVendus(6);
+        $ratingsMap = $avisRepository->findNotesMoyennes($meilleursVendus);
 
         $carouselProduits = $produitRepository->findBySlugsOrdered([
             'tarte-aux-fraises', 'tiramisu', 'macarons-x6',
@@ -32,6 +34,7 @@ final class HomeController extends AbstractController
             'meilleursVendus'    => $meilleursVendus,
             'carouselProduits'   => $carouselProduits,
             'produitsFavorisIds' => $produitsFavorisIds,
+            'ratingsMap'         => $ratingsMap,
         ]);
     }
 }

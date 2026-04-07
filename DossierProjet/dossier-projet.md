@@ -76,6 +76,10 @@
     17.2 Variables d'environnement
     17.3 Deploiement en production
 18. Evolution du projet
+    18.1 Fonctionnalites a completer
+    18.2 Ameliorations techniques
+    18.3 Infrastructure et deploiement
+    18.4 Vision long terme
 19. Bilan personnel
 20. Conclusion
 21. Glossaire
@@ -476,8 +480,8 @@ Ce decoupage garantit que chaque partie du code a une responsabilite claire : le
 | Accessibilite clavier et ARIA | ✅ Fait |
 | Design responsive (mobile, tablette, desktop) | ✅ Fait |
 | Tests automatises PHPUnit | ✅ Fait |
-| Systeme d'avis et notes | ❌ Non fait (entite preparee) |
-| Moderation des avis depuis l'admin | ❌ Non fait |
+| Systeme d'avis et notes | ✅ Fait |
+| Moderation des avis depuis l'admin | ✅ Fait |
 | Webhook Stripe (verification cryptographique) | ❌ Non fait |
 | Expiration des tokens de verification | ❌ Non fait |
 | Deploiement en production | ❌ Non fait |
@@ -687,8 +691,7 @@ J'ai developpe **14 atomes** au total, chacun correspondant a un element HTML pr
 | Icon         | `<i>`                        | Icone Font Awesome                          |
 | Badge        | `<span>`                     | Etiquette coloree (statut, categorie)       |
 | Spinner      | `<svg>`                      | Animation de chargement                     |
-| Card         | `<article>`                  | Conteneur de carte                          |
-| PanierBadge  | `<span>`                     | Compteur du panier (mis a jour en temps reel) |
+| StarRating   | `<div>`                      | Affichage lecture seule d'une note sur 5    |
 
 #### Conception des atomes
 
@@ -742,7 +745,7 @@ Le composant Button est un bon exemple de ce que j'ai voulu mettre en place sur 
 
 ![Bouton panier avec spinner de chargement](captures/PanierAjouterSupprimer.png)
 
-Ces 14 atomes forment le vocabulaire visuel de toute l'application. Chaque element d'interface que l'utilisateur voit ou avec lequel il interagit est construit a partir de l'un d'eux.
+Ces 13 atomes forment le vocabulaire visuel de toute l'application. Chaque element d'interface que l'utilisateur voit ou avec lequel il interagit est construit a partir de l'un d'eux.
 
 ### 9.3 Les molecules -- assembler les atomes en blocs fonctionnels
 
@@ -752,7 +755,7 @@ Dans la logique Atomic Design, une molecule est un groupe d'atomes qui fonctionn
 
 #### Les molecules creees
 
-J'ai developpe **18 molecules** au total :
+J'ai developpe **20 molecules** au total :
 
 | Molecule         | Atomes composes                    | Role                                                   |
 |------------------|------------------------------------|---------------------------------------------------------|
@@ -765,8 +768,10 @@ J'ai developpe **18 molecules** au total :
 | FormFieldGroup   | Fieldset + legende                 | Regroupement semantique de champs                        |
 | FormActions      | Bloc d'actions                     | Zone d'actions en bas de formulaire (boutons)            |
 | Alert            | Icon + texte                       | Message d'alerte contextuel (info, succes, erreur)       |
-| DessertCard      | Image + Badge + Link + Icon        | Carte produit ou recette avec image, prix et actions     |
-| BoutonPanier     | ButtonIcon + Icon + Spinner        | Bouton d'ajout au panier avec controle de quantite       |
+| StarPicker       | Icon + inputs radio                | Selecteur d'etoiles interactif (hover + clic, Stimulus)  |
+| AvisCard         | StarRating + texte                 | Carte d'avis client (note, auteur, date, commentaire)    |
+| Breadcrumb       | Link                               | Fil d'Ariane (page parente → page courante)              |
+| PanierBadge      | `<span>`                           | Compteur panier temps reel (Live Component)              |
 | SearchBar        | Input + Button + Icon              | Barre de recherche avec champ et bouton                  |
 | Nav              | Link                               | Liste de liens de navigation                             |
 | NavigationLinks  | Link                               | Navigation principale avec detection de la page active   |
@@ -797,34 +802,11 @@ Lorsqu'une erreur est presente, le champ recoit automatiquement `aria-invalid="t
 
 ![InputField avec label, aide et message d'erreur](captures/ConnexionErreur.png)
 
-**La DessertCard : une molecule a double usage**
+**Le StarPicker : selecteur d'etoiles interactif**
 
-La molecule DessertCard est le composant central de l'affichage des produits et des recettes. Elle fonctionne en deux modes selon les donnees qu'elle recoit :
+La molecule StarPicker compose 5 inputs radio invisibles avec des icones Font Awesome via le composant Icon. Un controleur Stimulus `star-rating` gere le survol (highlight), la remise a zero (reset) et la selection (select). Elle est distincte de l'atome StarRating qui est lui purement en lecture seule.
 
-- **Mode produit** : affiche le prix, le bouton d'ajout au panier (BoutonPanier) et un lien vers la fiche produit.
-- **Mode recette** : affiche la difficulte (via un Badge colore), le temps de preparation, le nombre de portions, la categorie et un lien vers la recette.
-
-La carte integre egalement un systeme de favoris avec un bouton coeur qui declenche une animation de confirmation via le composant FlashTooltip.
-
-```php
-public string $titre = '';
-public ?string $prix = null;       // → mode produit
-public string $difficulte = '';     // → mode recette
-public ?int $produitId = null;      // → active le BoutonPanier
-public bool $favori = false;        // → etat du favori
-```
-
-![DessertCard en mode produit](captures/DessertGrid.png)
-
-![DessertCard en mode recette](captures/ReccetteGrid.png)
-
-**Le BoutonPanier : un Live Component reactif**
-
-Le BoutonPanier est l'une des deux molecules implementees en tant que **Symfony UX Live Component**. Il permet d'ajouter un produit au panier et d'ajuster la quantite directement depuis la carte produit, sans rechargement de page.
-
-Lorsque l'utilisateur clique sur "Ajouter au panier", le bouton se transforme en controleur de quantite avec des boutons plus et moins. La quantite est lue depuis le service de panier en session, ce qui garantit que l'affichage reste fiable meme apres un rechargement. A chaque modification, un evenement `panierUpdated` est emis pour mettre a jour le compteur du panier dans le header.
-
-![BoutonPanier avant et après ajout au panier](captures/boutonPanier.png)
+**Boites de dialogue et bandeaux**
 
 **Boites de dialogue et bandeaux**
 
@@ -844,19 +826,23 @@ Un organisme est le niveau le plus eleve de composition avant la page elle-meme.
 
 #### Les organismes crees
 
-J'ai developpe **9 organismes** au total :
+J'ai developpe **13 organismes** au total :
 
-| Organisme        | Role                                            |
-|------------------|-------------------------------------------------|
-| Header           | En-tete du site avec navigation et menu mobile   |
-| Footer           | Pied de page avec liens, mentions et reseaux     |
-| Form             | Formulaire de base reutilisable                  |
-| LoginForm        | Formulaire de connexion complet                  |
-| RegisterForm     | Formulaire d'inscription complet                 |
-| AddressForm      | Formulaire d'adresse de livraison                |
-| PanierLive       | Panier interactif en temps reel                  |
-| ProductCardGrid  | Grille responsive de cartes produits/recettes    |
-| CartSummary      | Recapitulatif du panier avec total et CTA        |
+| Organisme        | Role                                                          |
+|------------------|---------------------------------------------------------------|
+| Header           | En-tete du site avec navigation et menu mobile                 |
+| Footer           | Pied de page avec liens, mentions et reseaux                   |
+| Form             | Formulaire de base reutilisable                                |
+| LoginForm        | Formulaire de connexion complet                                |
+| RegisterForm     | Formulaire d'inscription complet                               |
+| AddressForm      | Formulaire d'adresse de livraison                              |
+| ContactForm      | Formulaire de contact avec protection CSRF                     |
+| PanierLive       | Panier interactif en temps reel (Live Component)               |
+| ProductCardGrid  | Grille responsive de cartes produits/recettes                  |
+| DessertCard      | Carte produit ou recette avec zoom, favoris, BoutonPanier      |
+| BoutonPanier     | Bouton ajout panier avec controle quantite (Live Component)    |
+| AvisForm         | Formulaire de depot d'avis avec selecteur d'etoiles            |
+| AvisSection      | Section avis clients (liste + note moyenne + formulaire)       |
 
 #### Conception des organismes
 
@@ -885,9 +871,40 @@ Le PanierLive est l'organisme le plus interactif du projet. Implemente en tant q
 
 ![PanierLive — page panier](captures/panier2.png)
 
+**La DessertCard : un organisme a double usage**
+
+La DessertCard est le composant central de l'affichage des produits et des recettes. Elle fonctionne en deux modes selon les donnees qu'elle recoit :
+
+- **Mode produit** : affiche le prix, le BoutonPanier (organisme Live Component) et un lien vers la fiche produit.
+- **Mode recette** : affiche la difficulte (via un Badge colore), le temps, les portions, la categorie et un lien vers la recette.
+
+La carte integre un zoom d'image via un element `<dialog>` natif, et un systeme de favoris avec un bouton coeur anime via le controleur Stimulus `favori`.
+
+```php
+public string $titre = '';
+public ?string $prix = null;       // → mode produit
+public string $difficulte = '';     // → mode recette
+public ?int $produitId = null;      // → active le BoutonPanier
+public bool $favori = false;        // → etat du favori
+```
+
+![DessertCard en mode produit](captures/DessertGrid.png)
+
+![DessertCard en mode recette](captures/ReccetteGrid.png)
+
+**Le BoutonPanier : un Live Component reactif**
+
+Le BoutonPanier est un **Symfony UX Live Component** qui permet d'ajouter un produit au panier et d'ajuster la quantite directement depuis la carte, sans rechargement. Lorsque l'utilisateur clique sur "Ajouter au panier", le bouton se transforme en controleur de quantite. La quantite est lue depuis le service de panier en session. A chaque modification, un evenement `panierUpdated` est emis pour mettre a jour le compteur dans le header.
+
+![BoutonPanier avant et apres ajout au panier](captures/boutonPanier.png)
+
+**L'AvisSection : section avis clients complete**
+
+L'AvisSection est un organisme qui reunit l'ensemble du systeme d'avis : l'affichage de la note moyenne, la liste des AvisCard, et le formulaire de depot via AvisForm. Elle utilise un Turbo Frame `avis` pour mettre a jour uniquement la section apres soumission, sans rechargement de page. La logique de recuperation des donnees est geree via `mount()`.
+
 **La ProductCardGrid : grille responsive**
 
-La ProductCardGrid affiche une collection de DessertCard dans une grille responsive (1 colonne mobile, 2 tablette, 3 desktop). Elle accepte aussi bien des produits que des recettes grace a un systeme de mapping dans le template.
+La ProductCardGrid affiche une collection de DessertCard dans une grille responsive (1 colonne mobile, 2 tablette, 3 desktop). La normalisation des donnees (URLs, images via VichUploader, prix) est traitee dans la methode `mount()` PHP, ce qui garde le template Twig minimal.
 
 ![ProductCardGrid — mobile](captures/grilleProduitMobile.png)
 
@@ -1611,21 +1628,44 @@ Le deploiement en production n'est pas encore realise. Les etapes prevues seraie
 
 ## 18. Evolution du projet
 
-**Fonctionnalites a finaliser**
-- Calendrier des commandes dans l'administration
-- Gestion des variations de produits (tailles, parfums)
-- Permettre aux utilisateurs de proposer leurs propres recettes
+Ce projet a ete concu pour etre evolutif. Plusieurs axes d'amelioration ont ete identifies, classes par priorite et impact.
 
-**Ameliorations techniques**
-- Renforcer le tunnel de paiement avec un webhook Stripe (actuellement la commande est enregistree cote serveur uniquement sur la redirection `/commande/succes`, sans verification cryptographique Stripe)
-- Ajouter une expiration sur les tokens de verification d'email
-- Ameliorer la protection du formulaire de contact (anti-spam)
-- Moderation des avis depuis l'administration (actuellement les avis sont valides automatiquement)
+### 18.1 Fonctionnalites a completer
 
-**Infrastructure**
-- Deplacer le dossier `docker/` et `docker-compose.yml` en dehors du projet
-- Mettre en place un pipeline de deploiement continu (CI/CD)
-- Migrer le stockage des images vers un service externe (AWS S3 ou equivalent) pour la production, afin que les uploads ne soient pas perdus lors d'un redeploi
+| Fonctionnalite | Description | Priorite |
+|----------------|-------------|----------|
+| Systeme d'avis | L'entite `Avis` est preparee. Il reste a creer l'interface de soumission, la moderation admin et l'affichage de la note moyenne sur les fiches produit | Haute |
+| Moderation des avis | Interface admin pour valider ou rejeter les avis avant publication | Haute |
+| Calendrier commandes | Vue calendrier dans l'administration pour voir les commandes jour par jour | Moyenne |
+| Variations de produits | Permettre des options par produit (taille, parfum, personnalisation) avec un prix different | Moyenne |
+| Recettes proposees par les utilisateurs | Formulaire de soumission de recette cote client, avec moderation avant publication | Basse |
+
+### 18.2 Ameliorations techniques
+
+| Amelioration | Explication |
+|--------------|-------------|
+| Webhook Stripe | Actuellement la commande est enregistree lors de la redirection `/commande/succes`. Un webhook Stripe verifierait cryptographiquement le paiement cote serveur, ce qui est plus fiable et securise |
+| Expiration des tokens d'email | Les tokens de verification n'expirent pas actuellement. Il faudrait ajouter un champ `tokenExpiresAt` et invalider les tokens de plus de 24h |
+| Anti-spam contact | Ajouter un honeypot ou un rate limiting sur le formulaire de contact pour eviter les soumissions automatisees |
+| Upload images en front | Permettre a l'administrateur d'uploader des images directement depuis une interface simplifiee, sans passer par EasyAdmin |
+| Internationalisation | Traduire le site en anglais via le composant `symfony/translation` |
+
+### 18.3 Infrastructure et deploiement
+
+| Amelioration | Explication |
+|--------------|-------------|
+| CI/CD | Mettre en place un pipeline GitHub Actions : lancer les tests automatiquement a chaque push, deployer en production si tout passe |
+| Stockage images externe | Migrer les uploads vers AWS S3 ou Cloudflare R2 pour que les images ne soient pas perdues lors d'un redeploi |
+| Environnement de staging | Ajouter un environnement de pre-production pour tester les changements avant de les pousser en production |
+
+### 18.4 Vision long terme
+
+Si le projet devait evoluer vers une vraie plateforme commerciale, plusieurs pistes seraient envisageables :
+
+- **Modele marketplace** : permettre a plusieurs artisans patissiers de vendre sur la meme plateforme, chacun avec son propre catalogue et ses propres commandes
+- **Application mobile** : exposer une API REST ou GraphQL pour alimenter une application mobile React Native ou Flutter
+- **Programme de fidelite** : systeme de points ou de bons de reduction pour les clients reguliers
+- **Livraison geolocalisee** : integration avec une API de livraison pour proposer des creneaux et calculer les frais selon la distance
 
 ---
 

@@ -1,0 +1,14 @@
+<article {{ attributes.defaults({ class: 'bg-surface rounded-lg border border-border p-5 flex flex-col gap-2' }) }}>
+  <div class="flex items-center justify-between">
+    <span class="font-semibold text-text text-small">
+      {{ avis.utilisateur.prenom ?? avis.utilisateur.email|split('@')[0] }}
+    </span>
+    <time class="text-small text-text-light" datetime="{{ avis.createdAt|date('Y-m-d') }}">
+      {{ avis.createdAt|date('d/m/Y') }}
+    </time>
+  </div>
+  <twig:Atoms:StarRating :note="avis.note" />
+  {% if avis.commentaire %}
+    <p class="text-text-light text-small leading-relaxed">{{ avis.commentaire }}</p>
+  {% endif %}
+</article>

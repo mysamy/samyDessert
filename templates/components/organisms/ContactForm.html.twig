@@ -7,6 +7,8 @@
 >
   <twig:block name="content">
 
+    <input type="hidden" name="_token" value="{{ csrf_token('contact') }}">
+
     <div class="grid gap-4 sm:grid-cols-2">
       <twig:Molecules:InputField
         name="nom"
