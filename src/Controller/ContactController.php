@@ -20,10 +20,15 @@ final class ContactController extends AbstractController
                 throw $this->createAccessDeniedException();
             }
 
-            $nom     = $request->request->get('nom', '');
-            $email   = $request->request->get('email', '');
-            $sujet   = $request->request->get('sujet', '');
-            $message = $request->request->get('message', '');
+            $nom     = trim($request->request->get('nom', ''));
+            $email   = trim($request->request->get('email', ''));
+            $sujet   = trim($request->request->get('sujet', ''));
+            $message = trim($request->request->get('message', ''));
+
+            if (!filter_var($email, FILTER_VALIDATE_EMAIL) || $nom === '' || $message === '') {
+                $this->addFlash('error', 'Veuillez remplir tous les champs obligatoires avec un email valide.');
+                return $this->redirectToRoute('app_contact');
+            }
 
             $mailer->envoyerMessageContact($nom, $email, $sujet, $message);
 
