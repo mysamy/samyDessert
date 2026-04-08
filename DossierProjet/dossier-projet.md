@@ -71,18 +71,23 @@
     14.8 Limites actuelles et ameliorations possibles
 15. Tests
 16. Commandes utiles
-17. Deploiement
-    17.1 Environnement de developpement avec Docker
-    17.2 Variables d'environnement
-    17.3 Deploiement en production
-18. Evolution du projet
-    18.1 Fonctionnalites a completer
-    18.2 Ameliorations techniques
-    18.3 Infrastructure et deploiement
-    18.4 Vision long terme
-19. Bilan personnel
-20. Conclusion
-21. Glossaire
+17. Gestion de version avec Git
+    17.1 Pourquoi Git
+    17.2 Strategie de branches
+    17.3 Commandes Git utilisees
+    17.4 Conventions de commit
+18. Deploiement
+    18.1 Environnement de developpement avec Docker
+    18.2 Variables d'environnement
+    18.3 Deploiement en production
+19. Evolution du projet
+    19.1 Fonctionnalites a completer
+    19.2 Ameliorations techniques
+    19.3 Infrastructure et deploiement
+    19.4 Vision long terme
+20. Bilan personnel
+21. Conclusion
+22. Glossaire
 
 
 ---
@@ -1558,9 +1563,64 @@ docker compose exec mysql mysql -u root -proot samyDessert               # Ouvri
 
 ---
 
-## 17. Deploiement
+## 17. Gestion de version avec Git
 
-### 17.1 Environnement de developpement avec Docker
+### 17.1 Pourquoi Git
+
+Git est le système de contrôle de version utilisé tout au long du projet. Il permet de conserver l'historique complet de chaque modification du code, de revenir à un état antérieur en cas de problème, et d'organiser le travail en branches indépendantes.
+
+Dans le cadre d'un projet professionnel, Git est un outil incontournable : il garantit la traçabilité du code, facilite la collaboration et sécurise le déploiement.
+
+### 17.2 Stratégie de branches
+
+Le projet utilise deux branches principales :
+
+| Branche | Rôle |
+|---------|------|
+| `main` | Code stable, branché sur Railway → déploiement automatique en production |
+| `dev` | Branche de développement au quotidien |
+
+**Principe :**  
+Tout le développement se fait sur `dev`. Quand une fonctionnalité est terminée et testée, elle est fusionnée dans `main`. Railway détecte le push sur `main` et redéploie automatiquement le site.
+
+```
+dev  →  (développement)  →  merge dans main  →  Railway redéploie
+```
+
+Cela garantit que le site en production reste toujours stable, même pendant le développement de nouvelles fonctionnalités.
+
+### 17.3 Commandes Git utilisées
+
+```bash
+git status                      # Voir les fichiers modifiés
+git add nom-du-fichier          # Préparer un fichier pour le commit
+git commit -m "message"         # Enregistrer les modifications avec un message descriptif
+git push origin dev             # Envoyer les commits vers GitHub (branche dev)
+git checkout dev                # Basculer sur la branche dev
+git checkout -b nouvelle-branch # Créer une nouvelle branche et basculer dessus
+git merge dev                   # Fusionner dev dans la branche courante (main)
+git log --oneline               # Voir l'historique des commits
+```
+
+### 17.4 Conventions de commit
+
+Les messages de commit suivent une convention lisible :
+
+| Préfixe | Usage |
+|---------|-------|
+| `feat:` | Nouvelle fonctionnalité |
+| `fix:` | Correction de bug |
+| `refactor:` | Restructuration du code sans changement de comportement |
+| `style:` | Modification visuelle (CSS, UI) |
+| `docs:` | Documentation |
+
+Exemple : `feat: ajout du système d'avis avec note moyenne`
+
+---
+
+## 18. Deploiement
+
+### 18.1 Environnement de developpement avec Docker
 
 Le projet est entierement contenerise avec **Docker Compose**. L'ensemble des services necesaires au fonctionnement du projet est defini dans un seul fichier `docker-compose.yml`, ce qui permet de demarrer l'environnement complet en une seule commande, sans installation locale de PHP, MySQL ou Nginx.
 
@@ -1599,7 +1659,7 @@ docker compose up -d
 # Adminer disponible sur http://localhost:8081
 ```
 
-### 17.2 Variables d'environnement
+### 18.2 Variables d'environnement
 
 Les secrets et configurations d'infrastructure ne sont jamais commites dans le code. Ils sont definis dans `.env.local` (ignore par Git) :
 
@@ -1611,7 +1671,7 @@ Les secrets et configurations d'infrastructure ne sont jamais commites dans le c
 | `STRIPE_SECRET_KEY` | Cle privee Stripe (mode test) |
 | `STRIPE_PUBLIC_KEY` | Cle publique Stripe |
 
-### 17.3 Deploiement en production
+### 18.3 Deploiement en production
 
 Le deploiement en production n'est pas encore realise. Les etapes prevues seraient :
 
@@ -1626,11 +1686,11 @@ Le deploiement en production n'est pas encore realise. Les etapes prevues seraie
 
 ---
 
-## 18. Evolution du projet
+## 19. Evolution du projet
 
 Ce projet a ete concu pour etre evolutif. Plusieurs axes d'amelioration ont ete identifies, classes par priorite et impact.
 
-### 18.1 Fonctionnalites a completer
+### 19.1 Fonctionnalites a completer
 
 | Fonctionnalite | Description | Priorite |
 |----------------|-------------|----------|
@@ -1640,17 +1700,17 @@ Ce projet a ete concu pour etre evolutif. Plusieurs axes d'amelioration ont ete 
 | Variations de produits | Permettre des options par produit (taille, parfum, personnalisation) avec un prix different | Moyenne |
 | Recettes proposees par les utilisateurs | Formulaire de soumission de recette cote client, avec moderation avant publication | Basse |
 
-### 18.2 Ameliorations techniques
+### 19.2 Ameliorations techniques
 
 | Amelioration | Explication |
 |--------------|-------------|
-| Webhook Stripe | Actuellement la commande est enregistree lors de la redirection `/commande/succes`. Un webhook Stripe verifierait cryptographiquement le paiement cote serveur, ce qui est plus fiable et securise |
+| Webhook Stripe | ✅ Implementé : la commande est creee avant la redirection Stripe, le webhook `/webhook/stripe` reçoit l'evenement `checkout.session.completed` et confirme la commande + envoie l'email, meme si l'utilisateur ferme le navigateur |
 | Expiration des tokens d'email | Les tokens de verification n'expirent pas actuellement. Il faudrait ajouter un champ `tokenExpiresAt` et invalider les tokens de plus de 24h |
 | Anti-spam contact | Ajouter un honeypot ou un rate limiting sur le formulaire de contact pour eviter les soumissions automatisees |
 | Upload images en front | Permettre a l'administrateur d'uploader des images directement depuis une interface simplifiee, sans passer par EasyAdmin |
 | Internationalisation | Traduire le site en anglais via le composant `symfony/translation` |
 
-### 18.3 Infrastructure et deploiement
+### 19.3 Infrastructure et deploiement
 
 | Amelioration | Explication |
 |--------------|-------------|
@@ -1658,7 +1718,7 @@ Ce projet a ete concu pour etre evolutif. Plusieurs axes d'amelioration ont ete 
 | Stockage images externe | Migrer les uploads vers AWS S3 ou Cloudflare R2 pour que les images ne soient pas perdues lors d'un redeploi |
 | Environnement de staging | Ajouter un environnement de pre-production pour tester les changements avant de les pousser en production |
 
-### 18.4 Vision long terme
+### 19.4 Vision long terme
 
 Si le projet devait evoluer vers une vraie plateforme commerciale, plusieurs pistes seraient envisageables :
 
@@ -1669,7 +1729,7 @@ Si le projet devait evoluer vers une vraie plateforme commerciale, plusieurs pis
 
 ---
 
-## 19. Bilan personnel
+## 20. Bilan personnel
 
 A travers ce projet, j'ai appris a m'auto-former et a m'adapter a un environnement technologique en constante evolution. J'ai developpe ma capacite a apprendre de nouveaux langages, a lire et comprendre la documentation technique, et a utiliser des outils modernes, y compris des outils d'intelligence artificielle comme support d'apprentissage et de developpement.
 
@@ -1701,7 +1761,7 @@ Si j'avais eu plus de temps, j'aurais mis en place la moderation des avis depuis
 
 ---
 
-## 20. Conclusion
+## 21. Conclusion
 
 Le projet SamyDessert est un projet e-commerce structure, combinant conception UX/UI, accessibilite et developpement moderne.
 
@@ -1711,7 +1771,7 @@ Ce projet demontre ma capacite a concevoir, structurer et developper une applica
 
 ---
 
-## 21. Glossaire
+## 22. Glossaire
 
 | Terme | Definition |
 |-------|------------|
