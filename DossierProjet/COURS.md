@@ -2708,3 +2708,80 @@ Twig est un moteur de template qui s'exécute **côté serveur** (PHP). Le contr
 Pour un widget JS comme un carousel, les classes structurelles (`carousel__prev`, `carousel__item--zoom`) décrivent l'état interne du composant. Les utiliser directement dans `app.css` avec `@apply` ou des règles CSS classiques est plus lisible et maintenable que d'injecter des classes Tailwind via JS.
 
 Note : Tailwind **peut** détecter des classes dans les fichiers JS (il scanne `assets/**/*.js`), donc si tu mets `class="flex items-center"` dans ton JS elles seront bien compilées. Mais pour les éléments structurels d'un widget, les classes BEM custom sont préférables.
+
+---
+
+## AJAX, Turbo et Stimulus
+
+### AJAX — c'est quoi ?
+
+AJAX = **Asynchronous JavaScript And XML**. C'est une technique qui permet d'envoyer une requête au serveur et de recevoir une réponse **sans recharger la page**.
+
+```
+Utilisateur clique → JS envoie fetch() → Serveur répond (JSON ou HTML) → JS met à jour l'interface
+```
+
+**Dans le projet :** le toggle favori utilise AJAX. Quand tu cliques sur le cœur d'une carte produit, une requête POST part vers `/favori/produit/3`. Le serveur répond `{ favori: true }` et le bouton se colorie — sans rechargement.
+
+**Sans AJAX :** chaque clic rechargerait toute la page. Lent et mauvaise UX.
+
+---
+
+### Turbo Drive — navigation sans rechargement
+
+Turbo Drive intercepte **tous les clics sur les liens** du site. Au lieu d'un vrai rechargement de page, il :
+
+1. Récupère le HTML de la nouvelle page via `fetch`
+2. Remplace uniquement le `<body>`
+3. Met à jour l'URL
+
+**Résultat :** la navigation est instantanée. Le header, le CSS et le JS ne sont pas rechargés à chaque page.
+
+C'est automatique — il n'y a rien à coder. Tous les liens du site en bénéficient.
+
+---
+
+### Turbo Frame — mise à jour d'une zone
+
+Un `<turbo-frame id="...">` est une **zone isolée** de la page. Quand un lien à l'intérieur du frame est cliqué, Turbo ne remplace que cette zone, pas toute la page.
+
+**Dans le projet :** les pages `/produits` et `/recettes` ont un `<turbo-frame id="produits-results">`. Quand tu cliques sur "Tartes", seule la grille de cartes est mise à jour. Le header et le footer restent en place.
+
+```html
+<turbo-frame id="produits-results" target="_top">
+  <!-- seule cette zone est remplacée lors du filtrage -->
+</turbo-frame>
+```
+
+**`target="_top"`** : les liens vers les fiches produits (à l'intérieur du frame) font une navigation complète, pas une mise à jour du frame. Les liens de filtrage utilisent `data-turbo-frame="produits-results"` pour cibler explicitement le frame.
+
+**Problème classique :** si un lien dans un frame pointe vers une page qui n'a pas ce frame, Turbo lève une erreur "content missing". C'est ce qui se passait sur les pages recettes/produits — résolu en ajoutant `target="_top"` sur le frame.
+
+---
+
+### Stimulus — comportement JS structuré
+
+Stimulus est un framework JavaScript léger qui **ajoute du comportement à du HTML existant**. Contrairement à React, il ne génère pas de HTML — il se branche dessus.
+
+```html
+<div data-controller="nav-toggle">
+  <button data-action="nav-toggle#toggle">Menu</button>
+</div>
+```
+
+Le controller `nav-toggle` est automatiquement instancié par Stimulus quand il trouve `data-controller="nav-toggle"` dans le DOM.
+
+**Dans le projet :** Stimulus gère le menu mobile, le carousel, les favoris, le dropdown utilisateur, etc.
+
+---
+
+### Résumé : les trois outils côte à côte
+
+| Outil | Quand l'utiliser | Exemple |
+|-------|-----------------|---------|
+| **AJAX (fetch)** | Requête serveur → réponse JSON, sans rechargement | Toggle favori |
+| **Turbo Drive** | Navigation entre pages rapide (automatique) | Tous les liens |
+| **Turbo Frame** | Mettre à jour une zone précise (filtres, pagination) | Grille produits/recettes |
+| **Stimulus** | Comportement JS attaché au HTML | Menu, carousel, dropdown |
+
+Ces outils permettent d'avoir un site **rapide et interactif sans React ni Vue**, en gardant le rendu HTML côté serveur (Symfony + Twig).
