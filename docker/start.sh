@@ -7,7 +7,7 @@ set -e
 # Synchronise le schéma de la base de données avec les entités Doctrine
 # (crée ou modifie les tables sans passer par les migrations)
 echo "==> Mise à jour du schéma de base de données..."
-php bin/console doctrine:schema:update --force --no-interaction
+php bin/console doctrine:schema:update --force --no-interaction || echo "WARN: schema:update a échoué (DB non disponible ?)"
 
 # Lance le serveur PHP intégré sur le port injecté par Railway
 # Note : FrankenPHP ne fonctionne pas dans cette config Railway
