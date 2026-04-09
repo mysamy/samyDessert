@@ -27,7 +27,7 @@ RUN APP_ENV=prod php bin/console asset-map:compile --no-interaction || true
 # Cache Symfony prod
 RUN APP_ENV=prod php bin/console cache:warmup --no-interaction || true
 
-EXPOSE 80
+EXPOSE 8080
 
 COPY docker/start.sh /start.sh
 RUN chmod +x /start.sh
