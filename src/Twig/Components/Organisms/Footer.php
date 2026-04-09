@@ -8,6 +8,8 @@ use Symfony\UX\TwigComponent\Attribute\AsTwigComponent;
 final class Footer
 {
     public string $brandLabel = '';
+    public ?string $logoSrc = null;
+    public ?string $logoAlt = null;
     public string $tagline = '';
     public array $links = [];
     public array $legalLinks = [];
