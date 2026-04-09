@@ -49,6 +49,12 @@
 - [ ] Images produits/recettes Unsplash à remplacer par fichiers locaux (voir memory project_images_todo.md)
 - [ ] Déploiement : créer branche `dev` + brancher Railway sur `main` pour mise en production
 
+## À corriger avant la mise en production
+- [x] **BUG** `UtilisateurRepository.php:26` — `setMotDePasse()` → `setPassword()` (méthode inexistante, crash si Symfony upgrade le hash)
+- [ ] **ROBUSTESSE** `AvisController.php:34` et `CommandeController.php:41` — remplacer `assert($user instanceof Utilisateur)` par `if (!$user instanceof Utilisateur) throw $this->createAccessDeniedException()`
+- [x] **VALIDATION** `ContactController.php` — valider format email + trim + longueurs min/max avant envoi au mailer
+- [ ] **CSRF** `FavoriController.php` — remplacer le check `X-Requested-With` par un vrai token CSRF (nécessite modif JS Stimulus aussi)
+
 ## Référence rapide
 
 ### Routes Symfony
