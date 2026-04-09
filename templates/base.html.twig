@@ -4,6 +4,10 @@
     <meta charset="UTF-8">
     <title>{% block title %}SamyDessert{% endblock %}</title>
 
+    {# Préchargement des polices pour éviter le saut visuel (FOUC) #}
+    <link rel="preload" href="{{ asset('fonts/Luciole-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="{{ asset('fonts/Luciole-Bold.woff2') }}" as="font" type="font/woff2" crossorigin>
+
     {% block stylesheets %}
       <link rel="stylesheet" href="{{ asset('vendor/@fortawesome/fontawesome-free/css/all.css') }}">
       <link rel="stylesheet" href="{{ asset('styles/app.css') }}">
