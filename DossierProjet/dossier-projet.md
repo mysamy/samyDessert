@@ -1589,17 +1589,48 @@ dev  →  (développement)  →  merge dans main  →  Railway redéploie
 
 Cela garantit que le site en production reste toujours stable, même pendant le développement de nouvelles fonctionnalités.
 
+**Pourquoi deux branches ?**  
+Si on travaille directement sur `main` et qu'on envoie un bug, le site en production est immédiatement impacté. Avec `dev`, on peut casser des choses, tester, corriger, et ne déployer que ce qui fonctionne. C'est une pratique standard dans les projets professionnels.
+
 ### 17.3 Commandes Git utilisées
 
+**Commandes du quotidien (sur `dev`) :**
+
 ```bash
-git status                      # Voir les fichiers modifiés
-git add nom-du-fichier          # Préparer un fichier pour le commit
-git commit -m "message"         # Enregistrer les modifications avec un message descriptif
-git push origin dev             # Envoyer les commits vers GitHub (branche dev)
-git checkout dev                # Basculer sur la branche dev
-git checkout -b nouvelle-branch # Créer une nouvelle branche et basculer dessus
-git merge dev                   # Fusionner dev dans la branche courante (main)
-git log --oneline               # Voir l'historique des commits
+git status                       # Voir quels fichiers ont été modifiés depuis le dernier commit
+git add nom-du-fichier           # Marquer un fichier comme "prêt à être commité"
+git commit -m "feat: ..."        # Enregistrer les modifications avec un message descriptif
+git push origin dev              # Envoyer les commits locaux vers GitHub (branche dev)
+```
+
+**Basculer entre les branches :**
+
+```bash
+git checkout dev                 # Se placer sur la branche dev pour développer
+git checkout main                # Se placer sur la branche main (attention : c'est la prod)
+git checkout -b nouvelle-branch  # Créer une nouvelle branche et s'y placer immédiatement
+```
+
+**Mettre `dev` à jour avec ce qui a été fait sur `main` :**
+
+```bash
+git checkout dev                 # Se placer sur dev
+git merge main                   # Intégrer les derniers changements de main dans dev
+git push origin dev              # Envoyer la mise à jour vers GitHub
+```
+
+**Déployer en production (fusionner `dev` dans `main`) :**
+
+```bash
+git checkout main                # Se placer sur main (branche de production)
+git merge dev                    # Intégrer toutes les modifications de dev dans main
+git push origin main             # Envoyer vers GitHub → Railway redéploie automatiquement
+```
+
+**Historique :**
+
+```bash
+git log --oneline                # Voir la liste des commits (une ligne par commit)
 ```
 
 ### 17.4 Conventions de commit
