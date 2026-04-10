@@ -40,14 +40,15 @@
 8. Chiffres du projet et état des fonctionnalités
     - 8.1 Chiffres clés
     - 8.2 État des fonctionnalités
-9. Conception de la base de données
-10. Développement front-end
-    - 10.1 Approche Atomic Design
-    - 10.2 Les atomes
-    - 10.3 Les molécules
-    - 10.4 Les organismes
-    - 10.5 Les controllers Stimulus
-    - 10.6 Architecture CSS -- Tailwind v4 et design tokens
+9. Développement front-end
+    - 9.1 Approche Atomic Design
+    - 9.2 Les atomes
+    - 9.3 Les molécules
+    - 9.4 Les organismes
+    - 9.5 Le carousel
+    - 9.6 Les controllers Stimulus
+    - 9.7 Architecture CSS -- Tailwind v4 et design tokens
+10. Conception de la base de données
 11. Développement back-end
     - 11.1 Controllers PHP
     - 11.2 Services
@@ -366,17 +367,38 @@ Les interfaces ont été conçues en mobile-first, puis adaptees tablette et des
 
 ### 7.1 Stack technologique
 
-Le projet repose sur **Symfony** et **PHP** pour le back-end. Symfony offre une structure robuste et modulaire permettant de maintenir un code organise et evolutif.
+**Back-end**
 
-**Twig** est utilisé comme moteur de templating afin de séparer la logique du rendu. **Tailwind CSS** permet de construire rapidement des interfaces responsives grace a une approche utilitaire moderne.
+Le projet repose sur **Symfony 7.4 (LTS)** et **PHP 8.3**. Symfony structuré le projet autour du patron MVC et offre un ecosysteme de bundles qui évite de réécrire des fonctionnalites courantes :
 
-La base de données repose sur **MySQL**, permettant de structurer les données liées aux utilisateurs, produits, recettes et commandes.
+| Bundle | Rôle |
+|--------|------|
+| `doctrine/orm` + `DoctrineBundle` | ORM — correspondance entités PHP ↔ tables MySQL |
+| `symfony/security-bundle` | Authentification, rôles, hachage des mots de passe |
+| `symfony/mailer` | Envoi d'emails transactionnels (confirmation, inscription) |
+| `symfony/form` | Création et validation des formulaires |
+| `symfony/twig-bundle` | Moteur de templates Twig |
+| `symfony/ux-twig-component` | Composants Twig avec logique PHP (Atomic Design) |
+| `symfony/ux-live-component` | Composants réactifs sans JavaScript (panier, bouton) |
+| `symfony/ux-turbo` | Navigation rapide + Turbo Frames sans rechargement |
+| `easycorp/easyadmin-bundle` | Interface d'administration générée automatiquement |
+| `vich/uploader-bundle` | Gestion des uploads d'images (produits, recettes) |
+| `stripe/stripe-php` | Intégration paiement Stripe Checkout |
+| `dompdf/dompdf` | Génération de factures PDF |
 
-**JavaScript** et **Stimulus** sont utilisés pour ajouter des interactions côté client de maniere legéré et structuree.
+**Front-end**
 
-L'environnement de développement est contenerise avec **Docker**, avec **Nginx** comme serveur web et **Adminer** pour la gestion de la base de données.
+**Tailwind CSS v4** (JIT) pour les styles utilitaires, configuré entièrement dans `assets/styles/app.css` sans fichier de configuration externe. **Stimulus** pour les interactions côté client : 10 controllers légers attachés directement au HTML.
 
-La gestion des assets front-end (JavaScript, CSS) repose sur **AssetMapper**, l'outil natif de Symfony qui remplace Webpack Encore. Il permet d'importer des modules JavaScript directement via les import maps du navigateur, sans étape de bundling.
+La gestion des assets repose sur **AssetMapper**, l'outil natif de Symfony (remplace Webpack Encore) : import maps navigateur, pas d'étape de bundling.
+
+**Base de données**
+
+**MySQL 8** géré par **Doctrine ORM**. Les entités PHP correspondent aux tables, les repositories encapsulent les requêtes, et les migrations versionnent les changements de schéma.
+
+**Environnement de développement**
+
+L'environnement est entièrement conteneurisé avec **Docker Compose** (6 services : nginx, php-fpm, mysql, adminer, init, assets). Cela garantit que le projet fonctionne de manière identique sur toutes les machines, sans installation locale de PHP ou MySQL. Voir la section Déploiement pour le détail.
 
 ### 7.2 Outils et services complémentaires
 
@@ -478,186 +500,17 @@ Ce decoupage garantit que chaque partie du code a une responsabilite claire : le
 
 ---
 
-## 9. Conception de la base de données
+## 9. Développement front-end
 
 ---
 
-La base de données repose sur **MySQL** et est gérée via **Doctrine ORM**. Elle contient sept entités principales.
-
-### Les entités
-
-**Utilisateur**
-Represente un compte client. Stocke l'email (identifiant unique), le mot de passe hache, les informations personnelles (nom, prenom, telephone, adresse) et les rôles Symfony. Deux champs specifiques gérént la vérification d'email : `isVerified` (booleen) et `vérificationToken` (token a usage unique supprime apres validation). Un utilisateur peut avoir plusieurs commandes et plusieurs produits en favoris.
-
-**Produit**
-Represente un dessert vendu sur le site. Contient le nom, la description, le prix (stocké en DECIMAL pour eviter les erreurs d'arrondi), le nom du fichier image (géré par VichUploaderBundle), un indicateur de disponibilite, un slug SEO-friendly et la date d'ajout. Un produit appartient a une catégorie et peut etre associé a une recette.
-
-**Catégorie**
-Regroupe les produits et les recettes par type (ex : Tartes, Choux, Petits fours). Possede un nom et un slug unique.
-
-**Recette**
-Represente une recette publiée sur le site. Contient le titre, la description, le contenu complet, le nom du fichier image, la duree en minutes, le niveau de difficulté (via un enum PHP), le nombre de portions et un slug. Une recette peut etre liée a un produit.
-
-**Commande**
-Represente une commande passee par un utilisateur. Contient la date, le statut (via un enum PHP : `EnAttente`, `Confirmee`, `Livree`, `Annulee`), le total, l'adresse de livraison et une référence lisible (ex : `CMD-2026-00042`). Une commande est liée a un utilisateur et contient plusieurs lignes de commande.
-
-**CommandeProduit**
-Table de jointure entre `Commande` et `Produit`. Constitue la ligne de commande : elle stocké la quantite et le **prix unitaire au moment de la commande** (snapshot), independamment du prix actuel du produit. La clé primaire est composite (commande + produit).
-
-**Avis**
-Represente un avis laisse par un utilisateur sur un produit. Contient une note (1 a 5), un commentaire optionnel et un indicateur de validation. Un utilisateur ne peut laisser qu'un seul avis par produit (contrainte unique en base).
-
-### Relations
-
-```
-Utilisateur  ──< Commande        (1 utilisateur → plusieurs commandes)
-Commande     ──< CommandeProduit (1 commande → plusieurs lignes)
-Produit      ──< CommandeProduit (1 produit → plusieurs lignes de commande)
-Catégorie    ──< Produit         (1 catégorie → plusieurs produits)
-Catégorie    ──< Recette         (1 catégorie → plusieurs recettes)
-Produit      ──1 Recette         (1 produit → une recette liée, optionnelle)
-Utilisateur  >──< Produit        (favoris — relation ManyToMany)
-```
-
-### Choix techniques notables
-
-Le prix est stocké en `DECIMAL(8,2)` plutot qu'en `FLOAT` pour eviter les erreurs d'arrondi sur les calculs financiers. Le prix unitaire est duplique dans `CommandeProduit` pour conserver un historique fiable, independamment des modifications futures du catalogue. Les enums PHP natifs (`StatutCommande`, `Difficulté`) sont utilisés pour les colonnes a valeurs contrôlees, ce qui garantit l'integrite des données au niveau du code.
-
-Les images produits et recettes sont gérées par **VichUploaderBundle** : le fichier physique est stocké dans `public/uploads/produits/` ou `public/uploads/recettes/`, et seul le nom du fichier est enregistre en base de données. Cette approche evite de stocker des données binaires en base.
-
-#### Ajout des images en pratique
-
-Les images du catalogue ont été preparees manuellement puis intégrées de deux facons selon le contexte :
-
-**Via l'interface d'administration (EasyAdmin)** : pour chaque produit ou recette, un champ upload est disponible dans le formulaire d'edition. L'administrateur selectionne une image depuis son poste, VichUploaderBundle la renomme automatiquement (via `SmartUniqueNamer`) pour eviter les conflits, et la depose dans le bon dossier (`public/uploads/produits/` ou `public/uploads/recettes/`). Seul le nom du fichier resultant est enregistre en base.
-
-**Via les fixtures de développement** : les images preparees (photos libres de droits provenant d'**Unsplash**, au format JPG, PNG ou WebP) ont été deposees directement dans `public/uploads/produits/` et `public/uploads/recettes/`, puis leur nom de fichier a été renseigne dans les fixtures PHP (`AppFixtures`). Cette méthode permet de charger rapidement un jeu de données complet avec des visuels realistes sans passer par l'interface d'administration.
-
-Dans les deux cas, le template Twig utilisé la fonction `vich_uploader_asset(produit, 'imageFile')` pour générer l'URL publique de l'image a partir du nom de fichier stocké en base.
-
-### Schema relationnel
-
-Afin de mieux visualiser la structure des données du projet, un schema relationnel a été réalisé avec l'outil DBDiagram.
-
-![Schéma de la base de données](captures/DBdiagram.png)
-
-Ce schema met en evidence les differentes entités du projet ainsi que leurs relations :
-
-- un utilisateur peut posseder plusieurs commandes
-- une commande est composee de plusieurs lignes (CommandeProduit)
-- un produit peut apparaitre dans plusieurs commandes
-- une catégorie regroupe plusieurs produits et recettes
-- un utilisateur peut ajouter des produits et des recettes en favoris
-- un utilisateur peut laisser un avis (note + commentaire) par produit
-
-```dbml
-Table utilisateur {
-  id int [pk, increment]
-  email varchar(180) [not null, unique]
-  rôles json [not null]
-  password varchar(255) [not null]
-  nom varchar(100) [null]
-  prenom varchar(100) [null]
-  telephone varchar(20) [null]
-  adresse varchar(255) [null]
-  ville varchar(100) [null]
-  code_postal varchar(10) [null]
-}
-
-Table catégorie {
-  id int [pk, increment]
-  nom varchar(100) [not null]
-  slug varchar(100) [not null, unique]
-}
-
-Table produit {
-  id int [pk, increment]
-  nom varchar(255) [not null]
-  description text [null]
-  prix decimal(8,2) [not null]
-  image_name varchar(255) [null]
-  disponible boolean [not null, default: true]
-  slug varchar(255) [not null, unique]
-  created_at datetime [not null]
-  updated_at datetime [null]
-  catégorie_id int [null, ref: > catégorie.id]
-}
-
-Table recette {
-  id int [pk, increment]
-  titre varchar(255) [not null]
-  slug varchar(255) [not null, unique]
-  description text [null]
-  contenu text [not null]
-  image_name varchar(255) [null]
-  duree int [null]
-  portions int [null]
-  difficulté varchar(20) [null]
-  is_published boolean [not null, default: false]
-  created_at datetime [not null]
-  updated_at datetime [null]
-  catégorie_id int [null, ref: > catégorie.id]
-  produit_id int [null, ref: > produit.id]
-}
-
-Table commande {
-  id int [pk, increment]
-  utilisateur_id int [not null, ref: > utilisateur.id]
-  date_commande datetime [not null]
-  statut varchar(50) [not null]
-  total decimal(8,2) [not null]
-  référence varchar(50) [null]
-  adresse_livraison varchar(255) [null]
-  ville varchar(100) [null]
-  code_postal varchar(10) [null]
-  notes text [null]
-}
-
-Table commande_produit {
-  commande_id int [pk, ref: > commande.id]
-  produit_id int [pk, ref: > produit.id]
-  quantite int [not null, default: 1]
-  prix_unitaire decimal(8,2) [not null]
-}
-
-Table avis {
-  id int [pk, increment]
-  utilisateur_id int [not null, ref: > utilisateur.id]
-  produit_id int [not null, ref: > produit.id]
-  note int [not null]
-  commentaire text [null]
-  is_validé boolean [not null, default: false]
-  created_at datetime [not null]
-
-  indexes {
-    (utilisateur_id, produit_id) [unique]
-  }
-}
-
-Table utilisateur_produit_favori {
-  utilisateur_id int [ref: > utilisateur.id]
-  produit_id int [ref: > produit.id]
-}
-
-Table utilisateur_recette_favori {
-  utilisateur_id int [ref: > utilisateur.id]
-  recette_id int [ref: > recette.id]
-}
-```
-
----
-
-## 10. Développement front-end
-
----
-
-### 10.1 Approche Atomic Design
+### 9.1 Approche Atomic Design
 
 Le front-end est base sur une approche **Atomic Design**. Les composants les plus simples (atomes) ont été developpes en premier sous forme de composants Twig. Ces atomes incluent notamment : boutons, inputs, labels, liens, images et icones.
 
 Chaque composant est conçu pour etre réutilisable, coherent et accessible. **Tailwind CSS** est utilisé pour le style, permettant une intégration rapide et responsive.
 
-### 10.2 Les atomes -- les plus petites briques de l'interface
+### 9.2 Les atomes -- les plus petites briques de l'interface
 
 #### Qu'est-ce qu'un atome ?
 
@@ -737,11 +590,11 @@ Les champs Input, Textarea et Select partagent tous les memes états visuels, d�
 
 Le composant Button est un bon exemple de ce que j'ai voulu mettre en place sur l'ensemble du projet. Il propose quatre variantes visuelles, trois tailles, et un état de chargément. Quand loading est active, un spinner apparait automatiquement, le bouton se desactive, et l'attribut `aria-busy="true"` est ajouté pour informer les lecteurs d'ecran que l'action est en cours.
 
-![Bouton panier avec spinner de chargément](captures/PanierAjoutérSupprimer.png)
+![Variantes et états du composant Button](captures/Button.png)
 
 Ces 13 atomes forment le vocabulaire visuel de toute l'application. Chaque élément d'interface que l'utilisateur voit ou avec lequel il interagit est construit a partir de l'un d'eux.
 
-### 10.3 Les molécules -- assembler les atomes en blocs fonctionnels
+### 9.3 Les molécules -- assembler les atomes en blocs fonctionnels
 
 #### Qu'est-ce qu'une molécule ?
 
@@ -794,7 +647,7 @@ public function getDescribedBy(): string
 
 Lorsqu'une erreur est presente, le champ recoit automatiquement `aria-invalid="true"` et le message d'erreur est annonce aux technologies d'assistance grace a `rôle="alert"`.
 
-![InputField avec label, aide et message d'erreur](captures/ConnexionErreur.png)
+![InputField avec label, aide et message d'erreur](captures/InputField.png)
 
 **Le StarPicker : selecteur d'etoiles interactif**
 
@@ -810,7 +663,7 @@ La molécule ConfirmDialog utilisé l'élément HTML natif `<dialog>`, ce qui ga
 
 La molécule NavigationLinks généré automatiquement les liens de navigation a partir de la route courante. Grace a la méthode `mount()`, elle detecte la page active et applique `aria-current="page"` sur le lien correspondant, sans configuration manuelle.
 
-### 10.4 Les organismes -- les sections complètes de l'interface
+### 9.4 Les organismes -- les sections complètes de l'interface
 
 #### Qu'est-ce qu'un organisme ?
 
@@ -852,8 +705,6 @@ Les formulaires de SamyDessert sont construits en trois couches :
 3. **Les molécules de champ** : chaque champ individuel avec son label, son aide et sa validation.
 
 Tous les formulaires intégrént un token CSRF, une protection contre la double soumission via le contrôleur Stimulus `submit-once`, et un resume d'erreurs en haut du formulaire.
-
-![LoginForm avec erreurs affichées](captures/ConnexionErreur.png)
 
 **Le PanierLive : un panier en temps reel**
 
@@ -904,7 +755,28 @@ La ProductCardGrid affiché une collection de DessertCard dans une grille respon
 
 ![ProductCardGrid — desktop](captures/grilleProduitDesktop.png)
 
-### 10.5 Les controllers Stimulus -- interactions côté client
+### 9.5 Le carousel
+
+Le carousel de la page d'accueil est l'un des éléments les plus visibles du projet. Il affiché les produits phares en mode infini avec un effet de zoom sur la carte centrale et des animations de description directionnelles.
+
+![Carousel de la page d'accueil](captures/carousel.png)
+
+Il est construit en JavaScript vanilla (classe `Carousel` autonome, sans bibliothèque externe), inspiré d'un tutoriel **Grafikart** et étendu avec plusieurs fonctionnalités :
+
+- **Mode infini** par clonage des premiers et derniers éléments
+- **Effet zoom** sur la carte centrale via une classe CSS
+- **Animations directionnelles** sur les descriptions (le texte glisse dans le sens du défilement)
+- **Responsive** : 3 slides visibles sur desktop, 1 sur mobile
+- **Accessibilité** : attributs ARIA mis à jour à chaque déplacement, navigation clavier (flèches)
+- **Protection double-clic** via le drapeau `isAnimating`
+
+Le controller Stimulus `carousel` instancie la classe `Carousel` et gère son cycle de vie (connexion / déconnexion).
+
+Le carousel est le seul composant qui utilise la convention **BEM** (`carousel__item`, `carousel__next`…), car le JavaScript génère et manipule les classes du DOM dynamiquement — la hiérarchie BEM rend les relations entre éléments explicites sans ouvrir le CSS.
+
+---
+
+### 9.6 Les controllers Stimulus -- interactions côté client
 
 #### Qu'est-ce que Stimulus ?
 
@@ -1040,7 +912,7 @@ Ce controller desactive le bouton de soumission des qu'un formulaire est envoyé
 
 Ce controller géré la confirmation avant d'annuler une commande. Il utilisé l'élément HTML natif `<dialog>`, recupere la référence et l'URL d'action depuis les attributs `data-*` du bouton, et soumet un formulaire POST avec le token CSRF si l'utilisateur confirme.
 
-### 10.5.2 Turbo et AJAX -- navigation rapide et mises à jour partielles
+### 9.6.2 Turbo et AJAX -- navigation rapide et mises à jour partielles
 
 #### AJAX : mise a jour sans rechargément
 
@@ -1089,7 +961,7 @@ Ces trois outils permettent d'avoir un site interactif et rapide **sans ecrire d
 
 ---
 
-### 10.6 Architecture CSS -- Tailwind v4 et design tokens
+### 9.7 Architecture CSS -- Tailwind v4 et design tokens
 
 #### Un seul fichier d'entree
 
@@ -1129,6 +1001,82 @@ Des classes recurrentes sont définies dans `@layer components` : `.btn-cta`, `.
 La police **Luciole** est chargée localement avec `font-display: swap`, en formats `.woff2` et `.woff`. Elle est conçue pour les personnes malvoyantes ou dyslexiques.
 
 ---
+
+---
+
+## 10. Conception de la base de données
+
+---
+
+La base de données repose sur **MySQL** et est gérée via **Doctrine ORM**. Elle contient sept entités principales.
+
+### Les entités
+
+**Utilisateur**
+Represente un compte client. Stocke l'email (identifiant unique), le mot de passe hache, les informations personnelles (nom, prenom, telephone, adresse) et les rôles Symfony. Deux champs specifiques gérént la vérification d'email : `isVerified` (booleen) et `vérificationToken` (token a usage unique supprime apres validation). Un utilisateur peut avoir plusieurs commandes et plusieurs produits en favoris.
+
+**Produit**
+Represente un dessert vendu sur le site. Contient le nom, la description, le prix (stocké en DECIMAL pour eviter les erreurs d'arrondi), le nom du fichier image (géré par VichUploaderBundle), un indicateur de disponibilite, un slug SEO-friendly et la date d'ajout. Un produit appartient a une catégorie et peut etre associé a une recette.
+
+**Catégorie**
+Regroupe les produits et les recettes par type (ex : Tartes, Choux, Petits fours). Possede un nom et un slug unique.
+
+**Recette**
+Represente une recette publiée sur le site. Contient le titre, la description, le contenu complet, le nom du fichier image, la duree en minutes, le niveau de difficulté (via un enum PHP), le nombre de portions et un slug. Une recette peut etre liée a un produit.
+
+**Commande**
+Represente une commande passee par un utilisateur. Contient la date, le statut (via un enum PHP : `EnAttente`, `Confirmee`, `Livree`, `Annulee`), le total, l'adresse de livraison et une référence lisible (ex : `CMD-2026-00042`). Une commande est liée a un utilisateur et contient plusieurs lignes de commande.
+
+**CommandeProduit**
+Table de jointure entre `Commande` et `Produit`. Constitue la ligne de commande : elle stocké la quantite et le **prix unitaire au moment de la commande** (snapshot), independamment du prix actuel du produit. La clé primaire est composite (commande + produit).
+
+**Avis**
+Represente un avis laisse par un utilisateur sur un produit. Contient une note (1 a 5), un commentaire optionnel et un indicateur de validation. Un utilisateur ne peut laisser qu'un seul avis par produit (contrainte unique en base).
+
+### Relations
+
+```
+Utilisateur  ──< Commande        (1 utilisateur → plusieurs commandes)
+Commande     ──< CommandeProduit (1 commande → plusieurs lignes)
+Produit      ──< CommandeProduit (1 produit → plusieurs lignes de commande)
+Catégorie    ──< Produit         (1 catégorie → plusieurs produits)
+Catégorie    ──< Recette         (1 catégorie → plusieurs recettes)
+Produit      ──1 Recette         (1 produit → une recette liée, optionnelle)
+Utilisateur  >──< Produit        (favoris — relation ManyToMany)
+```
+
+### Choix techniques notables
+
+Le prix est stocké en `DECIMAL(8,2)` plutot qu'en `FLOAT` pour eviter les erreurs d'arrondi sur les calculs financiers. Le prix unitaire est duplique dans `CommandeProduit` pour conserver un historique fiable, independamment des modifications futures du catalogue. Les enums PHP natifs (`StatutCommande`, `Difficulté`) sont utilisés pour les colonnes a valeurs contrôlees, ce qui garantit l'integrite des données au niveau du code.
+
+Les images produits et recettes sont gérées par **VichUploaderBundle** : le fichier physique est stocké dans `public/uploads/produits/` ou `public/uploads/recettes/`, et seul le nom du fichier est enregistre en base de données. Cette approche evite de stocker des données binaires en base.
+
+#### Ajout des images en pratique
+
+Les images du catalogue ont été preparees manuellement puis intégrées de deux facons selon le contexte :
+
+**Via l'interface d'administration (EasyAdmin)** : pour chaque produit ou recette, un champ upload est disponible dans le formulaire d'edition. L'administrateur selectionne une image depuis son poste, VichUploaderBundle la renomme automatiquement (via `SmartUniqueNamer`) pour eviter les conflits, et la depose dans le bon dossier (`public/uploads/produits/` ou `public/uploads/recettes/`). Seul le nom du fichier resultant est enregistre en base.
+
+**Via les fixtures de développement** : les images preparees (photos libres de droits provenant d'**Unsplash**, au format JPG, PNG ou WebP) ont été deposees directement dans `public/uploads/produits/` et `public/uploads/recettes/`, puis leur nom de fichier a été renseigne dans les fixtures PHP (`AppFixtures`). Cette méthode permet de charger rapidement un jeu de données complet avec des visuels realistes sans passer par l'interface d'administration.
+
+Dans les deux cas, le template Twig utilisé la fonction `vich_uploader_asset(produit, 'imageFile')` pour générer l'URL publique de l'image a partir du nom de fichier stocké en base.
+
+### Schema relationnel
+
+Afin de mieux visualiser la structure des données du projet, un schema relationnel a été réalisé avec l'outil DBDiagram.
+
+![Schéma de la base de données](captures/DBdiagram.png)
+
+Ce schema met en evidence les differentes entités du projet ainsi que leurs relations :
+
+- un utilisateur peut posseder plusieurs commandes
+- une commande est composee de plusieurs lignes (CommandeProduit)
+- un produit peut apparaitre dans plusieurs commandes
+- une catégorie regroupe plusieurs produits et recettes
+- un utilisateur peut ajouter des produits et des recettes en favoris
+- un utilisateur peut laisser un avis (note + commentaire) par produit
+
+![Tables de la base de données — entités Doctrine](captures/EntitiesSchema.png)
 
 ---
 
@@ -1804,15 +1752,18 @@ Railway bloque les connexions SMTP sortantes (ports 25, 465, 587). Les emails tr
 
 Ce projet a été conçu pour etre evolutif. Plusieurs axes d'amélioration ont été identifiés, classes par priorité et impact.
 
-### 18.1 Fonctionnalités à compléter
+### 18.1 Perspectives futures
 
-| Fonctionnalité | Description | Priorite |
-|----------------|-------------|----------|
-| Moderation des avis | Interface admin pour valider ou rejeter les avis avant publication (actuellement validés automatiquement) | Haute |
-| Emails en production | Configurer Resend (API HTTP) pour remplacer SMTP, bloque par Railway | Haute |
-| Calendrier commandes | Vue calendrier dans l'administration pour voir les commandes jour par jour | Moyenne |
-| Variations de produits | Permettre des options par produit (taille, parfum, personnalisation) avec un prix different | Moyenne |
-| Recettes proposees par les utilisateurs | Formulaire de soumission de recette côté client, avec moderation avant publication | Basse |
+Ces fonctionnalités n'ont pas été développées dans le cadre du projet de formation, mais représentent des évolutions naturelles pour une mise en production réelle :
+
+| Fonctionnalité | Description |
+|----------------|-------------|
+| Moderation des avis | Interface admin pour valider ou rejeter les avis avant publication (actuellement validés automatiquement) |
+| Emails en production | Configurer Resend (API HTTP) pour remplacer SMTP — l'envoi d'emails depuis Railway nécessite un service dédié |
+| Calendrier commandes | Vue calendrier dans l'administration pour visualiser les commandes jour par jour |
+| Variations de produits | Options par produit (taille, parfum, personnalisation) avec un prix différent |
+| Recettes proposées par les utilisateurs | Formulaire de soumission de recette côté client, avec modération avant publication |
+| Barre de recherche recettes | La barre de recherche existe pour les produits mais pas encore pour les recettes |
 
 ### 18.2 Améliorations techniques
 
@@ -1906,6 +1857,8 @@ Plus généralement, je remercie l'ensemble de l'equipe d'Auxilia et de Creative
 ## 22. Glossaire
 
 ---
+
+> Le glossaire complet a été déplacé dans `cours.md` pour servir de référence de cours. Il est disponible dans le dossier du projet.
 
 | Terme | Definition |
 |-------|------------|
