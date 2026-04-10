@@ -1810,17 +1810,6 @@ Un probleme technique notable a été une recursion infinie dans les composants 
 
 Le point que je considere comme le plus reussi est la partie UI/UX design ainsi que l'intégration de l'accessibilité des la conception. J'ai accorde une attention particuliere a la lisibilite, aux contrastes, a la typographie et a la navigation clavier, afin de rendre l'interface accessible au plus grand nombre.
 
-**Ce que j'améliorerais**
-
-Si j'avais eu plus de temps, j'aurais mis en place la moderation des avis depuis l'administration, permis aux utilisateurs de proposer leurs propres recettes, et explore le modele marketplace (vente par des tiers). Ces évolutions feraient de SamyDessert une plateforme plus collaborative.
-
-Si le projet devait evoluer vers une vraie plateforme commerciale, plusieurs pistes seraient envisageables :
-
-- **Modele marketplace** : permettre a plusieurs artisans patissiers de vendre sur la meme plateforme, chacun avec son propre catalogue et ses propres commandes
-- **Application mobile** : exposer une API REST ou GraphQL pour alimenter une application mobile React Native ou Flutter
-- **Programme de fidelite** : système de points ou de bons de reduction pour les clients reguliers
-- **Livraison geolocalisee** : intégration avec une API de livraison pour proposer des creneaux et calculer les frais selon la distance
-
 Le projet SamyDessert est un projet e-commerce structure, combinant conception UX/UI, accessibilité et développement moderne. Il permet de proposer une expérience utilisateur claire, en offrant a la fois la consultation de recettes et la commande de desserts.
 
 Ce projet demontre ma capacite a concevoir, structurer et développer une application web complète en respectant les bonnes pratiques actuelles : separation des responsabilites (MVC), composants réutilisables (Atomic Design), sécurité (CSRF, hachage, vérification email), accessibilité (ARIA, contrastes, clavier) et performance (assets compiles, lazy loading).
