@@ -80,10 +80,9 @@
     - 17.2 Variables d'environnement
     - 17.3 Déploiement en production
 18. Évolution du projet
-    - 18.1 Fonctionnalités à compléter
-    - 18.2 Améliorations techniques
-    - 18.3 Infrastructure et déploiement
-    - 18.4 Vision long terme
+    - 17.1 Fonctionnalités à compléter
+    - 17.2 Améliorations techniques
+    - 17.3 Infrastructure et déploiement
 18. Bilan et conclusion
 19. Remerciements
 
@@ -1781,15 +1780,6 @@ Ces fonctionnalités n'ont pas été développées dans le cadre du projet de fo
 | Stockage images externe | Migrer les uploads vers AWS S3 ou Cloudflare R2 pour que les images ne soient pas perdues lors d'un redeploi |
 | Environnement de staging | Ajoutér un environnement de pre-production pour tester les changements avant de les pousser en production |
 
-### 17.4 Vision long terme
-
-Si le projet devait evoluer vers une vraie plateforme commerciale, plusieurs pistes seraient envisageables :
-
-- **Modele marketplace** : permettre a plusieurs artisans patissiers de vendre sur la meme plateforme, chacun avec son propre catalogue et ses propres commandes
-- **Application mobile** : exposer une API REST ou GraphQL pour alimenter une application mobile React Native ou Flutter
-- **Programme de fidelite** : système de points ou de bons de reduction pour les clients reguliers
-- **Livraison geolocalisee** : intégration avec une API de livraison pour proposer des creneaux et calculer les frais selon la distance
-
 ---
 
 ## 18. Bilan et conclusion
@@ -1823,6 +1813,13 @@ Le point que je considere comme le plus reussi est la partie UI/UX design ainsi 
 **Ce que j'améliorerais**
 
 Si j'avais eu plus de temps, j'aurais mis en place la moderation des avis depuis l'administration, permis aux utilisateurs de proposer leurs propres recettes, et explore le modele marketplace (vente par des tiers). Ces évolutions feraient de SamyDessert une plateforme plus collaborative.
+
+Si le projet devait evoluer vers une vraie plateforme commerciale, plusieurs pistes seraient envisageables :
+
+- **Modele marketplace** : permettre a plusieurs artisans patissiers de vendre sur la meme plateforme, chacun avec son propre catalogue et ses propres commandes
+- **Application mobile** : exposer une API REST ou GraphQL pour alimenter une application mobile React Native ou Flutter
+- **Programme de fidelite** : système de points ou de bons de reduction pour les clients reguliers
+- **Livraison geolocalisee** : intégration avec une API de livraison pour proposer des creneaux et calculer les frais selon la distance
 
 Le projet SamyDessert est un projet e-commerce structure, combinant conception UX/UI, accessibilité et développement moderne. Il permet de proposer une expérience utilisateur claire, en offrant a la fois la consultation de recettes et la commande de desserts.
 
