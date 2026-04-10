@@ -173,7 +173,7 @@ Le projet doit respecter plusieurs contraintes :
 
 ### 2.6 Étude de faisabilité
 
-Le projet repose sur des technologies maitrisees dans le cadre de la formation et bien documentées (Symfony, MySQL, Docker, Stripe). Le périmètre fonctionnel — e-commerce avec catalogue, panier, commande et recettes — est cohérent et réalisable par un développeur seul. Les fonctionnalités principales ont été livrées dans le délai de la formation, et les évolutions non développées sont documentées en §17.
+Ce type de projet est aujourd'hui très accessible : les technologies utilisées (Symfony, MySQL, Docker, Stripe) sont toutes open source, bien documentées, et accompagnées d'une grande communauté en ligne. Il existe une quantité importante de tutoriels, de forums, de packages prêts a l'emploi et d'exemples concrets qui facilitent le développement. Les outils d'intelligence artificielle ont également servi de support pour débloquer certaines situations ou explorer des solutions rapidement. Le périmètre fonctionnel — catalogue, panier, commande, recettes — est cohérent et tout a fait réalisable par un développeur seul dans le cadre de la formation.
 
 ---
 
