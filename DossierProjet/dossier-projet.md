@@ -216,7 +216,6 @@ L'interface d'administration est réalisée avec **EasyAdmin** et est accessible
 Elle comprend :
 
 - **Tableau de bord** : statistiques en temps reel (nombre de produits, commandes, utilisateurs) et apercu des 5 dernieres commandes
-- **Calendrier des commandes** : vue calendrier via FullCalendar, avec code couleur par statut (en attente, confirmee, livree, annulee)
 - **Gestion des produits** : ajout, modification (nom, prix, description, catégorie, image via upload), suppression, activation/desactivation
 - **Gestion des recettes** : ajout, modification (contenu, image, catégorie, difficulté), suppression
 - **Gestion des commandes** : liste triee par date, modification du statut
