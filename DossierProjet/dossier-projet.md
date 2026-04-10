@@ -35,10 +35,7 @@
     - 7.1 Stack technologique
     - 7.2 Outils et services complémentaires
     - 7.3 Cycle de traitement d'une requête (MVC)
-8. Chiffres du projet et état des fonctionnalités
-    - 8.1 Chiffres clés
-    - 8.2 État des fonctionnalités
-9. Développement front-end
+8. Développement front-end
     - 9.1 Approche Atomic Design
     - 9.2 Les atomes
     - 9.3 Les molécules
