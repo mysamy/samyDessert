@@ -10,12 +10,11 @@
     - 1.3 Objectifs du projet
     - 1.4 Nature du projet
 2. Cahier des charges et recueil du besoin
-    - 3.1 Contexte et problématique
-    - 3.2 Besoin principal
-    - 3.3 Public cible
-    - 3.4 Fonctionnalités principales
-    - 3.5 Contraintes du projet
-    - 3.6 Étude de faisabilité
+    - 2.1 Contexte et besoin
+    - 2.2 Public cible
+    - 2.3 Fonctionnalités principales
+    - 2.4 Contraintes du projet
+    - 2.5 Étude de faisabilité
 4. Spécifications fonctionnelles
     - 4.1 Fonctionnalités côté visiteur
     - 4.2 Fonctionnalités côté utilisateur connecté
@@ -129,23 +128,13 @@ Cette approche permet de créer une valeur ajoutée en combinant contenu gratuit
 
 ---
 
-### 2.1 Contexte et problématique
+### 2.1 Contexte et besoin
 
-Le projet SamyDessert s'inscrit dans le domaine du e-commerce alimentaire, avec une approche centree sur les desserts faits maison. Lors de l'analyse des sites existants, plusieurs problemes ont été identifiés : certaines plateformes sont complexes a utiliser, peu accessibles ou proposent des recettes difficiles a reproduire et couteuses.
+Lors de l'analyse des sites existants, plusieurs problèmes ont été identifiés : certaines plateformes sont complexes a utiliser, peu accessibles, et les recettes proposées sont souvent couteuses ou difficiles a reproduire. Les sites de vente de desserts ne permettent généralement pas de comprendre comment les produits sont réalisés, ce qui limite l'intérêt pour l'utilisateur.
 
-De plus, les sites de vente de desserts ne permettent généralement pas de comprendre comment les produits sont réalisés, ce qui limite l'interet pedagogique pour l'utilisateur.
+Le besoin est donc de concevoir une plateforme simple, accessible et claire, combinant une dimension pédagogique (recettes gratuites) et une dimension commerciale (commande de desserts faits maison).
 
-### 2.2 Besoin principal
-
-Le besoin principal est de concevoir une plateforme simple, accessible et claire, permettant a la fois :
-
-- de consulter des recettes de desserts faciles a réaliser
-- de commander des desserts faits maison
-- de proposer une expérience utilisateur fluide et comprehensible par tous
-
-Le projet vise donc a combiner une dimension pedagogique (recettes) et une dimension commerciale (vente de desserts).
-
-### 2.3 Public cible
+### 2.2 Public cible
 
 Le site s'adresse principalement a :
 
@@ -153,7 +142,7 @@ Le site s'adresse principalement a :
 - des personnes interessees par la cuisine maison et les recettes simples
 - des utilisateurs recherchant une interface accessible et facile a utiliser
 
-### 2.4 Fonctionnalités principales
+### 2.2 Fonctionnalités principales
 
 Le site propose trois grands ensembles de fonctionnalités, détailles dans la section 4 (Spécifications fonctionnelles) :
 
@@ -161,7 +150,7 @@ Le site propose trois grands ensembles de fonctionnalités, détailles dans la s
 - **Côté utilisateur connecté** : panier, commande en ligne avec paiement Stripe, espace personnel, favoris, avis
 - **Côté administration** : gestion complète du contenu,des utilisateurs et des commandes via EasyAdmin
 
-### 2.5 Contraintes du projet
+### 2.2 Contraintes du projet
 
 Le projet doit respecter plusieurs contraintes :
 
@@ -171,7 +160,7 @@ Le projet doit respecter plusieurs contraintes :
 - conception responsive (mobile, tablette, desktop)
 - structuration du code pour garantir sa maintenabilite et son evolutivite
 
-### 2.6 Étude de faisabilité
+### 2.2 Étude de faisabilité
 
 Ce type de projet est aujourd'hui très accessible : les technologies utilisées (Symfony, MySQL, Docker, Stripe) sont toutes open source, bien documentées, et accompagnées d'une grande communauté en ligne. Il existe une quantité importante de tutoriels, de forums, de packages prêts a l'emploi et d'exemples concrets qui facilitent le développement. Les outils d'intelligence artificielle ont également servi de support pour débloquer certaines situations ou explorer des solutions rapidement. Le périmètre fonctionnel — catalogue, panier, commande, recettes — est cohérent et tout a fait réalisable par un développeur seul dans le cadre de la formation.
 
