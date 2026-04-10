@@ -157,9 +157,9 @@ Le site s'adresse principalement a :
 
 Le site propose trois grands ensembles de fonctionnalités, détailles dans la section 4 (Spécifications fonctionnelles) :
 
-- **Côté visiteur** : consultation du catalogue et des recettes, recherche et filtrés, inscription, formulaire de contact
+- **Côté visiteur** : consultation du catalogue et des recettes, inscription, formulaire de contact
 - **Côté utilisateur connecté** : panier, commande en ligne avec paiement Stripe, espace personnel, favoris, avis
-- **Côté administration** : gestion complète du contenu et des commandes via EasyAdmin, calendrier interactif
+- **Côté administration** : gestion complète du contenu,des utilisateurs et des commandes via EasyAdmin
 
 ### 2.5 Contraintes du projet
 
@@ -173,25 +173,7 @@ Le projet doit respecter plusieurs contraintes :
 
 ### 2.6 Étude de faisabilité
 
-**Faisabilite technique**
-
-Le projet repose sur des technologies maitrisees dans le cadre de la formation, notamment Symfony, Twig, Tailwind CSS et MySQL. Ces outils offrent un cadre robuste et adapte pour la création d'une application e-commerce.
-
-L'utilisation de Docker permet de standardiser l'environnement de développement et de faciliter la mise en place du projet. Les outils complémentaires comme Stripe pour le paiement ou Mailtrap pour les emails sont également bien documentes et integrables facilement.
-
-Ainsi, l'ensemble des technologies choisies est coherent avec les objectifs du projet et realisable dans le cadre de la formation.
-
-**Faisabilite temporelle**
-
-Le projet a été réalisé sur une periode debutant en decembre, dans le cadre d'un rythme altere entre formation et stage.
-
-Le temps disponible a permis de développer les fonctionnalités principales : catalogue, recettes, panier, commande, authentification et interface utilisateur. Certaines fonctionnalités plus avancees (avis, contribution utilisateur, marketplace) ont été identifiées mais planifiees comme évolutions futures.
-
-**Faisabilite fonctionnelle**
-
-Le projet correspond a un modele e-commerce classique enrichi d'une dimension de contenu (recettes), ce qui reste coherent et realisable.
-
-Les fonctionnalités principales ont été priorisees afin de garantir un produit fonctionnel et stable, tout en gardant une architecture suffisamment flexible pour permettre des évolutions futures.
+Le projet repose sur des technologies maitrisees dans le cadre de la formation et bien documentées (Symfony, MySQL, Docker, Stripe). Le périmètre fonctionnel — e-commerce avec catalogue, panier, commande et recettes — est cohérent et réalisable par un développeur seul. Les fonctionnalités principales ont été livrées dans le délai de la formation, et les évolutions non développées sont documentées en §17.
 
 ---
 
