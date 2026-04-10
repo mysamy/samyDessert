@@ -272,19 +272,19 @@ Une palette de couleurs coherente a été définie avec differentes teintes. La 
 ### 5.5 Identité visuelle
 
 Le logo du projet a été conçu avec **Affinity Designer** en coherence avec la palette de couleurs.
-
+(captures/logo.png) 
 ### 5.6 Design system
 
 Un mini design system a été mis en place avec des composants réutilisables et des variables de couleurs.
-
-![Design system — tokens et composants](captures/PaletteTokenFigma.png)
+*capture de composant a faire et variable couleur sur figma *
+![Design system — tokens et composants]
 
 ### 5.7 Wireframes et maquettes
 
 Les interfaces ont été conçues en mobile-first, puis adaptees tablette et desktop.
 
 ![Wireframe basse fidelite](captures/wireframeLow.png)
-
+*faire plus de wireframe capture
 ---
 
 ## 6. Architecture technique
@@ -358,75 +358,7 @@ Ce decoupage garantit que chaque partie du code a une responsabilite claire : le
 
 ---
 
-## 7. Chiffres du projet et état des fonctionnalités
-
----
-
-### 7.1 Chiffres clés
-
-| Catégorie | Nombre |
-|-----------|--------|
-| Fichiers PHP | 86 |
-| Templates Twig | 68 |
-| Fichiers JavaScript | 20 |
-| Fichiers CSS | 1 (app.css — design tokens + classes utilitaires) |
-| Entités Doctrine | 7 |
-| Migrations | 6 |
-| Controllers | 17 (dont 8 controllers EasyAdmin) |
-| Services metier | 3 (PanierService, MailerService, FactureService) |
-| Composants Twig — Atomes | 13 |
-| Composants Twig — Molecules | 20 |
-| Composants Twig — Organismes | 9 |
-| Controllers Stimulus | 15 |
-| Routes Symfony | 76 |
-| Fichiers de tests | 12 |
-| Tests automatises | 74 |
-
-**Volume de code :**
-
-| Langage | Lignes |
-|---------|--------|
-| PHP | 4 614 |
-| Twig | 4 111 |
-| JavaScript | 1 053 |
-| CSS | 11 155 |
-| **Total** | **~21 000** |
-
-### 7.2 État des fonctionnalités
-
-| Fonctionnalité | Statut |
-|----------------|--------|
-| Catalogue de produits avec filtrés par catégorie | ✅ Fait |
-| Fiche produit avec images et description | ✅ Fait |
-| Catalogue de recettes | ✅ Fait |
-| Fiche recette avec contenu et lien produit | ✅ Fait |
-| Panier persistant en session | ✅ Fait |
-| Sidebar panier animée | ✅ Fait |
-| Inscription avec vérification email | ✅ Fait |
-| Connexion / deconnexion | ✅ Fait |
-| Blocage de connexion si compte non vérifié | ✅ Fait |
-| Espace client (commandes, compte) | ✅ Fait |
-| Formulaire adresse de livraison | ✅ Fait |
-| Tunnel de commande complet | ✅ Fait |
-| Paiement Stripe (mode test) | ✅ Fait |
-| Confirmation de commande par email | ✅ Fait |
-| Facture PDF telechargéable | ✅ Fait |
-| Gestion des favoris (produits et recettes) | ✅ Fait |
-| Formulaire de contact avec email | ✅ Fait |
-| Interface d'administration EasyAdmin | ✅ Fait |
-| Upload d'images via VichUploader | ✅ Fait |
-| Accessibilité clavier et ARIA | ✅ Fait |
-| Design responsive (mobile, tablette, desktop) | ✅ Fait |
-| Tests automatises PHPUnit | ✅ Fait |
-| Système d'avis et notes | ✅ Fait |
-| Moderation des avis depuis l'admin | ❌ Non fait |
-| Webhook Stripe (vérification cryptographique) | ✅ Fait |
-| Expiration des tokens de vérification | ❌ Non fait |
-| Déploiement en production (Railway) | ✅ Fait |
-
----
-
-## 8. Développement front-end
+## 7. Développement front-end
 
 ---
 
