@@ -239,28 +239,6 @@ La conception UX/UI a ensuite été réalisée dans Figma, en suivant une approc
 
 Le développement a démarré par la mise en place de l'architecture technique (Symfony, Docker, base de données), puis par la construction des composants front-end selon la méthode Atomic Design : d'abord les atomes, puis les molécules, puis les organismes, et enfin les pages complètes.
 
-### 4.2 User stories
-
-Les principales fonctionnalités ont été définies sous forme de user stories :
-
-**Visiteur non connecté**
-- En tant que visiteur, je veux consulter le catalogue de desserts pour decouvrir les produits disponibles.
-- En tant que visiteur, je veux consulter les recettes pour apprendre a réaliser des desserts chez moi.
-- En tant que visiteur, je veux m'inscrire pour créer un compte et passer des commandes.
-- En tant que visiteur, je veux contacter le site via un formulaire pour poser des questions.
-
-**Utilisateur connecté**
-- En tant qu'utilisateur connecté, je veux ajouter des produits au panier pour preparer ma commande.
-- En tant qu'utilisateur connecté, je veux passer une commande en renseignant mon adresse et en payant en ligne.
-- En tant qu'utilisateur connecté, je veux consulter l'historique de mes commandes pour suivre mes achats.
-- En tant qu'utilisateur connecté, je veux annuler une commande confirmee si elle n'a pas encore été traitee.
-- En tant qu'utilisateur connecté, je veux ajouter des produits en favoris pour les retrouver facilement.
-
-**Administrateur**
-- En tant qu'administrateur, je veux gérer le catalogue de produits (ajout, modification, suppression).
-- En tant qu'administrateur, je veux consulter et gérer les commandes passees par les clients.
-- En tant qu'administrateur, je veux gérer les comptes utilisateurs.
-
 ---
 
 ## 5. Conception UX/UI avec Figma
