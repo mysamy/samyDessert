@@ -231,7 +231,7 @@ Elle comprend :
 
 ### 4.1 Démarche de conception
 
-J'ai suivi une démarche itérative : d'abord les besoins utilisateurs, puis la conception, et enfin le développement.
+J'ai commencé par le front-end — interfaces, composants, design — pour avoir quelque chose de concret a montrer rapidement, puis j'ai construit le back-end derrière au fur et a mesure des besoins.
 
 La première étape a été d'identifier les utilisateurs cibles via la définition de personas, ce qui a permis de prioriser les fonctionnalités à développer.
 
