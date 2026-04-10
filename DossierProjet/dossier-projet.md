@@ -84,9 +84,8 @@
     - 18.2 Améliorations techniques
     - 18.3 Infrastructure et déploiement
     - 18.4 Vision long terme
-19. Bilan personnel
-20. Conclusion
-21. Remerciements
+18. Bilan et conclusion
+19. Remerciements
 
 
 ---
@@ -1793,7 +1792,7 @@ Si le projet devait evoluer vers une vraie plateforme commerciale, plusieurs pis
 
 ---
 
-## 18. Bilan personnel
+## 18. Bilan et conclusion
 
 ---
 
@@ -1815,7 +1814,7 @@ La prise en main de Symfony a également represente un defi important. Le framew
 
 Un probleme technique notable a été une recursion infinie dans les composants Twig, qui m'a oblige a mettre en oeuvre une méthodologie de débogage par isolation progrèssive pour en identifier la cause exacte.
 
-**Exemple : Bug OOM BlockStack** — `Error: Allowed memory size of 1073741824 bytes exhausted` sur les pages `/recettes` et `/produits/{slug}`. La stack trace pointait vers `vendor/symfony/ux-twig-component/src/BlockStack.php`. La cause etait un commentaire Twig `{# #}` **imbrique** dans `Badge.html.twig` qui fermait prematurement le commentaire externe, laissant les exemples d'utilisation etre compiles comme du vrai code Twig. Badge s'appelait alors lui-meme 4 fois a chaque rendu, chaque appel declenchant 4 autres appels, provoquant une recursion infinie. Le fix a consiste a supprimer le `{# #}` imbrique. La technique de débogage : commenter tout le `{% block body %}`, puis rajouter les éléments un par un jusqu'a identifier celui qui declenchait le crash. 
+**Exemple : Bug OOM BlockStack** — `Error: Allowed memory size of 1073741824 bytes exhausted` sur les pages `/recettes` et `/produits/{slug}`. La stack trace pointait vers `vendor/symfony/ux-twig-component/src/BlockStack.php`. La cause etait un commentaire Twig `{# #}` **imbrique** dans `Badge.html.twig` qui fermait prematurement le commentaire externe, laissant les exemples d'utilisation etre compiles comme du vrai code Twig. Badge s'appelait alors lui-meme 4 fois a chaque rendu, chaque appel declenchant 4 autres appels, provoquant une recursion infinie. Le fix a consiste a supprimer le `{# #}` imbrique. La technique de débogage : commenter tout le `{% block body %}`, puis rajouter les éléments un par un jusqu'a identifier celui qui declenchait le crash.
 
 **Points reussis**
 
@@ -1825,21 +1824,13 @@ Le point que je considere comme le plus reussi est la partie UI/UX design ainsi 
 
 Si j'avais eu plus de temps, j'aurais mis en place la moderation des avis depuis l'administration, permis aux utilisateurs de proposer leurs propres recettes, et explore le modele marketplace (vente par des tiers). Ces évolutions feraient de SamyDessert une plateforme plus collaborative.
 
----
-
-## 19. Conclusion
-
----
-
-Le projet SamyDessert est un projet e-commerce structure, combinant conception UX/UI, accessibilité et développement moderne.
-
-Il permet de proposer une expérience utilisateur claire, en offrant a la fois la consultation de recettes et la commande de desserts.
+Le projet SamyDessert est un projet e-commerce structure, combinant conception UX/UI, accessibilité et développement moderne. Il permet de proposer une expérience utilisateur claire, en offrant a la fois la consultation de recettes et la commande de desserts.
 
 Ce projet demontre ma capacite a concevoir, structurer et développer une application web complète en respectant les bonnes pratiques actuelles : separation des responsabilites (MVC), composants réutilisables (Atomic Design), sécurité (CSRF, hachage, vérification email), accessibilité (ARIA, contrastes, clavier) et performance (assets compiles, lazy loading).
 
 ---
 
-## 20. Remerciements
+## 19. Remerciements
 
 ---
 
