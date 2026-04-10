@@ -9,8 +9,7 @@
     - 1.2 Genèse du projet et vision
     - 1.3 Objectifs du projet
     - 1.4 Nature du projet
-2. Introduction et contexte du projet
-3. Cahier des charges et recueil du besoin
+2. Cahier des charges et recueil du besoin
     - 3.1 Contexte et problématique
     - 3.2 Besoin principal
     - 3.3 Public cible
@@ -123,24 +122,6 @@ Le site repose sur un concept hybride : proposer des recettes de cuisine gratuit
 
 Cette approche permet de créer une valeur ajoutée en combinant contenu gratuit (recettes) et offre commerciale (vente de desserts), dans une logique proche de certains modeles existants sur le web.
 
-
----
-
-## 2. Introduction et contexte du projet
-
----
-
-Dans le cadre de ma formation de développeur web et web mobile a l'ESRP Auxilia de Nanterre, j'ai réalisé le projet SamyDessert comme projet de fin de formation, destine a etre presente devant un jury.
-
-Ce projet a été commence au debut du mois de novembre 2025 et s'inscrit dans une démarche professionnalisante visant a mettre en pratique l'ensemble des competences acquises durant la formation, aussi bien en conception qu'en développement.
-
-SamyDessert est un projet individuel, réalisé avec l'accompagnement de mon formateur à Auxilia : Stéphane ASSABY ainsi que de mes deux tuteurs de stage : Miguel Sevilla et Jean-Baptiste Guérin au sein de l'association Creative Handicap. Ces echanges m'ont permis d'apprendre avec des professionnels, de prendre du recul sur mes choix techniques, de mieux comprendre les attentes du metier et d'améliorer la qualite globale du projet.
-
-Le projet s'appuie également sur l'utilisation d'outils modernes, dont certains outils d'intelligence artificielle utilisés comme support d'apprentissage, de recherche et d'optimisation. Ces outils ont été utilisés de maniere complémentaire a la documentation officielle et aux ressources techniques.
-
-SamyDessert est un projet fictif, mais conçu pour repondre a un besoin reel. Il s'agit d'une plateforme e-commerce hybride combinant deux approches : proposer des recettes de desserts gratuites afin d'attirer les utilisateurs, et permettre la commande de gateaux faits maison par un artisan patissier, simples et accessibles.
-
-Ce projet a pour objectif de demontrer ma capacite a concevoir, structurer et développer une application web complète, en prenant en compte les enjeux actuels du web tels que l'accessibilité, l'expérience utilisateur, la performance et la maintenabilite du code.
 
 ---
 
