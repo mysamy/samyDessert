@@ -2,84 +2,97 @@
 
 ---
 
-## Table des matieres
+## Table des matières
 
 1. Présentation personnelle et du projet SamyDessert
     - 1.1 Qui suis-je et mon parcours
     - 1.2 Genèse du projet et vision
     - 1.3 Objectifs du projet
     - 1.4 Nature du projet
-2. Cahier des charges et recueil du besoin
-    - 2.1 Contexte et besoin
-    - 2.2 Public cible
-    - 2.3 Fonctionnalités principales
-    - 2.4 Contraintes du projet
-    - 2.5 Étude de faisabilité
-4. Spécifications fonctionnelles
-    - 4.1 Fonctionnalités côté visiteur
-    - 4.2 Fonctionnalités côté utilisateur connecté
-    - 4.3 Fonctionnalités liées à la commande
-    - 4.4 Fonctionnalités d'administration
-5. Méthodologie de conception
-    - 5.1 Démarche de conception
-    - 5.2 User stories
-6. Conception UX/UI
-    - 6.1 Analyse et inspiration
-    - 6.2 Personas utilisateurs
-    - 6.3 User flow
-    - 6.4 Choix visuels et accessibilité
-    - 6.5 Identité visuelle
-    - 6.6 Design system
-    - 6.7 Wireframes et maquettes
-7. Architecture technique
-    - 7.1 Stack technologique
-    - 7.2 Outils et services complémentaires
-    - 7.3 Cycle de traitement d'une requête (MVC)
-8. Développement front-end
+2. Résumé du projet
+3. Compétences couvertes par le projet
+4. Cahier des charges et recueil du besoin
+    - 4.1 Contexte et besoin
+    - 4.2 Public cible
+    - 4.3 Fonctionnalités principales
+    - 4.4 Contraintes du projet
+    - 4.5 Étude de faisabilité
+5. Spécifications fonctionnelles
+    - 5.1 Fonctionnalités côté visiteur
+    - 5.2 Fonctionnalités côté utilisateur connecté
+    - 5.3 Fonctionnalités liées à la commande
+    - 5.4 Fonctionnalités d'administration
+6. Méthodologie de conception
+    - 6.1 Démarche de conception
+7. Conception UX/UI avec Figma
+    - 7.1 Analyse et inspiration
+    - 7.2 Personas utilisateurs
+    - 7.3 User flow
+    - 7.4 Choix visuels et accessibilité
+    - 7.5 Identité visuelle
+    - 7.6 Design system
+    - 7.7 Wireframes et maquettes
+8. Architecture technique
+    - 8.1 Stack technologique
+    - 8.2 Outils et services complémentaires
+    - 8.3 Cycle de traitement d'une requête (MVC)
+9. Développement front-end
     - 9.1 Approche Atomic Design
     - 9.2 Les atomes
     - 9.3 Les molécules
     - 9.4 Les organismes
     - 9.5 Le carousel
     - 9.6 Les controllers Stimulus
-    - 9.7 Architecture CSS -- Tailwind v4 et design tokens
-10. Conception de la base de données
+    - 9.7 Turbo et AJAX
+    - 9.8 Architecture CSS — Tailwind v4 et design tokens
+10. Conception de la base de données (entités, relations, dictionnaire des données)
 11. Développement back-end
+    - Tableau des routes
     - 11.1 Controllers PHP
     - 11.2 Services
     - 11.3 Le reste de src/
-12. Accessibilité
-    - 12.1 Typographie Luciole
-    - 12.2 Contrastes de couleurs
-    - 12.3 Navigation clavier
-    - 12.4 Attributs ARIA et HTML sémantique
-    - 12.5 Outils d'accessibilité utilisés
-13. Sécurité
-    - 13.1 Authentification et gestion des utilisateurs
-    - 13.2 Inscription et vérification d'e-mail
-    - 13.3 Contrôle de l'état du compte
-    - 13.4 Protection des formulaires et des actions sensibles
-    - 13.5 Sécurisation de l'espace client
-    - 13.6 Paiement en ligne avec Stripe
-    - 13.7 Gestion des secrets et configuration
-    - 13.8 Limites actuelles et améliorations possibles
-14. Tests
-15. Commandes utiles
-16. Gestion de version avec Git
-    - 16.1 Pourquoi Git
-    - 16.2 Stratégie de branches
-    - 16.3 Commandes Git utilisées
-    - 16.4 Conventions de commit
-17. Déploiement
-    - 17.1 Environnement de développement avec Docker
-    - 17.2 Variables d'environnement
-    - 17.3 Déploiement en production
-18. Évolution du projet
-    - 17.1 Fonctionnalités à compléter
-    - 17.2 Améliorations techniques
-    - 17.3 Infrastructure et déploiement
-18. Bilan et conclusion
-19. Remerciements
+12. Réalisations personnelles
+    - 12.1 Le webhook Stripe
+    - 12.2 Le système de favoris
+    - 12.3 Le carousel custom
+13. Accessibilité
+    - 13.1 Typographie Luciole
+    - 13.2 Contrastes de couleurs
+    - 13.3 Navigation clavier
+    - 13.4 Attributs ARIA et HTML sémantique
+    - 13.5 Outils d'accessibilité utilisés
+14. Sécurité
+    - 14.1 Authentification et gestion des utilisateurs
+    - 14.2 Inscription et vérification d'e-mail
+    - 14.3 Contrôle de l'état du compte
+    - 14.4 Protection des formulaires et des actions sensibles
+    - 14.5 Sécurisation de l'espace client
+    - 14.6 Paiement en ligne avec Stripe
+    - 14.7 Gestion des secrets et configuration
+    - 14.8 Limites actuelles et améliorations possibles
+15. Tests (unitaires, fonctionnels, jeu d'essai illustré)
+16. Veille technologique et sécurité
+    - 16.1 Veille technologique
+    - 16.2 Veille de sécurité
+    - 16.3 Processus de recherche et ressource en anglais
+17. Commandes utiles
+18. Gestion de version avec Git
+    - 18.1 Pourquoi Git
+    - 18.2 Stratégie de branches
+    - 18.3 Commandes Git utilisées
+    - 18.4 Conventions de commit
+19. Déploiement
+    - 19.1 Environnement de développement avec Docker
+    - 19.2 Variables d'environnement
+    - 19.3 Déploiement en production sur Railway
+20. Évolution du projet
+    - 20.1 Perspectives futures
+    - 20.2 Améliorations techniques
+    - 20.3 Infrastructure et déploiement
+21. Bilan et conclusion
+22. Remerciements
+
+Annexe — Accès au site et comptes de test
 
 
 ---
@@ -121,17 +134,91 @@ Cette approche permet de créer une valeur ajoutée en combinant contenu gratuit
 
 ---
 
-## 2. Cahier des charges et recueil du besoin
+## 2. Résumé du projet
 
 ---
 
-### 2.1 Contexte et besoin
+**SamyDessert** est un site web e-commerce de vente et de partage de desserts faits maison. Le projet combine deux dimensions : une **vitrine pédagogique** avec un catalogue de recettes gratuites et détaillées, et une **boutique en ligne** pour commander des desserts avec paiement sécurisé et livraison.
+
+Le site propose un catalogue de produits filtrable par catégorie, une recherche par mot-clé, un système de favoris (produits et recettes), un panier dynamique, un tunnel de commande en trois étapes avec paiement **Stripe**, un espace client (historique, annulation de commande, gestion des favoris), un système d'avis clients avec note moyenne, et une interface d'administration complète (EasyAdmin).
+
+Il est développé avec **Symfony 7.4** (back-end, Twig, Doctrine ORM, MySQL), **Tailwind CSS v4** et **Stimulus** (front-end), l'ensemble conteneurisé avec **Docker Compose**. L'architecture front suit la méthode **Atomic Design** (atomes, molécules, organismes) via Symfony UX Twig Components. Le site est déployé en production sur **Railway**, avec une attention particulière portée à l'**accessibilité** (WCAG 2.1 AA, typographie Luciole, navigation clavier, ARIA) et à la **sécurité** (hachage des mots de passe, vérification d'email, tokens CSRF, webhook Stripe idempotent).
+
+---
+
+## 3. Compétences couvertes par le projet
+
+---
+
+Le projet SamyDessert couvre l'ensemble des compétences du référentiel **Titre Professionnel Développeur Web et Web Mobile** (RNCP niveau 5) : développement front-end, développement back-end, et activités transversales (veille, méthode, collaboration).
+
+### I. Développer la partie front-end d'une application web ou web mobile
+
+**A. Maquetter une application**
+
+Une phase d'analyse concurrentielle et d'inspiration a été menée avant toute conception. J'ai défini des **personas utilisateurs** pour cadrer les besoins, construit un **user flow** décrivant le parcours type, puis réalisé des **wireframes** et des **maquettes haute fidélité** sur **Figma** en approche mobile-first (trois breakpoints : mobile, tablette, desktop). Un **design system** a été mis en place en parallèle (tokens de couleurs, typographie, composants réutilisables). Le **logo** a été conçu avec Affinity Designer.
+
+→ Voir §7 Conception UX/UI avec Figma.
+
+**B. Réaliser une interface utilisateur web statique et adaptable**
+
+Le front-end est structuré selon la méthode **Atomic Design** (14 atomes, 20 molécules, 13 organismes) via **Symfony UX Twig Components**. Le style est assuré par **Tailwind CSS v4** configuré en JIT, avec des **tokens sémantiques** (`primary`, `accent`, `success`, `warning`, `danger`) centralisés dans `app.css`. L'interface est entièrement **responsive** (mobile, tablette, desktop) et **accessible** (WCAG 2.1 AA, typographie Luciole, contrastes vérifiés, navigation clavier, ARIA).
+
+→ Voir §9 Développement front-end et §13 Accessibilité.
+
+**C. Développer une interface utilisateur web dynamique**
+
+Les interactions côté client reposent sur **Stimulus** (10 controllers : carousel, menu mobile, favoris, dropdown, confirm dialog…), **Symfony UX Live Components** (panier réactif, bouton panier), **Turbo Drive** (navigation SPA-like) et **Turbo Frames** (filtrage produits/recettes sans rechargement). Des requêtes **AJAX** (`fetch`) gèrent les favoris sans rechargement. Un carousel custom (classe JS vanilla) gère un mode infini avec zoom et animations directionnelles.
+
+→ Voir §9.6 Les controllers Stimulus et §9.7 Turbo et AJAX.
+
+### II. Développer la partie back-end d'une application web ou web mobile
+
+**A. Créer une base de données**
+
+La base de données **MySQL 8** repose sur **sept entités principales** (Utilisateur, Produit, Catégorie, Recette, Commande, CommandeProduit, Avis). Le schéma relationnel a été modélisé avec **DBDiagram** avant implémentation. Les choix techniques notables incluent : prix en `DECIMAL(8,2)` pour éviter les erreurs d'arrondi, snapshot du prix unitaire dans `CommandeProduit`, enums PHP natifs pour les valeurs contrôlées (statuts de commande, difficultés). Un dictionnaire des données complet figure en §10.
+
+→ Voir §10 Conception de la base de données.
+
+**B. Développer les composants d'accès aux données**
+
+L'accès aux données est géré par **Doctrine ORM**. Les entités PHP correspondent aux tables, les **repositories** encapsulent les requêtes (dont `ProduitRepository::findMeilleursVendus()` avec un Query Builder personnalisé triant par quantité commandée), et les **migrations** versionnent les changements de schéma. Les **fixtures** (Doctrine Fixtures) peuplent la base avec des données réalistes pour le développement.
+
+→ Voir §11.3 Le reste de src/ (repositories, enums, fixtures).
+
+**C. Développer la partie back-end d'une application web ou web mobile**
+
+Le back-end est organisé autour de **11 controllers** Symfony (Home, Produits, Recettes, Panier, Commande, Compte, Security, Contact, Favori, Avis, MentionsLegales) et de **trois services** métier (PanierService, MailerService, FactureService). Le tunnel de commande en trois étapes intègre **Stripe Checkout** avec un **webhook idempotent**. L'authentification repose sur **Symfony Security Bundle** (hachage automatique, UserChecker, vérification email). Une suite de **74 tests automatisés** (PHPUnit + Foundry) couvre les controllers et services critiques.
+
+→ Voir §11 Développement back-end, §14 Sécurité et §15 Tests.
+
+### III. Activités transversales
+
+**Veille technologique et de sécurité**
+
+Une démarche de veille continue a été menée sur les technologies utilisées (Symfony UX Twig Components, Tailwind v4, Stripe webhook, VichUploader, Docker) et sur les aspects sécurité (OWASP, hachage des mots de passe, CSRF, CORS). Les choix techniques ont été documentés avec leurs sources.
+
+→ Voir §16 Veille technologique et sécurité.
+
+**Méthode et gestion de projet**
+
+Le projet est versionné sur **Git** (stratégie `dev`/`main` avec déploiement automatique sur push), documenté via ce dossier, et testé de manière automatisée et manuelle. Les commits suivent la convention **Conventional Commits** (`feat:`, `fix:`, `refactor:`, `docs:`).
+
+→ Voir §18 Gestion de version avec Git.
+
+---
+
+## 4. Cahier des charges et recueil du besoin
+
+---
+
+### 4.1 Contexte et besoin
 
 Lors de l'analyse des sites existants, plusieurs problèmes ont été identifiés : certaines plateformes sont complexes a utiliser, peu accessibles, et les recettes proposées sont souvent couteuses ou difficiles a reproduire. Les sites de vente de desserts ne permettent généralement pas de comprendre comment les produits sont réalisés, ce qui limite l'intérêt pour l'utilisateur.
 
 Le besoin est donc de concevoir une plateforme simple, accessible et claire, combinant une dimension pédagogique (recettes gratuites) et une dimension commerciale (commande de desserts faits maison).
 
-### 2.2 Public cible
+### 4.2 Public cible
 
 Le site s'adresse principalement a :
 
@@ -139,7 +226,7 @@ Le site s'adresse principalement a :
 - des personnes interessees par la cuisine maison et les recettes simples
 - des utilisateurs recherchant une interface accessible et facile a utiliser
 
-### 2.2 Fonctionnalités principales
+### 4.3 Fonctionnalités principales
 
 Le site propose trois grands ensembles de fonctionnalités, détailles dans la section 4 (Spécifications fonctionnelles) :
 
@@ -147,7 +234,7 @@ Le site propose trois grands ensembles de fonctionnalités, détailles dans la s
 - **Côté utilisateur connecté** : panier, commande en ligne avec paiement Stripe, espace personnel, favoris, avis
 - **Côté administration** : gestion complète du contenu,des utilisateurs et des commandes via EasyAdmin
 
-### 2.2 Contraintes du projet
+### 4.4 Contraintes du projet
 
 Le projet doit respecter plusieurs contraintes :
 
@@ -157,17 +244,17 @@ Le projet doit respecter plusieurs contraintes :
 - conception responsive (mobile, tablette, desktop)
 - structuration du code pour garantir sa maintenabilite et son evolutivite
 
-### 2.2 Étude de faisabilité
+### 4.5 Étude de faisabilité
 
 Ce type de projet est aujourd'hui très accessible : les technologies utilisées (Symfony, MySQL, Docker, Stripe) sont toutes open source, bien documentées, et accompagnées d'une grande communauté en ligne. Il existe une quantité importante de tutoriels, de forums, de packages prêts a l'emploi et d'exemples concrets qui facilitent le développement. Les outils d'intelligence artificielle ont également servi de support pour débloquer certaines situations ou explorer des solutions rapidement. Le périmètre fonctionnel — catalogue, panier, commande, recettes — est cohérent et tout a fait réalisable par un développeur seul dans le cadre de la formation.
 
 ---
 
-## 3. Spécifications fonctionnelles
+## 5. Spécifications fonctionnelles
 
 ---
 
-### 3.1 Fonctionnalités côté visiteur (non connecté)
+### 5.1 Fonctionnalités côté visiteur (non connecté)
 
 Le visiteur peut acceder librement au contenu du site sans authentification.
 
@@ -181,7 +268,7 @@ Il peut :
 - acceder au formulaire de contact
 - créer un compte utilisateur
 
-### 3.2 Fonctionnalités côté utilisateur connecté
+### 5.2 Fonctionnalités côté utilisateur connecté
 
 Une fois connecté, l'utilisateur dispose de fonctionnalités supplementaires liées a son compte.
 
@@ -196,7 +283,7 @@ Il peut :
 - laisser un avis et une note sur un produit (une seule fois par produit)
 - acceder a son espace personnel (compte, commandes, favoris)
 
-### 3.3 Fonctionnalités liées à la commande
+### 5.3 Fonctionnalités liées à la commande
 
 Le processus de commande est structure en plusieurs étapes :
 - saisie de l'adresse de livraison
@@ -206,7 +293,7 @@ Le processus de commande est structure en plusieurs étapes :
 
 Le système garantit la coherence des données en recalculant le total côté serveur et en securisant les echanges avec Stripe.
 
-### 3.4 Fonctionnalités d'administration
+### 5.4 Fonctionnalités d'administration
 
 L'interface d'administration est réalisée avec **EasyAdmin** et est accessible uniquement aux comptes ayant le rôle `ROLE_ADMIN`.
 
@@ -221,11 +308,11 @@ Elle comprend :
 
 ---
 
-## 4. Méthodologie de conception
+## 6. Méthodologie de conception
 
 ---
 
-### 4.1 Démarche de conception
+### 6.1 Démarche de conception
 
 J'ai commencé par le front-end — interfaces, composants, design — pour avoir quelque chose de concret a montrer rapidement, puis j'ai construit le back-end derrière au fur et a mesure des besoins.
 
@@ -237,58 +324,58 @@ Le développement a démarré par la mise en place de l'architecture technique (
 
 ---
 
-## 5. Conception UX/UI avec Figma
+## 7. Conception UX/UI avec Figma
 
 ---
 
-### 5.1 Analyse et inspiration
+### 7.1 Analyse et inspiration
 
 Une phase d'analyse a été réalisée a partir de sites existants afin d'identifier les bonnes pratiques en matiere d'UX.
 
 ![Analyse et inspiration](captures/Inspiration.png)
 
-### 5.2 Personas utilisateurs
+### 7.2 Personas utilisateurs
 
 Des personas ont été définis pour représenter les differents types d'utilisateurs.
 
 ![Persona 1](captures/personna1.png)
 ![Persona 2](captures/personna2.png)
 
-### 5.3 User flow
+### 7.3 User flow
 
 Un user flow a été conçu pour modeliser le parcours utilisateur.
 
 ![User Flow](captures/userFlow.png)
 
-### 5.4 Choix visuels et accessibilité
+### 7.4 Choix visuels et accessibilité
 
 Une palette de couleurs coherente a été définie avec differentes teintes. La typographie **Luciole** a été choisie pour améliorer la lisibilite et l'accessibilité.
 
 ![Palette de couleurs et typographie](captures/appCSS.png)
 
-### 5.5 Identité visuelle
+### 7.5 Identité visuelle
 
 Le logo du projet a été conçu avec **Affinity Designer** en coherence avec la palette de couleurs.
-(captures/logo.png) 
-### 5.6 Design system
 
-Un mini design system a été mis en place avec des composants réutilisables et des variables de couleurs.
-*capture de composant a faire et variable couleur sur figma *
-![Design system — tokens et composants]
+![Logo SamyDessert](captures/LogoAffinityDesigner.png)
 
-### 5.7 Wireframes et maquettes
+### 7.6 Design system
+
+Un mini design system a été mis en place avec des composants réutilisables et des variables de couleurs : tokens de couleurs (chocolat, framboise, pistache, crème), tailles de typographie, espacements, et composants (boutons, cartes) réutilisables sur l'ensemble du site.
+
+### 7.7 Wireframes et maquettes
 
 Les interfaces ont été conçues en mobile-first, puis adaptees tablette et desktop.
 
 ![Wireframe basse fidelite](captures/wireframeLow.png)
-*faire plus de wireframe capture
----
-
-## 6. Architecture technique
 
 ---
 
-### 6.1 Stack technologique
+## 8. Architecture technique
+
+---
+
+### 8.1 Stack technologique
 
 **Back-end**
 
@@ -323,7 +410,7 @@ La gestion des assets repose sur **AssetMapper**, l'outil natif de Symfony (remp
 
 L'environnement est entièrement conteneurisé avec **Docker Compose** (6 services : nginx, php-fpm, mysql, adminer, init, assets). Cela garantit que le projet fonctionne de manière identique sur toutes les machines, sans installation locale de PHP ou MySQL. Voir la section Déploiement pour le détail.
 
-### 6.2 Outils et services complémentaires
+### 8.2 Outils et services complémentaires
 
 - **Stripe** est utilisé pour gérer les paiements en ligne de maniere securisee.
 - **VichUploaderBundle** géré l'upload et le stockage des images produits et recettes.
@@ -335,7 +422,7 @@ L'environnement est entièrement conteneurisé avec **Docker Compose** (6 servic
 - Des outils comme **Coolors**, **Adobe Color** et **Colorable** ont été utilisés pour définir et tester les palettes de couleurs.
 - **Unsplash** est utilisé comme source d'images libres de droits pour les produits et les recettes.
 
-### 6.3 Cycle de traitement d'une requête (MVC)
+### 8.3 Cycle de traitement d'une requête (MVC)
 
 SamyDessert suit le patron d'architecture **MVC** (Model-View-Controller), qui séparé le code en trois responsabilites distinctes : les données, la logique metier et l'affichage. Symfony impose naturellement ce decoupage.
 
@@ -355,17 +442,17 @@ Ce decoupage garantit que chaque partie du code a une responsabilite claire : le
 
 ---
 
-## 7. Développement front-end
+## 9. Développement front-end
 
 ---
 
-### 8.1 Approche Atomic Design
+### 9.1 Approche Atomic Design
 
 Le front-end est base sur une approche **Atomic Design**. Les composants les plus simples (atomes) ont été developpes en premier sous forme de composants Twig. Ces atomes incluent notamment : boutons, inputs, labels, liens, images et icones.
 
 Chaque composant est conçu pour etre réutilisable, coherent et accessible. **Tailwind CSS** est utilisé pour le style, permettant une intégration rapide et responsive.
 
-### 8.2 Les atomes -- les plus petites briques de l'interface
+### 9.2 Les atomes -- les plus petites briques de l'interface
 
 #### Qu'est-ce qu'un atome ?
 
@@ -449,7 +536,7 @@ Le composant Button est un bon exemple de ce que j'ai voulu mettre en place sur 
 
 Ces 13 atomes forment le vocabulaire visuel de toute l'application. Chaque élément d'interface que l'utilisateur voit ou avec lequel il interagit est construit a partir de l'un d'eux.
 
-### 8.3 Les molécules -- assembler les atomes en blocs fonctionnels
+### 9.3 Les molécules -- assembler les atomes en blocs fonctionnels
 
 #### Qu'est-ce qu'une molécule ?
 
@@ -518,7 +605,7 @@ La molécule ConfirmDialog utilisé l'élément HTML natif `<dialog>`, ce qui ga
 
 La molécule NavigationLinks généré automatiquement les liens de navigation a partir de la route courante. Grace a la méthode `mount()`, elle detecte la page active et applique `aria-current="page"` sur le lien correspondant, sans configuration manuelle.
 
-### 8.4 Les organismes -- les sections complètes de l'interface
+### 9.4 Les organismes -- les sections complètes de l'interface
 
 #### Qu'est-ce qu'un organisme ?
 
@@ -610,7 +697,7 @@ La ProductCardGrid affiché une collection de DessertCard dans une grille respon
 
 ![ProductCardGrid — desktop](captures/grilleProduitDesktop.png)
 
-### 8.5 Le carousel
+### 9.5 Le carousel
 
 Le carousel de la page d'accueil est l'un des éléments les plus visibles du projet. Il affiché les produits phares en mode infini avec un effet de zoom sur la carte centrale et des animations de description directionnelles.
 
@@ -631,7 +718,7 @@ Le carousel est le seul composant qui utilise la convention **BEM** (`carousel__
 
 ---
 
-### 8.6 Les controllers Stimulus -- interactions côté client
+### 9.6 Les controllers Stimulus -- interactions côté client
 
 #### Qu'est-ce que Stimulus ?
 
@@ -767,7 +854,7 @@ Ce controller desactive le bouton de soumission des qu'un formulaire est envoyé
 
 Ce controller géré la confirmation avant d'annuler une commande. Il utilisé l'élément HTML natif `<dialog>`, recupere la référence et l'URL d'action depuis les attributs `data-*` du bouton, et soumet un formulaire POST avec le token CSRF si l'utilisateur confirme.
 
-### 8.6.2 Turbo et AJAX -- navigation rapide et mises à jour partielles
+### 9.7 Turbo et AJAX -- navigation rapide et mises à jour partielles
 
 #### AJAX : mise a jour sans rechargément
 
@@ -816,7 +903,7 @@ Ces trois outils permettent d'avoir un site interactif et rapide **sans ecrire d
 
 ---
 
-### 8.7 Architecture CSS -- Tailwind v4 et design tokens
+### 9.8 Architecture CSS -- Tailwind v4 et design tokens
 
 #### Un seul fichier d'entree
 
@@ -859,7 +946,7 @@ La police **Luciole** est chargée localement avec `font-display: swap`, en form
 
 ---
 
-## 9. Conception de la base de données
+## 10. Conception de la base de données
 
 ---
 
@@ -933,13 +1020,140 @@ Ce schema met en evidence les differentes entités du projet ainsi que leurs rel
 
 ![Tables de la base de données — entités Doctrine](captures/EntitiesSchema.png)
 
+### Dictionnaire des données
+
+Le tableau ci-dessous liste toutes les colonnes des sept entités principales avec leur type Doctrine, leurs contraintes et leur rôle.
+
+**Utilisateur**
+
+| Champ | Type | Contraintes | Rôle |
+|-------|------|-------------|------|
+| `id` | `INT` | PK, auto-increment | Identifiant unique |
+| `email` | `VARCHAR(180)` | NOT NULL, UNIQUE | Identifiant de connexion |
+| `roles` | `JSON` | NOT NULL | Rôles Symfony (`ROLE_USER`, `ROLE_ADMIN`) |
+| `password` | `VARCHAR(255)` | NOT NULL | Hash du mot de passe (algorithme `auto`) |
+| `prenom` | `VARCHAR(100)` | NOT NULL | Prénom |
+| `nom` | `VARCHAR(100)` | NOT NULL | Nom de famille |
+| `telephone` | `VARCHAR(20)` | NULL | Numéro de téléphone (optionnel) |
+| `adresse` | `VARCHAR(255)` | NULL | Adresse par défaut (optionnelle) |
+| `isVerified` | `BOOLEAN` | NOT NULL, default `false` | Email vérifié |
+| `verificationToken` | `VARCHAR(64)` | NULL | Jeton de vérification d'email |
+
+**Produit**
+
+| Champ | Type | Contraintes | Rôle |
+|-------|------|-------------|------|
+| `id` | `INT` | PK, auto-increment | Identifiant unique |
+| `nom` | `VARCHAR(150)` | NOT NULL | Nom du produit |
+| `slug` | `VARCHAR(180)` | NOT NULL, UNIQUE | Slug SEO-friendly |
+| `description` | `TEXT` | NULL | Description longue |
+| `prix` | `DECIMAL(8,2)` | NOT NULL | Prix en euros (précision monétaire) |
+| `imageName` | `VARCHAR(255)` | NULL | Nom du fichier image (VichUploader) |
+| `disponible` | `BOOLEAN` | NOT NULL, default `true` | Visible dans le catalogue |
+| `dateAjout` | `DATETIME` | NOT NULL | Date d'ajout au catalogue |
+| `categorie_id` | `INT` | FK → Categorie | Catégorie du produit |
+| `recette_id` | `INT` | FK → Recette, NULL | Recette associée (optionnelle) |
+
+**Catégorie**
+
+| Champ | Type | Contraintes | Rôle |
+|-------|------|-------------|------|
+| `id` | `INT` | PK, auto-increment | Identifiant unique |
+| `nom` | `VARCHAR(100)` | NOT NULL | Nom de la catégorie |
+| `slug` | `VARCHAR(120)` | NOT NULL, UNIQUE | Slug SEO-friendly |
+
+**Recette**
+
+| Champ | Type | Contraintes | Rôle |
+|-------|------|-------------|------|
+| `id` | `INT` | PK, auto-increment | Identifiant unique |
+| `titre` | `VARCHAR(150)` | NOT NULL | Titre de la recette |
+| `slug` | `VARCHAR(180)` | NOT NULL, UNIQUE | Slug SEO-friendly |
+| `description` | `TEXT` | NULL | Description courte |
+| `contenu` | `TEXT` | NOT NULL | Contenu complet (étapes, ingrédients) |
+| `imageName` | `VARCHAR(255)` | NULL | Nom du fichier image (VichUploader) |
+| `duree` | `INT` | NOT NULL | Durée en minutes |
+| `difficulte` | `VARCHAR(20)` | NOT NULL, ENUM | `Facile`, `Moyen`, `Difficile` |
+| `portions` | `INT` | NOT NULL | Nombre de portions |
+| `categorie_id` | `INT` | FK → Categorie | Catégorie de la recette |
+
+**Commande**
+
+| Champ | Type | Contraintes | Rôle |
+|-------|------|-------------|------|
+| `id` | `INT` | PK, auto-increment | Identifiant unique |
+| `reference` | `VARCHAR(20)` | NOT NULL, UNIQUE | Référence lisible (ex. `CMD-2026-00042`) |
+| `date` | `DATETIME` | NOT NULL | Date de la commande |
+| `statut` | `VARCHAR(20)` | NOT NULL, ENUM | `EnAttente`, `Confirmee`, `Livree`, `Annulee` |
+| `total` | `DECIMAL(10,2)` | NOT NULL | Montant total en euros |
+| `adresseLivraison` | `TEXT` | NOT NULL | Adresse de livraison complète |
+| `utilisateur_id` | `INT` | FK → Utilisateur, NOT NULL | Propriétaire de la commande |
+
+**CommandeProduit** (table de jointure)
+
+| Champ | Type | Contraintes | Rôle |
+|-------|------|-------------|------|
+| `commande_id` | `INT` | PK composite, FK → Commande | Commande parente |
+| `produit_id` | `INT` | PK composite, FK → Produit | Produit commandé |
+| `quantite` | `INT` | NOT NULL, CHECK > 0 | Quantité commandée |
+| `prixUnitaire` | `DECIMAL(8,2)` | NOT NULL | Prix au moment de la commande (snapshot) |
+
+**Avis**
+
+| Champ | Type | Contraintes | Rôle |
+|-------|------|-------------|------|
+| `id` | `INT` | PK, auto-increment | Identifiant unique |
+| `note` | `SMALLINT` | NOT NULL, CHECK 1..5 | Note sur 5 |
+| `commentaire` | `TEXT` | NULL | Commentaire optionnel |
+| `dateCreation` | `DATETIME` | NOT NULL | Date de dépôt de l'avis |
+| `isValide` | `BOOLEAN` | NOT NULL, default `true` | Avis validé (modération) |
+| `utilisateur_id` | `INT` | FK → Utilisateur, NOT NULL | Auteur de l'avis |
+| `produit_id` | `INT` | FK → Produit, NOT NULL | Produit noté |
+
+Contrainte unique composite : `(utilisateur_id, produit_id)` → un utilisateur ne peut laisser qu'un seul avis par produit.
+
 ---
 
-## 10. Développement back-end
+## 11. Développement back-end
 
 ---
 
-### 10.1 Controllers PHP
+### Tableau des routes
+
+L'application expose **32 routes** réparties en 11 controllers. Le tableau ci-dessous liste les principales routes avec leur méthode HTTP, le controller correspondant et le niveau d'authentification requis.
+
+| Méthode | URL | Controller | Auth | Rôle |
+|---------|-----|------------|------|------|
+| `GET` | `/` | `HomeController::index` | — | Page d'accueil avec carousel et produits phares |
+| `GET` | `/produits` | `ProduitsController::index` | — | Catalogue produits (filtrage, recherche) |
+| `GET` | `/produits/{slug}` | `ProduitsController::show` | — | Fiche produit détaillée |
+| `GET` | `/recettes` | `RecettesController::index` | — | Catalogue recettes |
+| `GET` | `/recettes/{slug}` | `RecettesController::show` | — | Fiche recette détaillée |
+| `GET` | `/panier` | `PanierController::index` | — | Affichage du panier |
+| `POST` | `/panier/ajouter/{id}` | `PanierController::ajouter` | — | Ajout d'un produit au panier (CSRF) |
+| `POST` | `/panier/retirer/{id}` | `PanierController::retirer` | — | Retrait d'un produit (CSRF) |
+| `POST` | `/panier/supprimer/{id}` | `PanierController::supprimer` | — | Suppression totale d'un produit (CSRF) |
+| `POST` | `/panier/vider` | `PanierController::vider` | — | Vidage complet du panier (CSRF) |
+| `GET\|POST` | `/commande/adresse` | `CommandeController::adresse` | `ROLE_USER` | Saisie de l'adresse de livraison |
+| `GET` | `/commande` | `CommandeController::recapitulatif` | `ROLE_USER` | Récapitulatif avant paiement |
+| `POST` | `/commande/paiement` | `CommandeController::paiement` | `ROLE_USER` | Création session Stripe Checkout |
+| `GET` | `/commande/succes` | `CommandeController::succes` | `ROLE_USER` | Retour après paiement Stripe |
+| `POST` | `/webhook/stripe` | `WebhookController::stripe` | Signature Stripe | Réception événements Stripe (idempotent) |
+| `GET\|POST` | `/connexion` | `SecurityController::login` | — | Formulaire de connexion |
+| `GET` | `/deconnexion` | `SecurityController::logout` | — | Déconnexion |
+| `GET\|POST` | `/inscription` | `SecurityController::register` | — | Formulaire d'inscription |
+| `GET` | `/verify/{token}` | `SecurityController::verify` | — | Vérification d'email via token |
+| `GET\|POST` | `/contact` | `ContactController::index` | — | Formulaire de contact (CSRF) |
+| `GET` | `/mon-compte` | `CompteController::index` | `ROLE_USER` | Espace client |
+| `GET` | `/mon-compte/commandes` | `CompteController::commandes` | `ROLE_USER` | Historique des commandes |
+| `POST` | `/mon-compte/commande/{id}/annuler` | `CompteController::annuler` | `ROLE_USER` | Annulation d'une commande (CSRF) |
+| `GET` | `/mon-compte/favoris` | `CompteController::favoris` | `ROLE_USER` | Liste des favoris |
+| `POST` | `/favori/{type}/{id}` | `FavoriController::toggle` | `ROLE_USER` | Toggle favori (AJAX → JSON) |
+| `POST` | `/produits/{slug}/avis` | `AvisController::soumettre` | `ROLE_USER` | Dépôt d'un avis (CSRF) |
+| `GET` | `/mentions-legales` | `MentionsLegalesController::index` | — | Page statique mentions légales |
+| `*` | `/admin/*` | EasyAdmin | `ROLE_ADMIN` | Interface d'administration complète |
+
+### 11.1 Controllers PHP
 
 Le back-end est organise autour de **11 controllers** Symfony :
 
@@ -975,7 +1189,7 @@ Appele exclusivement en AJAX. Il vérifié que l'utilisateur est connecté (renv
 
 Accessible uniquement aux utilisateurs connectés (`#[IsGranted('ROLE_USER')]`). Validé le token CSRF, vérifié que la note est comprise entre 1 et 5, puis créé ou met a jour l'avis de l'utilisateur sur le produit (un seul avis par couple utilisateur/produit, grace a la contrainte unique en base). L'avis est marque comme validé (`isValidé = true`) directement a la soumission. La note moyenne et la liste des avis sont calcules par `AvisRepository` et affichés sur la fiche produit.
 
-### 10.2 Services
+### 11.2 Services
 
 **`PanierService`**
 Gere le panier stocké en session PHP. La structure en session est un tableau associatif `[produitId => quantite]`. En isolant cette logique dans un service, plusieurs controllers et le Live Component PanierLive peuvent l'utiliser sans dupliquer le code.
@@ -988,7 +1202,7 @@ Genere les factures PDF associées aux commandes confirmees, jointes en piece jo
 
 ---
 
-### 10.3 Le reste de src/
+### 11.3 Le reste de src/
 
 #### Exemple d'entité PHP
 
@@ -1049,17 +1263,109 @@ php bin/console doctrine:fixtures:load
 
 ---
 
-## 11. Accessibilité
+## 12. Réalisations personnelles
+
+---
+
+Cette section met en valeur trois fonctionnalités emblématiques du projet que j'ai conçues et développées personnellement. Pour chacune, je présente le contexte, le défi rencontré et la solution mise en place.
+
+### 12.1 Le webhook Stripe — fiabiliser la confirmation de commande
+
+**Contexte**
+
+Dans la version initiale du tunnel de commande, la confirmation de la commande reposait uniquement sur l'arrivée de l'utilisateur sur la page `/commande/succès` après le paiement Stripe. Ce mécanisme présentait un problème de fiabilité : si l'utilisateur fermait son navigateur juste après le paiement ou perdait sa connexion, la commande n'était jamais marquée comme confirmée côté serveur, alors que le paiement avait bien été débité.
+
+**La solution : un webhook idempotent**
+
+J'ai implémenté un webhook Stripe sur la route `/webhook/stripe` qui reçoit l'événement `checkout.session.completed` directement depuis les serveurs Stripe, indépendamment du navigateur de l'utilisateur. Le flux est le suivant :
+
+1. Avant la redirection vers Stripe, la commande est créée en base avec le statut `EnAttente` et sa référence est passée à Stripe dans `client_reference_id`.
+2. Après le paiement, Stripe envoie l'événement `checkout.session.completed` au webhook.
+3. Le controller vérifie la signature du webhook (`STRIPE_WEBHOOK_SECRET`), extrait la référence de commande, et passe la commande en `Confirmee`.
+4. L'email de confirmation et la facture PDF sont envoyés à l'utilisateur.
+
+**L'idempotence**
+
+Un webhook peut être rejoué plusieurs fois par Stripe (retry en cas d'échec réseau). Le controller vérifie donc l'état de la commande avant toute action : si elle est déjà `Confirmee`, il ignore silencieusement l'événement. Ce mécanisme garantit qu'une commande ne peut pas être confirmée ou facturée deux fois, même en cas de rejouage.
+
+**Ce que j'ai appris**
+
+Cette fonctionnalité m'a permis de comprendre les enjeux de fiabilité des paiements en ligne et la notion d'idempotence, centrale dans toute architecture qui traite des événements asynchrones. J'ai également appris à utiliser `stripe listen` en développement local pour simuler les webhooks sans déployer.
+
+### 12.2 Le système de favoris — AJAX, Stimulus et communication inter-controllers
+
+**Contexte**
+
+Je voulais permettre aux utilisateurs d'ajouter un produit ou une recette à leurs favoris directement depuis les cartes du catalogue, sans rechargement de page et avec un retour visuel immédiat. Le défi était double : gérer la requête serveur côté JS, et afficher un message d'erreur contextualisé si l'utilisateur n'était pas connecté.
+
+**La solution : fetch + outlets Stimulus**
+
+Le controller Stimulus `favori_controller` est attaché au bouton cœur de chaque carte. Au clic, il envoie une requête `POST` vers `/favori/{type}/{id}` via l'API `fetch` :
+
+```js
+async toggle(event) {
+  const response = await fetch(this.urlValue, {
+    method: 'POST',
+    headers: { 'X-Requested-With': 'XMLHttpRequest' },
+  });
+  if (response.status === 401) {
+    this.flashTooltipOutlet.show('Connectez-vous pour ajouter aux favoris');
+    return;
+  }
+  const data = await response.json();
+  this.element.classList.toggle('is-favori', data.favori);
+}
+```
+
+Côté serveur, `FavoriController` vérifie l'authentification, bascule l'état favori en base et retourne un JSON `{ favori: true|false }`. S'il n'est pas connecté, un 401 est renvoyé.
+
+**La communication via outlets**
+
+Pour afficher un message d'erreur sans coupler les controllers, j'ai utilisé le mécanisme d'**outlets** de Stimulus. L'outlet permet à `favori` d'appeler directement une méthode sur le controller voisin `flash-tooltip`, sans émettre d'événement custom ni accéder au DOM manuellement. C'est plus propre et plus testable qu'un `dispatchEvent`.
+
+**Ce que j'ai appris**
+
+Cette fonctionnalité m'a permis de comprendre comment faire communiquer plusieurs controllers Stimulus entre eux de manière structurée, et comment gérer proprement les réponses d'erreur HTTP côté client (redirection vs. message contextuel).
+
+### 12.3 Le carousel custom — mode infini, zoom et accessibilité
+
+**Contexte**
+
+Le carousel de la page d'accueil est l'élément le plus visible du site. Je voulais un carousel avec un **mode infini** (pas de saut visible au bout), un **effet de zoom** sur la carte centrale, des **animations directionnelles** sur le texte (qui glisse dans le sens de défilement), une **navigation au clavier** et une **compatibilité avec les lecteurs d'écran**. Aucune bibliothèque existante ne couvrait tous ces besoins simultanément, et j'ai voulu éviter d'ajouter une dépendance lourde juste pour un composant.
+
+**La solution : une classe Carousel autonome en JS vanilla**
+
+Je me suis inspiré d'un tutoriel de **Grafikart** pour la base (mode infini par clonage des premiers/derniers éléments), puis j'ai étendu la classe avec les fonctionnalités manquantes. Le controller Stimulus `carousel` instancie la classe et gère son cycle de vie.
+
+**Le mode infini par clonage**
+
+Les premiers et derniers éléments sont clonés et insérés en début/fin de la liste. Quand une transition se termine sur un clone, un repositionnement silencieux (`animation = false`) remet le curseur sur le vrai élément correspondant — l'utilisateur ne voit pas le saut.
+
+**Le bug `isAnimating` et sa correction**
+
+Un bug initial permettait à l'utilisateur de cliquer plusieurs fois rapidement sur les flèches pendant une transition, ce qui cassait l'alignement du carousel. J'ai ajouté un drapeau `isAnimating` qui bloque les clics pendant qu'une transition est en cours, et un `setTimeout` de sécurité pour le remettre à `false` si l'événement `transitionend` ne se déclenche pas (fallback contre les transitions CSS qui ne s'exécutent pas).
+
+**L'accessibilité intégrée**
+
+La méthode `updateAccessibility()` met à jour les attributs `aria-hidden`, `aria-current` et `tabindex` sur les cartes et leurs boutons internes à chaque déplacement. La navigation au clavier (flèches gauche/droite) est gérée par un écouteur sur le conteneur racine. Un élément `aria-live="polite"` annonce le numéro de slide courant aux lecteurs d'écran.
+
+**Ce que j'ai appris**
+
+Ce composant m'a permis de comprendre en profondeur le cycle de vie des événements CSS (`transitionend`), les pièges du reflow forcé pour déclencher une animation, et la manipulation du DOM sans framework. C'est aussi le seul composant du projet où j'ai utilisé la convention **BEM** (`carousel__item`, `carousel__next`…), car le JS génère les classes dynamiquement et la hiérarchie BEM rend les relations entre éléments explicites dans le code.
+
+---
+
+## 13. Accessibilité
 
 ---
 
 L'accessibilité est intégrée des la conception du projet, pas ajoutée en fin de développement. Chaque composant est conçu pour etre utilisable sans souris, lisible par un lecteur d'ecran et visible dans des conditions de faible vision.
 
-### 11.1 Typographie Luciole
+### 13.1 Typographie Luciole
 
 La police **Luciole** a été conçue specifiquement pour les personnes malvoyantes ou dyslexiques. Ses caractéristiques : hauteur d'x elevee (les lettres minuscules sont plus grandes), formes de lettres tres distinctes (le `1`, le `l` et le `I` ne se ressemblent pas), espacement généréux entre les caracteres. Elle est reconnue par des associations comme Valentin Hauy et disponible sous licence libre (SIL OFL).
 
-### 11.2 Contrastes de couleurs
+### 13.2 Contrastes de couleurs
 
 La palette a été construite en verifiant systematiquement les ratios de contraste selon les criteres **WCAG 2.1 AA** (4.5:1 minimum pour le texte courant, 3:1 pour les grands titres et éléments graphiques).
 
@@ -1075,13 +1381,13 @@ Outils utilisés : **Colorable**, **Adobe Color**, **DevTools Chrome** (onglet A
 
 ![Focus visible sur un champ de saisie](captures/InputFocus.png)
 
-### 11.3 Navigation clavier
+### 13.3 Navigation clavier
 
 Tous les éléments interactifs sont accessibles au clavier : boutons, liens, champs, cases a cocher, boites de dialogue. La regle Tailwind `focus-visible:outline` affiché le contour uniquement lors de la navigation clavier, pas lors d'un clic souris — ce qui est a la fois propre visuellement et conforme WCAG.
 
 Les boites de dialogue `<dialog>` (confirmation de vidage du panier) gérént nativement le **piegeage du focus** : la touche Tab ne sort pas de la modale tant qu'elle est ouverte. La touche Echap ferme la boite de dialogue.
 
-### 11.4 Attributs ARIA et HTML sémantique
+### 13.4 Attributs ARIA et HTML sémantique
 
 | Attribut | Ou il est utilisé |
 |----------|-------------------|
@@ -1098,7 +1404,7 @@ Les boites de dialogue `<dialog>` (confirmation de vidage du panier) gérént na
 
 Structure HTML sémantique : `<main>`, `<header>`, `<footer>`, `<nav>`, `<section>`, `<article>`, `<dialog>`. La hierarchie des titres (h1 → h2 → h3) est respectee sur toutes les pages.
 
-### 11.5 Outils d'accessibilité utilisés
+### 13.5 Outils d'accessibilité utilisés
 
 - **Colorable** — vérification des ratios de contraste
 - **Adobe Color** — outil de daltonisme (simulation des 8 types de daltonisme)
@@ -1108,11 +1414,11 @@ Structure HTML sémantique : `<main>`, `<header>`, `<footer>`, `<nav>`, `<sectio
 
 ---
 
-## 12. Sécurité
+## 14. Sécurité
 
 ---
 
-### 12.1 Authentification et gestion des utilisateurs
+### 14.1 Authentification et gestion des utilisateurs
 
 La sécurité est configuree dans `security.yaml`.
 
@@ -1128,7 +1434,7 @@ firewalls:
 
 Le message d'erreur en cas d'echec de connexion est volontairement vague : "Adresse email ou mot de passe incorrect." Il ne precise pas lequel des deux est faux. C'est un choix de sécurité delibere : si le message indiquait "email inconnu", un attaquant pourrait enumerer les comptes existants ; s'il indiquait "mot de passe incorrect", il saurait que l'email est validé et pourrait cibler ses tentatives. Le message ambigu protégé contre ces deux vecteurs d'attaque.
 
-### 12.2 Inscription et vérification d'e-mail
+### 14.2 Inscription et vérification d'e-mail
 
 Lors de l'inscription, le mot de passe est hache et un jeton de vérification est généré de maniere securisee :
 
@@ -1138,29 +1444,29 @@ $token = bin2hex(random_bytes(32));
 
 Ce jeton est envoyé dans un lien de confirmation. Une fois validé, le compte est active et le jeton est supprime pour qu'il ne puisse pas etre reutilisé.
 
-### 12.3 Contrôle de l'état du compte
+### 14.3 Contrôle de l'état du compte
 
 La classe `UserChecker` personnalisée bloque la connexion si le compte n'a pas été vérifié par email, en levant une `CustomUserMessageAccountStatusException` avec un message explicite.
 
-### 12.4 Protection des formulaires et des actions sensibles
+### 14.4 Protection des formulaires et des actions sensibles
 
 Tous les formulaires intégrént un token CSRF. L'annulation de commande vérifié le token avant toute action. Les interactions AJAX (favoris) vérifiént que l'utilisateur est connecté et que les parametres sont validés.
 
-### 12.5 Sécurisation de l'espace client
+### 14.5 Sécurisation de l'espace client
 
 Le `CompteController` est protégé par `#[IsGranted('ROLE_USER')]`. Les commandes affichées sont filtrées pour n'appartenir qu'a l'utilisateur connecté. L'annulation vérifié que la commande ciblee appartient bien a l'utilisateur avant toute action.
 
-### 12.6 Paiement en ligne avec Stripe
+### 14.6 Paiement en ligne avec Stripe
 
 Le tunnel de commande comprend trois étapes : adresse, récapitulatif, paiement Stripe. Le montant est reconstruit côté serveur a partir du panier, sans faire confiance a un montant transmis par le navigateur. La clé secrete Stripe est utilisée côté serveur uniquement, via les variables d'environnement.
 
 *Limite connue : la confirmation de commande repose sur l'arrivee de l'utilisateur sur la page succès. Une solution plus robuste utiliserait un webhook Stripe.*
 
-### 12.7 Gestion des secrets et configuration
+### 14.7 Gestion des secrets et configuration
 
 Les informations sensibles (DATABASE_URL, STRIPE_SECRET_KEY, MAILER_DSN) sont stockées dans `.env.local`, exclu du versioning git.
 
-### 12.8 Limites actuelles et améliorations possibles
+### 14.8 Limites actuelles et améliorations possibles
 
 - Utilisér davantage les formulaires Symfony avec validation intégrée
 - Renforcer les contraintes sur les mots de passe
@@ -1170,7 +1476,7 @@ Les informations sensibles (DATABASE_URL, STRIPE_SECRET_KEY, MAILER_DSN) sont st
 
 ---
 
-## 13. Tests
+## 15. Tests
 
 ---
 
@@ -1334,9 +1640,143 @@ php bin/phpunit
 
 Lors de l'execution des tests, le test `testInscriptionValidé` echouait avec le message _"Les mots de passe ne correspondent pas"_ alors que les deux mots de passe soumis etaient identiques. En lisant le code du test, j'ai identifié que le champ de confirmation etait envoyé sous le nom `password_confirm`, alors que le contrôleur attendait `confirmPassword`. Apres correction du nom du champ dans le fichier de test, les 74 tests passent.
 
+### Présentation d'un jeu d'essai illustré — tunnel de commande complet
+
+Ce jeu d'essai présente le parcours complet d'un utilisateur qui passe une commande, de l'ajout d'un produit au panier jusqu'à la confirmation finale via le webhook Stripe. Il permet de vérifier l'enchaînement des étapes et l'intégration avec Stripe en mode test.
+
+**Objectif** : valider qu'un utilisateur connecté et vérifié peut ajouter un produit au panier, saisir son adresse de livraison, payer via Stripe en mode test, et recevoir une confirmation de commande avec un email.
+
+**Préconditions**
+
+- Un compte utilisateur vérifié existe en base : `user@test.fr` / `motdepasse123`
+- Au moins un produit est disponible dans le catalogue (ex. « Tarte au citron » à 14,50 €)
+- Le panier est vide au démarrage
+- Stripe est configuré en mode test (`STRIPE_SECRET_KEY` = clé `sk_test_...`)
+- Le webhook local est lancé via `stripe listen --forward-to http://localhost:8080/webhook/stripe`
+
+**État de la base avant le test**
+
+```sql
+SELECT COUNT(*) FROM commande WHERE utilisateur_id = 42;
+-- → 0
+```
+
+**Étapes et résultats attendus**
+
+| # | Action | Requête / Interaction | Résultat attendu |
+|---|--------|----------------------|------------------|
+| 1 | Connexion | `POST /connexion` avec `email=user@test.fr` + `password=motdepasse123` | Redirection 302 vers `/`, cookie de session posé |
+| 2 | Consultation du catalogue | `GET /produits` | HTTP 200, liste des produits disponibles affichée |
+| 3 | Ouverture d'une fiche produit | `GET /produits/tarte-au-citron` | HTTP 200, détails du produit + bouton « Ajouter au panier » |
+| 4 | Ajout au panier | `POST /panier/ajouter/17` avec token CSRF | Redirection 302, session panier = `{17: 1}` |
+| 5 | Vérification du panier | `GET /panier` | HTTP 200, affichage « Tarte au citron × 1 », total : 14,50 € |
+| 6 | Saisie de l'adresse | `POST /commande/adresse` avec prénom, nom, adresse, CP, ville | Redirection 302 vers `/commande` |
+| 7 | Récapitulatif | `GET /commande` | HTTP 200, affichage du produit, de l'adresse et du total |
+| 8 | Création session Stripe | `POST /commande/paiement` | HTTP 303 (See Other) vers `https://checkout.stripe.com/...` |
+| 9 | Paiement Stripe (test) | Saisie carte de test `4242 4242 4242 4242`, exp. future, CVC `123` | Stripe affiche « Paiement réussi », redirection vers `/commande/succes` |
+| 10 | Réception webhook | Stripe → `POST /webhook/stripe` avec `checkout.session.completed` | HTTP 200, commande passe en `Confirmee`, email envoyé |
+
+**État de la base après le test**
+
+```sql
+SELECT reference, statut, total FROM commande WHERE utilisateur_id = 42;
+-- → CMD-2026-00089 | confirmee | 14.50
+
+SELECT produit_id, quantite, prixUnitaire FROM commande_produit WHERE commande_id = 89;
+-- → 17 | 1 | 14.50
+```
+
+**Vérifications complémentaires**
+
+- L'email de confirmation est visible dans **Mailtrap** (en développement) avec le sujet « Confirmation de votre commande CMD-2026-00089 ».
+- La facture PDF est jointe à l'email (générée par `FactureService`).
+- Un second envoi de l'événement `checkout.session.completed` par Stripe (simulé via `stripe trigger`) ne recrée pas de commande : le webhook est idempotent.
+- Le panier de session est vidé après confirmation.
+
+**Cas d'erreur testés en parallèle**
+
+- Tentative d'accéder à `/commande` sans avoir saisi d'adresse → redirection vers `/commande/adresse`
+- Tentative de payer avec un panier vide → redirection vers `/panier` avec message flash d'erreur
+- Carte Stripe refusée (`4000 0000 0000 9995`) → retour sur `/commande/succes` avec statut d'erreur, commande non confirmée
+
+Ce jeu d'essai vérifie l'ensemble du tunnel de commande côté métier et côté intégration (session, CSRF, Stripe, webhook, email, base de données).
+
 ---
 
-## 14. Commandes utiles
+## 16. Veille technologique et sécurité
+
+---
+
+Tout au long du projet, une démarche de veille continue a été nécessaire pour choisir les technologies adaptées, comprendre les bonnes pratiques de sécurité et intégrer des outils récents. Cette section documente cette démarche.
+
+### 16.1 Veille technologique
+
+**A. Symfony UX Twig Components et Live Components**
+
+Les composants Twig sont une brique relativement récente de l'écosystème Symfony (bundle `symfony/ux-twig-component`). J'ai suivi la documentation officielle de Symfony UX (symfony.com/bundles/ux-twig-component) ainsi que les articles de blog de Symfony sur les Live Components. J'ai également consulté des exemples sur GitHub pour comprendre les patterns d'utilisation (getters calculés, `attributes.defaults()`, communication entre composants). Une alternative envisagée était **Vue.js** embarqué via Vite, mais cette approche aurait introduit un deuxième écosystème front dans un projet déjà dense. Les Twig Components ont été retenus car ils restent côté serveur et s'intègrent naturellement dans l'architecture Symfony.
+
+**B. Tailwind CSS v4 — migration depuis v3**
+
+Tailwind v4 a été publié en version stable début 2025. La v4 supprime le fichier `tailwind.config.js` au profit d'une configuration directement dans le CSS (`@theme`, `@source`). J'ai suivi le guide de migration officiel (tailwindcss.com/docs/upgrade-guide) et lu plusieurs articles comparatifs sur les breaking changes. L'intérêt : un seul fichier source (`app.css`), une syntaxe plus proche du CSS natif, et une meilleure intégration avec les variables CSS. La migration a nécessité de réécrire la configuration des tokens et de vérifier l'utilisation des directives `@apply` qui ont changé.
+
+**C. Stripe Checkout et webhook**
+
+L'intégration Stripe a nécessité de comprendre deux notions distinctes : **Stripe Checkout** (page de paiement hébergée par Stripe) et le **webhook** (notification asynchrone côté serveur). J'ai suivi le tutoriel officiel Stripe (stripe.com/docs/payments/checkout), lu la documentation sur la signature des webhooks (`STRIPE_WEBHOOK_SECRET`) et consulté les exemples PHP fournis par le SDK `stripe/stripe-php`. Un point important appris : l'idempotence des webhooks (Stripe peut rejouer un événement plusieurs fois). J'ai également utilisé l'outil `stripe listen` en développement local pour recevoir les événements sans déployer.
+
+**D. Docker Compose — configuration multi-services**
+
+Le projet repose sur six services Docker (nginx, php-fpm, mysql, adminer, init, assets). J'ai consulté la documentation Docker Compose (docs.docker.com/compose) et plusieurs articles sur les images PHP-FPM et les volumes Windows. Une difficulté spécifique : le watcher natif `inotify` ne fonctionne pas avec les volumes Docker sur Windows, ce qui m'a obligé à implémenter une boucle de recompilation Tailwind en polling toutes les 3 secondes.
+
+**E. FrankenPHP — tentative abandonnée**
+
+J'ai initialement tenté de déployer le projet sur Railway avec **FrankenPHP** (serveur PHP moderne basé sur Caddy, avec support natif de Mercure et PHP 8.3). Après plusieurs heures de lecture de la documentation FrankenPHP et d'essais de configuration, je suis revenu sur le serveur PHP intégré (`php -S`) qui fonctionne sans configuration mais est mono-thread. Cet exemple illustre bien une veille qui aboutit à une décision : la complexité de FrankenPHP n'était pas justifiée dans le cadre d'un projet de formation, et le serveur intégré suffit pour la volumétrie attendue.
+
+### 16.2 Veille de sécurité
+
+**A. Hachage des mots de passe avec Symfony**
+
+J'ai consulté la documentation Symfony Security (symfony.com/doc/current/security/passwords.html) et la **OWASP Password Storage Cheat Sheet** (cheatsheetseries.owasp.org). Le choix de l'algorithme `auto` dans `security.yaml` permet à Symfony de choisir automatiquement le meilleur algorithme disponible (bcrypt, argon2i, sodium) et de gérer la mise à niveau transparente des hash lors de la connexion.
+
+**B. Protection CSRF**
+
+La documentation Symfony et l'**OWASP CSRF Prevention Cheat Sheet** ont été consultées pour comprendre les attaques CSRF et les contre-mesures. Tous les formulaires du projet intègrent un token CSRF via `{{ csrf_token('nom_action') }}` validé côté serveur avec `isCsrfTokenValid()`. La seule exception est actuellement l'action AJAX `favori_toggle` qui utilise un header `X-Requested-With` — une amélioration identifiée dans les TODOs est de remplacer ce check par un vrai token CSRF.
+
+**C. Validation côté serveur des montants Stripe**
+
+Un article sur les vulnérabilités courantes des paiements en ligne m'a sensibilisé au risque de manipulation côté client du montant envoyé à Stripe. Dans SamyDessert, le montant est **toujours recalculé côté serveur** à partir du panier en session, sans jamais faire confiance à un montant transmis par le navigateur. C'est une règle de base en sécurité applicative : **never trust the client**.
+
+**D. Énumération des comptes (timing attack)**
+
+Le message d'erreur de connexion est volontairement ambigu (« Adresse email ou mot de passe incorrect ») pour éviter qu'un attaquant puisse énumérer les comptes existants. Cette recommandation vient directement de l'**OWASP Authentication Cheat Sheet**.
+
+### 16.3 Processus de recherche et ressource en anglais
+
+**Processus personnel**
+
+Ma démarche de veille suit toujours la même hiérarchie de sources :
+
+1. **Documentation officielle** (Symfony, Stripe, Tailwind, MDN) — source de vérité, toujours à jour.
+2. **Issues GitHub et discussions Stack Overflow** — pour les cas concrets et les bugs connus.
+3. **Articles de blog techniques** (dev.to, Medium, symfony.com/blog) — pour les tutoriels et comparatifs.
+4. **Vidéos YouTube** (Grafikart, Symfony Online Conference) — pour les démonstrations visuelles.
+
+Quand une information est en anglais, je la lis directement sans passer par une traduction automatique, puis je reformule en français dans mes notes. Cette habitude m'a permis de gagner en autonomie avec les ressources techniques anglophones.
+
+**Exemple de ressource en anglais et sa traduction**
+
+Extrait de la documentation Symfony sur le hachage des mots de passe (symfony.com/doc/current/security/passwords.html) :
+
+> *"When `auto` is used, Symfony selects the best possible encoder based on the version of PHP installed on your server. The preferred hashing algorithms are, in order: Sodium (libsodium), Argon2i, and bcrypt. This ensures that your passwords are hashed with the strongest algorithm available, and that they are automatically rehashed with a stronger algorithm when a user logs in, if a new preferred algorithm becomes available."*
+
+**Traduction :**
+
+« Lorsque `auto` est utilisé, Symfony sélectionne le meilleur encodeur possible en fonction de la version de PHP installée sur votre serveur. Les algorithmes de hachage préférés sont, dans l'ordre : Sodium (libsodium), Argon2i, puis bcrypt. Cela garantit que les mots de passe sont hachés avec l'algorithme le plus robuste disponible, et qu'ils sont automatiquement re-hachés avec un algorithme plus fort lors de la connexion d'un utilisateur, si un nouvel algorithme préféré devient disponible. »
+
+Cette fonctionnalité est précieuse : elle permet de mettre à niveau progressivement les hash de mots de passe existants sans forcer les utilisateurs à en choisir un nouveau, et sans action manuelle côté administrateur.
+
+---
+
+## 17. Commandes utiles
 
 ---
 
@@ -1412,17 +1852,17 @@ docker compose exec mysql mysql -u root -proot samyDessert               # Ouvri
 
 ---
 
-## 15. Gestion de version avec Git
+## 18. Gestion de version avec Git
 
 ---
 
-### 15.1 Pourquoi Git
+### 18.1 Pourquoi Git
 
 Git est le système de contrôle de version utilisé tout au long du projet. Il permet de conserver l'historique complet de chaque modification du code, de revenir à un état antérieur en cas de problème, et d'organiser le travail en branches indépendantes.
 
 Dans le cadre d'un projet professionnel, Git est un outil incontournable : il garantit la traçabilité du code, facilite la collaboration et sécurise le déploiement.
 
-### 15.2 Stratégie de branches
+### 18.2 Stratégie de branches
 
 Le projet utilisé deux branches principales :
 
@@ -1443,7 +1883,7 @@ Cela garantit que le site en production reste toujours stable, même pendant le 
 **Pourquoi deux branches ?**  
 Si on travaille directement sur `main` et qu'on envoie un bug, le site en production est immédiatement impacté. Avec `dev`, on peut casser des choses, tester, corriger, et ne déployer que ce qui fonctionne. C'est une pratique standard dans les projets professionnels.
 
-### 15.3 Commandes Git utilisées
+### 18.3 Commandes Git utilisées
 
 **Commandes du quotidien (sur `dev`) :**
 
@@ -1484,7 +1924,7 @@ git push origin main             # Envoyer vers GitHub → Railway redéploie au
 git log --oneline                # Voir la liste des commits (une ligne par commit)
 ```
 
-### 15.4 Conventions de commit
+### 18.4 Conventions de commit
 
 Les messages de commit suivent une convention lisible :
 
@@ -1500,11 +1940,11 @@ Exemple : `feat: ajout du système d'avis avec note moyenne`
 
 ---
 
-## 16. Déploiement
+## 19. Déploiement
 
 ---
 
-### 16.1 Environnement de développement avec Docker
+### 19.1 Environnement de développement avec Docker
 
 Le projet est entierement contenerise avec **Docker Compose**. L'ensemble des services necesaires au fonctionnement du projet est défini dans un seul fichier `docker-compose.yml`, ce qui permet de démarrér l'environnement complet en une seule commande, sans installation locale de PHP, MySQL ou Nginx.
 
@@ -1543,7 +1983,7 @@ docker compose up -d
 # Adminer disponible sur http://localhost:8081
 ```
 
-### 16.2 Variables d'environnement
+### 19.2 Variables d'environnement
 
 Les secrets et configurations d'infrastructure ne sont jamais commites dans le code. Ils sont définis dans `.env.local` (ignore par Git) :
 
@@ -1555,7 +1995,7 @@ Les secrets et configurations d'infrastructure ne sont jamais commites dans le c
 | `STRIPE_SECRET_KEY` | Cle privee Stripe (mode test) |
 | `STRIPE_PUBLIC_KEY` | Cle publique Stripe |
 
-### 16.3 Déploiement en production sur Railway
+### 19.3 Déploiement en production sur Railway
 
 Le site est deploye en production sur **Railway** via Docker. Railway detecte automatiquement le `Dockerfile` a la racine du projet et reconstruit l'image a chaque push sur la branche `main`.
 
@@ -1601,13 +2041,13 @@ Railway bloque les connexions SMTP sortantes (ports 25, 465, 587). Les emails tr
 
 ---
 
-## 17. Évolution du projet
+## 20. Évolution du projet
 
 ---
 
 Ce projet a été conçu pour etre evolutif. Plusieurs axes d'amélioration ont été identifiés, classes par priorité et impact.
 
-### 17.1 Perspectives futures
+### 20.1 Perspectives futures
 
 Ces fonctionnalités n'ont pas été développées dans le cadre du projet de formation, mais représentent des évolutions naturelles pour une mise en production réelle :
 
@@ -1620,7 +2060,7 @@ Ces fonctionnalités n'ont pas été développées dans le cadre du projet de fo
 | Recettes proposées par les utilisateurs | Formulaire de soumission de recette côté client, avec modération avant publication |
 | Barre de recherche recettes | La barre de recherche existe pour les produits mais pas encore pour les recettes |
 
-### 17.2 Améliorations techniques
+### 20.2 Améliorations techniques
 
 | Amélioration | Explication |
 |--------------|-------------|
@@ -1630,7 +2070,7 @@ Ces fonctionnalités n'ont pas été développées dans le cadre du projet de fo
 | Upload images en front | Permettre a l'administrateur d'uploader des images directement depuis une interface simplifiée, sans passer par EasyAdmin |
 | Internationalisation | Traduire le site en anglais via le composant `symfony/translation` |
 
-### 17.3 Infrastructure et déploiement
+### 20.3 Infrastructure et déploiement
 
 | Amélioration | Explication |
 |--------------|-------------|
@@ -1640,7 +2080,7 @@ Ces fonctionnalités n'ont pas été développées dans le cadre du projet de fo
 
 ---
 
-## 18. Bilan et conclusion
+## 21. Bilan et conclusion
 
 ---
 
@@ -1674,14 +2114,48 @@ Ce projet demontre ma capacite a concevoir, structurer et développer une applic
 
 ---
 
-## 19. Remerciements
+## 22. Remerciements
 
 ---
 
 Je tiens a remercier chaleureusement toutes les personnes qui m'ont accompagne tout au long de ce projet.
 
-**Stephane ASSABY**, mon formateur a l'ESRP Auxilia de Nanterre, pour son suivi pedagogique, sa disponibilite et ses conseils tout au long de la formation. Ses retours m'ont permis de progrèsser et de prendre du recul sur mes choix techniques.
+**Stephane ASSABY**, mon formateur a l'ESRP Auxilia de Nanterre.
 
 **Miguel Sevilla** et **Jean-Baptiste Guerin**, mes tuteurs de stage au sein de l'association Creative Handicap, pour m'avoir accueilli dans un environnement professionnel stimulant. Leurs retours d'expérience m'ont aide a mieux comprendre les attentes du metier, a structurer ma démarche de développement et a gagner en autonomie.
 
 Plus généralement, je remercie l'ensemble de l'equipe d'Auxilia et de Creative Handicap pour leur accompagnement bienveillant et leur engagement en faveur de la formation et de l'inclusion numerique.
+
+---
+
+## Annexe — Accès au site et comptes de test
+
+---
+
+**URL de production**
+
+Le site est déployé en production sur Railway : `https://samydessert-production.up.railway.app`
+
+**Comptes de test**
+
+Trois comptes de test ont été créés pour permettre au jury de vérifier les différents niveaux d'accès et fonctionnalités du site :
+
+| Rôle | Email | Mot de passe | Accès |
+|------|-------|--------------|-------|
+| Administrateur | `admin@samydessert.fr` | `admin1234` | Accès complet à l'interface EasyAdmin (`/admin`) : produits, recettes, commandes, utilisateurs, avis |
+| Utilisateur vérifié | `user@samydessert.fr` | `user1234` | Compte client standard : panier, commande, favoris, avis, espace personnel |
+| Utilisateur non vérifié | `nouveau@samydessert.fr` | `nouveau1234` | Compte créé mais email non confirmé : la connexion est refusée tant que le lien de vérification n'a pas été cliqué |
+
+**Carte de test Stripe**
+
+Pour tester le tunnel de commande en conditions réelles, Stripe est configuré en mode test. Utiliser la carte suivante au moment du paiement :
+
+| Numéro de carte | `4242 4242 4242 4242` |
+|-----------------|----------------------|
+| Date d'expiration | Toute date future (ex. `12/30`) |
+| CVC | `123` |
+| Code postal | `75001` (ou n'importe quel code valide) |
+
+D'autres cartes de test sont disponibles sur la documentation Stripe (`stripe.com/docs/testing`) pour simuler des cas d'erreur (carte refusée, fonds insuffisants, nécessité d'authentification 3D Secure).
+
+

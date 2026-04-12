@@ -1,522 +1,180 @@
-# Questionnaire d'entraînement — Oral SamyDessert
+# Questionnaire oral — SamyDessert
 
-> **Mode d'emploi** : lis chaque question, note ta réponse, puis vérifie avec la correction en bas de section.
-> Les questions vont du plus simple au plus complexe.
-
----
-
-## PARTIE 1 — HTML & Sémantique
-
-**Q1.** Quelle est la balise HTML utilisée pour les cartes produits dans `ProductCardGrid` ?
-- A) `<div>`
-- B) `<section>`
-- C) `<article>`
-- D) `<li>`
-
-**Q2.** Quelle attribut HTML est utilisé sur une icône purement décorative pour qu'elle soit ignorée par les lecteurs d'écran ?
-- A) `role="none"`
-- B) `aria-hidden="true"`
-- C) `tabindex="-1"`
-- D) `alt=""`
-
-**Q3.** Quel attribut indique au lecteur d'écran que le lien de navigation correspond à la page courante ?
-- A) `aria-selected="true"`
-- B) `aria-active="true"`
-- C) `aria-current="page"`
-- D) `data-current="true"`
-
-**Q4.** Dans `base.html.twig`, quel est le titre par défaut de la page si le bloc `{% block title %}` n'est pas redéfini ?
-- A) `"SamyDessert"`
-- B) `"Samy Dessert"`
-- C) `"Artisan Pâtissier"`
-- D) `"Accueil"`
-
-**Q5.** Quelle balise HTML native est utilisée pour le menu mobile et les boîtes de dialogue de confirmation ?
-- A) `<modal>`
-- B) `<popup>`
-- C) `<dialog>`
-- D) `<aside>`
-
-**Q6.** Quel attribut relie un champ `<input>` à son message d'aide pour les lecteurs d'écran ?
-- A) `aria-label`
-- B) `aria-describedby`
-- C) `aria-controls`
-- D) `aria-details`
-
-**Q7.** Dans le carousel, quel attribut ARIA est mis à `"false"` sur les slides non visibles ?
-- A) `aria-visible`
-- B) `aria-disabled`
-- C) `aria-hidden`
-- D) `aria-inactive`
-
-**Q8.** Pourquoi utilise-t-on `<ul role="list">` dans la grille de produits ?
-- A) Pour appliquer un style CSS
-- B) Parce que certains navigateurs retirent la sémantique de liste quand `list-style: none` est appliqué
-- C) Pour que Symfony reconnaisse la liste
-- D) C'est une exigence de Twig Components
+Lis chaque fiche à voix haute comme si tu expliquais à quelqu'un. Ferme ensuite le fichier et réessaie sans regarder.
 
 ---
 
-**Corrections partie 1 :** 1-C / 2-B / 3-C / 4-B / 5-C / 6-B / 7-C / 8-B
+## Controllers Stimulus
 
 ---
 
-## PARTIE 2 — CSS & Tailwind v4
+### `annulation_controller.js`
 
-**Q9.** Dans Tailwind v4, où sont définis les tokens de couleurs et d'espacement du projet ?
-- A) Dans `tailwind.config.js`
-- B) Dans `assets/styles/app.css` via la directive `@theme`
-- C) Dans `config/packages/tailwind.yaml`
-- D) Dans `assets/app.js`
+**C'est quoi le problème que ça résout ?**
+Sans ce controller, si l'utilisateur clique sur "Annuler la commande", la commande serait annulée directement sans demander confirmation. C'est dangereux.
 
-**Q10.** Quelle valeur CSS est assignée au token `--color-accent` du projet ?
-- A) `#5C2309` (chocolat foncé)
-- B) `#3F6212` (pistache)
-- C) `#9D174D` (framboise foncée)
-- D) `#DC2626` (rouge danger)
+**Comment ça marche ?**
+Chaque bouton "Annuler" dans l'espace client porte des attributs `data-*` : la référence de la commande, l'URL d'action et le token CSRF. Quand on clique, le controller lit ces attributs, injecte la référence dans la modale pour afficher "Voulez-vous annuler CMD-2026-00042 ?", puis ouvre le `<dialog>` natif. Si l'utilisateur confirme, le controller crée un formulaire POST dynamiquement avec le token CSRF et le soumet. Si il annule, le dialog se ferme et rien ne se passe.
 
-**Q11.** Quelle est la différence entre `focus:outline` et `focus-visible:outline` en Tailwind ?
-- A) Aucune différence, ce sont des alias
-- B) `focus:` s'applique toujours, `focus-visible:` s'applique uniquement lors de la navigation clavier
-- C) `focus-visible:` fonctionne uniquement sur Firefox
-- D) `focus:` est déprécié en Tailwind v4
+**Pourquoi un `<dialog>` natif ?**
+Parce qu'il gère automatiquement le piégeage du focus (on ne peut pas sortir avec Tab tant que la modale est ouverte) et la touche Échap. Pas besoin d'écrire ce comportement à la main.
 
-**Q12.** Quelle technique CSS est utilisée pour les marges latérales (`px-side`) afin qu'elles s'adaptent automatiquement à la taille de l'écran ?
-- A) `media queries`
-- B) `vw` fixe
-- C) `clamp()`
-- D) `calc()`
-
-**Q13.** Quelle directive Tailwind v4 est utilisée pour regrouper des combinaisons de classes réutilisables comme `.btn-cta` ou `.card` ?
-- A) `@apply` seul dans le fichier root
-- B) `@layer components { ... }`
-- C) `@extend`
-- D) `@utility`
-
-**Q14.** Pourquoi les styles du carousel sont-ils définis en CSS classique plutôt qu'avec des classes Tailwind dans le HTML ?
-- A) Tailwind ne supporte pas les animations
-- B) Les classes CSS du carousel sont générées dynamiquement par le JavaScript (`createDivWithClass`), elles ne sont donc pas présentes dans le HTML scanné par Tailwind
-- C) C'est une préférence personnelle
-- D) Tailwind est trop lent pour le carousel
-
-**Q15.** Quel token faut-il utiliser à la place de `bg-white` dans ce projet ?
-- A) `bg-surface` ou `bg-bg`
-- B) `bg-light`
-- C) `bg-neutral`
-- D) `bg-cream`
-
-**Q16.** Quelle propriété CSS est définie sur `html` pour éviter un saut visuel de ~17px lorsque la scrollbar apparaît ou disparaît ?
-- A) `overflow: stable`
-- B) `scrollbar-width: thin`
-- C) `scrollbar-gutter: stable`
-- D) `scroll-behavior: smooth`
-
-**Q17.** Que fait `font-display: swap` dans les règles `@font-face` de la police Luciole ?
-- A) Charge la police en priorité absolue, bloquant le rendu
-- B) Affiche d'abord une police système, puis remplace par Luciole quand elle est chargée
-- C) Désactive le chargement de la police sur mobile
-- D) Rend la police disponible uniquement en production
+**Pourquoi créer un form dynamiquement plutôt que fetch ?**
+Parce qu'un submit classique déclenche une navigation complète, ce qui permet au serveur de renvoyer une redirection avec un message flash "Commande annulée". Turbo Drive intercepte quand même le submit, donc la navigation reste rapide.
 
 ---
 
-**Corrections partie 2 :** 9-B / 10-C / 11-B / 12-C / 13-B / 14-B / 15-A / 16-C / 17-B
+### `carousel_controller.js`
+
+**C'est quoi le problème que ça résout ?**
+Je voulais un carousel infini avec un zoom sur la carte centrale, des animations directionnelles et une navigation au clavier — sans bibliothèque externe.
+
+**Comment ça marche ?**
+Le fichier contient deux choses : une classe `Carousel` autonome en JavaScript vanilla, et un controller Stimulus minimal qui l'instancie dans `connect()` et la détruit dans `disconnect()`. La classe fait tout le travail.
+
+**Mode infini :** les premiers et derniers éléments sont clonés et ajoutés en début et fin de liste. Quand une transition se termine sur un clone, on se repositionne silencieusement sur le vrai élément — l'utilisateur ne voit pas le saut.
+
+**Protection double-clic :** le drapeau `isAnimating` est mis à `true` au début de chaque navigation et remis à `false` à la fin de la transition. Un `setTimeout` de secours évite un blocage si l'événement `transitionend` ne se déclenche pas.
+
+**Accessibilité :** `updateAccessibility()` met à jour `aria-current`, `inert` et `tabindex` à chaque déplacement. La navigation au clavier avec les flèches est gérée sur le conteneur racine.
+
+**Pourquoi la convention BEM uniquement ici ?**
+Parce que le JavaScript génère et manipule des classes CSS dynamiquement. BEM rend les relations entre éléments explicites directement dans le code JS, sans avoir à ouvrir le CSS. Pour tous les autres composants, Tailwind suffit.
 
 ---
 
-## PARTIE 3 — JavaScript & Stimulus
+### `cart_sidebar_controller.js`
 
-**Q18.** Comment Stimulus associe un controller à un élément HTML ?
-- A) Via un `id` HTML
-- B) Via l'attribut `data-controller="nom-du-controller"`
-- C) Via une classe CSS
-- D) Via un `querySelector` dans le JS
+**C'est quoi le problème que ça résout ?**
+La sidebar du panier doit s'ouvrir avec une animation de glissement depuis la droite, et se fermer avec la même animation en sens inverse. Le `<dialog>` natif n'a pas d'animation par défaut.
 
-**Q19.** Dans `stimulus_bootstrap.js`, quelle méthode est utilisée pour enregistrer les controllers ?
-- A) `Stimulus.load()`
-- B) `app.register('nom', ControllerClass)`
-- C) `registerController('nom', ControllerClass)`
-- D) `startStimulusApp()`
+**Comment ça marche ?**
+À l'ouverture, `showModal()` est appelé d'abord (ce qui positionne le dialog en overlay), puis la classe Tailwind `translate-x-full` est retirée pour déclencher la transition CSS de glissement. À la fermeture, on remet `translate-x-full` et on attend 300ms avant d'appeler `close()`, pour laisser l'animation se terminer avant que le dialog disparaisse du DOM.
 
-**Q20.** Combien de controllers Stimulus sont enregistrés dans le projet ?
-- A) 7
-- B) 9
-- C) 11
-- D) 13
-
-**Q21.** Que se passe-t-il dans le controller `submit-once` quand un formulaire est soumis ?
-- A) Il redirige l'utilisateur vers une page de confirmation
-- B) Il désactive le bouton, masque le label, affiche le spinner et ajoute `aria-busy="true"`
-- C) Il envoie les données en AJAX
-- D) Il valide les champs du formulaire
-
-**Q22.** Dans le controller `favori`, quelle réponse HTTP déclenche l'affichage d'un message "Connectez-vous" via le `flash-tooltip` ?
-- A) 403
-- B) 404
-- C) 401
-- D) 500
-
-**Q23.** Comment le controller `favori` communique-t-il avec le controller `flash-tooltip` ?
-- A) Via un événement DOM `dispatchEvent`
-- B) Via un appel de fonction directe
-- C) Via le mécanisme d'**outlets** Stimulus
-- D) Via `localStorage`
-
-**Q24.** Dans le carousel, comment l'effet de défilement infini est-il créé ?
-- A) En rechargeant les slides en AJAX
-- B) En clonant les premiers et derniers éléments et en se repositionnant silencieusement après la transition
-- C) En utilisant une boucle CSS `animation`
-- D) En réordonnant le DOM après chaque slide
-
-**Q25.** Quel événement JavaScript est écouté dans le carousel pour savoir quand une transition CSS est terminée ?
-- A) `animationend`
-- B) `transitionend`
-- C) `slideend`
-- D) `moveend`
-
-**Q26.** Dans le controller `nav-toggle`, dans quelle situation le menu mobile se ferme-t-il automatiquement sans action de l'utilisateur ?
-- A) Après 5 secondes
-- B) Quand l'utilisateur fait défiler la page
-- C) Quand la fenêtre est redimensionnée en mode desktop (≥ 768px) ou quand Échap est pressé
-- D) Quand un lien est cliqué
+La touche Échap est interceptée avec `handleCancel()` pour qu'elle déclenche l'animation de fermeture au lieu de fermer instantanément. Un clic sur le fond (backdrop) est également géré.
 
 ---
 
-**Corrections partie 3 :** 18-B / 19-B / 20-C / 21-B / 22-C / 23-C / 24-B / 25-B / 26-C
+### `favori_controller.js`
+
+**C'est quoi le problème que ça résout ?**
+Je voulais permettre d'ajouter un produit aux favoris directement depuis la carte, sans rechargement de page, avec un retour visuel immédiat et un message si l'utilisateur n'est pas connecté.
+
+**Comment ça marche ?**
+Au clic, le controller envoie une requête POST en AJAX via `fetch` vers `/favori/{type}/{id}`. Si le serveur répond 401 (non connecté), il trouve le controller `flash-tooltip` voisin et appelle sa méthode `show()` pour afficher "Connectez-vous pour ajouter aux favoris". Si tout va bien, il reçoit un JSON `{ favori: true }` et met à jour la valeur Stimulus `activeValue`. Stimulus appelle alors automatiquement `activeValueChanged()` qui anime le cœur (clip-path pour remplir ou vider le cœur SVG) et met à jour l'aria-label.
+
+**Pourquoi `activeValue` plutôt que modifier directement le DOM ?**
+Parce que Stimulus gère automatiquement les callbacks quand une valeur change. C'est plus propre et ça sépare la logique métier (récupérer la réponse serveur) de la logique d'affichage (mettre à jour le DOM).
 
 ---
 
-## PARTIE 4 — PHP & Symfony
+### `flash_tooltip_controller.js`
 
-**Q27.** Quelle interface PHP Symfony doit implémenter l'entité `Utilisateur` pour être utilisée dans le système d'authentification ?
-- A) `AuthenticatableInterface`
-- B) `UserInterface` et `PasswordAuthenticatedUserInterface`
-- C) `SecurityUserInterface`
-- D) `LoginableInterface`
+**C'est quoi le problème que ça résout ?**
+J'avais besoin d'un message temporaire qui apparaît quelques secondes puis disparaît automatiquement — par exemple "Connectez-vous pour ajouter aux favoris".
 
-**Q28.** Quel est le rôle de la classe `UserChecker` dans ce projet ?
-- A) Vérifier que le mot de passe respecte les règles de complexité
-- B) Bloquer la connexion si le compte n'a pas encore été vérifié par email
-- C) Limiter le nombre de tentatives de connexion
-- D) Chiffrer les mots de passe
+**Comment ça marche ?**
+`show()` retire la classe `hidden` du message et lance un timer. Au bout de `durationValue` millisecondes (3 secondes par défaut), la classe `hidden` est remise. `clearTimeout` est appelé à chaque `show()` pour éviter qu'un ancien timer cache le message trop tôt si on clique plusieurs fois rapidement.
 
-**Q29.** Comment le token de vérification d'email est-il généré dans `SecurityController` ?
-- A) `md5(uniqid())`
-- B) `Uuid::v4()`
-- C) `bin2hex(random_bytes(32))`
-- D) `sha1($user->getEmail())`
-
-**Q30.** Quel attribut PHP protège les routes de `CommandeController` et `CompteController` contre les utilisateurs non connectés ?
-- A) `#[RequireLogin]`
-- B) `#[Security('is_granted("ROLE_USER")')` ]
-- C) `#[IsGranted('ROLE_USER')]`
-- D) `#[Login(required: true)]`
-
-**Q31.** Dans le `PanierService`, quelle est la structure du panier stocké en session ?
-- A) Un tableau d'objets `Produit`
-- B) Un tableau associatif `[produitId => quantite]`
-- C) Un objet JSON
-- D) Un tableau d'entités `CommandeProduit`
-
-**Q32.** Que fait `PasswordUpgraderInterface` implémenté par `UtilisateurRepository` ?
-- A) Force les utilisateurs à changer leur mot de passe tous les 3 mois
-- B) Met à jour automatiquement le hash du mot de passe si l'algorithme de hachage évolue, lors de la prochaine connexion
-- C) Valide la complexité du mot de passe
-- D) Envoie un email quand le mot de passe est changé
-
-**Q33.** Quel est le type de retour de `getEffectiveMethod()` dans `Form.php`, et que retourne-t-il si on lui passe `'PUT'` ?
-- A) `bool`, retourne `false`
-- B) `string`, retourne `'put'`
-- C) `string`, retourne `'post'` (fallback)
-- D) Lance une exception
-
-**Q34.** Quelle est la différence entre un `LiveProp` et une prop normale dans un Twig Component ?
-- A) Un `LiveProp` est public, une prop normale est privée
-- B) Un `LiveProp` peut être modifié depuis le template (re-render réactif), une prop normale est en lecture seule
-- C) Un `LiveProp` est stocké en session
-- D) Il n'y a aucune différence fonctionnelle
-
-**Q35.** Pourquoi les prix sont-ils stockés en `DECIMAL(8,2)` dans la base de données plutôt qu'en `FLOAT` ?
-- A) `DECIMAL` est plus rapide que `FLOAT`
-- B) `FLOAT` n'est pas supporté par MySQL
-- C) `FLOAT` introduit des erreurs d'arrondi sur les calculs financiers, `DECIMAL` garantit une précision exacte
-- D) `DECIMAL` prend moins de place en base de données
-
-**Q36.** Dans `CommandeProduit`, pourquoi le prix unitaire est-il stocké en base de données au moment de la commande ?
-- A) Pour optimiser les requêtes SQL
-- B) Pour conserver un historique fidèle même si le prix du produit change dans le futur
-- C) Parce que Doctrine l'exige pour les tables de jointure
-- D) Pour éviter une jointure SQL
-
-**Q37.** Qu'est-ce qu'un **backed enum** en PHP 8.1, et comment est-il utilisé dans ce projet ?
-- A) Un enum qui hérite d'une classe parente
-- B) Un enum associé à une valeur scalaire (`string` ou `int`), permettant la conversion vers/depuis cette valeur. Utilisé pour `StatutCommande` et `Difficulte`, stockés directement en base de données via Doctrine
-- C) Un enum avec des méthodes statiques
-- D) Un enum importé depuis une bibliothèque externe
+**Pourquoi c'est un controller séparé ?**
+Parce qu'il est réutilisable partout. Le controller `favori` l'appelle via `application.getControllerForElementAndIdentifier()` pour communiquer avec lui sans coupler les deux controllers.
 
 ---
 
-**Corrections partie 4 :** 27-B / 28-B / 29-C / 30-C / 31-B / 32-B / 33-C / 34-B / 35-C / 36-B / 37-B
+### `nav_toggle_controller.js`
+
+**C'est quoi le problème que ça résout ?**
+Le menu mobile doit s'ouvrir et se fermer avec une animation, et se fermer automatiquement si on passe en desktop ou si on appuie sur Échap.
+
+**Comment ça marche ?**
+Le bouton hamburger déclenche `toggle()`. À l'ouverture, `show()` est appelé sur le `<dialog>` et la classe d'animation `nav-menu-enter` est ajoutée. À la fermeture, la classe `nav-menu-leave` est ajoutée et on attend la fin de l'animation CSS (`animationend`) avant d'appeler `close()`. L'icône hamburger est remplacée par une croix à l'ouverture.
+
+Des écouteurs globaux sur `resize` et `keydown` ferment le menu si on redimensionne la fenêtre au-dessus de 1024px ou si on appuie sur Échap. Ces écouteurs sont retirés dans `disconnect()` pour ne pas fuiter.
 
 ---
 
-## PARTIE 5 — Twig Components & Atomic Design
+### `submit_once_controller.js`
 
-**Q38.** Dans un Twig Component, quand utilise-t-on `this.propName` plutôt que `propName` directement dans le template ?
-- A) Toujours, pour être explicite
-- B) Uniquement pour les getters PHP (méthodes `get*()`) ; les props publiques s'utilisent directement
-- C) Quand la prop est de type `bool`
-- D) Uniquement dans les organismes
+**C'est quoi le problème que ça résout ?**
+Si l'utilisateur double-clique sur "Passer la commande", deux commandes pourraient être créées. Ce controller empêche ça.
 
-**Q39.** Quelle méthode Twig permet de définir des classes CSS par défaut sur un composant tout en permettant leur surcharge depuis l'extérieur ?
-- A) `attributes.merge()`
-- B) `attributes.defaults()`
-- C) `attributes.add()`
-- D) `attributes.override()`
-
-**Q40.** Quel est le problème si on utilise `this.getter` à l'intérieur d'un sous-composant `<twig:Atoms:Link>` ?
-- A) Cela provoque une erreur de syntaxe Twig
-- B) `this` dans le sous-composant référence le `Link`, pas le composant parent — la valeur sera erronée ou vide
-- C) Les getters ne sont pas accessibles depuis les sous-composants
-- D) Il n'y a aucun problème
-
-**Q41.** Quelle est la différence entre un **Atom** et une **Molecule** dans l'Atomic Design tel qu'il est implémenté dans ce projet ?
-- A) Les atoms sont en PHP, les molecules en Twig
-- B) Un atom est un élément HTML unique non décomposable (bouton, input, icône). Une molecule assemble plusieurs atoms pour une fonction précise (champ de formulaire = Label + Input + message d'erreur)
-- C) Les molecules sont plus grandes visuellement
-- D) Il n'y a pas de règle stricte
-
-**Q42.** Combien de props déclare la classe PHP du composant `Button` ?
-- A) 3
-- B) 4
-- C) 5
-- D) 7
-
-**Q43.** Dans `BoutonPanier`, comment le compteur du panier dans le header est-il mis à jour après un ajout ?
-- A) Via un rechargement complet de la page
-- B) Via `window.location.reload()`
-- C) Via l'émission d'un événement `panierUpdated` qui est capté par le composant `PanierBadge`
-- D) Via une requête AJAX vers le serveur
-
-**Q44.** Qu'est-ce que la méthode `mount()` dans un Twig Component ?
-- A) Un hook appelé à la destruction du composant
-- B) Un hook du cycle de vie appelé à l'instanciation du composant, avant le rendu — permet d'initialiser des données dynamiques
-- C) Une méthode pour monter le composant dans le DOM
-- D) La méthode principale de rendu du composant
-
-**Q45.** Dans `NavigationLinks`, quelle différence y a-t-il entre la détection du lien `/` et celle de `/produits` ?
-- A) Aucune, les deux utilisent `===`
-- B) `/` utilise `str_starts_with`, `/produits` utilise `===`
-- C) `/` utilise `===` (correspondance exacte), `/produits` utilise `str_starts_with` pour rester actif sur `/produits/macaron-framboise`
-- D) Les deux utilisent `str_contains`
+**Comment ça marche ?**
+Dès que le formulaire est soumis, `submit()` est appelé. Il désactive le bouton (`disabled = true`), ajoute `aria-busy="true"` pour les lecteurs d'écran, masque le texte du bouton et affiche le spinner. Le formulaire ne peut plus être resoumis jusqu'à ce que la page soit rechargée.
 
 ---
 
-**Corrections partie 5 :** 38-B / 39-B / 40-B / 41-B / 42-C / 43-C / 44-B / 45-C
+### `dropdown_controller.js`
+
+**C'est quoi le problème que ça résout ?**
+Le menu déroulant du profil utilisateur doit se fermer quand on clique ailleurs sur la page.
+
+**Comment ça marche ?**
+À la connexion, un écouteur `click` est ajouté sur tout le `document`. À chaque clic, on vérifie si le clic est à l'intérieur du controller (`this.element.contains(e.target)`). Si non, on ferme le menu. Cet écouteur est retiré dans `disconnect()` pour ne pas fuiter.
 
 ---
 
-## PARTIE 6 — Sécurité
+### `password_toggle_controller.js`
 
-**Q46.** Quelle algorithme de hachage de mot de passe est configuré dans `security.yaml` ?
-- A) `bcrypt` fixe
-- B) `argon2i`
-- C) `'auto'` — Symfony choisit le meilleur algorithme disponible sur le serveur
-- D) `sha256`
+**C'est quoi le problème que ça résout ?**
+L'utilisateur doit pouvoir afficher ou masquer le mot de passe dans les formulaires de connexion et d'inscription.
 
-**Q47.** Qu'est-ce qu'une attaque CSRF et comment le projet s'en protège-t-il ?
-- A) Une attaque qui intercepte les mots de passe. Protection : HTTPS
-- B) Une attaque qui force un utilisateur connecté à effectuer une action non désirée via une requête frauduleuse. Protection : token CSRF unique par formulaire, vérifié côté serveur
-- C) Une attaque par injection SQL. Protection : requêtes préparées
-- D) Une attaque par déni de service. Protection : rate limiting
-
-**Q48.** Pourquoi le montant total du paiement Stripe est-il recalculé côté serveur dans `CommandeController` ?
-- A) Stripe l'exige dans ses CGU
-- B) Pour éviter qu'un utilisateur malveillant modifie le prix dans le navigateur (via les outils de développement) avant de soumettre le formulaire
-- C) Pour économiser des appels API
-- D) Parce que le panier n'est pas accessible côté client
-
-**Q49.** Quelle est la route de connexion configurée dans `security.yaml` de ce projet ?
-- A) `/login`
-- B) `/auth`
-- C) `/connexion`
-- D) `/signin`
-
-**Q50.** Pourquoi `FavoriController` renvoie-t-il un `JsonResponse` avec le statut 401 plutôt qu'une redirection vers la page de connexion ?
-- A) C'est une exigence de Symfony
-- B) Parce que l'appel est fait en AJAX — une redirection n'aurait pas l'effet voulu. Le controller Stimulus gère le 401 et affiche un message à la place
-- C) Pour économiser une requête HTTP
-- D) Parce que `redirectToRoute` ne fonctionne pas dans ce controller
-
-**Q51.** Que vérifie `CompteController` avant d'autoriser l'annulation d'une commande ?
-- A) Uniquement que l'utilisateur est connecté
-- B) Uniquement que la commande existe
-- C) Que le token CSRF est valide, que la commande appartient à l'utilisateur connecté ET que son statut est `Confirmee`
-- D) Que la commande a été passée il y a moins de 24h
+**Comment ça marche ?**
+`toggle()` vérifie si le type du champ est `password`. Si oui, il le passe en `text` (visible), affiche l'icône "masquer" et cache l'icône "afficher". Sinon il fait l'inverse. L'`aria-label` du bouton est aussi mis à jour pour les lecteurs d'écran.
 
 ---
 
-**Corrections partie 6 :** 46-C / 47-B / 48-B / 49-C / 50-B / 51-C
+### `consent_banner_controller.js`
+
+**C'est quoi le problème que ça résout ?**
+Afficher une bannière de consentement cookies RGPD uniquement si l'utilisateur n'a pas encore fait son choix.
+
+**Comment ça marche ?**
+Dans `connect()`, le controller vérifie si le cookie `cookie_consent` existe déjà. Si non, il appelle `show()` sur le `<dialog>` pour afficher la bannière. Les boutons "Accepter" et "Refuser" appellent `accept()` ou `reject()`, qui écrivent le cookie avec une durée d'un an et ferment le dialog.
 
 ---
 
-## PARTIE 7 — Base de données & Doctrine
+### `star_rating_controller.js`
 
-**Q52.** Quelle annotation Doctrine est utilisée pour définir une relation "un utilisateur a plusieurs commandes" ?
-- A) `#[ORM\OneToOne]`
-- B) `#[ORM\ManyToOne]` côté Commande
-- C) `#[ORM\ManyToMany]`
-- D) `#[ORM\HasMany]`
+**C'est quoi le problème que ça résout ?**
+Le sélecteur d'étoiles pour laisser un avis doit mettre en surbrillance les étoiles au survol, et mémoriser la sélection quand on clique.
 
-**Q53.** Dans `CommandeProduit`, la clé primaire est composite. Qu'est-ce que cela signifie ?
-- A) Il y a deux colonnes `id` auto-incrémentées
-- B) La clé primaire est formée par la combinaison de deux colonnes : `commande_id` + `produit_id` — leur association est unique
-- C) La table n'a pas de clé primaire
-- D) La clé primaire est un UUID
-
-**Q54.** Que se passe-t-il en base de données si un utilisateur est supprimé, selon la configuration `onDelete: 'CASCADE'` de l'entité `Commande` ?
-- A) La suppression est bloquée si l'utilisateur a des commandes
-- B) Les colonnes `utilisateur_id` sont mises à `NULL`
-- C) Toutes les commandes liées à cet utilisateur sont automatiquement supprimées
-- D) Rien, il faut gérer ça manuellement
-
-**Q55.** Quelle est la requête `findMeilleursVendus()` dans `ProduitRepository` et pourquoi fait-elle une jointure gauche (`leftJoin`) plutôt qu'une jointure interne (`innerJoin`) ?
-- A) Pour des raisons de performance
-- B) Pour inclure les produits disponibles même s'ils n'ont jamais été commandés (sinon ils seraient exclus par un `innerJoin`)
-- C) Doctrine ne supporte pas `innerJoin`
-- D) Pour éviter les doublons
-
-**Q56.** Comment Doctrine est-il configuré pour utiliser les enums PHP dans les colonnes de base de données ?
-- A) Via un type Doctrine personnalisé
-- B) Via `type: 'string', enumType: StatutCommande::class` dans l'attribut `#[ORM\Column]`
-- C) Via un `ValueConverter`
-- D) Les enums ne sont pas supportés nativement par Doctrine
+**Comment ça marche ?**
+Le composant est fait de 5 inputs radio invisibles et de 5 icônes étoiles. `highlight()` colore toutes les étoiles jusqu'à l'index survolé. `reset()` relit l'input coché pour revenir à l'état sélectionné si on quitte la zone sans cliquer. `select()` fixe définitivement la couleur des étoiles quand on clique.
 
 ---
 
-**Corrections partie 7 :** 52-B / 53-B / 54-C / 55-B / 56-B
+### `confirm_controller.js` et `image_zoom_controller.js`
+
+Ces deux controllers font la même chose : ouvrir et fermer un `<dialog>` natif. `open()` appelle `showModal()`, `close()` appelle `close()`, et `closeOnBackdrop()` détecte un clic sur le fond. `confirm` est utilisé pour les boîtes de confirmation génériques, `image-zoom` pour agrandir les images produits au clic.
 
 ---
 
-## PARTIE 8 — Architecture & Choix techniques
+### `csrf_protection_controller.js`
 
-**Q57.** Pourquoi AssetMapper est-il utilisé à la place de Webpack Encore dans ce projet ?
-- A) Webpack Encore n'est plus maintenu
-- B) AssetMapper est natif Symfony, ne nécessite pas Node.js ni d'étape de bundling — il utilise les import maps du navigateur pour charger les modules ES directement
-- C) AssetMapper est plus rapide en développement
-- D) Webpack Encore ne supporte pas Tailwind v4
+**C'est quoi le problème que ça résout ?**
+Symfony génère les tokens CSRF côté serveur. Mais quand Turbo intercepte les soumissions de formulaires, les tokens doivent être transmis d'une façon compatible.
 
-**Q58.** Pourquoi la variable globale `panierCount` est-elle injectée via une extension Twig (`PanierExtension`) plutôt qu'être passée dans chaque controller ?
-- A) Symfony l'exige pour les Live Components
-- B) Pour centraliser la logique et éviter de la dupliquer dans chaque controller — la variable est disponible dans tous les templates automatiquement
-- C) Pour des raisons de performance
-- D) Parce que Twig Components n'ont pas accès aux variables de controller
-
-**Q59.** Pourquoi `app.js` contient-il uniquement `import './stimulus_bootstrap.js'` ?
-- A) C'est une limitation d'AssetMapper
-- B) C'est voulu : séparer le point d'entrée de la configuration Stimulus maintient le code organisé et facilite l'ajout de nouveaux controllers
-- C) Les autres imports sont chargés automatiquement
-- D) Par manque de temps
-
-**Q60.** Quelle est la différence entre `email.css`, `pdf.css` et `app.css` dans le projet ?
-- A) `email.css` et `pdf.css` sont des fichiers de test
-- B) `app.css` utilise Tailwind (classes utilitaires) pour le site. `email.css` et `pdf.css` utilisent du CSS classique car les clients email et les générateurs PDF ne supportent pas les classes Tailwind modernes
-- C) `email.css` est pour les emails marketing, `pdf.css` pour les factures admin
-- D) Il n'y a aucune différence technique
-
-**Q61.** Pourquoi la librairie Dompdf utilise-t-elle `isRemoteEnabled: false` dans `FactureService` ?
-- A) Pour accélérer la génération du PDF
-- B) Pour des raisons de sécurité — autoriser les ressources distantes permettrait à un contenu malveillant d'effectuer des requêtes serveur depuis le générateur PDF (SSRF)
-- C) Parce que Dompdf ne supporte pas les URLs distantes
-- D) Pour réduire la taille du fichier PDF
-
-**Q62.** Pourquoi le projet utilise-t-il `str_pad(random_int(1, 99999), 5, '0', STR_PAD_LEFT)` pour générer la référence de commande ?
-- A) Pour économiser des caractères
-- B) Pour obtenir un numéro lisible formaté sur 5 chiffres (ex: `CMD-2026-00042`) avec un padding de zéros à gauche, plus agréable pour le client qu'un ID Doctrine brut
-- C) C'est une exigence légale française
-- D) Pour être compatible avec Stripe
-
-**Q63.** Le panier est stocké en **session PHP** dans ce projet. Quels sont les avantages et inconvénients de ce choix par rapport à un stockage en base de données ?
-- A) La session est plus sécurisée que la base de données
-- B) **Avantage** : rapide, pas de requête SQL, fonctionne sans compte. **Inconvénient** : le panier est perdu si la session expire ou si l'utilisateur change de navigateur — impossible de retrouver un panier abandonné
-- C) La session est la seule option dans Symfony
-- D) La base de données serait trop lente pour le panier
+**Comment ça marche ?**
+Ce fichier est fourni par Symfony UX — je ne l'ai pas écrit. Il écoute les événements `submit` et `turbo:submit-start`. À chaque soumission, il génère un token CSRF aléatoire, le place dans un cookie sécurisé (`SameSite=Strict`) et l'envoie aussi dans un header HTTP pour les soumissions Turbo. Côté serveur, Symfony vérifie que le token dans le champ caché correspond au cookie.
 
 ---
 
-**Corrections partie 8 :** 57-B / 58-B / 59-B / 60-B / 61-B / 62-B / 63-B
+## Questions que le jury peut poser
 
----
+**Pourquoi Stimulus plutôt que React ou Vue ?**
+Stimulus n'est pas un framework de rendu — il ajoute du comportement à un HTML déjà présent dans la page. Symfony + Twig génère le HTML côté serveur. Avec React, il faudrait dupliquer la logique de rendu côté client. Stimulus est cohérent avec l'architecture Symfony : le serveur reste maître du HTML.
 
-## PARTIE 9 — Docker & Déploiement
+**C'est quoi un outlet Stimulus ?**
+C'est un mécanisme qui permet à un controller d'appeler directement des méthodes d'un autre controller voisin dans le DOM. Dans mon projet, `favori` utilise un outlet vers `flash-tooltip` pour afficher le message "Connectez-vous". C'est plus propre qu'émettre un événement custom ou accéder directement au DOM.
 
-**Q64.** Sur quel port est accessible le site en développement avec Docker ?
-- A) 80
-- B) 3000
-- C) 8080
-- D) 8000
+**C'est quoi Turbo Drive ?**
+Turbo Drive intercepte tous les clics sur les liens et les soumissions de formulaires. Au lieu de recharger toute la page, il récupère le HTML de la nouvelle page via fetch et remplace uniquement le `<body>`. Résultat : la navigation est aussi rapide qu'une SPA, mais sans écrire de JavaScript.
 
-**Q65.** Quel service Docker s'occupe de l'installation des dépendances et de la migration de la base de données au premier démarrage ?
-- A) `nginx`
-- B) `php`
-- C) `init`
-- D) `assets`
+**C'est quoi un Turbo Frame ?**
+Un `<turbo-frame>` est une zone isolée de la page. Quand un lien ou un formulaire à l'intérieur du frame est activé, seule cette zone est mise à jour, pas toute la page. Dans mon projet, j'utilise un Turbo Frame pour le filtrage des produits par catégorie.
 
-**Q66.** Pourquoi le service `assets` recompile Tailwind toutes les 30 secondes en boucle plutôt que d'utiliser un watcher ?
-- A) Pour économiser des ressources CPU
-- B) Parce que le watcher de fichiers inotify n'est pas supporté de manière fiable sous Windows avec Docker Desktop
-- C) Tailwind v4 ne supporte pas le watch mode
-- D) AssetMapper l'interdit
+**Pourquoi `<dialog>` natif plutôt qu'une div ?**
+Le `<dialog>` natif gère automatiquement le piégeage du focus (Tab ne sort pas de la modale), la touche Échap, et l'attribut `aria-modal`. Ce sont des comportements d'accessibilité complexes à reproduire à la main.
 
-**Q67.** Quelle commande doit être exécutée après chaque modification d'un fichier CSS ou Twig pour régénérer les styles Tailwind ?
-- A) `npm run build`
-- B) `php bin/console tailwind:build`
-- C) `php bin/console assets:install`
-- D) `symfony encore dev`
-
----
-
-**Corrections partie 9 :** 64-C / 65-C / 66-B / 67-B
-
----
-
-## PARTIE 10 — Questions ouvertes (oral)
-
-Ces questions n'ont pas de réponse unique — elles visent à structurer ta réflexion à l'oral.
-
-**Q68.** Explique le cycle de vie d'une commande dans SamyDessert, depuis l'ajout au panier jusqu'à la confirmation.
-
-> Pistes : panier session → adresse → récapitulatif → Stripe Checkout → succes() → entité Commande → email
-
-**Q69.** Qu'est-ce que l'Atomic Design et comment est-il structuré dans ce projet ?
-
-> Pistes : atoms (Button, Input, Icon...) → molecules (InputField, DessertCard...) → organisms (Header, LoginForm, PanierLive...) → pages. Chaque composant = classe PHP + template Twig.
-
-**Q70.** Comment fonctionne le système de favoris de bout en bout ?
-
-> Pistes : bouton dans DessertCard → Stimulus `favori` → fetch POST → `FavoriController` → 401 si non connecté → JSON `{favori: bool}` → `activeValueChanged()` met à jour l'icône → `flash-tooltip` outlet si non connecté
-
-**Q71.** Pourquoi avoir choisi Tailwind v4 avec des tokens sémantiques plutôt que des couleurs brutes ?
-
-> Pistes : cohérence visuelle, changement de couleur global en 1 ligne, compréhensibilité (`bg-danger` vs `bg-red-600`), pas de couleurs arbitraires dans les templates
-
-**Q72.** Quelles mesures de sécurité as-tu mises en place et pourquoi ?
-
-> Pistes : hachage `auto`, UserChecker (compte non vérifié), token CSRF, `#[IsGranted]`, vérification appartenance commande, Stripe côté serveur, variables d'environnement, `random_bytes` pour les tokens
-
----
-
-## Récapitulatif des scores
-
-| Partie | Questions | Points possibles |
-|--------|-----------|-----------------|
-| HTML & Sémantique | Q1–Q8 | 8 |
-| CSS & Tailwind v4 | Q9–Q17 | 9 |
-| JavaScript & Stimulus | Q18–Q26 | 9 |
-| PHP & Symfony | Q27–Q37 | 11 |
-| Twig Components | Q38–Q45 | 8 |
-| Sécurité | Q46–Q51 | 6 |
-| Base de données | Q52–Q56 | 5 |
-| Architecture | Q57–Q63 | 7 |
-| Docker | Q64–Q67 | 4 |
-| **Total QCM** | **Q1–Q67** | **67** |
-| **Questions orales** | **Q68–Q72** | bonus |
+**C'est quoi `inert` dans le carousel ?**
+`inert` est un attribut HTML qui désactive d'un coup tout le contenu interactif d'un élément : focus, événements, Tab. Je l'utilise sur les slides hors champ pour que les lecteurs d'écran et la navigation clavier ignorent les cartes non visibles.
