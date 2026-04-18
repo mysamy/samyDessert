@@ -4,6 +4,10 @@
 # Arrêter immédiatement en cas d'erreur
 set -e
 
+# Marque les migrations déjà appliquées manuellement en base
+echo "==> Synchronisation des versions de migration..."
+php bin/console doctrine:migrations:version 'DoctrineMigrations\Version20260317141858' --add --no-interaction 2>/dev/null || true
+
 # Applique les migrations Doctrine en attente
 echo "==> Application des migrations..."
 php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration
