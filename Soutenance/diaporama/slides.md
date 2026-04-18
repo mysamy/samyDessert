@@ -174,12 +174,17 @@ Les composants UI sont organisés du plus simple au plus complexe :
 
 ```twig
 {% set variants = {
-  primary: "bg-accent text-white hover:bg-primary hover:scale-105",
-  ghost:   "bg-transparent text-text hover:bg-surface hover:scale-105",
-  danger:  "bg-danger text-white hover:bg-danger-dark hover:scale-105",
+  primary:      "bg-accent text-white hover:bg-primary hover:scale-105",
+  ghost:        "bg-transparent text-text hover:bg-surface hover:scale-105",
+  danger:       "bg-danger text-white hover:bg-danger-dark hover:scale-105",
+  "ghost-danger": "text-danger border-2 border-danger hover:bg-danger hover:text-white",
 } %}
-<button type="{{ type }}" class="px-4 py-2 rounded transition-transform {{ variants[variant] }}" {{ attrs }}>
-  {{ slot }}
+<button type="{{ type }}"
+  {{ attributes.defaults({
+    class: base ~ ' ' ~ (variants[variant] ?? variants.primary)
+  }) }}
+>
+  {% block content %}{% endblock %}
 </button>
 ```
 
@@ -191,15 +196,16 @@ Les composants UI sont organisés du plus simple au plus complexe :
 **Molécule — InputField.html.twig**
 
 ```twig
-{% set isInvalid = error is not empty %}
-<twig:Atoms:Label for="{{ id }}" label="{{ label }}" />
+<twig:Atoms:Label for="{{ id }}" label="{{ label }}" :required="required" />
 <twig:Atoms:Input
   id="{{ id }}" name="{{ name }}" type="{{ type }}"
   aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
-  aria-describedby="{{ isInvalid ? id ~ '-error' : '' }}"
+  aria-describedby="{{ describedBy }}"
 />
 {% if error %}
-  <p id="{{ id }}-error" role="alert" class="text-danger text-sm mt-1">{{ error }}</p>
+  <p id="{{ this.errorId }}" role="alert" class="text-danger">
+    {{ error }}
+  </p>
 {% endif %}
 ```
 
@@ -219,7 +225,9 @@ this.items = [
   ...this.items,
   ...this.items.slice(0, this.offset).map(i => i.cloneNode(true)),
 ];
+```
 
+```js
 onTransitionEnd() {
   if (this.currentItem <= this.offset) {
     this.setTransition(false);
@@ -260,11 +268,15 @@ setActiveItems() {
 
 ## Slide 15 — Base de données
 
-**7 entités + 2 tables de liaison :**
+**6 entités :**
 
-`Utilisateur` · `Produit` · `Recette` · `Commande` · `Panier` · `Avis` · `Favori`
+`Utilisateur` · `Produit` · `Catégorie` · `Recette` · `Commande` · `Avis`
 
-Tables de liaison : `CommandeProduit` · `PanierProduit`
+**1 table de liaison enrichie :** `CommandeProduit` (quantité + prix unitaire)
+
+**Panier :** géré en session via `PanierService` — pas d'entité en base
+
+**Favoris :** relation `ManyToMany` sur `Utilisateur` — 2 tables de jointure automatiques Doctrine
 
 Points clés :
 - Prix en `DECIMAL(8,2)` — pas de float (erreurs d'arrondi)
@@ -347,9 +359,35 @@ Points clés :
 ## Slide 21 — Soins UX
 
 - Messages d'erreur volontairement vagues sur le formulaire de connexion (recommandation OWASP)
-- Bouton panier animé — feedback visuel immédiat
+- Bouton panier — Live Component : spinner pendant l'action, mise à jour immédiate
 
-*[insérer captures InputFocus.png + ConnexionErreur.png + boutonPanier.png]*
+*[insérer capture ConnexionErreur.png]*
+
+```php
+#[AsLiveComponent]
+final class BoutonPanier
+{
+    #[LiveProp]
+    public int $produitId = 0;
+
+    public function getQuantite(): int
+    {
+        return $this->panier->getQuantitePourProduit($this->produitId);
+    }
+
+    #[LiveAction]
+    public function ajouter(): void
+    {
+        $this->panier->ajouter($this->produitId);
+        $this->emit('panierUpdated');
+    }
+}
+```
+
+```twig
+<twig:Atoms:Icon name="cart-plus" data-loading="hide" />
+<twig:Atoms:Spinner data-loading="show" />
+```
 
 ---
 
@@ -360,7 +398,7 @@ Points clés :
 | CSRF | Token Symfony sur tous les formulaires |
 | XSS | Échappement automatique Twig |
 | Injection SQL | Doctrine ORM (requêtes préparées) |
-| Accès non autorisé | Voters + `ROLE_ADMIN` / `ROLE_USER` |
+| Accès non autorisé | `ROLE_ADMIN` / `ROLE_USER` + `access_control` |
 | Mots de passe | Hachage automatique Symfony (`auto`) — Sodium/bcrypt |
 | Données de paiement | Jamais stockées — délégation à Stripe |
 
@@ -433,7 +471,7 @@ async toggle(e) {
         return;
     }
     const data = await response.json();
-    this.activeValue = data.favori; // → déclenche activeValueChanged() automatiquement
+    this.activeValue = data.favori;
 }
 ```
 
@@ -444,7 +482,6 @@ async toggle(e) {
 **Le Controller ne fait que déléguer — toute la logique est dans le Service**
 
 ```php
-// Une seule requête SQL pour N produits — pas de boucle N+1
 public function getLignes(): array
 {
     $panier = $this->getPanierSession();
@@ -474,16 +511,29 @@ public function getTotal(): float
 
 ## Slide 26 — Tests
 
-**PHPUnit 12 — Tests unitaires et fonctionnels**
+**PHPUnit 12 — 74 tests, 0 erreurs**
 
-| Type | Fichiers | Tests |
-|------|----------|-------|
-| Unitaires | `PanierServiceTest`, `CommandeTest`, `MailerServiceTest`, `UserCheckerTest` | 26 |
-| Fonctionnels | `PagesTest`, `ConnexionTest`, `InscriptionTest`, `PanierControllerTest`, `CommandeControllerTest`, `FavoriControllerTest`… | 48 |
+| Type | Nombre | Ce qui est testé |
+|------|--------|-----------------|
+| Unitaires | 26 | Logique métier isolée — panier, commande, emails, accès compte |
+| Fonctionnels | 48 | Requêtes HTTP réelles — routes, formulaires, AJAX |
 
-Résultats : **74 tests, 0 erreurs** — base de données de test isolée (`samydessert_test`), réinitialisée entre chaque test (Zenstruck Foundry)
+Base de test isolée (`samydessert_test`), réinitialisée entre chaque test
 
-*[insérer captures PHPunit.png + TESTunit74.png]*
+**Exemple : test corrigé — token CSRF manquant**
+
+```php
+// Avant : le test ne soumettait pas de token → redirection vers /connexion
+$client->request('POST', '/contact', [...]);
+
+// Après : on récupère le vrai token depuis le formulaire
+$client->request('GET', '/contact');
+$token = $client->getCrawler()->filter('input[name="_token"]')->attr('value');
+$client->request('POST', '/contact', [..., '_token' => $token]);
+$this->assertResponseRedirects('/contact');
+```
+
+*[insérer capture PHPunit.png]*
 
 ---
 
@@ -507,7 +557,7 @@ Résultats : **74 tests, 0 erreurs** — base de données de test isolée (`samy
 
 | Branche | Rôle |
 |---------|------|
-| `dev` | Développement quotidien |
+| `dev` | Développement — isolation des changements en cours |
 | `main` | Code stable → déploiement Railway automatique |
 
 **Convention de commits :** Conventional Commits
@@ -553,6 +603,7 @@ Résultats : **74 tests, 0 erreurs** — base de données de test isolée (`samy
 ## Slide 31 — Améliorations futures
 
 **Fonctionnalités**
+- Liaison produit ↔ recette (OneToOne — créer la recette à la création du produit)
 - Ingrédients dans les recettes
 - Modération des avis avant publication
 - Variations de produits (taille, parfum)
@@ -607,6 +658,5 @@ Parcours prévu :
 
 SamyDessert — Boutique en ligne de pâtisseries artisanales
 
-🔗 `https://samydessert-production.up.railway.app`
 
 *Prêt pour vos questions*

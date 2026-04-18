@@ -134,25 +134,43 @@ C'est ça la vraie valeur d'Atomic Design : les atomes sont simples et réutilis
 
 ## Slide 14 — Code : Controller Stimulus — Carousel ⏱ 2min
 
-Le carousel est la réalisation frontend dont je suis le plus fier — c'est une classe JavaScript vanilla de 500 lignes que j'ai conçue à partir d'un tutoriel Grafikart et étendue avec plusieurs fonctionnalités.
+Le carousel est la réalisation frontend dont je suis le plus fier — c'est une classe JavaScript vanilla conçue à partir d'un tutoriel Grafikart et étendue avec plusieurs mécanismes.
 
-Le premier point technique important, c'est le **mode infini par clonage**. Pour créer l'illusion d'un défilement sans fin, je clone les N premières et N dernières slides et je les place de chaque côté de la liste réelle. Quand l'utilisateur dépasse un clone, je repositionne silencieusement le carousel sur le vrai élément correspondant — sans transition visible, donc sans que l'utilisateur s'en rende compte.
+**Premier point — mode infini par clonage.**
 
-Le deuxième point, c'est la **protection contre le double-clic**. Le booléen `isAnimating` bloque `next()` et `prev()` tant que la transition CSS n'est pas terminée. Sans ça, cliquer rapidement plusieurs fois décalerait le carousel hors des clones et casserait le mode infini.
+Je reconstruit le tableau `this.items` avec le spread operator : je prends les N derniers nœuds du DOM avec `slice(-offset)`, je les clone avec `cloneNode(true)` — clone profond, avec tout le HTML interne — et je les prépose. Idem pour les N premiers que je place à la fin. Le DOM contient donc plus de slides que la réalité.
 
-Le troisième point, c'est l'**accessibilité avec `inert`**. Une seule ligne — `item.inert = !isActive` — désactive le focus, la navigation clavier et tous les événements sur les slides hors champ. C'est un attribut HTML5 moderne qui remplace des dizaines de lignes de JavaScript. Seule la slide visible est interactive.
+Quand l'utilisateur arrive sur un clone, `onTransitionEnd` se déclenche — c'est un listener sur l'événement `transitionend` du navigateur. Je désactive la transition CSS avec `setTransition(false)`, ce qui revient à passer `transition-duration` à `0ms` — le mouvement devient instantané. Je recalcule `currentItem` avec la formule `+= items.length - 2 * offset` pour sauter sur le vrai élément correspondant, j'appelle `translate()` qui met à jour le `transform: translateX(...)` du conteneur, puis je réactive la transition. L'utilisateur ne voit rien.
+
+**Deuxième point — protection contre le double-clic.**
+
+`isAnimating` est un booléen d'instance. Quand `next()` est appelé, si `isAnimating` est déjà `true` on sort immédiatement avec `return`. On le repasse à `false` dans un `setTimeout` calé sur la durée de la transition CSS. J'aurais pu utiliser `transitionend`, mais `setTimeout` est plus robuste quand la transition est interrompue.
+
+**Troisième point — accessibilité avec `inert`.**
+
+`item.inert = !isActive` écrit directement la propriété booléenne native `HTMLElement.inert` sur le nœud DOM. Un seul attribut désactive simultanément le focus clavier, les événements pointer, et masque l'élément des lecteurs d'écran. `aria-hidden` seul ne bloque pas le focus — `inert` est la seule solution propre. Seule la slide visible reste interactive.
 
 ---
 
-## Slide 15 — Base de données ⏱ 1min30 ⏱ 1min30
+## Slide 15 — Base de données ⏱ 1min30
 
-La base de données compte 9 entités. Je veux souligner trois décisions techniques que j'ai prises intentionnellement.
+La base de données compte 6 entités et une table de liaison enrichie. Je veux d'abord expliquer les choix d'architecture, puis trois décisions techniques.
 
-Première décision : les prix sont stockés en `DECIMAL(8,2)` et non en `float`. Les floats ont des erreurs d'arrondi — si vous faites `0.1 + 0.2` en PHP vous n'obtenez pas exactement `0.3`. Pour des montants financiers, c'est inacceptable.
+**Architecture des relations.**
 
-Deuxième décision : le prix unitaire est **dupliqué** dans `CommandeProduit` au moment où la commande est passée. Si je change le prix d'un produit demain, les commandes passées aujourd'hui gardent le bon prix historique. Sans cette duplication, l'historique serait faussé.
+Le panier n'est pas une entité en base de données — il est stocké en session PHP via `PanierService`. Un tableau `[produitId => quantite]` en session, c'est suffisant pour ce besoin et ça évite des écritures en base à chaque ajout.
 
-Troisième décision : j'utilise des enums PHP natifs pour les statuts de commande — `EnAttente`, `Confirmee`, `Annulee`. Ça garantit qu'on ne peut jamais stocker une valeur invalide, et l'IDE aide à l'autocomplétion. C'est une fonctionnalité de PHP 8.1 que j'ai pu utiliser parce qu'on est sur PHP 8.3.
+Les favoris, c'est le contraire : ils doivent persister entre les sessions. J'aurais pu créer une entité `Favori`. J'ai préféré une relation `ManyToMany` directement sur `Utilisateur` — Doctrine génère automatiquement les tables de jointure `utilisateur_produit_favori` et `utilisateur_recette_favori`. Pas de colonne supplémentaire nécessaire sur la relation, donc `ManyToMany` automatique suffit.
+
+`CommandeProduit` en revanche est une entité intermédiaire explicite — ce qu'on appelle un **ManyToMany avec payload**. Une commande contient plusieurs produits et j'ai besoin de stocker des données sur la relation elle-même : la quantité commandée et le prix unitaire au moment de l'achat. Doctrine ne peut pas stocker ces colonnes sur une jointure automatique. J'ai donc créé l'entité `CommandeProduit` avec ses propres champs `quantite` et `prixUnitaire`.
+
+**Trois décisions techniques intentionnelles.**
+
+Première : les prix sont en `DECIMAL(8,2)` et non en `float`. Les floats ont des erreurs d'arrondi en base binaire — `0.1 + 0.2` ne vaut pas exactement `0.3`. Sur des montants financiers, c'est inacceptable.
+
+Deuxième : le `prixUnitaire` est dupliqué dans `CommandeProduit` au moment de la commande. Si je modifie le prix d'un produit demain, les anciennes commandes conservent le prix exact auquel elles ont été passées. Sans cette duplication, l'historique comptable serait faussé.
+
+Troisième : j'utilise des enums PHP natifs pour les statuts — `EnAttente`, `Confirmee`, `Annulee`. Impossible de stocker une valeur hors de cet ensemble, l'IDE autocompète, et Doctrine les sérialise proprement en base. C'est PHP 8.1, disponible parce qu'on est sur PHP 8.3.
 
 ---
 
@@ -272,15 +290,13 @@ La méthode `ajouter` est volontairement minimaliste : trois lignes. Elle lit la
 
 ---
 
-## Slide 24 — Tests ⏱ 1min15
+## Slide 26 — Tests ⏱ 1min30
 
-J'ai mis en place une suite de 74 tests automatisés avec PHPUnit 12.
+J'ai mis en place une suite de 74 tests automatisés avec PHPUnit 12 — 26 unitaires et 48 fonctionnels. Les tests unitaires vérifient la logique métier isolée : calcul du panier, total d'une commande, blocage de connexion pour un compte non vérifié. Les tests fonctionnels simulent de vraies requêtes HTTP vers le kernel Symfony.
 
-Les 26 tests unitaires testent la logique métier de manière isolée, sans base de données et sans requête HTTP. Le `PanierServiceTest` vérifie que l'ajout, le retrait, le vidage et le calcul du total fonctionnent correctement. Le `CommandeTest` vérifie le calcul du total d'une commande. Le `UserCheckerTest` vérifie que la connexion est bloquée si le compte n'est pas vérifié par email.
+Chaque test s'exécute sur une base isolée `samydessert_test`, réinitialisée entre chaque test via Zenstruck Foundry.
 
-Les 48 tests fonctionnels simulent de vraies requêtes HTTP vers le kernel Symfony. Le `PanierControllerTest` teste les routes POST d'ajout et de retrait. Le `FavoriControllerTest` teste le toggle favori et vérifie que la réponse JSON est correcte. Le `CommandeControllerTest` teste que le tunnel de commande est inaccessible sans connexion ou avec un panier vide.
-
-Chaque test s'exécute sur une base de données isolée `samydessert_test`, réinitialisée entre chaque test grâce à Zenstruck Foundry. J'utilise des factories — `UtilisateurFactory` et `ProduitFactory` — pour générer des données de test réalistes sans effort.
+Je veux montrer un exemple concret de test que j'ai dû corriger. Le test du formulaire de contact envoyait un POST sans token CSRF — le contrôleur rejetait la requête et redirigeait vers la page de connexion au lieu de `/contact`. Le test échouait. La correction : faire d'abord un GET pour récupérer le vrai token CSRF depuis le formulaire, puis le soumettre avec le POST. C'est exactement ce que fait un vrai navigateur — et le test le reflète maintenant fidèlement.
 
 ---
 
@@ -294,7 +310,7 @@ En production, le site tourne sur Railway. Le déploiement est automatique : cha
 
 ## Slide 26 — Gestion de version avec Git ⏱ 45s
 
-Je travaille avec deux branches. `dev` pour le développement quotidien — c'est là que je commit et que je teste. `main` pour le code stable — un push sur `main` déclenche automatiquement le déploiement sur Railway.
+Je travaille avec deux branches. L'idée est d'isoler le développement en cours sur `dev` pour ne jamais pousser directement du code instable en production. Sur ce projet solo j'ai parfois travaillé directement sur `main`, mais le principe est là : `dev` pour les changements en cours, `main` pour ce qui est stable et prêt à déployer. C'est une pratique standard dans les projets professionnels où plusieurs personnes travaillent en parallèle.
 
 Je suis la convention **Conventional Commits** : `feat:` pour une nouvelle fonctionnalité, `fix:` pour une correction de bug, `refactor:` pour du code restructuré sans changer le comportement, `docs:` pour la documentation. Ça permet de lire l'historique git et de comprendre immédiatement la nature de chaque commit sans ouvrir le diff.
 
