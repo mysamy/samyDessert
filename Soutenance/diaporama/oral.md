@@ -90,21 +90,38 @@ L'accessibilité n'était pas une option, c'était une contrainte du projet dès
 
 ## Slide 10 — Stack technique ⏱ 1min30
 
-Voici la stack complète. Le backend est en PHP 8.3 avec Symfony 7.4. J'ai choisi Symfony parce que c'est le framework le plus utilisé en entreprise en France, il est très modulaire, et c'est ce que j'ai appris en formation.
+**Backend — PHP 8.3 + Symfony 7.4.**
+Symfony est organisé autour d'un kernel HTTP et d'un container d'injection de dépendances. Chaque service est instancié une seule fois et injecté automatiquement par type-hint dans les constructeurs — c'est l'autowiring. J'utilise PHP 8.3 pour les enums natifs et les readonly properties.
 
-Le frontend utilise Twig pour les templates, Tailwind CSS v4 pour le style — la nouvelle version n'a plus besoin de fichier de configuration JavaScript, tout se fait dans le CSS —, et Stimulus pour les interactions JavaScript.
+**Frontend — Twig + Tailwind CSS v4 + Stimulus.**
+Twig échappe automatiquement toutes les variables — protection XSS par défaut. Tailwind v4 abandonne le fichier `tailwind.config.js` : les tokens sont déclarés directement en CSS avec la directive `@theme` et deviennent des custom properties natives `--color-accent`, `--color-primary`. Elles sont utilisables partout en CSS sans plugin.
 
-Pour le temps réel, j'utilise les Live Components de Symfony UX — notamment pour le panier qui se met à jour sans rechargement de page. La base de données est MySQL 8 avec Doctrine ORM. Le paiement est géré par Stripe, les emails par Resend API. Pour les assets, j'utilise AssetMapper qui remplace Webpack Encore sans aucune configuration — ça simplifie énormément le setup. Le déploiement est fait avec Docker en développement et Railway en production.
+Stimulus ne manipule pas de DOM virtuel — il connecte des attributs HTML (`data-controller`, `data-action`, `data-target`) à des classes JavaScript. Aucune compilation, aucun bundle nécessaire.
+
+**Temps réel — Symfony UX Live Components + Turbo.**
+Un Live Component est un composant Twig qui se re-rend côté serveur via une requête AJAX transparente quand son état change. Turbo Frames fait pareil pour des portions de page entières — seul le fragment ciblé est remplacé, pas toute la page.
+
+**Doctrine ORM.**
+Doctrine utilise le pattern **Data Mapper** — les entités ne savent pas qu'elles sont persistées. C'est l'`EntityManager` qui les observe via l'Unit of Work et génère les requêtes SQL au `flush()`.
+
+**AssetMapper.**
+Pas de Node.js, pas de `npm install`, pas d'étape de build. AssetMapper expose les fichiers JS directement au navigateur avec un `importmap` — le navigateur résout les modules ES nativement. Webpack Encore n'est plus nécessaire.
 
 ---
 
 ## Slide 11 — Architecture MVC ⏱ 1min30
 
-Symfony suit le pattern MVC — Modèle Vue Contrôleur. Voici comment ça fonctionne concrètement dans le projet.
+Je vais vous expliquer le MVC en suivant une vraie requête du projet : `POST /panier/ajouter/5`.
 
-Quand une requête HTTP arrive, le routeur de Symfony l'envoie au bon Controller. Le Controller lit la requête, appelle un ou plusieurs Services pour la logique métier, qui eux-mêmes interagissent avec les Repositories pour lire ou écrire en base de données via les entités Doctrine. Le Controller récupère le résultat et le passe à un template Twig pour générer la réponse HTML.
+Le navigateur envoie cette requête. Le **kernel HTTP** de Symfony la reçoit et déclenche une chaîne d'événements. Le **routeur** compare l'URL et la méthode aux attributs `#[Route]` de tous les controllers — il trouve `#[Route('/panier/ajouter/{id}', methods: ['POST'])]` dans `PanierController` et extrait `id = 5`.
 
-Ce que j'ai veillé à faire, c'est garder les Controllers légers. Ils orchestrent, mais ils ne contiennent pas de logique métier. Par exemple, tout ce qui touche au panier — ajouter, retirer, calculer le total — est dans `PanierService`. Le Controller, lui, appelle juste `$panierService->ajouter($produitId)` et c'est tout. Ça rend le code beaucoup plus testable et maintenable.
+Symfony instancie `PanierController` et injecte `PanierService` via le container d'injection de dépendances — c'est l'autowiring par type-hint. La méthode `ajouter(int $id, PanierService $panier)` est appelée avec `$id = 5`.
+
+Le **Controller** ne fait rien de plus que déléguer : `$panier->ajouter(5)`. Toute la logique — lire la session, incrémenter la quantité, sauvegarder — est dans le **Service**. Le Controller ajoute un message flash et retourne une `RedirectResponse` vers `/panier`.
+
+Aucune entité Doctrine n'est touchée ici — le panier est en session. Si c'était une commande, le Service appellerait le **Repository** qui génère la requête SQL via l'EntityManager. Le Controller ne touche jamais la base directement.
+
+Ce découpage rend chaque couche testable indépendamment : `PanierServiceTest` teste la logique sans simuler de requête HTTP.
 
 ---
 
