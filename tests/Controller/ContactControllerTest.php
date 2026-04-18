@@ -17,13 +17,16 @@ class ContactControllerTest extends WebTestCase
     public function testPostContactRedirigue(): void
     {
         $client = static::createClient();
+        $client->request('GET', '/contact');
+        $token = $client->getCrawler()->filter('input[name="_token"]')->attr('value');
+
         $client->request('POST', '/contact', [
             'nom'     => 'Jean Dupont',
             'email'   => 'jean@example.com',
             'sujet'   => 'Test',
             'message' => 'Bonjour, ceci est un test.',
+            '_token'  => $token,
         ]);
-        // Le contrôleur envoie l'email (null transport) et redirige
         $this->assertResponseRedirects('/contact');
     }
 }
