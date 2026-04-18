@@ -1,0 +1,2 @@
+# Force LF pour les scripts shell (CRLF casse /bin/sh sur Linux)
+*.sh text eol=lf
