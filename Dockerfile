@@ -25,7 +25,7 @@ COPY . .
 
 # Assets : installation vendors JS + compilation Tailwind + AssetMapper
 RUN APP_ENV=prod php bin/console importmap:install --no-interaction
-RUN APP_ENV=prod php bin/console assets:install --no-interaction
+RUN APP_ENV=prod php bin/console assets:install public --no-interaction && ls -la public/bundles/ || echo "ERREUR: public/bundles manquant"
 RUN APP_ENV=prod php bin/console tailwind:build --no-interaction
 RUN APP_ENV=prod php bin/console asset-map:compile --no-interaction
 
