@@ -52,7 +52,7 @@ class DashboardController extends AbstractDashboardController
     {
         return Dashboard::new()
             ->setTitle('SamyDessert — Administration')
-            ->setFaviconPath('/logotest.svg')
+            ->setFaviconPath('/LogoSD.svg')
             ->disableDarkMode();
     }
 

@@ -255,19 +255,25 @@ class AppFixtures extends Fixture
             }
             $manager->persist($recette);
         }
-        // --- Utilisateur de test ---
-        $user = new Utilisateur();
-        $user->setEmail('test@test.com');
-        $user->setPassword($this->hasher->hashPassword($user, 'password123'));
-        $user->setIsVerified(true);
-        $manager->persist($user);
-
+        // --- Comptes de démonstration ---
         $admin = new Utilisateur();
-        $admin->setEmail('samy@admin.com');
-        $admin->setPassword($this->hasher->hashPassword($admin, 'password123'));
+        $admin->setEmail('admin@samydessert.fr');
+        $admin->setPassword($this->hasher->hashPassword($admin, 'admin1234'));
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setIsVerified(true);
         $manager->persist($admin);
+
+        $user = new Utilisateur();
+        $user->setEmail('user@samydessert.fr');
+        $user->setPassword($this->hasher->hashPassword($user, 'user1234'));
+        $user->setIsVerified(true);
+        $manager->persist($user);
+
+        $nouveau = new Utilisateur();
+        $nouveau->setEmail('nouveau@samydessert.fr');
+        $nouveau->setPassword($this->hasher->hashPassword($nouveau, 'nouveau1234'));
+        $nouveau->setIsVerified(false);
+        $manager->persist($nouveau);
 
         // Envoie toutes les données en base en une seule fois
         $manager->flush();

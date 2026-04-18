@@ -15,30 +15,33 @@
   secondary:      "bg-surface text-text hover:bg-border hover:scale-105",
   ghost:          "bg-transparent text-text hover:bg-surface hover:scale-105",
   danger:         "bg-danger text-white hover:bg-danger-dark hover:scale-105",
-  'ghost-danger': "font-semibold bg-transparent text-danger border-2 border-danger hover:bg-danger hover:text-white hover:scale-105"
+  ghost-danger: "font-semibold bg-transparent text-danger border-2 border-danger hover:bg-danger hover:text-white hover:scale-105"
 } %}
+
+{% set hasLoadingLabel = loadingLabel is not empty %}
 
 <button
   type="{{ type }}"
-  {% if disabled or loading %}disabled{% endif %}
-  {% if loading %}aria-busy="true"{% endif %}
+  {% if disabled %}disabled{% endif %}
+  {% if hasLoadingLabel %}data-submit-once-loading-label="{{ loadingLabel }}"{% endif %}
   {{ attributes.defaults({
     class: base ~ ' ' ~ (sizes[size] ?? sizes.md) ~ ' ' ~ (variants[variant] ?? variants.primary)
   }) }}
 >
-  {% if loading %}
-    <twig:Atoms:Spinner size="sm" ariaLabel="Chargement" aria-hidden="true" />
-  {% endif %}
+  {% if hasLoadingLabel %}<span data-submit-once-target="label">{% endif %}
   {% block content %}{% endblock %}
+  {% if hasLoadingLabel %}</span>
+    <twig:Atoms:Spinner size="sm" ariaLabel="{{ loadingLabel }}" class="hidden" data-submit-once-target="spinner" />
+  {% endif %}
 </button>
 
 {#
   Props (* = obligatoire) :
-  - type        string  — type du bouton : button | submit | reset (button)
-  - variant     string  — style visuel : primary | secondary | ghost | danger (primary)
-  - size        string  — taille : sm | md | lg (md)
-  - disabled    bool    — désactivé (false)
-  - loading     bool    — affiche un spinner et désactive le bouton (false)
+  - type         string  — type du bouton : button | submit | reset (button)
+  - variant      string  — style visuel : primary | secondary | ghost | danger (primary)
+  - size         string  — taille : sm | md | lg (md)
+  - disabled     bool    — désactivé (false)
+  - loadingLabel string  — texte affiché pendant le chargement JS (submit-once) ; active le wrapper label+spinner automatique ('')
 
   Utilisation :
   <twig:Atoms:Button>Commander</twig:Atoms:Button>

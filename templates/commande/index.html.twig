@@ -70,14 +70,12 @@
       <input type="hidden" name="_token" value="{{ csrf_token('commande') }}">
       <twig:Atoms:Button
         type="submit"
+        loadingLabel="Paiement en cours..."
         class="mx-auto flex items-center justify-center gap-3 bg-accent text-white px-8 py-4 rounded-full text-body font-semibold hover:bg-primary hover:scale-105 transition"
         data-submit-once-target="btn"
       >
-        <span class="flex items-center gap-3" data-submit-once-target="label">
-          <twig:Atoms:Icon name="lock" :decorative="true" class="text-small"/>
-          Payer {{ total|prix }} en toute sécurité
-        </span>
-        <twig:Atoms:Spinner size="lg" ariaLabel="Paiement en cours" class="hidden absolute inset-0 m-auto" data-submit-once-target="spinner" />
+        <twig:Atoms:Icon name="lock" :decorative="true" class="text-small"/>
+        Payer {{ total|prix }} en toute sécurité
       </twig:Atoms:Button>
     </twig:Organisms:Form>
 

@@ -51,13 +51,11 @@
     <div class="flex justify-end">
       <twig:Atoms:Button
         type="submit"
+        loadingLabel="Envoi en cours..."
         data-submit-once-target="btn"
       >
-        <span class="flex items-center gap-2" data-submit-once-target="label">
-          Envoyer le message
-          <twig:Atoms:Icon name="paper-plane" :decorative="true"/>
-        </span>
-        <twig:Atoms:Spinner size="sm" ariaLabel="Envoi en cours" class="hidden" data-submit-once-target="spinner" />
+        Envoyer le message
+        <twig:Atoms:Icon name="paper-plane" :decorative="true"/>
       </twig:Atoms:Button>
     </div>
 

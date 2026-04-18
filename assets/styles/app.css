@@ -98,6 +98,24 @@ html {
   scrollbar-gutter: stable;
 }
 
+/* Lien d'évitement (skip to main content) — WCAG 2.4.1 */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 1rem;
+  z-index: 9999;
+  padding: 0.5rem 1rem;
+  background: var(--color-primary);
+  color: var(--color-bg);
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  text-decoration: none;
+  transition: top 0.15s ease;
+}
+.skip-link:focus {
+  top: 1rem;
+}
+
 /* Outline focus : masqué au clic souris, visible au clavier */
 *:focus:not(:focus-visible) {
   outline: none;
@@ -106,8 +124,6 @@ html {
 *:focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 3px;
-  border-radius: var(--radius-sm);
-  z-index: 10;
 }
 
 @layer components {

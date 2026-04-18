@@ -9,7 +9,7 @@
     <p id="consent-banner-message" class="text-small text-white text-center sm:text-left">
       {{ message }}
       {% if policyUrl %}
-        <twig:Atoms:Link href="{{ policyUrl }}" class="text-accent underline ml-1">En savoir plus</twig:Atoms:Link>
+        <twig:Atoms:Link href="{{ policyUrl }}" class="text-accent underline ml-1" aria-label="En savoir plus sur notre politique de confidentialité">En savoir plus</twig:Atoms:Link>
       {% endif %}
     </p>
     <div class="flex items-center gap-4 shrink-0">

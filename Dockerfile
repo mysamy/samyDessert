@@ -1,4 +1,8 @@
-FROM dunglas/frankenphp:1.11.3-php8.3-bookworm
+FROM php:8.3-cli-bookworm
+
+# Installeur d'extensions PHP (mlocati)
+ADD https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+RUN chmod +x /usr/local/bin/install-php-extensions
 
 # Extensions PHP requises par Symfony
 RUN install-php-extensions pdo pdo_mysql zip intl opcache gd
@@ -20,12 +24,13 @@ RUN composer install --no-dev --optimize-autoloader --no-scripts --no-interactio
 COPY . .
 
 # Assets : installation vendors JS + compilation Tailwind + AssetMapper
-RUN APP_ENV=prod php bin/console importmap:install --no-interaction || true
-RUN APP_ENV=prod php bin/console tailwind:build --no-interaction || true
-RUN APP_ENV=prod php bin/console asset-map:compile --no-interaction || true
+RUN APP_ENV=prod php bin/console importmap:install --no-interaction
+RUN APP_ENV=prod php bin/console assets:install --no-interaction
+RUN APP_ENV=prod php bin/console tailwind:build --no-interaction
+RUN APP_ENV=prod php bin/console asset-map:compile --no-interaction
 
 # Cache Symfony prod
-RUN APP_ENV=prod php bin/console cache:warmup --no-interaction || true
+RUN APP_ENV=prod php bin/console cache:warmup --no-interaction
 
 EXPOSE 8080
 

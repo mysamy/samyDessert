@@ -23,10 +23,12 @@ export default class extends Controller {
     show() {
         this.open = true;
         this.menuTarget.classList.remove('hidden');
+        this.element.querySelector('button').setAttribute('aria-expanded', 'true');
     }
 
     close() {
         this.open = false;
         this.menuTarget.classList.add('hidden');
+        this.element.querySelector('button').setAttribute('aria-expanded', 'false');
     }
 }

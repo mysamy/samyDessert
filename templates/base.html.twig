@@ -3,6 +3,7 @@
   <head>
     <meta charset="UTF-8">
     <title>{% block title %}SamyDessert{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ asset('assets/images/LogoSD.svg') }}">
 
     {# Préchargement des polices pour éviter le saut visuel (FOUC) #}
     <link rel="preload" href="{{ asset('fonts/Luciole-Regular.woff2') }}" as="font" type="font/woff2" crossorigin>
@@ -18,6 +19,7 @@
     {% endblock %}
   </head>
   <body class="text-body">
+  <a href="#contenu-principal" class="skip-link">Aller au contenu principal</a>
   <div data-controller="cart-sidebar">
 
     <twig:Organisms:Header
@@ -43,6 +45,8 @@
         {% if app.user %}
           <div class="relative" data-controller="dropdown">
             <button data-action="dropdown#toggle"
+                    aria-expanded="false"
+                    aria-haspopup="true"
                     class="flex items-center gap-2 text-small font-medium text-text hover:text-accent transition">
               <twig:Atoms:Icon name="circle-user" size="lg" :decorative="true" />
               {{ app.user.prenom ?? app.user.userIdentifier }}
@@ -91,7 +95,7 @@
       </twig:block>
     </twig:Organisms:Header>
 
-    <main>
+    <main id="contenu-principal">
       {% block body %}{% endblock %}
     </main>
 

@@ -9,7 +9,9 @@ export default class extends Controller {
       this.btnTarget.setAttribute('aria-busy', 'true')
     }
     if (this.hasLabelTarget) {
-      const loadingLabel = this.element.dataset.submitOnceLoadingLabel
+      const loadingLabel = this.hasBtnTarget
+        ? this.btnTarget.dataset.submitOnceLoadingLabel
+        : this.element.dataset.submitOnceLoadingLabel
       if (loadingLabel) {
         this.labelTarget.textContent = loadingLabel
       } else {

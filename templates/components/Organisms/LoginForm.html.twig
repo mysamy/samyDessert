@@ -9,7 +9,6 @@
   ariaDescribedby="{{ hasError ? errorId : '' }}"
   data-controller="submit-once"
   data-action="submit->submit-once#submit"
-  data-submit-once-loading-label="Connexion..."
 >
   {% if hasError %}
     <twig:Molecules:Alert
@@ -42,9 +41,8 @@
   />
 
   <twig:Molecules:FormActions align="end">
-    <twig:Atoms:Button type="submit" data-submit-once-target="btn">
-      <span data-submit-once-target="label">{{ submitLabel }}</span>
-      <twig:Atoms:Spinner size="md" ariaLabel="Connexion en cours" class="hidden" data-submit-once-target="spinner" />
+    <twig:Atoms:Button type="submit" loadingLabel="Connexion..." data-submit-once-target="btn">
+      {{ submitLabel }}
     </twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>

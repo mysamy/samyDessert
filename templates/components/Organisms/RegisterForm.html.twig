@@ -9,7 +9,6 @@
   class="{{ class }}"
   data-controller="submit-once"
   data-action="submit->submit-once#submit"
-  data-submit-once-loading-label="Inscription..."
 >
   {% if hasError %}
     <twig:Molecules:Alert
@@ -40,9 +39,8 @@
   </twig:Molecules:FormFieldGroup>
 
   <twig:Molecules:FormActions align="end">
-    <twig:Atoms:Button type="submit" data-submit-once-target="btn">
-      <span data-submit-once-target="label">{{ submitLabel }}</span>
-      <twig:Atoms:Spinner size="md" ariaLabel="Création en cours" class="hidden" data-submit-once-target="spinner" />
+    <twig:Atoms:Button type="submit" loadingLabel="Inscription..." data-submit-once-target="btn">
+      {{ submitLabel }}
     </twig:Atoms:Button>
   </twig:Molecules:FormActions>
 </twig:Organisms:Form>
