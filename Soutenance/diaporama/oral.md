@@ -239,15 +239,19 @@ L'upload d'images est géré par VichUploader — les images sont stockées loca
 
 ---
 
-## Slide 21 — Soins UX ⏱ 45s
+## Slide 21 — Soins UX ⏱ 1min
 
 Deux soins UX que je voulais mettre en avant.
 
-Les messages d'erreur de connexion sont volontairement vagues : "adresse email ou mot de passe incorrect". Si on disait "email introuvable", un attaquant pourrait tester des emails pour savoir quels comptes existent. C'est une recommandation directe de l'OWASP — c'est un choix délibéré, pas un oubli. Et le bouton panier a une animation de feedback visuel immédiat quand on ajoute un produit — l'utilisateur voit que son action a été prise en compte.
+Les messages d'erreur de connexion sont volontairement vagues : "adresse email ou mot de passe incorrect". Si on disait "email introuvable", un attaquant pourrait tester des emails pour savoir quels comptes existent. C'est une recommandation directe de l'OWASP — c'est un choix délibéré, pas un oubli.
+
+Le deuxième soin, c'est le bouton panier. C'est un **Live Component** Symfony UX. La classe PHP `BoutonPanier` est annotée `#[AsLiveComponent]`. La propriété `$produitId` est annotée `#[LiveProp]` — c'est ce qui permet à Twig de la connaître. La méthode `ajouter()` est annotée `#[LiveAction]` — quand le bouton est cliqué, Symfony UX envoie une requête AJAX vers cette méthode, re-rend le composant, et émet l'événement `panierUpdated` pour mettre à jour le compteur dans le header.
+
+Le pattern `data-loading` dans le template Twig fait le reste : pendant l'action, l'icône se masque (`data-loading="hide"`) et le spinner apparaît (`data-loading="show"`). L'utilisateur voit que son action est en cours — sans écrire une seule ligne de JavaScript custom.
 
 ---
 
-## Slide 20 — Sécurité ⏱ 1min30
+## Slide 22 — Sécurité ⏱ 1min30
 
 Six points de sécurité principaux.
 
@@ -265,7 +269,7 @@ Et les données de paiement ne transitent jamais par mon serveur — Stripe gèr
 
 ---
 
-## Slide 21 — Code : Webhook Stripe & idempotence ⏱ 2min
+## Slide 23 — Code : Webhook Stripe & idempotence ⏱ 2min
 
 Je vais vous montrer un exemple concret de code. C'est le webhook Stripe, que je considère comme la fonctionnalité la plus intéressante techniquement du projet.
 
@@ -281,7 +285,7 @@ C'est le principe d'**idempotence** : exécuter l'opération plusieurs fois donn
 
 ---
 
-## Slide 22 — Code : Favoris AJAX — Stimulus ↔ PHP ⏱ 2min
+## Slide 24 — Code : Favoris AJAX — Stimulus ↔ PHP ⏱ 2min
 
 Deuxième exemple de code : le système de favoris. L'objectif est d'ajouter ou retirer un favori sans rechargement de page, avec une mise à jour visuelle immédiate de l'icône.
 
@@ -295,7 +299,7 @@ Le deuxième : quand la réponse arrive, je fais juste `this.activeValue = data.
 
 ---
 
-## Slide 23 — Code : PanierService — Service & accès aux données ⏱ 1min30
+## Slide 25 — Code : PanierService — Service & accès aux données ⏱ 1min30
 
 Troisième exemple de code, qui montre une couche différente : le pattern Service et l'accès à la base de données avec Doctrine.
 
@@ -317,7 +321,7 @@ Je veux montrer un exemple concret de test que j'ai dû corriger. Le test du for
 
 ---
 
-## Slide 25 — Déploiement ⏱ 1min
+## Slide 27 — Déploiement ⏱ 1min
 
 En développement, j'utilise Docker Compose avec 6 services : nginx comme serveur web, php-fpm pour exécuter PHP, mysql pour la base de données, adminer pour visualiser la base via un navigateur, un container d'initialisation qui crée la base et joue les migrations au démarrage, et un container pour la compilation des assets. N'importe qui peut cloner le projet et lancer `docker compose up` — aucune installation locale requise sur la machine.
 
@@ -325,7 +329,7 @@ En production, le site tourne sur Railway. Le déploiement est automatique : cha
 
 ---
 
-## Slide 26 — Gestion de version avec Git ⏱ 45s
+## Slide 28 — Gestion de version avec Git ⏱ 45s
 
 Je travaille avec deux branches. L'idée est d'isoler le développement en cours sur `dev` pour ne jamais pousser directement du code instable en production. Sur ce projet solo j'ai parfois travaillé directement sur `main`, mais le principe est là : `dev` pour les changements en cours, `main` pour ce qui est stable et prêt à déployer. C'est une pratique standard dans les projets professionnels où plusieurs personnes travaillent en parallèle.
 
@@ -333,7 +337,7 @@ Je suis la convention **Conventional Commits** : `feat:` pour une nouvelle fonct
 
 ---
 
-## Slide 27 — Veille technologique ⏱ 1min
+## Slide 29 — Veille technologique ⏱ 1min
 
 Ma veille repose sur plusieurs sources complémentaires. Stack Overflow et GitHub Issues pour les problèmes concrets — quand je bloque sur un bug, c'est souvent là que quelqu'un a déjà eu le même problème. YouTube pour les démonstrations visuelles, notamment Grafikart qui traite beaucoup de PHP et Symfony. Et les outils d'IA pour comprendre rapidement un concept ou explorer des approches. Mais je vérifie toujours les réponses — l'IA peut se tromper, surtout sur des versions récentes de frameworks.
 
@@ -341,7 +345,7 @@ Sur ce projet, j'ai adopté plusieurs technologies récentes que je n'avais pas 
 
 ---
 
-## Slide 28 — Difficultés rencontrées ⏱ 1min15
+## Slide 30 — Difficultés rencontrées ⏱ 1min15
 
 Cinq difficultés majeures que j'ai rencontrées et résolues.
 
@@ -357,7 +361,7 @@ Les **Turbo Frames** nécessitent d'identifier précisément quelle portion de l
 
 ---
 
-## Slide 29 — Améliorations futures ⏱ 45s
+## Slide 31 — Améliorations futures ⏱ 45s
 
 Quelques pistes d'amélioration. Fonctionnellement, j'aimerais ajouter la liste des ingrédients dans les recettes pour que l'utilisateur puisse acheter directement ce dont il a besoin. Une modération des avis avant publication. Des variations de produits — tailles ou parfums différents.
 
@@ -365,7 +369,7 @@ Techniquement, les priorités sont : un token CSRF sur les actions AJAX comme le
 
 ---
 
-## Slide 30 — Démonstration live ⏱ 5min
+## Slide 32 — Démonstration live ⏱ 5min
 
 Je vais maintenant vous montrer le site en production.
 
@@ -385,7 +389,7 @@ Je vais maintenant vous montrer le site en production.
 
 ---
 
-## Slide 31 — Bilan personnel ⏱ 1min30
+## Slide 33 — Bilan personnel ⏱ 1min30
 
 Ce projet m'a appris énormément de choses. Structurer un projet Symfony de A à Z — du Dockerfile jusqu'aux tests. Travailler dans un environnement Docker sans installation locale. Intégrer des services tiers comme Stripe pour le paiement, Resend pour les emails, VichUploader pour les images.
 
@@ -397,7 +401,7 @@ L'accessibilité m'a aussi surpris — ça change profondément la façon de pen
 
 ---
 
-## Slide 32 — Questions
+## Slide 34 — Questions
 
 Merci pour votre attention. Je suis prêt pour vos questions.
 
