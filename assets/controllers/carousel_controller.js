@@ -20,7 +20,7 @@ class Carousel {
    * @param {boolean}     [options.infinite=false]        - Boucle infinie par clonage des slides
    * @param {boolean}     [options.navigation=true]       - Affiche les boutons précédent / suivant
    * @param {boolean}     [options.pagination=false]      - Affiche les points de pagination
-   * @param {number}      [options.transitionDuration=500]- Durée de la transition en millisecondes
+   * @param {number}      [options.transitionDuration=800]- Durée de la transition en millisecondes
    */
   constructor(element, options = {}) {
     this.element = element;

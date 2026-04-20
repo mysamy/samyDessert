@@ -140,12 +140,23 @@ Accessibilité :
 
 ## Slide 11 — Architecture MVC
 
-**Pattern : MVC (Model View Controller)**
+**Exemple : `GET /panier` — afficher le panier**
 
-- **Models** : entités Doctrine (`Produit`, `Commande`, `Utilisateur`...)
-- **Views** : templates Twig + composants atomiques
-- **Controllers** : logique métier légère, délèguent aux Services
-- **Services** : logique métier (`PanierService`, `MailerService`, `FactureService`)
+```
+Requête GET /panier
+  → Router → PanierController::index()
+  → PanierService::getLignes()   (lit la session)
+  → ProduitRepository::find()    (SQL via Doctrine)
+  → Entité Produit
+  → render('panier/index.html.twig')
+  → HTML
+```
+
+- **Route** → `PanierController::index()`
+- **Controller** → délègue à `PanierService`
+- **Service** → lit la session, appelle le Repository
+- **Repository / Entité** → `SELECT` en base, retourne `Produit`
+- **Twig** → affiche lignes + total
 
 *[insérer capture MVC.png]*
 
@@ -193,7 +204,37 @@ Les composants UI sont organisés du plus simple au plus complexe :
 <twig:Atoms:Button variant="ghost">Annuler</twig:Atoms:Button>
 ```
 
-**Molécule — InputField.html.twig**
+**Molécule — InputField.php** (classe PHP — props + logique)
+
+```php
+#[AsTwigComponent]
+final class InputField
+{
+    public string $name = '';
+    public string $label = '';
+    public string $type = 'text';
+    public string $error = '';
+    public bool $required = false;
+
+    public function getComputedId(): string
+    {
+        return $this->id !== '' ? $this->id
+            : preg_replace('/[^a-zA-Z0-9\-_:.]+/', '_', $this->name) ?: 'input';
+    }
+
+    public function getDescribedBy(): string
+    {
+        $ids = [];
+        if ($this->help !== '')  $ids[] = $this->getHelpId();
+        if ($this->error !== '') $ids[] = $this->getErrorId();
+        return implode(' ', $ids);
+    }
+
+    public function getEffectiveInvalid(): bool { return $this->error !== ''; }
+}
+```
+
+**Molécule — InputField.html.twig** (template Twig)
 
 ```twig
 <twig:Atoms:Label for="{{ id }}" label="{{ label }}" :required="required" />

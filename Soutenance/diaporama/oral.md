@@ -111,17 +111,17 @@ Pas de Node.js, pas de `npm install`, pas d'étape de build. AssetMapper expose 
 
 ## Slide 11 — Architecture MVC ⏱ 1min30
 
-Je vais vous expliquer le MVC en suivant une vraie requête du projet : `POST /panier/ajouter/5`.
+Je vais vous expliquer le MVC en suivant une vraie requête du projet : `GET /panier` — la page panier, quand on clique sur l'icône en haut à droite.
 
-Le navigateur envoie cette requête. Le **kernel HTTP** de Symfony la reçoit et déclenche une chaîne d'événements. Le **routeur** compare l'URL et la méthode aux attributs `#[Route]` de tous les controllers — il trouve `#[Route('/panier/ajouter/{id}', methods: ['POST'])]` dans `PanierController` et extrait `id = 5`.
+Le navigateur envoie `GET /panier`. Le **routeur** compare l'URL aux attributs `#[Route]` de tous les controllers — il trouve `#[Route('', name: 'index')]` dans `PanierController`, lui-même préfixé `/panier` sur la classe.
 
-Symfony instancie `PanierController` et injecte `PanierService` via le container d'injection de dépendances — c'est l'autowiring par type-hint. La méthode `ajouter(int $id, PanierService $panier)` est appelée avec `$id = 5`.
+Symfony instancie `PanierController` et injecte `PanierService` via l'autowiring. La méthode `index()` est appelée — elle ne fait rien d'autre que demander les données au Service et rendre la vue.
 
-Le **Controller** ne fait rien de plus que déléguer : `$panier->ajouter(5)`. Toute la logique — lire la session, incrémenter la quantité, sauvegarder — est dans le **Service**. Le Controller ajoute un message flash et retourne une `RedirectResponse` vers `/panier`.
+Le **Service** `PanierService::getLignes()` lit d'abord la session — le panier y est stocké comme un simple tableau `[produit_id => quantité]`, pas en base de données. Ensuite il appelle `ProduitRepository::findBy(['id' => [...]])` pour récupérer tous les produits en **un seul `SELECT ... WHERE id IN (...)`** — Doctrine retourne des entités `Produit` avec toutes leurs propriétés.
 
-Aucune entité Doctrine n'est touchée ici — le panier est en session. Si c'était une commande, le Service appellerait le **Repository** qui génère la requête SQL via l'EntityManager. Le Controller ne touche jamais la base directement.
+Le **Controller** passe `lignes` et `total` au template Twig `panier/index.html.twig`, qui affiche la liste des produits, les quantités et le récapitulatif.
 
-Ce découpage rend chaque couche testable indépendamment : `PanierServiceTest` teste la logique sans simuler de requête HTTP.
+Ce découpage est clair : le Controller orchestre, le Service contient la logique métier, le Repository isole l'accès à la base, Twig s'occupe uniquement de l'affichage. Chaque couche est testable indépendamment — `PanierServiceTest` teste la logique de session sans simuler de requête HTTP.
 
 ---
 

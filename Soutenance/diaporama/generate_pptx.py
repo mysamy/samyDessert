@@ -401,13 +401,14 @@ add_image(s, CAPTURES + "atomicDesignFichiers.png", Inches(10.6), Inches(1.4), I
 # ── SLIDE 13 — Code Atomic Design ────────────────────────────────────────────
 s = blank_slide(prs)
 add_title_bar(s, "Code : Atomic Design — Atom & Molécule")
-add_textbox(s, "Atom — Button.html.twig", Inches(0.5), Inches(1.35), Inches(6), Inches(0.35),
-            size=13, bold=True, color=FRAMBOISE)
+
+# Colonne gauche — Button atom
+add_textbox(s, "Atom — Button.html.twig", Inches(0.3), Inches(1.35), Inches(4), Inches(0.35),
+            size=12, bold=True, color=FRAMBOISE)
 add_code_block(s, """{% set variants = {
-  primary: "bg-accent text-white hover:bg-primary hover:scale-105",
-  ghost:   "bg-transparent text-text hover:bg-surface hover:scale-105",
-  danger:  "bg-danger text-white hover:bg-danger-dark hover:scale-105",
-  "ghost-danger": "text-danger border-2 border-danger hover:bg-danger",
+  primary: "bg-accent text-white",
+  ghost:   "bg-transparent text-text",
+  danger:  "bg-danger text-white",
 } %}
 <button type="{{ type }}"
   {{ attributes.defaults({
@@ -415,33 +416,73 @@ add_code_block(s, """{% set variants = {
   }) }}
 >
   {% block content %}{% endblock %}
-</button>""", Inches(0.5), Inches(1.7), Inches(6), Inches(2.8), lang='twig')
+</button>""", Inches(0.3), Inches(1.7), Inches(4), Inches(2.6), lang='twig')
 
-add_textbox(s, "Molécule — InputField.html.twig", Inches(0.5), Inches(4.6), Inches(6), Inches(0.35),
-            size=13, bold=True, color=FRAMBOISE)
-add_code_block(s, """<twig:Atoms:Label for="{{ id }}" label="{{ label }}"
-  :required="required" />
-<twig:Atoms:Input
-  id="{{ id }}" name="{{ name }}" type="{{ type }}"
-  aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
-  aria-describedby="{{ describedBy }}"
-/>
-{% if error %}
-  <p id="{{ this.errorId }}" role="alert" class="text-danger">
-    {{ error }}</p>
-{% endif %}""", Inches(0.5), Inches(4.95), Inches(6), Inches(2.3), lang='twig')
-
-add_textbox(s, "Utilisation :", Inches(7), Inches(1.35), Inches(6), Inches(0.35),
-            size=13, bold=True, color=FRAMBOISE)
+add_textbox(s, "Utilisation :", Inches(0.3), Inches(4.4), Inches(4), Inches(0.35),
+            size=12, bold=True, color=FRAMBOISE)
 add_code_block(s, """<twig:Atoms:Button>Commander</twig:Atoms:Button>
 <twig:Atoms:Button variant="ghost">Annuler</twig:Atoms:Button>
 
 <twig:Molecules:InputField
-  name="email"
-  label="Email"
-  type="email"
-  :required="true"
-/>""", Inches(7), Inches(1.7), Inches(5.9), Inches(2.3), lang='twig')
+  name="email" label="Email"
+  type="email" :required="true"
+/>""", Inches(0.3), Inches(4.75), Inches(4), Inches(2.0), lang='twig')
+
+# Colonne centrale — InputField.php
+add_textbox(s, "Molécule — InputField.php", Inches(4.6), Inches(1.35), Inches(4), Inches(0.35),
+            size=12, bold=True, color=FRAMBOISE)
+add_code_block(s, """#[AsTwigComponent]
+final class InputField
+{
+    public string $name  = '';
+    public string $label = '';
+    public string $type  = 'text';
+    public string $error = '';
+    public bool   $required = false;
+
+    public function getComputedId(): string
+    {
+        return $this->id !== '' ? $this->id
+            : preg_replace('/[^a-zA-Z0-9\\-_:.]+/',
+                '_', $this->name) ?: 'input';
+    }
+
+    public function getDescribedBy(): string
+    {
+        $ids = [];
+        if ($this->help  !== '') $ids[] = $this->getHelpId();
+        if ($this->error !== '') $ids[] = $this->getErrorId();
+        return implode(' ', $ids);
+    }
+
+    public function getEffectiveInvalid(): bool
+    {
+        return $this->error !== '';
+    }
+}""", Inches(4.6), Inches(1.7), Inches(4), Inches(5.1), lang='php')
+
+# Colonne droite — InputField.html.twig
+add_textbox(s, "Molécule — InputField.html.twig", Inches(9.0), Inches(1.35), Inches(4.2), Inches(0.35),
+            size=12, bold=True, color=FRAMBOISE)
+add_code_block(s, """<twig:Atoms:Label
+  for="{{ id }}"
+  label="{{ label }}"
+  :required="required"
+/>
+<twig:Atoms:Input
+  id="{{ id }}"
+  name="{{ name }}"
+  type="{{ type }}"
+  aria-invalid="{{ isInvalid ? 'true' : 'false' }}"
+  aria-describedby="{{ describedBy }}"
+/>
+{% if error %}
+  <p id="{{ this.errorId }}"
+     role="alert"
+     class="text-danger">
+    {{ error }}
+  </p>
+{% endif %}""", Inches(9.0), Inches(1.7), Inches(4.2), Inches(5.1), lang='twig')
 
 # ── SLIDE 14 — Code Carousel ─────────────────────────────────────────────────
 s = blank_slide(prs)
